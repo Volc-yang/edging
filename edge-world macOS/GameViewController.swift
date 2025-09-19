@@ -28,11 +28,7 @@ class GameViewController: NSViewController {
             return
         }
         
-        // Check for Metal 4 support
-        if !defaultDevice.supportsFamily(.metal4) {
-            print("Metal 4 is not supported")
-            return
-        }
+
 
         mtkView.device = defaultDevice
 

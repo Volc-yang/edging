@@ -6,8 +6,10 @@
 	<dict>
 		<key>edge-world iOS.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>edge-world macOS.xcscheme_^#shared#^_</key>
 		<dict>
@@ -16,8 +18,23 @@
 		</dict>
 		<key>edge-world tvOS.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>4331EB362E5AC6AE0039358D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4331EB472E5AC6AE0039358D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
