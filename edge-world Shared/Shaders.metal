@@ -1,53 +1,29 @@
-//
-//  Shaders.metal
-//  edge-world Shared
-//
-//  Created by yang acan on 2025/8/24.
-//
-
-// File for Metal kernel and shader functions
-
 #include <metal_stdlib>
-#include <simd/simd.h>
-
-// Including header shared between this Metal shader code and Swift/C code executing Metal API commands
-#import "ShaderTypes.h"
+#include "ShaderTypes.h"
 
 using namespace metal;
 
-typedef struct
-{
-    float3 position [[attribute(VertexAttributePosition)]];
-    float2 texCoord [[attribute(VertexAttributeTexcoord)]];
-} Vertex;
-
+// A struct to pass data from the vertex shader to the fragment shader.
 typedef struct
 {
     float4 position [[position]];
-    float2 texCoord;
+    float4 color;
 } ColorInOut;
 
-vertex ColorInOut vertexShader(Vertex in [[stage_in]],
-                               constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]])
+// Vertex shader for our 2D grid.
+// It takes a GridVertex and passes its position and color to the fragment shader.
+vertex ColorInOut gridVertexShader(const device GridVertex *vertices [[buffer(0)]],
+                                  uint vertexID [[vertex_id]])
 {
     ColorInOut out;
-
-    float4 position = float4(in.position, 1.0);
-    out.position = uniforms.projectionMatrix * uniforms.modelViewMatrix * position;
-    out.texCoord = in.texCoord;
-
+    out.position = float4(vertices[vertexID].position, 0.0, 1.0);
+    out.color = vertices[vertexID].color;
     return out;
 }
 
-fragment float4 fragmentShader(ColorInOut in [[stage_in]],
-                               constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]],
-                               texture2d<half> colorMap     [[ texture(TextureIndexColor) ]])
+// Fragment shader for our 2D grid.
+// It simply returns the color passed from the vertex shader.
+fragment float4 gridFragmentShader(ColorInOut in [[stage_in]])
 {
-    constexpr sampler colorSampler(mip_filter::linear,
-                                   mag_filter::linear,
-                                   min_filter::linear);
-
-    half4 colorSample   = colorMap.sample(colorSampler, in.texCoord.xy);
-
-    return float4(colorSample);
+    return in.color;
 }

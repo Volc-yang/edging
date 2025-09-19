@@ -1,328 +1,375 @@
-//
-//  Renderer.swift
-//  edge-world Shared
-//
-//  Created by yang acan on 2025/8/24.
-//
 
-// Our platform independent renderer class
-
+import Foundation
 import Metal
 import MetalKit
-import simd
 
-// The 256 byte aligned size of our uniform structure
-let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0xFF) & -0x100
+// MARK: - Core Philosophical Enums
 
-let maxBuffersInFlight = 3
-
-nonisolated enum RendererError: Error {
-    case badVertexDescriptor
+enum Bagua: CaseIterable {
+    case qian, kun, zhen, xun, kan, li, gen, dui
 }
 
-class Renderer: NSObject, MTKViewDelegate {
-    
-    public let device: MTLDevice
-    let commandQueue: MTLCommandQueue
-    let inFlightSemaphore = DispatchSemaphore(value: maxBuffersInFlight)
+enum Sixiang: CaseIterable {
+    case lesserYang, greaterYang, lesserYin, greaterYin
+}
 
-    var dynamicUniformBuffer: MTLBuffer
-    var pipelineState: MTLRenderPipelineState
-    var depthState: MTLDepthStencilState
-    var colorMap: MTLTexture
-    
-    var uniformBufferOffset = 0
-    
-    var uniformBufferIndex = 0
-    
-    var uniforms: UnsafeMutablePointer<Uniforms>
-    
-    var projectionMatrix: matrix_float4x4 = matrix_float4x4()
-    
-    var rotation: Float = 0
-    
-    var mesh: MTKMesh
-    
-    @MainActor
-    init?(metalKitView: MTKView) {
-#if targetEnvironment(simulator)
-        return nil
-#else
-        let device = metalKitView.device!
-        self.device = device
-        
-        self.commandQueue = device.makeCommandQueue()!
-        
-        let uniformBufferSize = alignedUniformsSize * maxBuffersInFlight
-        
-        guard let buffer = self.device.makeBuffer(length:uniformBufferSize, options:[MTLResourceOptions.storageModeShared]) else { return nil }
-        dynamicUniformBuffer = buffer
-        
-        self.dynamicUniformBuffer.label = "UniformBuffer"
-        
-        uniforms = UnsafeMutableRawPointer(dynamicUniformBuffer.contents()).bindMemory(to:Uniforms.self, capacity:1)
-        
-        metalKitView.depthStencilPixelFormat = MTLPixelFormat.depth32Float_stencil8
-        metalKitView.colorPixelFormat = MTLPixelFormat.bgra8Unorm_srgb
-        metalKitView.sampleCount = 1
-        
-        let mtlVertexDescriptor = Renderer.buildMetalVertexDescriptor()
-        
-        do {
-            pipelineState = try Renderer.buildRenderPipelineWithDevice(device: device,
-                                                                       metalKitView: metalKitView,
-                                                                       mtlVertexDescriptor: mtlVertexDescriptor)
-        } catch {
-            print("Unable to compile render pipeline state.  Error info: \(error)")
-            return nil
-        }
-        
-        let depthStateDescriptor = MTLDepthStencilDescriptor()
-        depthStateDescriptor.depthCompareFunction = MTLCompareFunction.less
-        depthStateDescriptor.isDepthWriteEnabled = true
-        guard let state = device.makeDepthStencilState(descriptor:depthStateDescriptor) else { return nil }
-        depthState = state
-        
-        do {
-            mesh = try Renderer.buildMesh(device: device, mtlVertexDescriptor: mtlVertexDescriptor)
-        } catch {
-            print("Unable to build MetalKit Mesh. Error info: \(error)")
-            return nil
-        }
-        
-        do {
-            colorMap = try Renderer.loadTexture(device: device, textureName: "ColorMap")
-        } catch {
-            print("Unable to load texture. Error info: \(error)")
-            return nil
-        }
-        
-        super.init()
-#endif
+enum LifeCycleState: CaseIterable {
+    case seed, birth, flourishing, decline, extinction
+}
+
+// MARK: - Simulation Data Structures
+
+struct Cell {
+    let bagua: Bagua
+    var yin_qi: Float
+    var yang_qi: Float
+    var lifeCycleState: LifeCycleState
+    var timeInCurrentState: Float = 0.0
+}
+
+// MARK: - World Simulation Engine
+
+class WorldSimulation {
+    let width: Int
+    let height: Int
+    var grid: [Cell]
+
+    private var globalTime: Float = 0.0
+    var currentSixiang: Sixiang = .lesserYang
+    let seasonDuration: Float = 10.0
+
+    let totalEnergy: Float = 1.0
+
+    let stateDurations: [LifeCycleState: Float] = [
+        .birth: 0.2, .flourishing: 1.5, .decline: 0.5
+    ]
+
+    init(width: Int, height: Int) {
+        self.width = width
+        self.height = height
+        self.grid = []
+        self.initializeGrid()
     }
-    
-    class func buildMetalVertexDescriptor() -> MTLVertexDescriptor {
-        // Create a Metal vertex descriptor specifying how vertices will by laid out for input into our render
-        //   pipeline and how we'll layout our Model IO vertices
-        
-        let mtlVertexDescriptor = MTLVertexDescriptor()
-        
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].format = MTLVertexFormat.float3
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].offset = 0
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].bufferIndex = BufferIndex.meshPositions.rawValue
-        
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].format = MTLVertexFormat.float2
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].offset = 0
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
-        
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stride = 12
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepRate = 1
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepFunction = MTLVertexStepFunction.perVertex
-        
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stride = 8
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stepRate = 1
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stepFunction = MTLVertexStepFunction.perVertex
-        
-        return mtlVertexDescriptor
-    }
-    
-#if !targetEnvironment(simulator)
-    
-    @MainActor
-    class func buildRenderPipelineWithDevice(device: MTLDevice,
-                                             metalKitView: MTKView,
-                                             mtlVertexDescriptor: MTLVertexDescriptor) throws -> MTLRenderPipelineState {
-        /// Build a render state pipeline object
-        
-        let library = device.makeDefaultLibrary()!
-        
-        let vertexFunction = library.makeFunction(name: "vertexShader")
-        let fragmentFunction = library.makeFunction(name: "fragmentShader")
-        
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.label = "RenderPipeline"
-        pipelineDescriptor.sampleCount = metalKitView.sampleCount
-        pipelineDescriptor.vertexFunction = vertexFunction
-        pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.vertexDescriptor = mtlVertexDescriptor
-        
-        pipelineDescriptor.colorAttachments[0].pixelFormat = metalKitView.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
-        pipelineDescriptor.stencilAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
-        
-        return try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-    }
-    
-#endif
-    
-    class func buildMesh(device: MTLDevice,
-                         mtlVertexDescriptor: MTLVertexDescriptor) throws -> MTKMesh {
-        /// Create and condition mesh data to feed into a pipeline using the given vertex descriptor
-        
-        let metalAllocator = MTKMeshBufferAllocator(device: device)
-        
-        let mdlMesh = MDLMesh.newBox(withDimensions: SIMD3<Float>(4, 4, 4),
-                                     segments: SIMD3<UInt32>(2, 2, 2),
-                                     geometryType: MDLGeometryType.triangles,
-                                     inwardNormals:false,
-                                     allocator: metalAllocator)
-        
-        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
-        
-        guard let attributes = mdlVertexDescriptor.attributes as? [MDLVertexAttribute] else {
-            throw RendererError.badVertexDescriptor
-        }
-        attributes[VertexAttribute.position.rawValue].name = MDLVertexAttributePosition
-        attributes[VertexAttribute.texcoord.rawValue].name = MDLVertexAttributeTextureCoordinate
-        
-        mdlMesh.vertexDescriptor = mdlVertexDescriptor
-        
-        return try MTKMesh(mesh:mdlMesh, device:device)
-    }
-    
-    class func loadTexture(device: MTLDevice,
-                           textureName: String) throws -> MTLTexture {
-        /// Load texture data with optimal parameters for sampling
-        
-        let textureLoader = MTKTextureLoader(device: device)
-        
-        let textureLoaderOptions = [
-            MTKTextureLoader.Option.textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
-            MTKTextureLoader.Option.textureStorageMode: NSNumber(value: MTLStorageMode.private.rawValue)
-        ]
-        
-        return try textureLoader.newTexture(name: textureName,
-                                            scaleFactor: 1.0,
-                                            bundle: nil,
-                                            options: textureLoaderOptions)
-        
-    }
-    
-    private func updateDynamicBufferState() {
-        /// Update the state of our uniform buffers before rendering
-        
-        uniformBufferIndex = (uniformBufferIndex + 1) % maxBuffersInFlight
-        
-        uniformBufferOffset = alignedUniformsSize * uniformBufferIndex
-        
-        uniforms = UnsafeMutableRawPointer(dynamicUniformBuffer.contents() + uniformBufferOffset).bindMemory(to:Uniforms.self, capacity:1)
-    }
-    
-    private func updateGameState() {
-        /// Update any game state before rendering
-        
-        uniforms[0].projectionMatrix = projectionMatrix
-        
-        let rotationAxis = SIMD3<Float>(1, 1, 0)
-        let modelMatrix = matrix4x4_rotation(radians: rotation, axis: rotationAxis)
-        let viewMatrix = matrix4x4_translation(0.0, 0.0, -8.0)
-        uniforms[0].modelViewMatrix = simd_mul(viewMatrix, modelMatrix)
-        rotation += 0.01
-    }
-    
-    func draw(in view: MTKView) {
-        /// Per frame updates hare
-        
-#if !targetEnvironment(simulator)
-        
-        _ = inFlightSemaphore.wait(timeout: DispatchTime.distantFuture)
-        
-        if let commandBuffer = commandQueue.makeCommandBuffer() {
-            
-            let semaphore = inFlightSemaphore
-            commandBuffer.addCompletedHandler { (_ commandBuffer)-> Swift.Void in
-                semaphore.signal()
+
+    private func initializeGrid() {
+        let cellCount = width * height
+        grid.reserveCapacity(cellCount)
+        let energyPerCell = totalEnergy / Float(cellCount)
+        let noise = PerlinNoise(seed: UInt32.random(in: 0...1000))
+
+        for y in 0..<height {
+            for x in 0..<width {
+                let baguaNoiseValue = noise.noise(x: Double(x) / 50.0, y: Double(y) / 50.0, z: 0)
+                let baguaIndex = Int(abs(baguaNoiseValue) * Double(Bagua.allCases.count)) % Bagua.allCases.count
+                let bagua = Bagua.allCases[baguaIndex]
+                let initialYang = Float.random(in: 0...energyPerCell)
+                let initialYin = energyPerCell - initialYang
+                let cell = Cell(bagua: bagua, yin_qi: initialYin, yang_qi: initialYang, lifeCycleState: .seed)
+                grid.append(cell)
             }
-            
-            self.updateDynamicBufferState()
-            
-            self.updateGameState()
-            
-            if let renderPassDescriptor = view.currentRenderPassDescriptor, let currentDrawable = view.currentDrawable {
-                
-                if let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) {
-                    
-                    renderEncoder.label = "Primary Render Encoder"
-                    
-                    renderEncoder.pushDebugGroup("Draw Box")
-                    
-                    renderEncoder.setCullMode(.back)
-                    
-                    renderEncoder.setFrontFacing(.counterClockwise)
-                    
-                    renderEncoder.setRenderPipelineState(pipelineState)
-                    
-                    renderEncoder.setDepthStencilState(depthState)
-                    
-                    renderEncoder.setVertexBuffer(dynamicUniformBuffer, offset:uniformBufferOffset, index: BufferIndex.uniforms.rawValue)
-                    renderEncoder.setFragmentBuffer(dynamicUniformBuffer, offset:uniformBufferOffset, index: BufferIndex.uniforms.rawValue)
-                    
-                    for (index, element) in mesh.vertexBuffers.enumerated() {
-                        let buffer = mesh.vertexBuffers[index]
-                        renderEncoder.setVertexBuffer(buffer.buffer, offset:buffer.offset, index: index)
+        }
+    }
+
+    func update(deltaTime: Float) {
+        globalTime += deltaTime
+        let seasonPhase = fmod(globalTime, seasonDuration * 4) / seasonDuration
+        if seasonPhase < 1.0 { currentSixiang = .lesserYang }
+        else if seasonPhase < 2.0 { currentSixiang = .greaterYang }
+        else if seasonPhase < 3.0 { currentSixiang = .lesserYin }
+        else { currentSixiang = .greaterYin }
+
+        var nextGrid = self.grid
+
+        for y in 0..<height {
+            for x in 0..<width {
+                let index = y * width + x
+                var currentCell = grid[index]
+                currentCell.timeInCurrentState += deltaTime
+
+                var birthThreshold: Float = 0.45
+                var declineThreshold: Float = 0.15
+
+                switch currentCell.bagua {
+                case .li: birthThreshold -= 0.1
+                case .kan: birthThreshold += 0.1
+                case .gen: declineThreshold *= 0.8
+                default: break
+                }
+
+                switch currentSixiang {
+                case .greaterYang: birthThreshold -= 0.05
+                case .greaterYin: birthThreshold += 0.1
+                default: break
+                }
+
+                let total_qi = currentCell.yin_qi + currentCell.yang_qi
+                let ratio = total_qi > 0 ? (currentCell.yang_qi / total_qi) : 0.5
+                var nextState = currentCell.lifeCycleState
+
+                // --- SAFE State Transition Logic ---
+                switch currentCell.lifeCycleState {
+                case .seed:
+                    if ratio > birthThreshold && ratio < (1.0 - birthThreshold) { nextState = .birth }
+                case .birth:
+                    if currentCell.timeInCurrentState > stateDurations[.birth]! { nextState = .flourishing }
+                case .flourishing:
+                    if ratio < declineThreshold || ratio > (1.0 - declineThreshold) || currentCell.timeInCurrentState > stateDurations[.flourishing]! {
+                        nextState = .decline
+                    }
+                case .decline:
+                    if currentCell.timeInCurrentState > stateDurations[.decline]! { nextState = .extinction }
+                case .extinction:
+                    break // Stays in extinction until reset after energy redistribution
+                }
+
+                if nextState != currentCell.lifeCycleState {
+                    currentCell.lifeCycleState = nextState
+                    currentCell.timeInCurrentState = 0.0
+                }
+                nextGrid[index] = currentCell
+            }
+        }
+        
+        for y in 0..<height {
+            for x in 0..<width {
+                let index = y * width + x
+                if grid[index].lifeCycleState == .extinction {
+                    let extinctCell = grid[index]
+                    let total_qi = extinctCell.yin_qi + extinctCell.yang_qi
+                    let ratio = total_qi > 0 ? (extinctCell.yang_qi / total_qi) : 0.5
+                    let energyToDistribute = total_qi / 8.0
+
+                    for dy in -1...1 {
+                        for dx in -1...1 {
+                            if dx == 0 && dy == 0 { continue }
+                            let nx = (x + dx + width) % width
+                            let ny = (y + dy + height) % height
+                            let neighborIndex = ny * width + nx
+                            nextGrid[neighborIndex].yin_qi += energyToDistribute * (1.0 - ratio)
+                            nextGrid[neighborIndex].yang_qi += energyToDistribute * ratio
+                        }
                     }
                     
-                    renderEncoder.setFragmentTexture(colorMap, index: TextureIndex.color.rawValue)
-                    
-                    for submesh in mesh.submeshes {
-                        renderEncoder.drawIndexedPrimitives(type: submesh.primitiveType,
-                                                            indexCount: submesh.indexCount,
-                                                            indexType: submesh.indexType,
-                                                            indexBuffer: submesh.indexBuffer.buffer,
-                                                            indexBufferOffset: submesh.indexBuffer.offset)
-                    }
-                    
-                    renderEncoder.popDebugGroup()
-                    
-                    renderEncoder.endEncoding()
-                    
-                    commandBuffer.present(currentDrawable)
+                    let energyPerCell = totalEnergy / Float(width * height)
+                    nextGrid[index].yin_qi = Float.random(in: 0...energyPerCell)
+                    nextGrid[index].yang_qi = energyPerCell - nextGrid[index].yin_qi
+                    nextGrid[index].lifeCycleState = .seed
                 }
             }
-            
-            commandBuffer.commit()
         }
-#endif
+
+        grid = nextGrid
     }
-    
-    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        /// Respond to drawable size or orientation changes here
+}
+
+// MARK: - Renderer
+
+class Renderer: NSObject, MTKViewDelegate {
+
+    public let device: MTLDevice
+    let commandQueue: MTLCommandQueue
+    var pipelineState: MTLRenderPipelineState
+    var world: WorldSimulation
+    var vertexBuffer: MTLBuffer?
+    var viewportSize: vector_uint2 = .zero
+
+    let simulationWidth = 200
+    let simulationHeight = 200
+
+    enum RendererError: Error {
+        case shaderFunctionNotFound
+        case pipelineCreationFailed
+    }
+
+    @MainActor
+    init?(metalKitView: MTKView) {
+        guard let device = metalKitView.device else { return nil }
+        self.device = device
+        guard let commandQueue = device.makeCommandQueue() else { return nil }
+        self.commandQueue = commandQueue
         
-        let aspect = Float(size.width) / Float(size.height)
-        projectionMatrix = matrix_perspective_right_hand(fovyRadians: radians_from_degrees(65), aspectRatio:aspect, nearZ: 0.1, farZ: 100.0)
+        self.world = WorldSimulation(width: simulationWidth, height: simulationHeight)
+        metalKitView.colorPixelFormat = .bgra8Unorm_srgb
+
+        do {
+            pipelineState = try Renderer.buildRenderPipeline(with: device, metalKitView: metalKitView)
+        } catch {
+            print("Unable to compile render pipeline state. Error: \(error)")
+            return nil
+        }
+
+        super.init()
+    }
+
+    @MainActor
+    class func buildRenderPipeline(with device: MTLDevice, metalKitView: MTKView) throws -> MTLRenderPipelineState {
+        guard let library = device.makeDefaultLibrary() else {
+            throw RendererError.shaderFunctionNotFound
+        }
+
+        guard let vertexFunction = library.makeFunction(name: "gridVertexShader") else {
+            throw RendererError.shaderFunctionNotFound
+        }
+
+        guard let fragmentFunction = library.makeFunction(name: "gridFragmentShader") else {
+            throw RendererError.shaderFunctionNotFound
+        }
+
+        let pipelineDescriptor = MTLRenderPipelineDescriptor()
+        pipelineDescriptor.label = "GridRenderPipeline"
+        pipelineDescriptor.vertexFunction = vertexFunction
+        pipelineDescriptor.fragmentFunction = fragmentFunction
+        pipelineDescriptor.colorAttachments[0].pixelFormat = metalKitView.colorPixelFormat
+        
+        do {
+            return try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+        } catch {
+            throw RendererError.pipelineCreationFailed
+        }
+    }
+
+    private func buildVertexBuffer() {
+        let cellCount = world.width * world.height
+        let vertexCount = cellCount * 6
+        let bufferSize = vertexCount * MemoryLayout<GridVertex>.stride
+
+        if vertexBuffer == nil || vertexBuffer!.length < bufferSize {
+            guard let newBuffer = device.makeBuffer(length: bufferSize, options: .storageModeShared) else {
+                print("Failed to create vertex buffer")
+                return
+            }
+            vertexBuffer = newBuffer
+            vertexBuffer?.label = "GridVertexBuffer"
+        }
+
+        guard let vertices = vertexBuffer?.contents().bindMemory(to: GridVertex.self, capacity: vertexCount) else {
+            return
+        }
+
+        let cellWidth = 2.0 / Float(world.width)
+        let cellHeight = 2.0 / Float(world.height)
+
+        for y in 0..<world.height {
+            for x in 0..<world.width {
+                let cellIndex = y * world.width + x
+                let cell = world.grid[cellIndex]
+
+                var baseColor: vector_float4
+                switch cell.bagua {
+                case .li:   baseColor = vector_float4(1.0, 0.1, 0.1, 1)
+                case .kan:  baseColor = vector_float4(0.1, 0.2, 1.0, 1)
+                case .gen:  baseColor = vector_float4(0.6, 0.4, 0.2, 1)
+                case .kun:  baseColor = vector_float4(0.5, 0.3, 0.0, 1)
+                case .qian: baseColor = vector_float4(0.8, 0.8, 1.0, 1)
+                case .dui:  baseColor = vector_float4(0.9, 0.9, 0.9, 1)
+                case .xun:  baseColor = vector_float4(0.1, 1.0, 0.1, 1)
+                case .zhen: baseColor = vector_float4(1.0, 1.0, 0.1, 1)
+                }
+
+                var stateBlendedColor: vector_float4
+                if cell.lifeCycleState != .seed {
+                    var stateColor: vector_float4
+                    switch cell.lifeCycleState {
+                    case .birth:       stateColor = vector_float4(0, 1, 0, 1)
+                    case .flourishing: stateColor = vector_float4(1, 0, 0, 1)
+                    case .decline:     stateColor = vector_float4(1, 1, 0, 1)
+                    case .extinction:  stateColor = vector_float4(0, 0, 1, 1)
+                    default: stateColor = baseColor
+                    }
+                    stateBlendedColor = mix(baseColor, stateColor, t: 0.5)
+                } else {
+                    stateBlendedColor = baseColor
+                }
+
+                let total_qi = cell.yin_qi + cell.yang_qi
+                let brightness = total_qi > 0.0001 ? (cell.yang_qi / total_qi) : 0.5
+                var finalColor = stateBlendedColor * (brightness * 1.2 + 0.2)
+                finalColor.w = 1.0
+
+                let startX = -1.0 + Float(x) * cellWidth
+                let startY = -1.0 + Float(y) * cellHeight
+
+                let verticesOffset = cellIndex * 6
+                vertices[verticesOffset]     = GridVertex(position: [startX, startY], color: finalColor)
+                vertices[verticesOffset + 1] = GridVertex(position: [startX + cellWidth, startY], color: finalColor)
+                vertices[verticesOffset + 2] = GridVertex(position: [startX, startY + cellHeight], color: finalColor)
+                vertices[verticesOffset + 3] = GridVertex(position: [startX, startY + cellHeight], color: finalColor)
+                vertices[verticesOffset + 4] = GridVertex(position: [startX + cellWidth, startY], color: finalColor)
+                vertices[verticesOffset + 5] = GridVertex(position: [startX + cellWidth, startY + cellHeight], color: finalColor)
+            }
+        }
+    }
+
+    func draw(in view: MTKView) {
+        let deltaTime: Float = 1.0 / 60.0
+        world.update(deltaTime: deltaTime)
+        buildVertexBuffer()
+
+        guard let commandBuffer = commandQueue.makeCommandBuffer(),
+              let renderPassDescriptor = view.currentRenderPassDescriptor,
+              let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
+
+        renderEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(viewportSize.x), height: Double(viewportSize.y), znear: 0.0, zfar: 1.0))
+        renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: world.width * world.height * 6)
+        renderEncoder.endEncoding()
+
+        if let drawable = view.currentDrawable {
+            commandBuffer.present(drawable)
+        }
+        commandBuffer.commit()
+    }
+
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        viewportSize.x = UInt32(size.width)
+        viewportSize.y = UInt32(size.height)
     }
 }
 
-// Generic matrix math utility functions
-func matrix4x4_rotation(radians: Float, axis: SIMD3<Float>) -> matrix_float4x4 {
-    let unitAxis = normalize(axis)
-    let ct = cosf(radians)
-    let st = sinf(radians)
-    let ci = 1 - ct
-    let x = unitAxis.x, y = unitAxis.y, z = unitAxis.z
-    return matrix_float4x4.init(columns:(vector_float4(    ct + x * x * ci, y * x * ci + z * st, z * x * ci - y * st, 0),
-                                         vector_float4(x * y * ci - z * st,     ct + y * y * ci, z * y * ci + x * st, 0),
-                                         vector_float4(x * z * ci + y * st, y * z * ci - x * st,     ct + z * z * ci, 0),
-                                         vector_float4(                  0,                   0,                   0, 1)))
-}
+// MARK: - Perlin Noise Generator
 
-func matrix4x4_translation(_ translationX: Float, _ translationY: Float, _ translationZ: Float) -> matrix_float4x4 {
-    return matrix_float4x4.init(columns:(vector_float4(1, 0, 0, 0),
-                                         vector_float4(0, 1, 0, 0),
-                                         vector_float4(0, 0, 1, 0),
-                                         vector_float4(translationX, translationY, translationZ, 1)))
-}
+fileprivate class PerlinNoise {
+    private var p: [Int] = Array(0...255)
 
-func matrix_perspective_right_hand(fovyRadians fovy: Float, aspectRatio: Float, nearZ: Float, farZ: Float) -> matrix_float4x4 {
-    let ys = 1 / tanf(fovy * 0.5)
-    let xs = ys / aspectRatio
-    let zs = farZ / (nearZ - farZ)
-    return matrix_float4x4.init(columns:(vector_float4(xs,  0, 0,   0),
-                                         vector_float4( 0, ys, 0,   0),
-                                         vector_float4( 0,  0, zs, -1),
-                                         vector_float4( 0,  0, zs * nearZ, 0)))
-}
+    init(seed: UInt32) {
+        var generator = SystemRandomNumberGenerator()
+        p.shuffle(using: &generator)
+        p += p // Duplicate to avoid overflow
+    }
 
-func radians_from_degrees(_ degrees: Float) -> Float {
-    return (degrees / 180) * .pi
+    func noise(x: Double, y: Double, z: Double) -> Double {
+        let X = Int(floor(x)) & 255
+        let Y = Int(floor(y)) & 255
+        let Z = Int(floor(z)) & 255
+
+        let x = x - floor(x)
+        let y = y - floor(y)
+        let z = z - floor(z)
+
+        let u = fade(x)
+        let v = fade(y)
+        let w = fade(z)
+
+        let A = p[X] + Y
+        let AA = p[A] + Z
+        let AB = p[A + 1] + Z
+        let B = p[X + 1] + Y
+        let BA = p[B] + Z
+        let BB = p[B + 1] + Z
+
+        return lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z)),
+                               lerp(u, grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z))),
+                       lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1)),
+                               lerp(u, grad(p[AB + 1], x, y - 1, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1))))
+    }
+
+    private func fade(_ t: Double) -> Double { t * t * t * (t * (t * 6 - 15) + 10) }
+    private func lerp(_ t: Double, _ a: Double, _ b: Double) -> Double { a + t * (b - a) }
+    private func grad(_ hash: Int, _ x: Double, _ y: Double, _ z: Double) -> Double {
+        let h = hash & 15
+        let u = h < 8 ? x : y
+        let v = h < 4 ? y : h == 12 || h == 14 ? x : z
+        return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v)
+    }
 }
