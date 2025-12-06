@@ -3,27 +3,69 @@
 
 using namespace metal;
 
-// A struct to pass data from the vertex shader to the fragment shader.
-typedef struct
-{
+typedef struct {
     float4 position [[position]];
     float4 color;
+    float3 world_position;
+    float3 world_normal;
 } ColorInOut;
 
-// Vertex shader for our 2D grid.
-// It takes a GridVertex and passes its position and color to the fragment shader.
-vertex ColorInOut gridVertexShader(const device GridVertex *vertices [[buffer(0)]],
-                                  uint vertexID [[vertex_id]])
+vertex ColorInOut vertexShader(const device Vertex *vertex_array [[buffer(VertexBufferIndexVertices)]],
+                                const device Uniforms &uniforms [[buffer(VertexBufferIndexUniforms)]],
+                                uint vertex_id [[vertex_id]])
 {
     ColorInOut out;
-    out.position = float4(vertices[vertexID].position, 0.0, 1.0);
-    out.color = vertices[vertexID].color;
+    float4 in_position = float4(vertex_array[vertex_id].position, 1.0);
+    
+    // For simplicity, we assume modelMatrix is identity for terrain and handle it on CPU for gods.
+    // Here we just use the view and projection matrices.
+    out.world_position = in_position.xyz;
+    out.world_normal = vertex_array[vertex_id].normal;
+    
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * in_position;
+    out.color = vertex_array[vertex_id].color;
     return out;
 }
 
-// Fragment shader for our 2D grid.
-// It simply returns the color passed from the vertex shader.
-fragment float4 gridFragmentShader(ColorInOut in [[stage_in]])
+fragment float4 fragmentShader(ColorInOut in [[stage_in]],
+                                const device Uniforms &uniforms [[buffer(VertexBufferIndexUniforms)]],
+                                const device GodProjection *gods [[buffer(VertexBufferIndexGods)]])
 {
-    return in.color;
+    // 1. Calculate base lit terrain color
+    float3 normal = normalize(in.world_normal);
+    float diffuse_factor = saturate(dot(normal, uniforms.lightDirection));
+    float4 base_color = in.color * diffuse_factor + in.color * 0.15; // Ambient light
+
+    // 2. Calculate God Projection influence
+    float4 god_influence_color = float4(0.0);
+    float total_influence = 0.0;
+    float god_radius = 4.0;
+
+    for (int i = 0; i < uniforms.godCount; ++i) {
+        float2 god_pos = gods[i].position;
+        float2 pixel_pos = in.world_position.xz;
+
+        float dist = distance(god_pos, pixel_pos);
+        
+        // Calculate influence with a smooth falloff
+        float influence = 1.0 - saturate(dist / god_radius);
+        influence = smoothstep(0.0, 1.0, influence);
+        influence *= influence; // Square for a brighter core
+
+        if (influence > 0.01) {
+            god_influence_color += gods[i].color * influence;
+            total_influence += influence;
+        }
+    }
+
+    // 3. Blend the colors
+    float4 final_color = base_color;
+    if (total_influence > 0.0) {
+        // Normalize the summed god colors before blending
+        god_influence_color /= total_influence;
+        // Blend based on the strength of the strongest influence
+        final_color = mix(base_color, god_influence_color, saturate(total_influence * 0.7));
+    }
+
+    return float4(final_color.rgb, 1.0);
 }

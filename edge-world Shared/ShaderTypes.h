@@ -3,16 +3,35 @@
 
 #include <simd/simd.h>
 
-// A simple vertex structure for our 2D grid cells.
-// It contains just the position and color for each vertex.
+// Vertex structure for our 3D terrain mesh
 typedef struct
 {
-    // Position in normalized device coordinates (-1 to 1 on X and Y)
-    vector_float2 position;
-
-    // Color of the vertex
+    vector_float3 position;
+    vector_float3 normal;
     vector_float4 color;
+} Vertex;
 
-} GridVertex;
+// Data structure for a single God's projection
+typedef struct
+{
+    vector_float2 position; // Position on the XZ plane
+    vector_float4 color;
+} GodProjection;
+
+// Uniforms structure passed to the shaders
+typedef struct
+{
+    matrix_float4x4 projectionMatrix;
+    matrix_float4x4 viewMatrix;
+    matrix_float4x4 modelMatrix;
+    vector_float3 lightDirection;
+    int godCount;
+    float time;
+} Uniforms;
+
+// Buffer index definitions
+#define VertexBufferIndexVertices 0
+#define VertexBufferIndexUniforms 1
+#define VertexBufferIndexGods     2
 
 #endif /* ShaderTypes_h */
