@@ -18,7 +18,7 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Renderer.swift,
-				Shaders.metal,
+				Shaders.metal.txt,
 			);
 			target = 4331EB362E5AC6AE0039358D /* edge-world iOS */;
 		};
@@ -27,7 +27,7 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Renderer.swift,
-				Shaders.metal,
+				Shaders.metal.txt,
 			);
 			target = 4331EB472E5AC6AE0039358D /* edge-world tvOS */;
 		};
@@ -36,7 +36,7 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Renderer.swift,
-				Shaders.metal,
+				Shaders.metal.txt,
 			);
 			target = 4331EB572E5AC6AE0039358D /* edge-world macOS */;
 		};

@@ -1,0 +1,3202 @@
+version: "0.1"
+transition_rules:
+  - id: tr_qian_l1_to_l2
+    from_prototype_id: proto_hex_01_line_1
+    to_prototype_id: proto_hex_01_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility increases"
+      - "timing_maturity improves"
+      - "constraint_pressure does not spike sharply"
+    confidence: "working_assumption"
+    notes: "Early activation becomes legible without collapsing under exposure"
+  - id: tr_kun_l1_to_l2
+    from_prototype_id: proto_hex_02_line_1
+    to_prototype_id: proto_hex_02_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability remains high"
+      - "coordination improves"
+      - "governance_capacity improves"
+    confidence: "working_assumption"
+    notes: "Receptive grounding becomes reliable carrying structure"
+  - id: tr_qian_l2_to_l3
+    from_prototype_id: proto_hex_01_line_2
+    to_prototype_id: proto_hex_01_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility increases"
+      - "momentum increases"
+      - "discipline does not collapse"
+    confidence: "working_assumption"
+    notes: "Visible activation turns into stronger advance when initiative continues to gather force"
+  - id: tr_qian_l3_to_l4
+    from_prototype_id: proto_hex_01_line_3
+    to_prototype_id: proto_hex_01_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing_maturity improves"
+      - "resource_mobilization improves"
+      - "coordination keeps pace with force"
+    confidence: "working_assumption"
+    notes: "Driven ascent approaches a decisive threshold when force becomes better timed and supported"
+  - id: tr_qian_l4_to_l5
+    from_prototype_id: proto_hex_01_line_4
+    to_prototype_id: proto_hex_01_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "governance_capacity improves"
+      - "stability improves"
+      - "exposure does not outrun structure"
+    confidence: "working_assumption"
+    notes: "Threshold force matures into central command when visibility gains a stable governing center"
+  - id: tr_qian_l5_to_l6
+    from_prototype_id: proto_hex_01_line_5
+    to_prototype_id: proto_hex_01_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility spikes further"
+      - "stability declines"
+      - "constraint_pressure or rigidity increases"
+    confidence: "working_assumption"
+    notes: "Strong command tips into overextension when peak force exceeds carrying flexibility"
+  - id: tr_kun_l2_to_l3
+    from_prototype_id: proto_hex_02_line_2
+    to_prototype_id: proto_hex_02_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "responsibility load increases"
+      - "stability remains mostly intact"
+      - "expression stays restrained"
+    confidence: "working_assumption"
+    notes: "Stable carrying becomes contained burden when support must hold more weight quietly"
+  - id: tr_kun_l3_to_l4
+    from_prototype_id: proto_hex_02_line_3
+    to_prototype_id: proto_hex_02_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility decreases"
+      - "boundary control increases"
+      - "governance_capacity improves"
+    confidence: "working_assumption"
+    notes: "Contained burden turns toward guarded concealment to preserve what it carries"
+  - id: tr_kun_l4_to_l5
+    from_prototype_id: proto_hex_02_line_4
+    to_prototype_id: proto_hex_02_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination improves"
+      - "timing_maturity improves"
+      - "support stays balanced rather than withdrawn"
+    confidence: "working_assumption"
+    notes: "Guarded support matures into noble receptivity when restraint becomes balanced service"
+  - id: tr_kun_l5_to_l6
+    from_prototype_id: proto_hex_02_line_5
+    to_prototype_id: proto_hex_02_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "constraint_pressure rises sharply"
+      - "stability falls"
+      - "support absorbs more pressure than it can carry"
+    confidence: "working_assumption"
+    notes: "Mature receptivity becomes strained yielding when supportive capacity is overloaded"
+  - id: tr_zhun_l1_to_l2
+    from_prototype_id: proto_hex_03_line_1
+    to_prototype_id: proto_hex_03_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination improves"
+      - "resource_mobilization improves"
+      - "constraint_pressure softens slightly"
+    confidence: "working_assumption"
+    notes: "Blocked sprouting becomes hesitant gathering when early support starts to organize"
+  - id: tr_zhun_l2_to_l3
+    from_prototype_id: proto_hex_03_line_2
+    to_prototype_id: proto_hex_03_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency rises faster than clarity"
+      - "timing_maturity remains low"
+      - "coordination weakens"
+    confidence: "working_assumption"
+    notes: "Tentative beginning becomes blind advance when pressure triggers premature movement"
+  - id: tr_zhun_l3_to_l4
+    from_prototype_id: proto_hex_03_line_3
+    to_prototype_id: proto_hex_03_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency moderates"
+      - "support-seeking increases"
+      - "coordination improves"
+    confidence: "working_assumption"
+    notes: "Premature advance turns toward alignment when the state stops forcing and seeks help"
+  - id: tr_zhun_l4_to_l5
+    from_prototype_id: proto_hex_03_line_4
+    to_prototype_id: proto_hex_03_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "governance_capacity improves"
+      - "constraint_pressure continues to fall"
+    confidence: "working_assumption"
+    notes: "Supportive realignment becomes measured consolidation when difficulty is managed into structure"
+  - id: tr_zhun_l5_to_l6
+    from_prototype_id: proto_hex_03_line_5
+    to_prototype_id: proto_hex_03_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "momentum stalls"
+      - "constraint_pressure rises again"
+      - "resources fail to convert into progress"
+    confidence: "working_assumption"
+    notes: "Controlled beginning falls into entangled delay when early order cannot complete emergence"
+  - id: tr_meng_l1_to_l2
+    from_prototype_id: proto_hex_04_line_1
+    to_prototype_id: proto_hex_04_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "receptivity to guidance increases"
+      - "basic structure improves"
+      - "risk exposure decreases"
+    confidence: "working_assumption"
+    notes: "Raw confusion becomes teachable when uncertainty opens to instruction"
+  - id: tr_meng_l2_to_l3
+    from_prototype_id: proto_hex_04_line_2
+    to_prototype_id: proto_hex_04_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility rises"
+      - "discernment stays weak"
+      - "impulse or attraction overrides guidance"
+    confidence: "working_assumption"
+    notes: "Teachable openness becomes misled attraction when immaturity attaches to the wrong signal"
+  - id: tr_meng_l3_to_l4
+    from_prototype_id: proto_hex_04_line_3
+    to_prototype_id: proto_hex_04_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "failed attraction leads to withdrawal"
+      - "coordination drops"
+      - "connection to guidance weakens"
+    confidence: "working_assumption"
+    notes: "Misled immaturity hardens into isolated ignorance when error produces closed confusion"
+  - id: tr_meng_l4_to_l5
+    from_prototype_id: proto_hex_04_line_4
+    to_prototype_id: proto_hex_04_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "humility returns"
+      - "guidance becomes accessible"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Closed confusion becomes humble learning when the state reopens to instruction"
+  - id: tr_meng_l5_to_l6
+    from_prototype_id: proto_hex_04_line_5
+    to_prototype_id: proto_hex_04_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "confusion remains despite gentler guidance"
+      - "boundary pressure increases"
+      - "governance needs sharpen"
+    confidence: "working_assumption"
+    notes: "Receptive learning moves into corrective discipline when firmer teaching is required"
+  - id: tr_xu_l1_to_l2
+    from_prototype_id: proto_hex_05_line_1
+    to_prototype_id: proto_hex_05_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "proximity to action increases"
+      - "readiness remains held"
+      - "patience does not break"
+    confidence: "working_assumption"
+    notes: "Distant waiting becomes near-field caution as timing draws closer"
+  - id: tr_xu_l2_to_l3
+    from_prototype_id: proto_hex_05_line_2
+    to_prototype_id: proto_hex_05_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility rises"
+      - "positional safety declines"
+      - "timing is still not fully ripe"
+    confidence: "working_assumption"
+    notes: "Cautious waiting becomes muddy exposure when nearness outruns secure position"
+  - id: tr_xu_l3_to_l4
+    from_prototype_id: proto_hex_05_line_3
+    to_prototype_id: proto_hex_05_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "risk exposure increases further"
+      - "containment effort rises"
+      - "movement remains restrained"
+    confidence: "working_assumption"
+    notes: "Exposed waiting turns dangerous when pressure intensifies and survival depends on containment"
+  - id: tr_xu_l4_to_l5
+    from_prototype_id: proto_hex_05_line_4
+    to_prototype_id: proto_hex_05_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "coordination improves"
+      - "pressure is absorbed without panic"
+    confidence: "working_assumption"
+    notes: "Dangerous waiting becomes centered composure when the field regains calm central steadiness"
+  - id: tr_xu_l5_to_l6
+    from_prototype_id: proto_hex_05_line_5
+    to_prototype_id: proto_hex_05_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "external arrival or interruption occurs"
+      - "timing opens unexpectedly"
+      - "the waiting stance must pivot"
+    confidence: "working_assumption"
+    notes: "Composed waiting meets sudden arrival when an unexpected opening or disturbance enters the field"
+  - id: tr_song_l1_to_l2
+    from_prototype_id: proto_hex_06_line_1
+    to_prototype_id: proto_hex_06_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "grievance intensifies"
+      - "agency rises"
+      - "de-escalation does not occur"
+    confidence: "working_assumption"
+    notes: "Contained grievance becomes open contention when unresolved pressure pushes outward"
+  - id: tr_song_l2_to_l3
+    from_prototype_id: proto_hex_06_line_2
+    to_prototype_id: proto_hex_06_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "open contention stalls"
+      - "defensive holding increases"
+      - "movement shifts from attack to position-keeping"
+    confidence: "working_assumption"
+    notes: "Weak dispute settles into defended claim when victory is not feasible"
+  - id: tr_song_l3_to_l4
+    from_prototype_id: proto_hex_06_line_3
+    to_prototype_id: proto_hex_06_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "cost awareness increases"
+      - "momentum declines"
+      - "safety through withdrawal becomes visible"
+    confidence: "working_assumption"
+    notes: "Held dispute turns toward retreat when the field sees the price of further escalation"
+  - id: tr_song_l4_to_l5
+    from_prototype_id: proto_hex_06_line_4
+    to_prototype_id: proto_hex_06_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "legitimate arbitration appears"
+      - "governance_capacity improves"
+      - "participants accept stronger order"
+    confidence: "working_assumption"
+    notes: "Withdrawal from dispute becomes just adjudication when a credible center can resolve the conflict"
+  - id: tr_song_l5_to_l6
+    from_prototype_id: proto_hex_06_line_5
+    to_prototype_id: proto_hex_06_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "winning becomes ego-driven"
+      - "stability declines after resolution"
+      - "the field cannot carry the outcome"
+    confidence: "working_assumption"
+    notes: "Fair resolution degrades into empty victory when triumph outruns durable legitimacy"
+  - id: tr_shi_l1_to_l2
+    from_prototype_id: proto_hex_07_line_1
+    to_prototype_id: proto_hex_07_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination improves"
+      - "command legitimacy strengthens"
+      - "resource_mobilization improves"
+    confidence: "working_assumption"
+    notes: "Ordered mobilization becomes central command when collective force gains a stable center"
+  - id: tr_shi_l2_to_l3
+    from_prototype_id: proto_hex_07_line_2
+    to_prototype_id: proto_hex_07_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "carrying discipline weakens"
+      - "burden or noise enters the formation"
+      - "stability declines"
+    confidence: "working_assumption"
+    notes: "Strong command becomes carried disorder when the formation loses internal discipline"
+  - id: tr_shi_l3_to_l4
+    from_prototype_id: proto_hex_07_line_3
+    to_prototype_id: proto_hex_07_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "movement slows intentionally"
+      - "order is restored"
+      - "unnecessary exposure is reduced"
+    confidence: "working_assumption"
+    notes: "Disordered force becomes controlled encampment when order is recovered through restraint"
+  - id: tr_shi_l4_to_l5
+    from_prototype_id: proto_hex_07_line_4
+    to_prototype_id: proto_hex_07_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing_maturity improves"
+      - "purpose becomes clear"
+      - "coordination remains high during action"
+    confidence: "working_assumption"
+    notes: "Held force becomes measured use when disciplined action is again appropriate"
+  - id: tr_shi_l5_to_l6
+    from_prototype_id: proto_hex_07_line_5
+    to_prototype_id: proto_hex_07_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "success tempts expansion"
+      - "governance falls behind force"
+      - "boundaries of mandate weaken"
+    confidence: "working_assumption"
+    notes: "Measured force becomes overreach when power continues past its proper task"
+  - id: tr_bi_l1_to_l2
+    from_prototype_id: proto_hex_08_line_1
+    to_prototype_id: proto_hex_08_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust deepens"
+      - "the center proves reliable"
+      - "coordination improves"
+    confidence: "working_assumption"
+    notes: "Initial joining becomes centered belonging when early trust finds a stable center"
+  - id: tr_bi_l2_to_l3
+    from_prototype_id: proto_hex_08_line_2
+    to_prototype_id: proto_hex_08_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discernment declines"
+      - "attachment shifts toward poor fit"
+      - "stability weakens"
+    confidence: "working_assumption"
+    notes: "Stable belonging becomes misalliance when closeness attaches to the wrong basis"
+  - id: tr_bi_l3_to_l4
+    from_prototype_id: proto_hex_08_line_3
+    to_prototype_id: proto_hex_08_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "harmful attachment loosens"
+      - "outer respect replaces inner entanglement"
+      - "risk exposure decreases"
+    confidence: "working_assumption"
+    notes: "Misallied closeness becomes outer allegiance when relation is corrected to a safer distance"
+  - id: tr_bi_l4_to_l5
+    from_prototype_id: proto_hex_08_line_4
+    to_prototype_id: proto_hex_08_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the center becomes generous and trustworthy"
+      - "coordination improves"
+      - "belonging internalizes"
+    confidence: "working_assumption"
+    notes: "Outer allegiance becomes open-hearted cohesion when the center can gather willingly"
+  - id: tr_bi_l5_to_l6
+    from_prototype_id: proto_hex_08_line_5
+    to_prototype_id: proto_hex_08_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "joining occurs too late"
+      - "the center weakens or the moment passes"
+      - "stability declines"
+    confidence: "working_assumption"
+    notes: "Strong cohesion degrades into belated joining when belonging loses timing and center"
+  - id: tr_xiaochu_l1_to_l2
+    from_prototype_id: proto_hex_09_line_1
+    to_prototype_id: proto_hex_09_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination improves"
+      - "restraint is accepted rather than resisted"
+      - "small gains begin to hold"
+    confidence: "working_assumption"
+    notes: "Initial restraint becomes shared restraint when small limits gain cooperative support"
+  - id: tr_xiaochu_l2_to_l3
+    from_prototype_id: proto_hex_09_line_2
+    to_prototype_id: proto_hex_09_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "pressure from holding increases"
+      - "coordination weakens"
+      - "constraint feels imposed rather than integrated"
+    confidence: "working_assumption"
+    notes: "Cooperative holding turns into friction when restraint generates stress"
+  - id: tr_xiaochu_l3_to_l4
+    from_prototype_id: proto_hex_09_line_3
+    to_prototype_id: proto_hex_09_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "careful protection replaces argument"
+      - "stability improves"
+      - "risk exposure falls"
+    confidence: "working_assumption"
+    notes: "Friction of holding becomes careful protection when restraint grows more skillful"
+  - id: tr_xiaochu_l4_to_l5
+    from_prototype_id: proto_hex_09_line_4
+    to_prototype_id: proto_hex_09_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resource_mobilization improves"
+      - "a trustworthy center emerges"
+      - "small gains are retained consistently"
+    confidence: "working_assumption"
+    notes: "Careful protection matures into centered accumulation when modest gains gather around a stable center"
+  - id: tr_xiaochu_l5_to_l6
+    from_prototype_id: proto_hex_09_line_5
+    to_prototype_id: proto_hex_09_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "holding continues past its useful window"
+      - "constraint_pressure rises"
+      - "release is delayed despite ripeness"
+    confidence: "working_assumption"
+    notes: "Steady accumulation becomes saturated restraint when preservation hardens into blockage"
+  - id: tr_lu_l1_to_l2
+    from_prototype_id: proto_hex_10_line_1
+    to_prototype_id: proto_hex_10_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "consistency improves"
+      - "stability improves"
+      - "attention to proper step remains high"
+    confidence: "working_assumption"
+    notes: "Plain treading becomes a steady path when careful conduct sustains itself"
+  - id: tr_lu_l2_to_l3
+    from_prototype_id: proto_hex_10_line_2
+    to_prototype_id: proto_hex_10_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "confidence rises too quickly"
+      - "risk is underestimated"
+      - "governance_capacity remains weak"
+    confidence: "working_assumption"
+    notes: "Steady path becomes unsafe presumption when partial stability is mistaken for safety"
+  - id: tr_lu_l3_to_l4
+    from_prototype_id: proto_hex_10_line_3
+    to_prototype_id: proto_hex_10_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "caution is restored"
+      - "attention becomes active"
+      - "movement slows to a safe pace"
+    confidence: "working_assumption"
+    notes: "Overconfident treading becomes alert passage when the state re-enters danger with vigilance"
+  - id: tr_lu_l4_to_l5
+    from_prototype_id: proto_hex_10_line_4
+    to_prototype_id: proto_hex_10_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "responsibility rises"
+      - "authority becomes more visible"
+      - "caution remains intact"
+    confidence: "working_assumption"
+    notes: "Alert passage becomes commanding caution when a higher position must still tread carefully"
+  - id: tr_lu_l5_to_l6
+    from_prototype_id: proto_hex_10_line_5
+    to_prototype_id: proto_hex_10_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the sequence reaches completion"
+      - "outcomes become visible"
+      - "judgment shifts from action to review"
+    confidence: "working_assumption"
+    notes: "Commanding caution culminates in completed review when the path can finally be assessed"
+  - id: tr_tai_l1_to_l2
+    from_prototype_id: proto_hex_11_line_1
+    to_prototype_id: proto_hex_11_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "exchange widens"
+      - "coordination improves"
+      - "difference is included without rupture"
+    confidence: "working_assumption"
+    notes: "Shared emergence grows into broad inclusion when harmony expands without losing direction"
+  - id: tr_tai_l2_to_l3
+    from_prototype_id: proto_hex_11_line_2
+    to_prototype_id: proto_hex_11_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field reaches visible flourishing"
+      - "cyclical fluctuation becomes noticeable"
+      - "vigilance softens slightly"
+    confidence: "working_assumption"
+    notes: "Broad inclusion becomes cyclic awareness when prosperity starts showing its internal rhythms"
+  - id: tr_tai_l3_to_l4
+    from_prototype_id: proto_hex_11_line_3
+    to_prototype_id: proto_hex_11_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "exchange stabilizes again"
+      - "friction remains low"
+      - "high and low reconnect naturally"
+    confidence: "working_assumption"
+    notes: "Fluctuating prosperity becomes unforced exchange when flow is re-stabilized without force"
+  - id: tr_tai_l4_to_l5
+    from_prototype_id: proto_hex_11_line_4
+    to_prototype_id: proto_hex_11_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "principled center strengthens"
+      - "coordination becomes highly reliable"
+      - "stability remains high"
+    confidence: "working_assumption"
+    notes: "Easeful exchange becomes noble union when harmony is anchored by a principled center"
+  - id: tr_tai_l5_to_l6
+    from_prototype_id: proto_hex_11_line_5
+    to_prototype_id: proto_hex_11_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "vigilance declines"
+      - "boundary care weakens"
+      - "prosperity is assumed to be self-maintaining"
+    confidence: "working_assumption"
+    notes: "Stable harmony turns toward danger when flourishing neglects its own limits"
+  - id: tr_pi_l1_to_l2
+    from_prototype_id: proto_hex_12_line_1
+    to_prototype_id: proto_hex_12_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "survival adaptation increases"
+      - "exchange remains blocked"
+      - "the field narrows rather than reconnects"
+    confidence: "working_assumption"
+    notes: "Early separation becomes small compliance when stagnation settles into low-level adaptation"
+  - id: tr_pi_l2_to_l3
+    from_prototype_id: proto_hex_12_line_2
+    to_prototype_id: proto_hex_12_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "blockage becomes more visible"
+      - "hidden misfit is exposed"
+      - "stability declines"
+    confidence: "working_assumption"
+    notes: "Narrow survival becomes shame in blockage when stagnation reveals its own distortion"
+  - id: tr_pi_l3_to_l4
+    from_prototype_id: proto_hex_12_line_3
+    to_prototype_id: proto_hex_12_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a corrective authority appears"
+      - "agency rises"
+      - "reopening effort becomes possible"
+    confidence: "working_assumption"
+    notes: "Exposed stagnation turns into reconnection effort when a higher center begins to act"
+  - id: tr_pi_l4_to_l5
+    from_prototype_id: proto_hex_12_line_4
+    to_prototype_id: proto_hex_12_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "integrity is preserved"
+      - "stability improves"
+      - "the field cannot yet fully reopen"
+    confidence: "working_assumption"
+    notes: "Reconnection effort settles into held center when blockage persists but inner order is maintained"
+  - id: tr_pi_l5_to_l6
+    from_prototype_id: proto_hex_12_line_5
+    to_prototype_id: proto_hex_12_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing reaches a turning point"
+      - "constraint_pressure declines"
+      - "exchange starts to reopen"
+    confidence: "working_assumption"
+    notes: "Preserved integrity becomes loosening blockage when stagnation finally approaches release"
+  - id: tr_tongren_l1_to_l2
+    from_prototype_id: proto_hex_13_line_1
+    to_prototype_id: proto_hex_13_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "openness narrows"
+      - "affinity turns selective"
+      - "common purpose weakens"
+    confidence: "working_assumption"
+    notes: "Simple fellowship narrows into clique when openness loses shared principle"
+  - id: tr_tongren_l2_to_l3
+    from_prototype_id: proto_hex_13_line_2
+    to_prototype_id: proto_hex_13_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "suspicion rises"
+      - "defensiveness increases"
+      - "the field begins framing others as threats"
+    confidence: "working_assumption"
+    notes: "Narrow clique becomes armed suspicion when exclusion hardens into hostility"
+  - id: tr_tongren_l3_to_l4
+    from_prototype_id: proto_hex_13_line_3
+    to_prototype_id: proto_hex_13_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "momentum slows"
+      - "perspective widens"
+      - "the field pauses instead of attacking"
+    confidence: "working_assumption"
+    notes: "Hostile fellowship pauses at the wall when threat energy is restrained before action"
+  - id: tr_tongren_l4_to_l5
+    from_prototype_id: proto_hex_13_line_4
+    to_prototype_id: proto_hex_13_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "common purpose re-forms"
+      - "trust is rebuilt through trial"
+      - "coordination improves"
+    confidence: "working_assumption"
+    notes: "Paused contact becomes tested union when real fellowship is rebuilt through difficulty"
+  - id: tr_tongren_l5_to_l6
+    from_prototype_id: proto_hex_13_line_5
+    to_prototype_id: proto_hex_13_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "union remains open but cannot centralize further"
+      - "movement toward depth slows"
+      - "belonging stays peripheral"
+    confidence: "working_assumption"
+    notes: "Hard-won fellowship relaxes into outskirts connection when union remains valid but not fully central"
+  - id: tr_dayou_l1_to_l2
+    from_prototype_id: proto_hex_14_line_1
+    to_prototype_id: proto_hex_14_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resource load increases"
+      - "handling systems improve"
+      - "greed does not dominate"
+    confidence: "working_assumption"
+    notes: "Clean abundance becomes carrying abundance when resources become substantial enough to manage actively"
+  - id: tr_dayou_l2_to_l3
+    from_prototype_id: proto_hex_14_line_2
+    to_prototype_id: proto_hex_14_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "abundance is directed toward a larger order"
+      - "coordination improves"
+      - "legitimacy matters more than display"
+    confidence: "working_assumption"
+    notes: "Managed abundance matures when it is offered upward rather than hoarded privately"
+  - id: tr_dayou_l3_to_l4
+    from_prototype_id: proto_hex_14_line_3
+    to_prototype_id: proto_hex_14_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "comparison pressure declines"
+      - "visibility rises without rivalry"
+      - "humility remains present"
+    confidence: "working_assumption"
+    notes: "Principled abundance becomes safer when it no longer needs rivalry or display"
+  - id: tr_dayou_l4_to_l5
+    from_prototype_id: proto_hex_14_line_4
+    to_prototype_id: proto_hex_14_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trustworthiness strengthens"
+      - "coordination improves"
+      - "resources remain visibly well-held"
+    confidence: "working_assumption"
+    notes: "Modest abundance becomes radiant when it is openly trustworthy and well-governed"
+  - id: tr_dayou_l5_to_l6
+    from_prototype_id: proto_hex_14_line_5
+    to_prototype_id: proto_hex_14_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "alignment with larger order deepens"
+      - "stability remains very high"
+      - "self-serving motives continue to decline"
+    confidence: "working_assumption"
+    notes: "Radiant abundance becomes protected abundance when prosperity aligns beyond the private self"
+  - id: tr_qianmodesty_l1_to_l2
+    from_prototype_id: proto_hex_15_line_1
+    to_prototype_id: proto_hex_15_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "humility becomes visible"
+      - "stability improves"
+      - "resentment does not accumulate underneath"
+    confidence: "working_assumption"
+    notes: "Inner lowliness becomes visible modesty when humility holds consistently in relation"
+  - id: tr_qianmodesty_l2_to_l3
+    from_prototype_id: proto_hex_15_line_2
+    to_prototype_id: proto_hex_15_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "capability increases"
+      - "resource use becomes more effective"
+      - "self-display remains low"
+    confidence: "working_assumption"
+    notes: "Legible modesty becomes effective humility when real accomplishment arrives without boasting"
+  - id: tr_qianmodesty_l3_to_l4
+    from_prototype_id: proto_hex_15_line_3
+    to_prototype_id: proto_hex_15_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination widens"
+      - "the field becomes more balanced"
+      - "redistribution does not become coercive"
+    confidence: "working_assumption"
+    notes: "Effective humility becomes distributed balance when modesty begins leveling the field"
+  - id: tr_qianmodesty_l4_to_l5
+    from_prototype_id: proto_hex_15_line_4
+    to_prototype_id: proto_hex_15_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "authority grows"
+      - "stability remains high"
+      - "humility is preserved under visibility"
+    confidence: "working_assumption"
+    notes: "Balanced modesty becomes authoritative modesty when higher position does not abandon restraint"
+  - id: tr_qianmodesty_l5_to_l6
+    from_prototype_id: proto_hex_15_line_5
+    to_prototype_id: proto_hex_15_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "correction becomes necessary"
+      - "agency rises"
+      - "humility remains tied to rebalancing rather than self-assertion"
+    confidence: "working_assumption"
+    notes: "Humble authority becomes active leveling when modesty must act to restore balance"
+  - id: tr_yu_l1_to_l2
+    from_prototype_id: proto_hex_16_line_1
+    to_prototype_id: proto_hex_16_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "energy is grounded"
+      - "responsiveness replaces impulsive excitement"
+    confidence: "working_assumption"
+    notes: "Premature excitement becomes settled responsiveness when energy finds footing"
+  - id: tr_yu_l2_to_l3
+    from_prototype_id: proto_hex_16_line_2
+    to_prototype_id: proto_hex_16_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "motivation becomes externally dependent"
+      - "visibility rises"
+      - "inner center weakens"
+    confidence: "working_assumption"
+    notes: "Grounded enthusiasm becomes upward fixation when energy seeks constant outside cueing"
+  - id: tr_yu_l3_to_l4
+    from_prototype_id: proto_hex_16_line_3
+    to_prototype_id: proto_hex_16_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "influence broadens"
+      - "coordination improves"
+      - "the field channels energy collectively"
+    confidence: "working_assumption"
+    notes: "Dependent enthusiasm becomes magnetic mobilization when energy starts organizing others"
+  - id: tr_yu_l4_to_l5
+    from_prototype_id: proto_hex_16_line_4
+    to_prototype_id: proto_hex_16_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "constraint_pressure rises"
+      - "available channels narrow"
+      - "energy cannot move as freely as before"
+    confidence: "working_assumption"
+    notes: "Collective excitement becomes bound enthusiasm when momentum meets limiting conditions"
+  - id: tr_yu_l5_to_l6
+    from_prototype_id: proto_hex_16_line_5
+    to_prototype_id: proto_hex_16_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "peak energy passes"
+      - "recovery need rises"
+      - "stability continues to fall"
+    confidence: "working_assumption"
+    notes: "Constrained enthusiasm becomes spent exhilaration when the cycle of arousal runs out"
+  - id: tr_sui_l1_to_l2
+    from_prototype_id: proto_hex_17_line_1
+    to_prototype_id: proto_hex_17_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust in direction strengthens"
+      - "coordination improves"
+      - "following remains timely rather than impulsive"
+    confidence: "working_assumption"
+    notes: "Initial following becomes centered responsiveness when adaptation finds a stable reference"
+  - id: tr_sui_l2_to_l3
+    from_prototype_id: proto_hex_17_line_2
+    to_prototype_id: proto_hex_17_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discernment declines"
+      - "attachment shifts toward what is merely attractive"
+      - "stability weakens"
+    confidence: "working_assumption"
+    notes: "Stable responsiveness becomes misdirected attachment when following loses fit"
+  - id: tr_sui_l3_to_l4
+    from_prototype_id: proto_hex_17_line_3
+    to_prototype_id: proto_hex_17_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency rises"
+      - "a chosen direction hardens"
+      - "the field commits to one course"
+    confidence: "working_assumption"
+    notes: "Misfollowing becomes committed pursuit when attachment turns into directional action"
+  - id: tr_sui_l4_to_l5
+    from_prototype_id: proto_hex_17_line_4
+    to_prototype_id: proto_hex_17_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trustworthiness improves"
+      - "coordination improves"
+      - "the course proves sincere and durable"
+    confidence: "working_assumption"
+    notes: "Active pursuit becomes trusted adherence when following proves reliable and true"
+  - id: tr_sui_l5_to_l6
+    from_prototype_id: proto_hex_17_line_5
+    to_prototype_id: proto_hex_17_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "release becomes difficult"
+      - "constraint_pressure rises"
+      - "loyalty persists after fit weakens"
+    confidence: "working_assumption"
+    notes: "Sincere adherence becomes bound following when alignment turns into attachment"
+  - id: tr_gu_l1_to_l2
+    from_prototype_id: proto_hex_18_line_1
+    to_prototype_id: proto_hex_18_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "responsibility is accepted"
+      - "repair effort begins"
+      - "corruption is named clearly"
+    confidence: "working_assumption"
+    notes: "Inherited disorder becomes careful correction when the field starts true repair"
+  - id: tr_gu_l2_to_l3
+    from_prototype_id: proto_hex_18_line_2
+    to_prototype_id: proto_hex_18_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "force of correction rises too quickly"
+      - "patience declines"
+      - "risk exposure increases during repair"
+    confidence: "working_assumption"
+    notes: "Careful repair becomes overcorrection when urgency outruns discernment"
+  - id: tr_gu_l3_to_l4
+    from_prototype_id: proto_hex_18_line_3
+    to_prototype_id: proto_hex_18_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "correction effort collapses"
+      - "avoidance replaces action"
+      - "decay is tolerated again"
+    confidence: "working_assumption"
+    notes: "Excessive correction falls into tolerated decay when reform loses its will"
+  - id: tr_gu_l4_to_l5
+    from_prototype_id: proto_hex_18_line_4
+    to_prototype_id: proto_hex_18_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "responsibility returns"
+      - "timing_maturity improves"
+      - "proportionate repair resumes"
+    confidence: "working_assumption"
+    notes: "Tolerated corruption becomes effective restoration when repair is re-entered correctly"
+  - id: tr_gu_l5_to_l6
+    from_prototype_id: proto_hex_18_line_5
+    to_prototype_id: proto_hex_18_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "integrity requires distance"
+      - "participation in decay is no longer acceptable"
+      - "withdrawal becomes the cleaner path"
+    confidence: "working_assumption"
+    notes: "Successful repair gives way to principled withdrawal when the field can no longer be carried from within"
+  - id: tr_lin_l1_to_l2
+    from_prototype_id: proto_hex_19_line_1
+    to_prototype_id: proto_hex_19_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "response from the other side improves"
+      - "timing remains favorable"
+      - "nearness proves useful"
+    confidence: "working_assumption"
+    notes: "Reciprocal approach becomes beneficial nearness when contact deepens constructively"
+  - id: tr_lin_l2_to_l3
+    from_prototype_id: proto_hex_19_line_2
+    to_prototype_id: proto_hex_19_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discipline softens"
+      - "pleasantness begins outweighing truth"
+      - "governance_capacity weakens"
+    confidence: "working_assumption"
+    notes: "Useful approach becomes sweet approach when nearness turns indulgent"
+  - id: tr_lin_l3_to_l4
+    from_prototype_id: proto_hex_19_line_3
+    to_prototype_id: proto_hex_19_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "sincerity returns"
+      - "the field commits more fully"
+      - "coordination improves"
+    confidence: "working_assumption"
+    notes: "Indulgent approach becomes wholehearted when relation regains authenticity"
+  - id: tr_lin_l4_to_l5
+    from_prototype_id: proto_hex_19_line_4
+    to_prototype_id: proto_hex_19_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "governance_capacity improves"
+      - "care becomes more proportionate"
+      - "oversight remains benevolent"
+    confidence: "working_assumption"
+    notes: "Wholehearted nearness becomes wise oversight when approach matures into guidance"
+  - id: tr_lin_l5_to_l6
+    from_prototype_id: proto_hex_19_line_5
+    to_prototype_id: proto_hex_19_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a high position lowers itself further"
+      - "generosity widens"
+      - "stability remains strong during descent"
+    confidence: "working_assumption"
+    notes: "Wise oversight becomes generous descending when higher care meets lower need without pride"
+  - id: tr_guan_l1_to_l2
+    from_prototype_id: proto_hex_20_line_1
+    to_prototype_id: proto_hex_20_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility of the field improves"
+      - "curiosity deepens"
+      - "the observing aperture widens slightly"
+    confidence: "working_assumption"
+    notes: "Childlike seeing becomes partial peering when observation gains a little more depth"
+  - id: tr_guan_l2_to_l3
+    from_prototype_id: proto_hex_20_line_2
+    to_prototype_id: proto_hex_20_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "observation turns inward"
+      - "self-evaluation becomes active"
+      - "coordination between seeing and conduct improves"
+    confidence: "working_assumption"
+    notes: "Narrow observation becomes self-reflective watching when what is seen is applied inwardly"
+  - id: tr_guan_l3_to_l4
+    from_prototype_id: proto_hex_20_line_3
+    to_prototype_id: proto_hex_20_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "perspective broadens beyond the self"
+      - "social field becomes more visible"
+      - "stability of observation improves"
+    confidence: "working_assumption"
+    notes: "Self-reflection becomes field observation when perspective widens to the larger environment"
+  - id: tr_guan_l4_to_l5
+    from_prototype_id: proto_hex_20_line_4
+    to_prototype_id: proto_hex_20_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "governance relevance increases"
+      - "vision becomes more reliable"
+      - "others can orient through what is seen"
+    confidence: "working_assumption"
+    notes: "Field observation becomes contemplative governance when seeing becomes genuinely guiding"
+  - id: tr_guan_l5_to_l6
+    from_prototype_id: proto_hex_20_line_5
+    to_prototype_id: proto_hex_20_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the cycle approaches completion"
+      - "the whole path becomes reviewable"
+      - "motion yields to mature contemplation"
+    confidence: "working_assumption"
+    notes: "Guiding vision becomes life reviewed when the observing position can survey the full course"
+  - id: tr_shike_l1_to_l2
+    from_prototype_id: proto_hex_21_line_1
+    to_prototype_id: proto_hex_21_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the obstruction proves tougher than expected"
+      - "agency rises"
+      - "more forceful intervention becomes necessary"
+    confidence: "working_assumption"
+    notes: "Minor correction becomes painful bite when resistance intensifies"
+  - id: tr_shike_l2_to_l3
+    from_prototype_id: proto_hex_21_line_2
+    to_prototype_id: proto_hex_21_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "contamination within the blockage is discovered"
+      - "risk exposure increases"
+      - "intervention becomes morally or structurally messier"
+    confidence: "working_assumption"
+    notes: "Forceful correction becomes poisoned obstruction when the obstacle itself is corrupting"
+  - id: tr_shike_l3_to_l4
+    from_prototype_id: proto_hex_21_line_3
+    to_prototype_id: proto_hex_21_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discipline improves"
+      - "effort becomes steadier"
+      - "the field commits to harder, longer breakthrough work"
+    confidence: "working_assumption"
+    notes: "Toxic entanglement becomes hard material when the correction effort stabilizes into endurance"
+  - id: tr_shike_l4_to_l5
+    from_prototype_id: proto_hex_21_line_4
+    to_prototype_id: proto_hex_21_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "balance improves"
+      - "judgment becomes clearer"
+      - "order can be restored through measure rather than raw force"
+    confidence: "working_assumption"
+    notes: "Hard breakthrough becomes measured judgment when enforcement gains legitimacy and balance"
+  - id: tr_shike_l5_to_l6
+    from_prototype_id: proto_hex_21_line_5
+    to_prototype_id: proto_hex_21_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "punishment continues beyond what is just"
+      - "risk exposure rises again"
+      - "enforcement begins serving itself"
+    confidence: "working_assumption"
+    notes: "Balanced judgment becomes punitive excess when correction overshoots into harm"
+  - id: tr_ben_l1_to_l2
+    from_prototype_id: proto_hex_22_line_1
+    to_prototype_id: proto_hex_22_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "form becomes more deliberate"
+      - "presentation gains coherence"
+      - "substance remains primary"
+    confidence: "working_assumption"
+    notes: "Simple adornment becomes ordered grooming when form is shaped more carefully"
+  - id: tr_ben_l2_to_l3
+    from_prototype_id: proto_hex_22_line_2
+    to_prototype_id: proto_hex_22_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility rises sharply"
+      - "display begins outrunning substance"
+      - "resource use shifts toward surface"
+    confidence: "working_assumption"
+    notes: "Coherent adornment becomes luxurious shine when polish starts dominating value"
+  - id: tr_ben_l3_to_l4
+    from_prototype_id: proto_hex_22_line_3
+    to_prototype_id: proto_hex_22_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "simplification begins"
+      - "surface excess is reduced"
+      - "clarity is preferred over display"
+    confidence: "working_assumption"
+    notes: "Showy adornment becomes plain white clarity when the field strips back to honesty"
+  - id: tr_ben_l4_to_l5
+    from_prototype_id: proto_hex_22_line_4
+    to_prototype_id: proto_hex_22_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a small but fitting measure of beauty returns"
+      - "stability remains high"
+      - "form and function are kept proportional"
+    confidence: "working_assumption"
+    notes: "Plain clarity becomes fitting beauty when form is reintroduced in right proportion"
+  - id: tr_ben_l5_to_l6
+    from_prototype_id: proto_hex_22_line_5
+    to_prototype_id: proto_hex_22_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "ornament is no longer needed"
+      - "timing_maturity is high"
+      - "integrity can stand plainly"
+    confidence: "working_assumption"
+    notes: "Well-fitted adornment resolves into mature plainness when form has completed its work"
+  - id: tr_bo_l1_to_l2
+    from_prototype_id: proto_hex_23_line_1
+    to_prototype_id: proto_hex_23_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "erosion moves inward"
+      - "stability declines further"
+      - "foundational repair does not arrive"
+    confidence: "working_assumption"
+    notes: "Base erosion becomes closer weakening when stripping continues unchecked"
+  - id: tr_bo_l2_to_l3
+    from_prototype_id: proto_hex_23_line_2
+    to_prototype_id: proto_hex_23_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a part of the field separates itself from collapse"
+      - "agency rises slightly"
+      - "full identification with the decaying structure weakens"
+    confidence: "working_assumption"
+    notes: "Deepening erosion meets separation when a fragment tries to preserve itself from the collapse"
+  - id: tr_bo_l3_to_l4
+    from_prototype_id: proto_hex_23_line_3
+    to_prototype_id: proto_hex_23_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "exposure increases"
+      - "remaining coverings are stripped"
+      - "vulnerability becomes direct"
+    confidence: "working_assumption"
+    notes: "Partial separation becomes exposed stripping when erosion reaches the surface"
+  - id: tr_bo_l4_to_l5
+    from_prototype_id: proto_hex_23_line_4
+    to_prototype_id: proto_hex_23_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a remnant of order survives"
+      - "coordination slightly improves"
+      - "the field preserves at least one coherent thread"
+    confidence: "working_assumption"
+    notes: "Raw stripping yields a remaining thread of order when collapse does not consume everything"
+  - id: tr_bo_l5_to_l6
+    from_prototype_id: proto_hex_23_line_5
+    to_prototype_id: proto_hex_23_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "essentials are preserved"
+      - "timing reaches the end of the stripping cycle"
+      - "the remnant seed is not consumed"
+    confidence: "working_assumption"
+    notes: "Minimal surviving order becomes preserved essence when the last valuable core remains untouched"
+  - id: tr_fu_l1_to_l2
+    from_prototype_id: proto_hex_24_line_1
+    to_prototype_id: proto_hex_24_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "support for return increases"
+      - "stability improves"
+      - "the reversal remains timely"
+    confidence: "working_assumption"
+    notes: "First return becomes good return when restoration gains shared support"
+  - id: tr_fu_l2_to_l3
+    from_prototype_id: proto_hex_24_line_2
+    to_prototype_id: proto_hex_24_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field wavers repeatedly"
+      - "stability weakens"
+      - "return must be made more than once"
+    confidence: "working_assumption"
+    notes: "Supported recovery becomes repeated return when correction is sincere but unstable"
+  - id: tr_fu_l3_to_l4
+    from_prototype_id: proto_hex_24_line_3
+    to_prototype_id: proto_hex_24_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "clarity strengthens"
+      - "the state turns back on its own"
+      - "dependence on group movement declines"
+    confidence: "working_assumption"
+    notes: "Wavering return becomes independent turning when the field can reverse by itself"
+  - id: tr_fu_l4_to_l5
+    from_prototype_id: proto_hex_24_line_4
+    to_prototype_id: proto_hex_24_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the return broadens"
+      - "coordination improves"
+      - "restoration becomes more life-giving than merely corrective"
+    confidence: "working_assumption"
+    notes: "Solitary correction becomes generous restoration when return renews the wider field"
+  - id: tr_fu_l5_to_l6
+    from_prototype_id: proto_hex_24_line_5
+    to_prototype_id: proto_hex_24_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the turning point is ignored"
+      - "timing is missed"
+      - "recovery is delayed too long"
+    confidence: "working_assumption"
+    notes: "Renewing return becomes missed return when the proper moment for reversal passes unused"
+  - id: tr_wuwang_l1_to_l2
+    from_prototype_id: proto_hex_25_line_1
+    to_prototype_id: proto_hex_25_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "directness remains clean"
+      - "coordination with conditions improves"
+      - "contrivance does not enter"
+    confidence: "working_assumption"
+    notes: "Unforced start becomes aligned effort when innocence meets the field correctly"
+  - id: tr_wuwang_l2_to_l3
+    from_prototype_id: proto_hex_25_line_2
+    to_prototype_id: proto_hex_25_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "external trouble arrives unexpectedly"
+      - "risk exposure rises without clear fault"
+      - "stability weakens"
+    confidence: "working_assumption"
+    notes: "Aligned effort becomes undeserved entanglement when innocence meets complication"
+  - id: tr_wuwang_l3_to_l4
+    from_prototype_id: proto_hex_25_line_3
+    to_prototype_id: proto_hex_25_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the state refuses false reaction"
+      - "stability recovers"
+      - "sincerity is preserved under pressure"
+    confidence: "working_assumption"
+    notes: "Troubled innocence becomes steady correctness when the field stays true without contrivance"
+  - id: tr_wuwang_l4_to_l5
+    from_prototype_id: proto_hex_25_line_4
+    to_prototype_id: proto_hex_25_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "interference reduces"
+      - "self-correcting processes strengthen"
+      - "constraint_pressure drops"
+    confidence: "working_assumption"
+    notes: "Held sincerity becomes self-healing truth when the field restores itself naturally"
+  - id: tr_wuwang_l5_to_l6
+    from_prototype_id: proto_hex_25_line_5
+    to_prototype_id: proto_hex_25_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discernment weakens"
+      - "timing is misread"
+      - "innocence is applied rigidly rather than fittingly"
+    confidence: "working_assumption"
+    notes: "Natural correctness becomes problematic when innocence ignores circumstance"
+  - id: tr_dachu_l1_to_l2
+    from_prototype_id: proto_hex_26_line_1
+    to_prototype_id: proto_hex_26_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resource_mobilization improves"
+      - "restraint strengthens"
+      - "the field accepts a longer holding period"
+    confidence: "working_assumption"
+    notes: "Early stored force becomes carried halt when restraint grows more substantial"
+  - id: tr_dachu_l2_to_l3
+    from_prototype_id: proto_hex_26_line_2
+    to_prototype_id: proto_hex_26_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discipline improves"
+      - "training replaces mere suppression"
+      - "coordination increases"
+    confidence: "working_assumption"
+    notes: "Substantial holding becomes trained readiness when force is cultivated skillfully"
+  - id: tr_dachu_l3_to_l4
+    from_prototype_id: proto_hex_26_line_3
+    to_prototype_id: proto_hex_26_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "foresight increases"
+      - "the field prevents premature release"
+      - "governance_capacity improves"
+    confidence: "working_assumption"
+    notes: "Disciplined power becomes preventive restraint when the field learns to govern potential wisely"
+  - id: tr_dachu_l4_to_l5
+    from_prototype_id: proto_hex_26_line_4
+    to_prototype_id: proto_hex_26_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "power is fully governed"
+      - "stability remains high"
+      - "resource use becomes more ordered"
+    confidence: "working_assumption"
+    notes: "Preventive holding becomes tamed strength when large power is mastered without damage"
+  - id: tr_dachu_l5_to_l6
+    from_prototype_id: proto_hex_26_line_5
+    to_prototype_id: proto_hex_26_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing_maturity becomes high"
+      - "a proper outlet appears"
+      - "stored force is released through right form"
+    confidence: "working_assumption"
+    notes: "Tamed power becomes opened passage when the time for right release finally arrives"
+  - id: tr_yi_nourishing_l1_to_l2
+    from_prototype_id: proto_hex_27_line_1
+    to_prototype_id: proto_hex_27_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the state actively seeks sustenance"
+      - "agency rises slightly"
+      - "attention turns from appetite to source"
+    confidence: "working_assumption"
+    notes: "Misplaced appetite becomes seeking nourishment when the field starts looking more consciously for support"
+  - id: tr_yi_nourishing_l2_to_l3
+    from_prototype_id: proto_hex_27_line_2
+    to_prototype_id: proto_hex_27_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "intake quality declines"
+      - "stability weakens"
+      - "the source of nourishment becomes compromised"
+    confidence: "working_assumption"
+    notes: "Active feeding becomes corrupted intake when nourishment itself turns harmful"
+  - id: tr_yi_nourishing_l3_to_l4
+    from_prototype_id: proto_hex_27_line_3
+    to_prototype_id: proto_hex_27_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "selectivity improves"
+      - "contamination is recognized"
+      - "the field adopts more careful intake"
+    confidence: "working_assumption"
+    notes: "Bad nourishment becomes watchful feeding when the field begins to guard what enters"
+  - id: tr_yi_nourishing_l4_to_l5
+    from_prototype_id: proto_hex_27_line_4
+    to_prototype_id: proto_hex_27_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "governance of nourishment improves"
+      - "stability increases"
+      - "sources and methods become cleaner"
+    confidence: "working_assumption"
+    notes: "Selective feeding becomes principled sustenance when intake is governed well"
+  - id: tr_yi_nourishing_l5_to_l6
+    from_prototype_id: proto_hex_27_line_5
+    to_prototype_id: proto_hex_27_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "responsibility shifts to sustaining sources"
+      - "coordination broadens"
+      - "the field matures from consumption to stewardship"
+    confidence: "working_assumption"
+    notes: "Healthy nourishment becomes source-level care when the field guards what feeds life itself"
+  - id: tr_daguo_l1_to_l2
+    from_prototype_id: proto_hex_28_line_1
+    to_prototype_id: proto_hex_28_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "support is found"
+      - "resource_mobilization improves"
+      - "the overload remains temporarily manageable"
+    confidence: "working_assumption"
+    notes: "Cushioning the burden becomes unusual support when the field finds a viable but nonstandard way to carry excess"
+  - id: tr_daguo_l2_to_l3
+    from_prototype_id: proto_hex_28_line_2
+    to_prototype_id: proto_hex_28_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "load continues to increase"
+      - "stability declines sharply"
+      - "the support no longer offsets structural stress"
+    confidence: "working_assumption"
+    notes: "Unusual support becomes visible bending when overload exceeds the structure's capacity"
+  - id: tr_daguo_l3_to_l4
+    from_prototype_id: proto_hex_28_line_3
+    to_prototype_id: proto_hex_28_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "temporary support reappears"
+      - "collapse is delayed"
+      - "the field crosses with help rather than strength alone"
+    confidence: "working_assumption"
+    notes: "Severe bending becomes supported crossing when the field is carried through excess provisionally"
+  - id: tr_daguo_l4_to_l5
+    from_prototype_id: proto_hex_28_line_4
+    to_prototype_id: proto_hex_28_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "surface flourish remains despite weak structure"
+      - "visibility rises"
+      - "true load-bearing capacity does not recover"
+    confidence: "working_assumption"
+    notes: "Supported passage becomes fading bloom when appearance outlasts structural fitness"
+  - id: tr_daguo_l5_to_l6
+    from_prototype_id: proto_hex_28_line_5
+    to_prototype_id: proto_hex_28_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "constraint_pressure spikes"
+      - "support fails"
+      - "overload fully overwhelms the field"
+    confidence: "working_assumption"
+    notes: "Late flourish becomes submerged overreach when excess can no longer be carried at all"
+  - id: tr_kan_l1_to_l2
+    from_prototype_id: proto_hex_29_line_1
+    to_prototype_id: proto_hex_29_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "small footing is found"
+      - "stability improves slightly"
+      - "panic does not dominate"
+    confidence: "working_assumption"
+    notes: "Falling into depth becomes danger with modest hold when the field finds narrow footing"
+  - id: tr_kan_l2_to_l3
+    from_prototype_id: proto_hex_29_line_2
+    to_prototype_id: proto_hex_29_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "danger repeats"
+      - "escape routes narrow"
+      - "constraint_pressure rises"
+    confidence: "working_assumption"
+    notes: "Modest footing becomes depth within depth when danger renews itself"
+  - id: tr_kan_l3_to_l4
+    from_prototype_id: proto_hex_29_line_3
+    to_prototype_id: proto_hex_29_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field stops struggling dramatically"
+      - "simplicity returns"
+      - "coordination improves slightly under risk"
+    confidence: "working_assumption"
+    notes: "Repeated danger becomes simple offering in danger when the field abandons excess reaction"
+  - id: tr_kan_l4_to_l5
+    from_prototype_id: proto_hex_29_line_4
+    to_prototype_id: proto_hex_29_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "containment improves"
+      - "stability rises"
+      - "the danger remains real but does not overflow"
+    confidence: "working_assumption"
+    notes: "Plain sincerity in danger becomes contained depth when the field holds without collapse"
+  - id: tr_kan_l5_to_l6
+    from_prototype_id: proto_hex_29_line_5
+    to_prototype_id: proto_hex_29_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the danger persists too long"
+      - "release routes close"
+      - "constraint_pressure becomes extreme"
+    confidence: "working_assumption"
+    notes: "Contained danger becomes bound in the abyss when repeated depth turns into entrapment"
+  - id: tr_li_l1_to_l2
+    from_prototype_id: proto_hex_30_line_1
+    to_prototype_id: proto_hex_30_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "attachment stabilizes"
+      - "visibility improves"
+      - "clarity remains balanced rather than harsh"
+    confidence: "working_assumption"
+    notes: "Careful attachment becomes yellow clarity when illumination finds a centered tone"
+  - id: tr_li_l2_to_l3
+    from_prototype_id: proto_hex_30_line_2
+    to_prototype_id: proto_hex_30_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "brightness begins to wane"
+      - "timing advances"
+      - "the field recognizes impermanence"
+    confidence: "working_assumption"
+    notes: "Balanced light becomes declining light when clarity enters its descending cycle"
+  - id: tr_li_l3_to_l4
+    from_prototype_id: proto_hex_30_line_3
+    to_prototype_id: proto_hex_30_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility spikes suddenly"
+      - "stability drops"
+      - "illumination intensifies beyond measure"
+    confidence: "working_assumption"
+    notes: "Waning light becomes sudden blaze when clarity flares too intensely"
+  - id: tr_li_l4_to_l5
+    from_prototype_id: proto_hex_30_line_4
+    to_prototype_id: proto_hex_30_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "intensity softens"
+      - "truth is felt rather than only exposed"
+      - "stability recovers"
+    confidence: "working_assumption"
+    notes: "Blazing clarity becomes weeping clarity when light turns human and sorrowing"
+  - id: tr_li_l5_to_l6
+    from_prototype_id: proto_hex_30_line_5
+    to_prototype_id: proto_hex_30_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field must act on what is seen"
+      - "agency rises"
+      - "illumination becomes publicly consequential"
+    confidence: "working_assumption"
+    notes: "Lucid grief becomes radiant correction when truth must be enacted visibly"
+  - id: tr_xian_l1_to_l2
+    from_prototype_id: proto_hex_31_line_1
+    to_prototype_id: proto_hex_31_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "attraction strengthens gradually"
+      - "timing remains measured"
+      - "contact stays subtle"
+    confidence: "working_assumption"
+    notes: "Tiny stirring becomes stronger pull when influence deepens without rushing"
+  - id: tr_xian_l2_to_l3
+    from_prototype_id: proto_hex_31_line_2
+    to_prototype_id: proto_hex_31_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency rises too quickly"
+      - "movement leads feeling"
+      - "reciprocity remains incomplete"
+    confidence: "working_assumption"
+    notes: "Measured attraction becomes thigh-driven pursuit when impulse outruns mutuality"
+  - id: tr_xian_l3_to_l4
+    from_prototype_id: proto_hex_31_line_3
+    to_prototype_id: proto_hex_31_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "inner openness increases"
+      - "outward forcing decreases"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Impulsive pursuit becomes heart-mind openness when the field turns inward and sincere"
+  - id: tr_xian_l4_to_l5
+    from_prototype_id: proto_hex_31_line_4
+    to_prototype_id: proto_hex_31_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field preserves center"
+      - "response remains measured"
+      - "backbone is retained within influence"
+    confidence: "working_assumption"
+    notes: "Open receptivity becomes backbone restraint when influence stays real but not dissolving"
+  - id: tr_xian_l5_to_l6
+    from_prototype_id: proto_hex_31_line_5
+    to_prototype_id: proto_hex_31_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "influence rises to the level of speech"
+      - "surface expression outpaces depth"
+      - "visibility increases"
+    confidence: "working_assumption"
+    notes: "Contained attraction becomes surface seduction when influence shifts into charm and words"
+  - id: tr_heng_l1_to_l2
+    from_prototype_id: proto_hex_32_line_1
+    to_prototype_id: proto_hex_32_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "the field accepts smaller, more realistic duration"
+      - "timing_maturity rises"
+    confidence: "working_assumption"
+    notes: "Premature constancy becomes modest continuity when endurance finds a realistic scale"
+  - id: tr_heng_l2_to_l3
+    from_prototype_id: proto_hex_32_line_2
+    to_prototype_id: proto_hex_32_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "consistency breaks repeatedly"
+      - "coordination weakens"
+      - "duration is desired more than enacted"
+    confidence: "working_assumption"
+    notes: "Quiet endurance becomes inconstant perseverance when constancy cannot hold its pattern"
+  - id: tr_heng_l3_to_l4
+    from_prototype_id: proto_hex_32_line_3
+    to_prototype_id: proto_hex_32_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "repetition continues without fruit"
+      - "momentum remains low"
+      - "the pattern persists but its life weakens"
+    confidence: "working_assumption"
+    notes: "Broken constancy becomes empty persistence when duration loses meaningful yield"
+  - id: tr_heng_l4_to_l5
+    from_prototype_id: proto_hex_32_line_4
+    to_prototype_id: proto_hex_32_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "sincerity deepens"
+      - "stability improves"
+      - "commitment regains living purpose"
+    confidence: "working_assumption"
+    notes: "Empty continuation becomes devotional constancy when endurance is re-rooted in sincerity"
+  - id: tr_heng_l5_to_l6
+    from_prototype_id: proto_hex_32_line_5
+    to_prototype_id: proto_hex_32_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the cycle continues past its right measure"
+      - "timing_maturity is high but closure is resisted"
+      - "restlessness appears inside what should endure"
+    confidence: "working_assumption"
+    notes: "Faithful constancy becomes overduration when endurance refuses its natural limit"
+  - id: tr_dun_l1_to_l2
+    from_prototype_id: proto_hex_33_line_1
+    to_prototype_id: proto_hex_33_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "entangling obligations increase"
+      - "constraint_pressure rises"
+      - "retreat remains necessary but less simple"
+    confidence: "working_assumption"
+    notes: "Early withdrawal becomes bound retreat when leaving is no longer clean"
+  - id: tr_dun_l2_to_l3
+    from_prototype_id: proto_hex_33_line_2
+    to_prototype_id: proto_hex_33_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "delay continues"
+      - "the field is repeatedly pulled back"
+      - "stability weakens further"
+    confidence: "working_assumption"
+    notes: "Difficult withdrawal becomes dragged delay when retreat is postponed too long"
+  - id: tr_dun_l3_to_l4
+    from_prototype_id: proto_hex_33_line_3
+    to_prototype_id: proto_hex_33_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "clarity improves"
+      - "a cleaner exit path appears"
+      - "coordination with leaving improves"
+    confidence: "working_assumption"
+    notes: "Dragged delay becomes clear disengagement when the field finally exits properly"
+  - id: tr_dun_l4_to_l5
+    from_prototype_id: proto_hex_33_line_4
+    to_prototype_id: proto_hex_33_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "retreat gains principle"
+      - "stability improves"
+      - "bitterness does not dominate"
+    confidence: "working_assumption"
+    notes: "Clean disengagement becomes noble retreat when withdrawal preserves dignity and power"
+  - id: tr_dun_l5_to_l6
+    from_prototype_id: proto_hex_33_line_5
+    to_prototype_id: proto_hex_33_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "external entanglements drop away"
+      - "constraint_pressure declines"
+      - "the field can fully release"
+    confidence: "working_assumption"
+    notes: "Principled retreat becomes free withdrawal when nothing further needs to be held"
+  - id: tr_dazhuang_l1_to_l2
+    from_prototype_id: proto_hex_34_line_1
+    to_prototype_id: proto_hex_34_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "restraint improves"
+      - "stability improves"
+      - "power becomes more centered"
+    confidence: "working_assumption"
+    notes: "Premature force becomes centered strength when power stops rushing ahead"
+  - id: tr_dazhuang_l2_to_l3
+    from_prototype_id: proto_hex_34_line_2
+    to_prototype_id: proto_hex_34_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency spikes"
+      - "constraint_pressure rises"
+      - "coordination drops as force intensifies"
+    confidence: "working_assumption"
+    notes: "Usable strength becomes aggressive thrust when vigor becomes self-proving"
+  - id: tr_dazhuang_l3_to_l4
+    from_prototype_id: proto_hex_34_line_3
+    to_prototype_id: proto_hex_34_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a cleaner outlet appears"
+      - "constraint_pressure falls"
+      - "force is redirected rather than opposed"
+    confidence: "working_assumption"
+    notes: "Reckless push becomes released blockage when strength finds passage"
+  - id: tr_dazhuang_l4_to_l5
+    from_prototype_id: proto_hex_34_line_4
+    to_prototype_id: proto_hex_34_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "ego need declines"
+      - "coordination increases"
+    confidence: "working_assumption"
+    notes: "Freed strength becomes tempered vigor when power no longer needs to prove itself"
+  - id: tr_dazhuang_l5_to_l6
+    from_prototype_id: proto_hex_34_line_5
+    to_prototype_id: proto_hex_34_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "force again exceeds measure"
+      - "constraint_pressure rises sharply"
+      - "the field presses into a blunt limit"
+    confidence: "working_assumption"
+    notes: "Tempered vigor becomes horned excess when strength loses measure at the end"
+  - id: tr_jin_l1_to_l2
+    from_prototype_id: proto_hex_35_line_1
+    to_prototype_id: proto_hex_35_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility increases"
+      - "movement continues despite emotional weight"
+      - "progress remains socially viable"
+    confidence: "working_assumption"
+    notes: "Hesitant rise becomes sorrowing progress when advancement continues under burden"
+  - id: tr_jin_l2_to_l3
+    from_prototype_id: proto_hex_35_line_2
+    to_prototype_id: proto_hex_35_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "recognition increases"
+      - "resource_mobilization improves"
+      - "others begin validating the rise"
+    confidence: "working_assumption"
+    notes: "Burdened progress becomes acknowledged rise when the field gains support and visibility"
+  - id: tr_jin_l3_to_l4
+    from_prototype_id: proto_hex_35_line_3
+    to_prototype_id: proto_hex_35_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "ambition detaches from legitimacy"
+      - "visibility stays high"
+      - "coordination drops"
+    confidence: "working_assumption"
+    notes: "Supported advancement becomes predatory when rise turns opportunistic"
+  - id: tr_jin_l4_to_l5
+    from_prototype_id: proto_hex_35_line_4
+    to_prototype_id: proto_hex_35_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "legitimacy is restored"
+      - "stability improves"
+      - "advancement no longer needs overdisplay"
+    confidence: "working_assumption"
+    notes: "Opportunistic ascent becomes confident advancement when legitimacy and composure return"
+  - id: tr_jin_l5_to_l6
+    from_prototype_id: proto_hex_35_line_5
+    to_prototype_id: proto_hex_35_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "agency intensifies into control"
+      - "coercive tactics enter"
+      - "governance_capacity weakens"
+    confidence: "working_assumption"
+    notes: "Composed progress becomes forced rise when advancement turns coercive"
+  - id: tr_mingyi_l1_to_l2
+    from_prototype_id: proto_hex_36_line_1
+    to_prototype_id: proto_hex_36_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "withdrawal succeeds"
+      - "inner clarity is sheltered"
+      - "exposure decreases"
+    confidence: "working_assumption"
+    notes: "Wounded departure becomes protected inner light when the field successfully conceals clarity"
+  - id: tr_mingyi_l2_to_l3
+    from_prototype_id: proto_hex_36_line_2
+    to_prototype_id: proto_hex_36_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field attempts recovery"
+      - "agency rises under danger"
+      - "risk exposure increases during rescue"
+    confidence: "working_assumption"
+    notes: "Sheltered light becomes costly breakthrough when clarity tries to re-emerge under hostile conditions"
+  - id: tr_mingyi_l3_to_l4
+    from_prototype_id: proto_hex_36_line_3
+    to_prototype_id: proto_hex_36_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outward effort softens"
+      - "concealment deepens"
+      - "stability improves inwardly"
+    confidence: "working_assumption"
+    notes: "Painful rescue becomes inner concealment when the field stops exposing its light"
+  - id: tr_mingyi_l4_to_l5
+    from_prototype_id: proto_hex_36_line_4
+    to_prototype_id: proto_hex_36_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "wisdom increases"
+      - "concealment becomes more principled"
+      - "governance_capacity improves"
+    confidence: "working_assumption"
+    notes: "Hidden light becomes noble concealment when darkness is navigated with higher wisdom"
+  - id: tr_mingyi_l5_to_l6
+    from_prototype_id: proto_hex_36_line_5
+    to_prototype_id: proto_hex_36_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outer conditions darken further"
+      - "visibility of light falls toward zero"
+      - "constraint_pressure remains high"
+    confidence: "working_assumption"
+    notes: "Wise concealment becomes outer extinguishing when the era no longer permits visible light"
+  - id: tr_jiaren_l1_to_l2
+    from_prototype_id: proto_hex_37_line_1
+    to_prototype_id: proto_hex_37_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resource_mobilization improves"
+      - "inner care deepens"
+      - "boundaries remain clear"
+    confidence: "working_assumption"
+    notes: "Threshold order becomes nourishing interior when the household begins sustaining itself well"
+  - id: tr_jiaren_l2_to_l3
+    from_prototype_id: proto_hex_37_line_2
+    to_prototype_id: proto_hex_37_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "emotion intensifies"
+      - "constraint_pressure rises"
+      - "coordination weakens inside the system"
+    confidence: "working_assumption"
+    notes: "Inner nourishment becomes heated household when domestic order is strained by conflict"
+  - id: tr_jiaren_l3_to_l4
+    from_prototype_id: proto_hex_37_line_3
+    to_prototype_id: proto_hex_37_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resource order improves"
+      - "stability rises"
+      - "conflict is translated into management"
+    confidence: "working_assumption"
+    notes: "Domestic heat becomes ordered stewardship when the system regains internal administration"
+  - id: tr_jiaren_l4_to_l5
+    from_prototype_id: proto_hex_37_line_4
+    to_prototype_id: proto_hex_37_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "legitimate center strengthens"
+      - "coordination improves"
+      - "roles are recognized and trusted"
+    confidence: "working_assumption"
+    notes: "Stewardship becomes central authority when order gains a trustworthy inner core"
+  - id: tr_jiaren_l5_to_l6
+    from_prototype_id: proto_hex_37_line_5
+    to_prototype_id: proto_hex_37_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "standards tighten further"
+      - "seriousness increases"
+      - "warmth declines somewhat"
+    confidence: "working_assumption"
+    notes: "Trusted authority becomes strict culmination when order hardens toward seriousness"
+  - id: tr_kui_l1_to_l2
+    from_prototype_id: proto_hex_38_line_1
+    to_prototype_id: proto_hex_38_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "small channels of contact remain open"
+      - "coordination improves slightly"
+      - "difference does not yet become hostile"
+    confidence: "working_assumption"
+    notes: "Small divergence becomes alley-meeting when relation survives through side paths"
+  - id: tr_kui_l2_to_l3
+    from_prototype_id: proto_hex_38_line_2
+    to_prototype_id: proto_hex_38_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "main channels block"
+      - "constraint_pressure rises"
+      - "humiliation or frustration increases"
+    confidence: "working_assumption"
+    notes: "Narrow contact becomes blocked carriage when difference obstructs progress"
+  - id: tr_kui_l3_to_l4
+    from_prototype_id: proto_hex_38_line_3
+    to_prototype_id: proto_hex_38_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "one right contact appears"
+      - "stability improves"
+      - "the field regains some orientation"
+    confidence: "working_assumption"
+    notes: "Obstructed divergence becomes finding an ally when one true relation restores bearing"
+  - id: tr_kui_l4_to_l5
+    from_prototype_id: proto_hex_38_line_4
+    to_prototype_id: proto_hex_38_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust improves"
+      - "difference is respected instead of erased"
+      - "coordination rises"
+    confidence: "working_assumption"
+    notes: "Selective alliance becomes meaningful meeting when divergence no longer prevents relation"
+  - id: tr_kui_l5_to_l6
+    from_prototype_id: proto_hex_38_line_5
+    to_prototype_id: proto_hex_38_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "difference is increasingly projected as threat"
+      - "stability collapses"
+      - "visibility of hostility rises"
+    confidence: "working_assumption"
+    notes: "Respectful divergence becomes paranoid estrangement when difference is no longer tolerated"
+  - id: tr_jian_obstruction_l1_to_l2
+    from_prototype_id: proto_hex_39_line_1
+    to_prototype_id: proto_hex_39_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "duty remains active"
+      - "obstruction does not lift"
+      - "the field still tries to serve"
+    confidence: "working_assumption"
+    notes: "Early blockage becomes service under difficulty when obligation persists through obstruction"
+  - id: tr_jian_obstruction_l2_to_l3
+    from_prototype_id: proto_hex_39_line_2
+    to_prototype_id: proto_hex_39_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the path closes further"
+      - "forward agency collapses"
+      - "reversal becomes unavoidable"
+    confidence: "working_assumption"
+    notes: "Difficult service becomes forced turning when the field can no longer proceed"
+  - id: tr_jian_obstruction_l3_to_l4
+    from_prototype_id: proto_hex_39_line_3
+    to_prototype_id: proto_hex_39_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field asks for help"
+      - "coordination improves"
+      - "self-sufficiency is relinquished"
+    confidence: "working_assumption"
+    notes: "Forced reversal becomes seeking support when obstruction is met relationally"
+  - id: tr_jian_obstruction_l4_to_l5
+    from_prototype_id: proto_hex_39_line_4
+    to_prototype_id: proto_hex_39_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "support strengthens"
+      - "allied coordination rises"
+      - "stability improves under hardship"
+    confidence: "working_assumption"
+    notes: "Seeking help becomes great support when the field is genuinely carried by allies"
+  - id: tr_jian_obstruction_l5_to_l6
+    from_prototype_id: proto_hex_39_line_5
+    to_prototype_id: proto_hex_39_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a higher position returns to aid"
+      - "governance_capacity improves"
+      - "help becomes wiser and more generous"
+    confidence: "working_assumption"
+    notes: "Strong support becomes noble return when leadership assists obstruction without arrogance"
+  - id: tr_xie_l1_to_l2
+    from_prototype_id: proto_hex_40_line_1
+    to_prototype_id: proto_hex_40_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "clarity about the real knot improves"
+      - "agency becomes more precise"
+      - "release remains timely"
+    confidence: "working_assumption"
+    notes: "Quick release becomes targeted clearing when the field cuts the true knot"
+  - id: tr_xie_l2_to_l3
+    from_prototype_id: proto_hex_40_line_2
+    to_prototype_id: proto_hex_40_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility spikes"
+      - "the field celebrates too early"
+      - "stability weakens after release"
+    confidence: "working_assumption"
+    notes: "Precise untangling becomes showy release when relief turns performative"
+  - id: tr_xie_l3_to_l4
+    from_prototype_id: proto_hex_40_line_3
+    to_prototype_id: proto_hex_40_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field drops real burden"
+      - "constraint_pressure falls"
+      - "release becomes internal rather than theatrical"
+    confidence: "working_assumption"
+    notes: "Premature relief becomes true letting go when excess burden is actually released"
+  - id: tr_xie_l4_to_l5
+    from_prototype_id: proto_hex_40_line_4
+    to_prototype_id: proto_hex_40_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust rises"
+      - "stability improves"
+      - "others can re-enter safely"
+    confidence: "working_assumption"
+    notes: "Letting go becomes trustworthy resolution when release is solid enough to reopen relation"
+  - id: tr_xie_l5_to_l6
+    from_prototype_id: proto_hex_40_line_5
+    to_prototype_id: proto_hex_40_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a final knot remains"
+      - "agency rises for one last act"
+      - "the field needs decisive discharge to complete release"
+    confidence: "working_assumption"
+    notes: "Credible resolution becomes decisive discharge when the last residue must be cleared directly"
+  - id: tr_sun_l1_to_l2
+    from_prototype_id: proto_hex_41_line_1
+    to_prototype_id: proto_hex_41_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "clarity about what to cut improves"
+      - "stability rises"
+      - "reduction becomes deliberate rather than reactive"
+    confidence: "working_assumption"
+    notes: "Felt reduction becomes measured cutting back when loss is translated into proportionate trimming"
+  - id: tr_sun_l2_to_l3
+    from_prototype_id: proto_hex_41_line_2
+    to_prototype_id: proto_hex_41_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "relational asymmetry increases"
+      - "coordination weakens"
+      - "the burden of reduction falls unevenly"
+    confidence: "working_assumption"
+    notes: "Measured reduction becomes one-left-behind when cutting creates imbalance"
+  - id: tr_sun_l3_to_l4
+    from_prototype_id: proto_hex_41_line_3
+    to_prototype_id: proto_hex_41_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the unnecessary burden is actually removed"
+      - "stability improves"
+      - "risk exposure declines"
+    confidence: "working_assumption"
+    notes: "Uneven loss becomes helpful lightening when reduction starts relieving real weight"
+  - id: tr_sun_l4_to_l5
+    from_prototype_id: proto_hex_41_line_4
+    to_prototype_id: proto_hex_41_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "meaning in the sacrifice becomes clear"
+      - "coordination improves"
+      - "the decrease serves wider balance"
+    confidence: "working_assumption"
+    notes: "Lightened burden becomes noble gift when reduction turns into offering"
+  - id: tr_sun_l5_to_l6
+    from_prototype_id: proto_hex_41_line_5
+    to_prototype_id: proto_hex_41_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "further reduction offers diminishing returns"
+      - "stability remains adequate"
+      - "the field reaches enough simplicity"
+    confidence: "working_assumption"
+    notes: "Meaningful sacrifice becomes no-further-reduction when the field has already been simplified enough"
+  - id: tr_yi_increase_l1_to_l2
+    from_prototype_id: proto_hex_42_line_1
+    to_prototype_id: proto_hex_42_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "support from others increases"
+      - "resource_mobilization improves"
+      - "the field receives help well"
+    confidence: "working_assumption"
+    notes: "Small increase becomes received benefit when growth is aided from beyond"
+  - id: tr_yi_increase_l2_to_l3
+    from_prototype_id: proto_hex_42_line_2
+    to_prototype_id: proto_hex_42_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "difficulty enters the growth process"
+      - "agency rises"
+      - "the field must work through challenge to keep increasing"
+    confidence: "working_assumption"
+    notes: "Gifted increase becomes hard-earned growth when development must pass through challenge"
+  - id: tr_yi_increase_l3_to_l4
+    from_prototype_id: proto_hex_42_line_3
+    to_prototype_id: proto_hex_42_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination broadens"
+      - "benefit begins reaching others"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Difficult increase becomes widening contribution when growth starts serving more than the self"
+  - id: tr_yi_increase_l4_to_l5
+    from_prototype_id: proto_hex_42_line_4
+    to_prototype_id: proto_hex_42_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust strengthens"
+      - "the giving becomes sincere"
+      - "resource_mobilization remains generous and stable"
+    confidence: "working_assumption"
+    notes: "Shared benefit becomes trustworthy generosity when increase is both fertile and credible"
+  - id: tr_yi_increase_l5_to_l6
+    from_prototype_id: proto_hex_42_line_5
+    to_prototype_id: proto_hex_42_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field cannot receive what is offered"
+      - "coordination collapses"
+      - "increase is misapplied or mistimed"
+    confidence: "working_assumption"
+    notes: "Generous increase becomes unreceived benefit when growth no longer lands in a ready field"
+  - id: tr_guai_l1_to_l2
+    from_prototype_id: proto_hex_43_line_1
+    to_prototype_id: proto_hex_43_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "discipline improves"
+      - "the will to decide remains but becomes more watchful"
+      - "stability rises slightly"
+    confidence: "working_assumption"
+    notes: "Premature declaration becomes alert resolve when breakthrough gains vigilance"
+  - id: tr_guai_l2_to_l3
+    from_prototype_id: proto_hex_43_line_2
+    to_prototype_id: proto_hex_43_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "hidden impurity remains"
+      - "motives become mixed"
+      - "risk exposure rises during confrontation"
+    confidence: "working_assumption"
+    notes: "Watchful resolve becomes contaminated showdown when the field confronts what it still partly carries"
+  - id: tr_guai_l3_to_l4
+    from_prototype_id: proto_hex_43_line_3
+    to_prototype_id: proto_hex_43_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "execution falters"
+      - "movement is hampered"
+      - "decision remains real but hard to enact"
+    confidence: "working_assumption"
+    notes: "Impure showdown becomes hampered resolve when breakthrough cannot move cleanly"
+  - id: tr_guai_l4_to_l5
+    from_prototype_id: proto_hex_43_line_4
+    to_prototype_id: proto_hex_43_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "precision improves"
+      - "stability rises"
+      - "the field can cut exactly what must go"
+    confidence: "working_assumption"
+    notes: "Blocked resolve becomes clean cutting when breakthrough gains exactness"
+  - id: tr_guai_l5_to_l6
+    from_prototype_id: proto_hex_43_line_5
+    to_prototype_id: proto_hex_43_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "some residue is not fully removed"
+      - "the field relaxes too early"
+      - "unfinished elements remain active"
+    confidence: "working_assumption"
+    notes: "Precise breakthrough becomes residual danger when the cut leaves a remainder"
+  - id: tr_gou_l1_to_l2
+    from_prototype_id: proto_hex_44_line_1
+    to_prototype_id: proto_hex_44_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "boundaries are strengthened"
+      - "the new force is recognized and limited"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "First encounter becomes contained contact when intrusion is held without panic"
+  - id: tr_gou_l2_to_l3
+    from_prototype_id: proto_hex_44_line_2
+    to_prototype_id: proto_hex_44_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "attraction grows"
+      - "containment weakens"
+      - "contact becomes emotionally sticky"
+    confidence: "working_assumption"
+    notes: "Bounded encounter becomes clinging temptation when relation turns adhesive"
+  - id: tr_gou_l3_to_l4
+    from_prototype_id: proto_hex_44_line_3
+    to_prototype_id: proto_hex_44_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the chance to manage the encounter is mishandled"
+      - "agency drops"
+      - "the field loses its clean response window"
+    confidence: "working_assumption"
+    notes: "Tempting encounter becomes missed handling when the right response is not made in time"
+  - id: tr_gou_l4_to_l5
+    from_prototype_id: proto_hex_44_line_4
+    to_prototype_id: proto_hex_44_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a stronger center forms"
+      - "discernment improves"
+      - "containment becomes wise rather than merely reactive"
+    confidence: "working_assumption"
+    notes: "Lost handling becomes wrapped discernment when the field regains centered boundary"
+  - id: tr_gou_l5_to_l6
+    from_prototype_id: proto_hex_44_line_5
+    to_prototype_id: proto_hex_44_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "contact turns openly antagonistic"
+      - "risk exposure spikes"
+      - "the field shifts from containment to injury"
+    confidence: "working_assumption"
+    notes: "Wise containment becomes hostile encounter when the force can no longer be held relationally"
+  - id: tr_cui_l1_to_l2
+    from_prototype_id: proto_hex_45_line_1
+    to_prototype_id: proto_hex_45_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust increases"
+      - "coordination improves"
+      - "a center starts to hold"
+    confidence: "working_assumption"
+    notes: "Uncertain gathering becomes sincere convergence when the assembly gains real relational glue"
+  - id: tr_cui_l2_to_l3
+    from_prototype_id: proto_hex_45_line_2
+    to_prototype_id: proto_hex_45_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "participation becomes pressured"
+      - "fit weakens"
+      - "constraint_pressure rises in the group"
+    confidence: "working_assumption"
+    notes: "Sincere assembly becomes compelled clustering when gathering loses ease"
+  - id: tr_cui_l3_to_l4
+    from_prototype_id: proto_hex_45_line_3
+    to_prototype_id: proto_hex_45_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "contribution replaces compulsion"
+      - "coordination improves"
+      - "participants invest into the center"
+    confidence: "working_assumption"
+    notes: "Strained gathering becomes offering to assemble when the group reconnects through contribution"
+  - id: tr_cui_l4_to_l5
+    from_prototype_id: proto_hex_45_line_4
+    to_prototype_id: proto_hex_45_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the center strengthens"
+      - "stability improves"
+      - "the many become more holdable"
+    confidence: "working_assumption"
+    notes: "Supportive contribution becomes centered cohesion when gathering acquires a true core"
+  - id: tr_cui_l5_to_l6
+    from_prototype_id: proto_hex_45_line_5
+    to_prototype_id: proto_hex_45_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the gathering takes on grief or incompletion"
+      - "stability weakens"
+      - "need remains inside the assembled field"
+    confidence: "working_assumption"
+    notes: "Stable cohesion becomes weeping assembly when gathering carries unresolved sorrow"
+  - id: tr_sheng_l1_to_l2
+    from_prototype_id: proto_hex_46_line_1
+    to_prototype_id: proto_hex_46_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "contribution becomes more visible"
+      - "resource_mobilization improves"
+      - "the rise remains humble and useful"
+    confidence: "working_assumption"
+    notes: "Quiet ascent becomes offered ascent when upward movement is legitimized through service"
+  - id: tr_sheng_l2_to_l3
+    from_prototype_id: proto_hex_46_line_2
+    to_prototype_id: proto_hex_46_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "pathways open"
+      - "constraint_pressure drops"
+      - "the field gains a clear route upward"
+    confidence: "working_assumption"
+    notes: "Service-based rise becomes open upward path when growth finds room"
+  - id: tr_sheng_l3_to_l4
+    from_prototype_id: proto_hex_46_line_3
+    to_prototype_id: proto_hex_46_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "formal structure becomes important"
+      - "legitimacy needs increase"
+      - "stability rises through ritualization"
+    confidence: "working_assumption"
+    notes: "Open ascent becomes ritualized rising when growth must preserve order and legitimacy"
+  - id: tr_sheng_l4_to_l5
+    from_prototype_id: proto_hex_46_line_4
+    to_prototype_id: proto_hex_46_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "progress proceeds in steps"
+      - "stability and governance improve"
+      - "ambition remains patient"
+    confidence: "working_assumption"
+    notes: "Structured rise becomes stepwise promotion when the field climbs through sequence"
+  - id: tr_sheng_l5_to_l6
+    from_prototype_id: proto_hex_46_line_5
+    to_prototype_id: proto_hex_46_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "upward motion continues after clarity fades"
+      - "visibility remains high"
+      - "timing_maturity is high but direction weakens"
+    confidence: "working_assumption"
+    notes: "Stable ascent becomes dark climbing when rising continues without clear light"
+  - id: tr_kun_exhaustion_l1_to_l2
+    from_prototype_id: proto_hex_47_line_1
+    to_prototype_id: proto_hex_47_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "external resources appear"
+      - "inner constraint remains"
+      - "relief is partial or superficial"
+    confidence: "working_assumption"
+    notes: "Root confinement becomes luxury without relief when outer resources fail to solve inner exhaustion"
+  - id: tr_kun_exhaustion_l2_to_l3
+    from_prototype_id: proto_hex_47_line_2
+    to_prototype_id: proto_hex_47_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "hard limits intensify"
+      - "stability declines further"
+      - "the field can no longer move normally"
+    confidence: "working_assumption"
+    notes: "Superficial support becomes stone entrapment when confinement hardens"
+  - id: tr_kun_exhaustion_l3_to_l4
+    from_prototype_id: proto_hex_47_line_3
+    to_prototype_id: proto_hex_47_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "small openings appear"
+      - "constraint_pressure falls slightly"
+      - "hope re-enters through slow movement"
+    confidence: "working_assumption"
+    notes: "Severe entrapment becomes slow relief when the field starts seeing a distant opening"
+  - id: tr_kun_exhaustion_l4_to_l5
+    from_prototype_id: proto_hex_47_line_4
+    to_prototype_id: proto_hex_47_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "inner stability improves"
+      - "external relief remains limited"
+      - "the field consolidates inward dignity"
+    confidence: "working_assumption"
+    notes: "Slow approach of relief becomes inner steadfastness when endurance finds its own core"
+  - id: tr_kun_exhaustion_l5_to_l6
+    from_prototype_id: proto_hex_47_line_5
+    to_prototype_id: proto_hex_47_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "small entanglements persist"
+      - "outer release remains incomplete"
+      - "constraint becomes more subtle than massive"
+    confidence: "working_assumption"
+    notes: "Inner firmness becomes vine entanglement when exhaustion shifts from hard trap to lingering difficulty"
+  - id: tr_jing_l1_to_l2
+    from_prototype_id: proto_hex_48_line_1
+    to_prototype_id: proto_hex_48_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "source quality improves"
+      - "access mechanisms remain weak"
+      - "the resource becomes visible but not yet usable"
+    confidence: "working_assumption"
+    notes: "Muddy well becomes broken vessel when the source is better but access still fails"
+  - id: tr_jing_l2_to_l3
+    from_prototype_id: proto_hex_48_line_2
+    to_prototype_id: proto_hex_48_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the source clears"
+      - "stability improves"
+      - "the problem shifts from resource quality to uptake"
+    confidence: "working_assumption"
+    notes: "Broken access becomes clear well unused when the source is sound but still not integrated"
+  - id: tr_jing_l3_to_l4
+    from_prototype_id: proto_hex_48_line_3
+    to_prototype_id: proto_hex_48_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "maintenance work succeeds"
+      - "governance_capacity improves"
+      - "infrastructure becomes reliable"
+    confidence: "working_assumption"
+    notes: "Unused resource becomes repaired well when the source structure is restored"
+  - id: tr_jing_l4_to_l5
+    from_prototype_id: proto_hex_48_line_4
+    to_prototype_id: proto_hex_48_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "access improves"
+      - "resource_mobilization increases"
+      - "the source becomes fresh and usable"
+    confidence: "working_assumption"
+    notes: "Restored infrastructure becomes fresh source when the well is both sound and life-giving"
+  - id: tr_jing_l5_to_l6
+    from_prototype_id: proto_hex_48_line_5
+    to_prototype_id: proto_hex_48_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "sharing broadens"
+      - "constraint_pressure drops"
+      - "the source is no longer hidden or enclosed"
+    confidence: "working_assumption"
+    notes: "Fresh source becomes openly shared support when the well serves the many without concealment"
+  - id: tr_ge_l1_to_l2
+    from_prototype_id: proto_hex_49_line_1
+    to_prototype_id: proto_hex_49_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing becomes clearer"
+      - "legitimacy for change improves"
+      - "agency rises in a more coordinated way"
+    confidence: "working_assumption"
+    notes: "Hidden need for change becomes timed resolve when reform gains legitimacy"
+  - id: tr_ge_l2_to_l3
+    from_prototype_id: proto_hex_49_line_2
+    to_prototype_id: proto_hex_49_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "resistance persists"
+      - "pressure to restate the need for change increases"
+      - "coordination weakens"
+    confidence: "working_assumption"
+    notes: "Timely resolve becomes repeated pressure when the field still resists transformation"
+  - id: tr_ge_l3_to_l4
+    from_prototype_id: proto_hex_49_line_3
+    to_prototype_id: proto_hex_49_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "execution begins"
+      - "visibility of the new form rises"
+      - "resource_mobilization improves"
+    confidence: "working_assumption"
+    notes: "Repeated calls for change become implemented transformation when reform finally takes hold"
+  - id: tr_ge_l4_to_l5
+    from_prototype_id: proto_hex_49_line_4
+    to_prototype_id: proto_hex_49_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "results prove credible"
+      - "stability improves"
+      - "trust in the new order rises"
+    confidence: "working_assumption"
+    notes: "Implemented change becomes verified transformation when the new order proves itself"
+  - id: tr_ge_l5_to_l6
+    from_prototype_id: proto_hex_49_line_5
+    to_prototype_id: proto_hex_49_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outer change outruns inner shift"
+      - "visibility stays high while coordination drops"
+      - "legacy habits remain active"
+    confidence: "working_assumption"
+    notes: "Verified reform becomes incomplete change when the inside of the field does not transform with the outside"
+  - id: tr_ding_l1_to_l2
+    from_prototype_id: proto_hex_50_line_1
+    to_prototype_id: proto_hex_50_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "purification succeeds"
+      - "meaningful contents enter the vessel"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Overturning the vessel becomes true carrying when it starts to hold real nourishment"
+  - id: tr_ding_l2_to_l3
+    from_prototype_id: proto_hex_50_line_2
+    to_prototype_id: proto_hex_50_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "access or transmission is blocked"
+      - "coordination weakens"
+      - "the contents cannot be properly used"
+    confidence: "working_assumption"
+    notes: "Nourishing contents become blocked function when the vessel exists but cannot serve"
+  - id: tr_ding_l3_to_l4
+    from_prototype_id: proto_hex_50_line_3
+    to_prototype_id: proto_hex_50_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "instability increases"
+      - "resource load stresses the container"
+      - "risk of spill or misuse rises"
+    confidence: "working_assumption"
+    notes: "Blocked use becomes threatened carrying when the vessel is mishandled"
+  - id: tr_ding_l4_to_l5
+    from_prototype_id: proto_hex_50_line_4
+    to_prototype_id: proto_hex_50_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability is restored"
+      - "handling improves"
+      - "the vessel becomes socially useful again"
+    confidence: "working_assumption"
+    notes: "Threatened vessel becomes refined carrying when form and use are brought back into balance"
+  - id: tr_ding_l5_to_l6
+    from_prototype_id: proto_hex_50_line_5
+    to_prototype_id: proto_hex_50_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the value carried aligns with a higher purpose"
+      - "sharing broadens"
+      - "timing_maturity becomes high"
+    confidence: "working_assumption"
+    notes: "Refined carrying becomes highest-use vessel when the field serves beyond itself"
+  - id: tr_zhen_l1_to_l2
+    from_prototype_id: proto_hex_51_line_1
+    to_prototype_id: proto_hex_51_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the disturbance continues"
+      - "resource fear increases"
+      - "stability remains low"
+    confidence: "working_assumption"
+    notes: "Initial shock becomes fear of loss when the tremor continues into resource threat"
+  - id: tr_zhen_l2_to_l3
+    from_prototype_id: proto_hex_51_line_2
+    to_prototype_id: proto_hex_51_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field keeps moving despite fear"
+      - "agency stays low but nonzero"
+      - "panic does not fully freeze action"
+    confidence: "working_assumption"
+    notes: "Threatened shock becomes staggering response when the field survives by awkward movement"
+  - id: tr_zhen_l3_to_l4
+    from_prototype_id: proto_hex_51_line_3
+    to_prototype_id: proto_hex_51_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "momentum slows into heaviness"
+      - "constraint_pressure rises"
+      - "the field loses clean footing"
+    confidence: "working_assumption"
+    notes: "Staggering survival becomes shock in the mud when disturbance gets bogged down"
+  - id: tr_zhen_l4_to_l5
+    from_prototype_id: proto_hex_51_line_4
+    to_prototype_id: proto_hex_51_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "inner stability recovers"
+      - "dignity returns"
+      - "fear is held without dominating conduct"
+    confidence: "working_assumption"
+    notes: "Bogged shock becomes dignified steadiness when the field regains composure"
+  - id: tr_zhen_l5_to_l6
+    from_prototype_id: proto_hex_51_line_5
+    to_prototype_id: proto_hex_51_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the disturbance is not contained locally"
+      - "visibility of the shock rises"
+      - "ripples spread to the wider field"
+    confidence: "working_assumption"
+    notes: "Held shock becomes propagating shock when the disturbance spreads outward"
+  - id: tr_gen_l1_to_l2
+    from_prototype_id: proto_hex_52_line_1
+    to_prototype_id: proto_hex_52_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outer motion stops but inner motion remains"
+      - "stability remains partial"
+      - "constraint_pressure rises slightly inward"
+    confidence: "working_assumption"
+    notes: "Initial stopping becomes partial stillness when the outer body halts before the inner one settles"
+  - id: tr_gen_l2_to_l3
+    from_prototype_id: proto_hex_52_line_2
+    to_prototype_id: proto_hex_52_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stillness is enforced too harshly"
+      - "inner tension rises"
+      - "coordination drops"
+    confidence: "working_assumption"
+    notes: "Partial stillness becomes rigid arrest when stopping turns punitive"
+  - id: tr_gen_l3_to_l4
+    from_prototype_id: proto_hex_52_line_3
+    to_prototype_id: proto_hex_52_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "rigidity softens"
+      - "stability improves"
+      - "the field learns calmer holding"
+    confidence: "working_assumption"
+    notes: "Harsh stillness becomes steadier calm when the field relaxes into a more natural stop"
+  - id: tr_gen_l4_to_l5
+    from_prototype_id: proto_hex_52_line_4
+    to_prototype_id: proto_hex_52_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "expression is governed"
+      - "speech becomes more exact"
+      - "coordination rises in communication"
+    confidence: "working_assumption"
+    notes: "Calm stillness becomes measured speech restraint when stopping reaches expression"
+  - id: tr_gen_l5_to_l6
+    from_prototype_id: proto_hex_52_line_5
+    to_prototype_id: proto_hex_52_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stillness no longer feels forced"
+      - "stability becomes high"
+      - "the field rests inside its own boundary"
+    confidence: "working_assumption"
+    notes: "Speech restraint becomes noble stopping when stillness is integrated rather than imposed"
+  - id: tr_jian_gradual_l1_to_l2
+    from_prototype_id: proto_hex_53_line_1
+    to_prototype_id: proto_hex_53_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "stability improves"
+      - "the field gains modest footing"
+      - "timing remains patient"
+    confidence: "working_assumption"
+    notes: "Tentative beginning becomes stable approach when gradualism finds reliable ground"
+  - id: tr_jian_gradual_l2_to_l3
+    from_prototype_id: proto_hex_53_line_2
+    to_prototype_id: proto_hex_53_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field tries to establish too much too soon"
+      - "governance_capacity remains weak"
+      - "risk exposure rises"
+    confidence: "working_assumption"
+    notes: "Stable gradualism becomes premature establishment when sequence is skipped"
+  - id: tr_jian_gradual_l3_to_l4
+    from_prototype_id: proto_hex_53_line_3
+    to_prototype_id: proto_hex_53_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field re-finds an intermediate resting place"
+      - "stability improves"
+      - "timing discipline returns"
+    confidence: "working_assumption"
+    notes: "Premature settling becomes branch-level footing when gradual progress regains sequence"
+  - id: tr_jian_gradual_l4_to_l5
+    from_prototype_id: proto_hex_53_line_4
+    to_prototype_id: proto_hex_53_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "patience deepens"
+      - "timing_maturity rises"
+      - "the field can wait inside the process"
+    confidence: "working_assumption"
+    notes: "Intermediate footing becomes fruitful waiting when gradual development ripens internally"
+  - id: tr_jian_gradual_l5_to_l6
+    from_prototype_id: proto_hex_53_line_5
+    to_prototype_id: proto_hex_53_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the process completes visibly"
+      - "form emerges without losing sequence"
+      - "coordination remains high"
+    confidence: "working_assumption"
+    notes: "Ripe gradualism becomes ceremonial form when the long process culminates well"
+  - id: tr_guimei_l1_to_l2
+    from_prototype_id: proto_hex_54_line_1
+    to_prototype_id: proto_hex_54_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "inner clarity strengthens"
+      - "visibility of the asymmetry rises"
+      - "the field preserves selfhood within unequal structure"
+    confidence: "working_assumption"
+    notes: "Secondary entry becomes inner clarity when the field remains intact inside asymmetry"
+  - id: tr_guimei_l2_to_l3
+    from_prototype_id: proto_hex_54_line_2
+    to_prototype_id: proto_hex_54_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outer relation remains unresolved"
+      - "stability declines"
+      - "the field waits in suspended form"
+    confidence: "working_assumption"
+    notes: "Inner clarity becomes awkward suspension when asymmetry is not resolved in action"
+  - id: tr_guimei_l3_to_l4
+    from_prototype_id: proto_hex_54_line_3
+    to_prototype_id: proto_hex_54_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "timing becomes more favorable"
+      - "restraint is chosen consciously"
+      - "the field delays joining for a better opening"
+    confidence: "working_assumption"
+    notes: "Awkward suspension becomes delayed union when the field waits for a cleaner moment"
+  - id: tr_guimei_l4_to_l5
+    from_prototype_id: proto_hex_54_line_4
+    to_prototype_id: proto_hex_54_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "simplicity replaces status anxiety"
+      - "stability improves"
+      - "the relation finds workable proportion"
+    confidence: "working_assumption"
+    notes: "Timed delay becomes modest joining when asymmetry is handled proportionately"
+  - id: tr_guimei_l5_to_l6
+    from_prototype_id: proto_hex_54_line_5
+    to_prototype_id: proto_hex_54_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "outer form remains but inner substance thins"
+      - "coordination falls"
+      - "timing_maturity is high but vitality is low"
+    confidence: "working_assumption"
+    notes: "Simple relation becomes empty ceremony when form outlasts living content"
+  - id: tr_feng_l1_to_l2
+    from_prototype_id: proto_hex_55_line_1
+    to_prototype_id: proto_hex_55_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility of abundance increases"
+      - "some screening or veil remains"
+      - "resource_mobilization improves"
+    confidence: "working_assumption"
+    notes: "Apt meeting becomes veiled abundance when fullness arrives but is not fully visible"
+  - id: tr_feng_l2_to_l3
+    from_prototype_id: proto_hex_55_line_2
+    to_prototype_id: proto_hex_55_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "fullness thickens"
+      - "clarity drops"
+      - "the field becomes saturated and less readable"
+    confidence: "working_assumption"
+    notes: "Partly hidden abundance becomes obscuring saturation when fullness blocks its own light"
+  - id: tr_feng_l3_to_l4
+    from_prototype_id: proto_hex_55_line_3
+    to_prototype_id: proto_hex_55_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "one right alignment reappears"
+      - "coordination improves"
+      - "visibility becomes more usable"
+    confidence: "working_assumption"
+    notes: "Confusing fullness becomes illumined alliance when the field regains orienting relation"
+  - id: tr_feng_l4_to_l5
+    from_prototype_id: proto_hex_55_line_4
+    to_prototype_id: proto_hex_55_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the center strengthens"
+      - "stability improves"
+      - "abundance can be distributed well"
+    confidence: "working_assumption"
+    notes: "Aligned brightness becomes central fullness when the peak is well-held"
+  - id: tr_feng_l5_to_l6
+    from_prototype_id: proto_hex_55_line_5
+    to_prototype_id: proto_hex_55_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility becomes excessive"
+      - "relation weakens"
+      - "the peak detaches from the wider field"
+    confidence: "working_assumption"
+    notes: "Held abundance becomes isolated peak when fullness loses connection"
+  - id: tr_lu_traveler_l1_to_l2
+    from_prototype_id: proto_hex_56_line_1
+    to_prototype_id: proto_hex_56_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "temporary shelter is found"
+      - "stability improves"
+      - "the field behaves carefully in unfamiliar space"
+    confidence: "working_assumption"
+    notes: "Minor frictions become secure lodging when the traveler finds proper shelter"
+  - id: tr_lu_traveler_l2_to_l3
+    from_prototype_id: proto_hex_56_line_2
+    to_prototype_id: proto_hex_56_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "carelessness rises"
+      - "the temporary base is mismanaged"
+      - "risk exposure spikes"
+    confidence: "working_assumption"
+    notes: "Safe lodging becomes burned lodging when the traveler mishandles borrowed stability"
+  - id: tr_lu_traveler_l3_to_l4
+    from_prototype_id: proto_hex_56_line_3
+    to_prototype_id: proto_hex_56_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "some possessions are preserved"
+      - "stability recovers slightly"
+      - "the field keeps moving without full root"
+    confidence: "working_assumption"
+    notes: "Lost lodging becomes held possessions when the traveler salvages continuity without home"
+  - id: tr_lu_traveler_l4_to_l5
+    from_prototype_id: proto_hex_56_line_4
+    to_prototype_id: proto_hex_56_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "conduct becomes more respectful"
+      - "trust from others improves"
+      - "temporary conditions are handled well"
+    confidence: "working_assumption"
+    notes: "Partial stability becomes recognized traveler when transient conduct gains dignity"
+  - id: tr_lu_traveler_l5_to_l6
+    from_prototype_id: proto_hex_56_line_5
+    to_prototype_id: proto_hex_56_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "arrogance or excess rises"
+      - "stability collapses"
+      - "the field destroys its own remaining shelter"
+    confidence: "working_assumption"
+    notes: "Respected traveling becomes self-destroyed shelter when transience is forgotten"
+  - id: tr_xun_l1_to_l2
+    from_prototype_id: proto_hex_57_line_1
+    to_prototype_id: proto_hex_57_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "persistence improves"
+      - "coordination rises"
+      - "entry remains low-friction"
+    confidence: "working_assumption"
+    notes: "Subtle entry becomes repeated penetration when gentle influence is sustained consistently"
+  - id: tr_xun_l2_to_l3
+    from_prototype_id: proto_hex_57_line_2
+    to_prototype_id: proto_hex_57_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "commitment weakens"
+      - "agency drops"
+      - "the field vacillates between options"
+    confidence: "working_assumption"
+    notes: "Persistent influence becomes hesitant indecision when penetration loses commitment"
+  - id: tr_xun_l3_to_l4
+    from_prototype_id: proto_hex_57_line_3
+    to_prototype_id: proto_hex_57_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "clarity improves"
+      - "the field turns toward hidden cleanup"
+      - "stability rises"
+    confidence: "working_assumption"
+    notes: "Hesitation becomes underlayer clearing when gentle action regains useful purpose"
+  - id: tr_xun_l4_to_l5
+    from_prototype_id: proto_hex_57_line_4
+    to_prototype_id: proto_hex_57_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "governance_capacity improves"
+      - "influence gains structure"
+      - "coordination remains high"
+    confidence: "working_assumption"
+    notes: "Subtle clearing becomes command through gentleness when softness and order converge"
+  - id: tr_xun_l5_to_l6
+    from_prototype_id: proto_hex_57_line_5
+    to_prototype_id: proto_hex_57_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "penetration extends beyond proper boundary"
+      - "risk exposure rises"
+      - "the field feels increasingly intruded upon"
+    confidence: "working_assumption"
+    notes: "Gentle authority becomes intrusive penetration when subtle influence exceeds its place"
+  - id: tr_dui_l1_to_l2
+    from_prototype_id: proto_hex_58_line_1
+    to_prototype_id: proto_hex_58_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "sincerity deepens"
+      - "coordination improves"
+      - "delight becomes more mutual"
+    confidence: "working_assumption"
+    notes: "Simple joy becomes trusted delight when exchange gains credibility"
+  - id: tr_dui_l2_to_l3
+    from_prototype_id: proto_hex_58_line_2
+    to_prototype_id: proto_hex_58_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "surface attraction increases"
+      - "discernment weakens"
+      - "stability declines"
+    confidence: "working_assumption"
+    notes: "Trusted exchange becomes alluring pleasure when delight loses depth"
+  - id: tr_dui_l3_to_l4
+    from_prototype_id: proto_hex_58_line_3
+    to_prototype_id: proto_hex_58_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "repair begins"
+      - "sincerity returns"
+      - "the field works through prior friction"
+    confidence: "working_assumption"
+    notes: "Seductive pleasure becomes difficult reconciliation when relation tries to recover honestly"
+  - id: tr_dui_l4_to_l5
+    from_prototype_id: proto_hex_58_line_4
+    to_prototype_id: proto_hex_58_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "confidence in pleasure rises"
+      - "the field relaxes caution"
+      - "discernment becomes less active"
+    confidence: "working_assumption"
+    notes: "Recovered exchange becomes dangerous confidence when delight is trusted too easily"
+  - id: tr_dui_l5_to_l6
+    from_prototype_id: proto_hex_58_line_5
+    to_prototype_id: proto_hex_58_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "joy shifts into surface expression"
+      - "visibility increases"
+      - "coordination drops"
+    confidence: "working_assumption"
+    notes: "Risky delight becomes mouth-level seduction when pleasure moves to the surface"
+  - id: tr_huan_l1_to_l2
+    from_prototype_id: proto_hex_59_line_1
+    to_prototype_id: proto_hex_59_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "support is found"
+      - "dispersion remains guided"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Starting dispersion becomes safe dispersal when loosening is anchored by support"
+  - id: tr_huan_l2_to_l3
+    from_prototype_id: proto_hex_59_line_2
+    to_prototype_id: proto_hex_59_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "self-holding loosens"
+      - "ego rigidity decreases"
+      - "the field chooses release from within"
+    confidence: "working_assumption"
+    notes: "Supported dispersal becomes self-dissolving effort when loosening turns inward"
+  - id: tr_huan_l3_to_l4
+    from_prototype_id: proto_hex_59_line_3
+    to_prototype_id: proto_hex_59_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "group rigidity is addressed"
+      - "coordination broadens"
+      - "collective knots begin loosening"
+    confidence: "working_assumption"
+    notes: "Self-release becomes group-knot dispersal when the wider field is loosened"
+  - id: tr_huan_l4_to_l5
+    from_prototype_id: proto_hex_59_line_4
+    to_prototype_id: proto_hex_59_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "tension exits naturally"
+      - "stability rises"
+      - "release is no longer dramatic"
+    confidence: "working_assumption"
+    notes: "Collective loosening becomes sweat-like release when tension leaves naturally"
+  - id: tr_huan_l5_to_l6
+    from_prototype_id: proto_hex_59_line_5
+    to_prototype_id: proto_hex_59_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "deeper danger is addressed"
+      - "release reaches conflict or injury itself"
+      - "constraint_pressure drops further"
+    confidence: "working_assumption"
+    notes: "Natural release becomes dissolved danger when the deepest knots are discharged"
+  - id: tr_jie_l1_to_l2
+    from_prototype_id: proto_hex_60_line_1
+    to_prototype_id: proto_hex_60_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field accepts the boundary willingly"
+      - "stability improves"
+      - "overreach is avoided"
+    confidence: "working_assumption"
+    notes: "Initial limit becomes willing restraint when the gate is respected"
+  - id: tr_jie_l2_to_l3
+    from_prototype_id: proto_hex_60_line_2
+    to_prototype_id: proto_hex_60_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "memory of prior excess resurfaces"
+      - "regret becomes active"
+      - "the field sees the cost of having lacked measure"
+    confidence: "working_assumption"
+    notes: "Willing restraint becomes regretful learning when the field understands why limits matter"
+  - id: tr_jie_l3_to_l4
+    from_prototype_id: proto_hex_60_line_3
+    to_prototype_id: proto_hex_60_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "limit is internalized"
+      - "contentment rises"
+      - "stability improves"
+    confidence: "working_assumption"
+    notes: "Regret over excess becomes content in limitation when measure is embraced"
+  - id: tr_jie_l4_to_l5
+    from_prototype_id: proto_hex_60_line_4
+    to_prototype_id: proto_hex_60_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "coordination improves"
+      - "the field begins to enjoy right measure"
+      - "governance_capacity rises"
+    confidence: "working_assumption"
+    notes: "Contented measure becomes sweet regulation when limits are lived well"
+  - id: tr_jie_l5_to_l6
+    from_prototype_id: proto_hex_60_line_5
+    to_prototype_id: proto_hex_60_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "limitation is intensified too far"
+      - "constraint_pressure rises sharply"
+      - "the field can no longer breathe inside the measure"
+    confidence: "working_assumption"
+    notes: "Gentle regulation becomes bitter over-limitation when boundary hardens into austerity"
+  - id: tr_zhongfu_l1_to_l2
+    from_prototype_id: proto_hex_61_line_1
+    to_prototype_id: proto_hex_61_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "trust is reciprocated"
+      - "visibility rises slightly"
+      - "coordination improves"
+    confidence: "working_assumption"
+    notes: "Guarded sincerity becomes resonant trust when authenticity begins generating response"
+  - id: tr_zhongfu_l2_to_l3
+    from_prototype_id: proto_hex_61_line_2
+    to_prototype_id: proto_hex_61_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field becomes uncertain"
+      - "stability weakens"
+      - "confidence oscillates"
+    confidence: "working_assumption"
+    notes: "Resonant trust becomes unstable confidence when sincerity no longer feels secure"
+  - id: tr_zhongfu_l3_to_l4
+    from_prototype_id: proto_hex_61_line_3
+    to_prototype_id: proto_hex_61_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "inner division decreases"
+      - "stability improves"
+      - "the field becomes more single-hearted"
+    confidence: "working_assumption"
+    notes: "Wavering trust becomes single-hearted alignment when the split inside sincerity heals"
+  - id: tr_zhongfu_l4_to_l5
+    from_prototype_id: proto_hex_61_line_4
+    to_prototype_id: proto_hex_61_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the center strengthens"
+      - "coordination rises"
+      - "trust becomes structurally reliable"
+    confidence: "working_assumption"
+    notes: "Undivided sincerity becomes centered faith when trust can hold a wider field"
+  - id: tr_zhongfu_l5_to_l6
+    from_prototype_id: proto_hex_61_line_5
+    to_prototype_id: proto_hex_61_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field overexpresses sincerity"
+      - "visibility spikes"
+      - "grounding weakens"
+    confidence: "working_assumption"
+    notes: "Centered faith becomes excessive trust signaling when authenticity is overperformed"
+  - id: tr_xiaoguo_l1_to_l2
+    from_prototype_id: proto_hex_62_line_1
+    to_prototype_id: proto_hex_62_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field chooses tact over confrontation"
+      - "coordination improves slightly"
+      - "the excess remains small and manageable"
+    confidence: "working_assumption"
+    notes: "Small excess becomes indirect passage when the field works around the large carefully"
+  - id: tr_xiaoguo_l2_to_l3
+    from_prototype_id: proto_hex_62_line_2
+    to_prototype_id: proto_hex_62_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "care weakens"
+      - "exposure rises"
+      - "the small path becomes vulnerable"
+    confidence: "working_assumption"
+    notes: "Careful bypass becomes unguarded exposure when delicacy loses vigilance"
+  - id: tr_xiaoguo_l3_to_l4
+    from_prototype_id: proto_hex_62_line_3
+    to_prototype_id: proto_hex_62_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "precision returns"
+      - "stability improves"
+      - "the field begins making small exact corrections"
+    confidence: "working_assumption"
+    notes: "Minor vulnerability becomes precise boundary work when the field regains care"
+  - id: tr_xiaoguo_l4_to_l5
+    from_prototype_id: proto_hex_62_line_4
+    to_prototype_id: proto_hex_62_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "a well-timed modest act is made"
+      - "coordination improves"
+      - "the center responds proportionately"
+    confidence: "working_assumption"
+    notes: "Precise correction becomes small central offering when the right-sized act appears"
+  - id: tr_xiaoguo_l5_to_l6
+    from_prototype_id: proto_hex_62_line_5
+    to_prototype_id: proto_hex_62_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the excess is not fully corrected"
+      - "risk accumulates"
+      - "the small overshoot is pushed too far"
+    confidence: "working_assumption"
+    notes: "Modest correction becomes serious miss when minor excess is allowed to continue"
+  - id: tr_jiji_l1_to_l2
+    from_prototype_id: proto_hex_63_line_1
+    to_prototype_id: proto_hex_63_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "small losses appear"
+      - "completion remains broadly intact"
+      - "maintenance begins immediately"
+    confidence: "working_assumption"
+    notes: "Post-completion caution becomes small loss in order when the finished field starts fraying slightly"
+  - id: tr_jiji_l2_to_l3
+    from_prototype_id: proto_hex_63_line_2
+    to_prototype_id: proto_hex_63_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "ongoing work is recognized"
+      - "agency rises again"
+      - "the field understands that completion did not end labor"
+    confidence: "working_assumption"
+    notes: "Minor post-success loss becomes maintenance labor when the field commits to preserving the result"
+  - id: tr_jiji_l3_to_l4
+    from_prototype_id: proto_hex_63_line_3
+    to_prototype_id: proto_hex_63_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "specific weak points are identified"
+      - "stability improves"
+      - "repair becomes more exact"
+    confidence: "working_assumption"
+    notes: "Ongoing labor becomes leak repair when the field starts maintaining by detail"
+  - id: tr_jiji_l4_to_l5
+    from_prototype_id: proto_hex_63_line_4
+    to_prototype_id: proto_hex_63_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field embraces enoughness"
+      - "risk exposure declines"
+      - "modesty replaces display"
+    confidence: "working_assumption"
+    notes: "Careful repair becomes plain sufficiency when finished order is held without excess"
+  - id: tr_jiji_l5_to_l6
+    from_prototype_id: proto_hex_63_line_5
+    to_prototype_id: proto_hex_63_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "vigilance drops"
+      - "the field assumes success is secure"
+      - "risk returns after completion"
+    confidence: "working_assumption"
+    notes: "Quiet sufficiency becomes soaked ending when completion slips back toward danger"
+  - id: tr_weiji_l1_to_l2
+    from_prototype_id: proto_hex_64_line_1
+    to_prototype_id: proto_hex_64_line_2
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field resists premature closure"
+      - "stability improves"
+      - "the center is held more carefully"
+    confidence: "working_assumption"
+    notes: "Unfinished beginning becomes held center when incompletion is managed more carefully"
+  - id: tr_weiji_l2_to_l3
+    from_prototype_id: proto_hex_64_line_2
+    to_prototype_id: proto_hex_64_line_3
+    transition_type: intra_family_adjacent
+    conditions:
+      - "impatience rises"
+      - "agency spikes prematurely"
+      - "the field attempts to cross too soon"
+    confidence: "working_assumption"
+    notes: "Careful incompletion becomes premature crossing when the field rushes to finish"
+  - id: tr_weiji_l3_to_l4
+    from_prototype_id: proto_hex_64_line_3
+    to_prototype_id: proto_hex_64_line_4
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field reorganizes"
+      - "resources are gathered"
+      - "stability improves from prior disorder"
+    confidence: "working_assumption"
+    notes: "Premature crossing becomes gathering strength when the field steps back and prepares correctly"
+  - id: tr_weiji_l4_to_l5
+    from_prototype_id: proto_hex_64_line_4
+    to_prototype_id: proto_hex_64_line_5
+    transition_type: intra_family_adjacent
+    conditions:
+      - "visibility improves"
+      - "the field becomes more finishable"
+      - "coordination rises"
+    confidence: "working_assumption"
+    notes: "Preparatory reordering becomes radiant near-completion when readiness is visible"
+  - id: tr_weiji_l5_to_l6
+    from_prototype_id: proto_hex_64_line_5
+    to_prototype_id: proto_hex_64_line_6
+    transition_type: intra_family_adjacent
+    conditions:
+      - "the field mistakes readiness for completion"
+      - "vigilance drops"
+      - "final clarity is lost at the threshold"
+    confidence: "working_assumption"
+    notes: "Visible near-completion becomes false finish when the field gets intoxicated by almost-done"

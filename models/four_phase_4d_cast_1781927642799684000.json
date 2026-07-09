@@ -1,0 +1,7813 @@
+{
+  "seed": 1781927642799684000,
+  "subject": "four-phase-4d-run",
+  "dimension": "4*4*4*4",
+  "count": 256,
+  "elapsed_ns": 784292,
+  "elapsed_us": 784.292,
+  "elapsed_ms": 0.784292,
+  "points_per_second": 326409.0415304504,
+  "items": [
+    {
+      "index": 0,
+      "coord": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "primary_symbol": "䷎",
+      "primary_name": "谦",
+      "primary_sequence": 15,
+      "primary_key": "000001",
+      "primary_value": 1,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 1,
+      "coord": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "primary_symbol": "䷝",
+      "primary_name": "离",
+      "primary_sequence": 30,
+      "primary_key": "101101",
+      "primary_value": 45,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        9,
+        6,
+        9
+      ]
+    },
+    {
+      "index": 2,
+      "coord": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        2,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        9,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 3,
+      "coord": [
+        0,
+        0,
+        0,
+        3
+      ],
+      "primary_symbol": "䷋",
+      "primary_name": "否",
+      "primary_sequence": 12,
+      "primary_key": "111000",
+      "primary_value": 56,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 4,
+      "coord": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷒",
+      "changed_name": "临",
+      "changed_sequence": 19,
+      "changed_key": "000110",
+      "changed_value": 6,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 5,
+      "coord": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        3,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        6,
+        9,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 6,
+      "coord": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "primary_symbol": "䷚",
+      "primary_name": "颐",
+      "primary_sequence": 27,
+      "primary_key": "001100",
+      "primary_value": 12,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 7,
+      "coord": [
+        0,
+        0,
+        1,
+        3
+      ],
+      "primary_symbol": "䷙",
+      "primary_name": "大畜",
+      "primary_sequence": 26,
+      "primary_key": "001111",
+      "primary_value": 15,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        1,
+        2,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        9,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 8,
+      "coord": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷑",
+      "changed_name": "蛊",
+      "changed_sequence": 18,
+      "changed_key": "001011",
+      "changed_value": 11,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 9,
+      "coord": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷿",
+      "changed_name": "未济",
+      "changed_sequence": 64,
+      "changed_key": "101010",
+      "changed_value": 42,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 10,
+      "coord": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷴",
+      "changed_name": "渐",
+      "changed_sequence": 53,
+      "changed_key": "011001",
+      "changed_value": 25,
+      "changing_positions": [
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 11,
+      "coord": [
+        0,
+        0,
+        2,
+        3
+      ],
+      "primary_symbol": "䷚",
+      "primary_name": "颐",
+      "primary_sequence": 27,
+      "primary_key": "001100",
+      "primary_value": 12,
+      "changed_symbol": "䷨",
+      "changed_name": "损",
+      "changed_sequence": 41,
+      "changed_key": "001110",
+      "changed_value": 14,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        6,
+        7,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 12,
+      "coord": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "primary_symbol": "䷂",
+      "primary_name": "屯",
+      "primary_sequence": 3,
+      "primary_key": "010100",
+      "primary_value": 20,
+      "changed_symbol": "䷂",
+      "changed_name": "屯",
+      "changed_sequence": 3,
+      "changed_key": "010100",
+      "changed_value": 20,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 13,
+      "coord": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 14,
+      "coord": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷣",
+      "changed_name": "明夷",
+      "changed_sequence": 36,
+      "changed_key": "000101",
+      "changed_value": 5,
+      "changing_positions": [
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        7,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 15,
+      "coord": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 16,
+      "coord": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        8,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 17,
+      "coord": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "primary_symbol": "䷆",
+      "primary_name": "师",
+      "primary_sequence": 7,
+      "primary_key": "000010",
+      "primary_value": 2,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 18,
+      "coord": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷻",
+      "changed_name": "节",
+      "changed_sequence": 60,
+      "changed_key": "010110",
+      "changed_value": 22,
+      "changing_positions": [
+        1,
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        6,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 19,
+      "coord": [
+        0,
+        1,
+        0,
+        3
+      ],
+      "primary_symbol": "䷆",
+      "primary_name": "师",
+      "primary_sequence": 7,
+      "primary_key": "000010",
+      "primary_value": 2,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 20,
+      "coord": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 21,
+      "coord": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷤",
+      "changed_name": "家人",
+      "changed_sequence": 37,
+      "changed_key": "011101",
+      "changed_value": 29,
+      "changing_positions": [
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        6,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 22,
+      "coord": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        1,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 23,
+      "coord": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "primary_symbol": "䷻",
+      "primary_name": "节",
+      "primary_sequence": 60,
+      "primary_key": "010110",
+      "primary_value": 22,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 24,
+      "coord": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "primary_symbol": "䷬",
+      "primary_name": "萃",
+      "primary_sequence": 45,
+      "primary_key": "110000",
+      "primary_value": 48,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        1,
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        8,
+        8,
+        9,
+        9
+      ]
+    },
+    {
+      "index": 25,
+      "coord": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "primary_symbol": "䷮",
+      "primary_name": "困",
+      "primary_sequence": 47,
+      "primary_key": "110010",
+      "primary_value": 50,
+      "changed_symbol": "䷮",
+      "changed_name": "困",
+      "changed_sequence": 47,
+      "changed_key": "110010",
+      "changed_value": 50,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 26,
+      "coord": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "primary_symbol": "䷃",
+      "primary_name": "蒙",
+      "primary_sequence": 4,
+      "primary_key": "001010",
+      "primary_value": 10,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 27,
+      "coord": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷿",
+      "changed_name": "未济",
+      "changed_sequence": 64,
+      "changed_key": "101010",
+      "changed_value": 42,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 28,
+      "coord": [
+        0,
+        1,
+        3,
+        0
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷳",
+      "changed_name": "艮",
+      "changed_sequence": 52,
+      "changed_key": "001001",
+      "changed_value": 9,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 29,
+      "coord": [
+        0,
+        1,
+        3,
+        1
+      ],
+      "primary_symbol": "䷜",
+      "primary_name": "坎",
+      "primary_sequence": 29,
+      "primary_key": "010010",
+      "primary_value": 18,
+      "changed_symbol": "䷮",
+      "changed_name": "困",
+      "changed_sequence": 47,
+      "changed_key": "110010",
+      "changed_value": 50,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 30,
+      "coord": [
+        0,
+        1,
+        3,
+        2
+      ],
+      "primary_symbol": "䷶",
+      "primary_name": "丰",
+      "primary_sequence": 55,
+      "primary_key": "100101",
+      "primary_value": 37,
+      "changed_symbol": "䷡",
+      "changed_name": "大壮",
+      "changed_sequence": 34,
+      "changed_key": "100111",
+      "changed_value": 39,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        6,
+        7,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 31,
+      "coord": [
+        0,
+        1,
+        3,
+        3
+      ],
+      "primary_symbol": "䷪",
+      "primary_name": "夬",
+      "primary_sequence": 43,
+      "primary_key": "110111",
+      "primary_value": 55,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        9,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 32,
+      "coord": [
+        0,
+        2,
+        0,
+        0
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷞",
+      "changed_name": "咸",
+      "changed_sequence": 31,
+      "changed_key": "110001",
+      "changed_value": 49,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 33,
+      "coord": [
+        0,
+        2,
+        0,
+        1
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        6,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 34,
+      "coord": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "primary_symbol": "䷮",
+      "primary_name": "困",
+      "primary_sequence": 47,
+      "primary_key": "110010",
+      "primary_value": 50,
+      "changed_symbol": "䷧",
+      "changed_name": "解",
+      "changed_sequence": 40,
+      "changed_key": "100010",
+      "changed_value": 34,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 35,
+      "coord": [
+        0,
+        2,
+        0,
+        3
+      ],
+      "primary_symbol": "䷜",
+      "primary_name": "坎",
+      "primary_sequence": 29,
+      "primary_key": "010010",
+      "primary_value": 18,
+      "changed_symbol": "䷜",
+      "changed_name": "坎",
+      "changed_sequence": 29,
+      "changed_key": "010010",
+      "changed_value": 18,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 36,
+      "coord": [
+        0,
+        2,
+        1,
+        0
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷪",
+      "changed_name": "夬",
+      "changed_sequence": 43,
+      "changed_key": "110111",
+      "changed_value": 55,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        6,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 37,
+      "coord": [
+        0,
+        2,
+        1,
+        1
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷞",
+      "changed_name": "咸",
+      "changed_sequence": 31,
+      "changed_key": "110001",
+      "changed_value": 49,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 38,
+      "coord": [
+        0,
+        2,
+        1,
+        2
+      ],
+      "primary_symbol": "䷗",
+      "primary_name": "复",
+      "primary_sequence": 24,
+      "primary_key": "000100",
+      "primary_value": 4,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 39,
+      "coord": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "primary_symbol": "䷏",
+      "primary_name": "豫",
+      "primary_sequence": 16,
+      "primary_key": "100000",
+      "primary_value": 32,
+      "changed_symbol": "䷧",
+      "changed_name": "解",
+      "changed_sequence": 40,
+      "changed_key": "100010",
+      "changed_value": 34,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        6,
+        8,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 40,
+      "coord": [
+        0,
+        2,
+        2,
+        0
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 41,
+      "coord": [
+        0,
+        2,
+        2,
+        1
+      ],
+      "primary_symbol": "䷛",
+      "primary_name": "大过",
+      "primary_sequence": 28,
+      "primary_key": "110011",
+      "primary_value": 51,
+      "changed_symbol": "䷛",
+      "changed_name": "大过",
+      "changed_sequence": 28,
+      "changed_key": "110011",
+      "changed_value": 51,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 42,
+      "coord": [
+        0,
+        2,
+        2,
+        2
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷨",
+      "changed_name": "损",
+      "changed_sequence": 41,
+      "changed_key": "001110",
+      "changed_value": 14,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 43,
+      "coord": [
+        0,
+        2,
+        2,
+        3
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 44,
+      "coord": [
+        0,
+        2,
+        3,
+        0
+      ],
+      "primary_symbol": "䷣",
+      "primary_name": "明夷",
+      "primary_sequence": 36,
+      "primary_key": "000101",
+      "primary_value": 5,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 45,
+      "coord": [
+        0,
+        2,
+        3,
+        1
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷀",
+      "changed_name": "乾",
+      "changed_sequence": 1,
+      "changed_key": "111111",
+      "changed_value": 63,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 46,
+      "coord": [
+        0,
+        2,
+        3,
+        2
+      ],
+      "primary_symbol": "䷈",
+      "primary_name": "小畜",
+      "primary_sequence": 9,
+      "primary_key": "011111",
+      "primary_value": 31,
+      "changed_symbol": "䷾",
+      "changed_name": "既济",
+      "changed_sequence": 63,
+      "changed_key": "010101",
+      "changed_value": 21,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        7,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 47,
+      "coord": [
+        0,
+        2,
+        3,
+        3
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷠",
+      "changed_name": "遁",
+      "changed_sequence": 33,
+      "changed_key": "111001",
+      "changed_value": 57,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 48,
+      "coord": [
+        0,
+        3,
+        0,
+        0
+      ],
+      "primary_symbol": "䷝",
+      "primary_name": "离",
+      "primary_sequence": 30,
+      "primary_key": "101101",
+      "primary_value": 45,
+      "changed_symbol": "䷶",
+      "changed_name": "丰",
+      "changed_sequence": 55,
+      "changed_key": "100101",
+      "changed_value": 37,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        7,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 49,
+      "coord": [
+        0,
+        3,
+        0,
+        1
+      ],
+      "primary_symbol": "䷲",
+      "primary_name": "震",
+      "primary_sequence": 51,
+      "primary_key": "100100",
+      "primary_value": 36,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        6,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 50,
+      "coord": [
+        0,
+        3,
+        0,
+        2
+      ],
+      "primary_symbol": "䷴",
+      "primary_name": "渐",
+      "primary_sequence": 53,
+      "primary_key": "011001",
+      "primary_value": 25,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 51,
+      "coord": [
+        0,
+        3,
+        0,
+        3
+      ],
+      "primary_symbol": "䷗",
+      "primary_name": "复",
+      "primary_sequence": 24,
+      "primary_key": "000100",
+      "primary_value": 4,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 52,
+      "coord": [
+        0,
+        3,
+        1,
+        0
+      ],
+      "primary_symbol": "䷈",
+      "primary_name": "小畜",
+      "primary_sequence": 9,
+      "primary_key": "011111",
+      "primary_value": 31,
+      "changed_symbol": "䷞",
+      "changed_name": "咸",
+      "changed_sequence": 31,
+      "changed_key": "110001",
+      "changed_value": 49,
+      "changing_positions": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        9,
+        9,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 53,
+      "coord": [
+        0,
+        3,
+        1,
+        1
+      ],
+      "primary_symbol": "䷱",
+      "primary_name": "鼎",
+      "primary_sequence": 50,
+      "primary_key": "101011",
+      "primary_value": 43,
+      "changed_symbol": "䷿",
+      "changed_name": "未济",
+      "changed_sequence": 64,
+      "changed_key": "101010",
+      "changed_value": 42,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 54,
+      "coord": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        1,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        9,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 55,
+      "coord": [
+        0,
+        3,
+        1,
+        3
+      ],
+      "primary_symbol": "䷅",
+      "primary_name": "讼",
+      "primary_sequence": 6,
+      "primary_key": "111010",
+      "primary_value": 58,
+      "changed_symbol": "䷮",
+      "changed_name": "困",
+      "changed_sequence": 47,
+      "changed_key": "110010",
+      "changed_value": 50,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 56,
+      "coord": [
+        0,
+        3,
+        2,
+        0
+      ],
+      "primary_symbol": "䷍",
+      "primary_name": "大有",
+      "primary_sequence": 14,
+      "primary_key": "101111",
+      "primary_value": 47,
+      "changed_symbol": "䷉",
+      "changed_name": "履",
+      "changed_sequence": 10,
+      "changed_key": "111110",
+      "changed_value": 62,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        7,
+        7,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 57,
+      "coord": [
+        0,
+        3,
+        2,
+        1
+      ],
+      "primary_symbol": "䷣",
+      "primary_name": "明夷",
+      "primary_sequence": 36,
+      "primary_key": "000101",
+      "primary_value": 5,
+      "changed_symbol": "䷵",
+      "changed_name": "归妹",
+      "changed_sequence": 54,
+      "changed_key": "100110",
+      "changed_value": 38,
+      "changing_positions": [
+        1,
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        6,
+        7,
+        8,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 58,
+      "coord": [
+        0,
+        3,
+        2,
+        2
+      ],
+      "primary_symbol": "䷤",
+      "primary_name": "家人",
+      "primary_sequence": 37,
+      "primary_key": "011101",
+      "primary_value": 29,
+      "changed_symbol": "䷄",
+      "changed_name": "需",
+      "changed_sequence": 5,
+      "changed_key": "010111",
+      "changed_value": 23,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        6,
+        7,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 59,
+      "coord": [
+        0,
+        3,
+        2,
+        3
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷉",
+      "changed_name": "履",
+      "changed_sequence": 10,
+      "changed_key": "111110",
+      "changed_value": 62,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 60,
+      "coord": [
+        0,
+        3,
+        3,
+        0
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷸",
+      "changed_name": "巽",
+      "changed_sequence": 57,
+      "changed_key": "011011",
+      "changed_value": 27,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 61,
+      "coord": [
+        0,
+        3,
+        3,
+        1
+      ],
+      "primary_symbol": "䷃",
+      "primary_name": "蒙",
+      "primary_sequence": 4,
+      "primary_key": "001010",
+      "primary_value": 10,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 62,
+      "coord": [
+        0,
+        3,
+        3,
+        2
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        1,
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 63,
+      "coord": [
+        0,
+        3,
+        3,
+        3
+      ],
+      "primary_symbol": "䷡",
+      "primary_name": "大壮",
+      "primary_sequence": 34,
+      "primary_key": "100111",
+      "primary_value": 39,
+      "changed_symbol": "䷝",
+      "changed_name": "离",
+      "changed_sequence": 30,
+      "changed_key": "101101",
+      "changed_value": 45,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        7,
+        6,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 64,
+      "coord": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        1,
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        6,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 65,
+      "coord": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        1,
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 66,
+      "coord": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "primary_symbol": "䷘",
+      "primary_name": "无妄",
+      "primary_sequence": 25,
+      "primary_key": "111100",
+      "primary_value": 60,
+      "changed_symbol": "䷘",
+      "changed_name": "无妄",
+      "changed_sequence": 25,
+      "changed_key": "111100",
+      "changed_value": 60,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 67,
+      "coord": [
+        1,
+        0,
+        0,
+        3
+      ],
+      "primary_symbol": "䷛",
+      "primary_name": "大过",
+      "primary_sequence": 28,
+      "primary_key": "110011",
+      "primary_value": 51,
+      "changed_symbol": "䷹",
+      "changed_name": "兑",
+      "changed_sequence": 58,
+      "changed_key": "110110",
+      "changed_value": 54,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        6,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 68,
+      "coord": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "primary_symbol": "䷘",
+      "primary_name": "无妄",
+      "primary_sequence": 25,
+      "primary_key": "111100",
+      "primary_value": 60,
+      "changed_symbol": "䷔",
+      "changed_name": "噬嗑",
+      "changed_sequence": 21,
+      "changed_key": "101100",
+      "changed_value": 44,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 69,
+      "coord": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "primary_symbol": "䷔",
+      "primary_name": "噬嗑",
+      "primary_sequence": 21,
+      "primary_key": "101100",
+      "primary_value": 44,
+      "changed_symbol": "䷔",
+      "changed_name": "噬嗑",
+      "changed_sequence": 21,
+      "changed_key": "101100",
+      "changed_value": 44,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 70,
+      "coord": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 71,
+      "coord": [
+        1,
+        0,
+        1,
+        3
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷩",
+      "changed_name": "益",
+      "changed_sequence": 42,
+      "changed_key": "011100",
+      "changed_value": 28,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 72,
+      "coord": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "primary_symbol": "䷤",
+      "primary_name": "家人",
+      "primary_sequence": 37,
+      "primary_key": "011101",
+      "primary_value": 29,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        1,
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 73,
+      "coord": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "primary_symbol": "䷃",
+      "primary_name": "蒙",
+      "primary_sequence": 4,
+      "primary_key": "001010",
+      "primary_value": 10,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 74,
+      "coord": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "primary_symbol": "䷗",
+      "primary_name": "复",
+      "primary_sequence": 24,
+      "primary_key": "000100",
+      "primary_value": 4,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 75,
+      "coord": [
+        1,
+        0,
+        2,
+        3
+      ],
+      "primary_symbol": "䷧",
+      "primary_name": "解",
+      "primary_sequence": 40,
+      "primary_key": "100010",
+      "primary_value": 34,
+      "changed_symbol": "䷏",
+      "changed_name": "豫",
+      "changed_sequence": 16,
+      "changed_key": "100000",
+      "changed_value": 32,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 76,
+      "coord": [
+        1,
+        0,
+        3,
+        0
+      ],
+      "primary_symbol": "䷪",
+      "primary_name": "夬",
+      "primary_sequence": 43,
+      "primary_key": "110111",
+      "primary_value": 55,
+      "changed_symbol": "䷪",
+      "changed_name": "夬",
+      "changed_sequence": 43,
+      "changed_key": "110111",
+      "changed_value": 55,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        7,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 77,
+      "coord": [
+        1,
+        0,
+        3,
+        1
+      ],
+      "primary_symbol": "䷩",
+      "primary_name": "益",
+      "primary_sequence": 42,
+      "primary_key": "011100",
+      "primary_value": 28,
+      "changed_symbol": "䷩",
+      "changed_name": "益",
+      "changed_sequence": 42,
+      "changed_key": "011100",
+      "changed_value": 28,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 78,
+      "coord": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "primary_symbol": "䷻",
+      "primary_name": "节",
+      "primary_sequence": 60,
+      "primary_key": "010110",
+      "primary_value": 22,
+      "changed_symbol": "䷼",
+      "changed_name": "中孚",
+      "changed_sequence": 61,
+      "changed_key": "011110",
+      "changed_value": 30,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 79,
+      "coord": [
+        1,
+        0,
+        3,
+        3
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷉",
+      "changed_name": "履",
+      "changed_sequence": 10,
+      "changed_key": "111110",
+      "changed_value": 62,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        6,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 80,
+      "coord": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "primary_symbol": "䷆",
+      "primary_name": "师",
+      "primary_sequence": 7,
+      "primary_key": "000010",
+      "primary_value": 2,
+      "changed_symbol": "䷨",
+      "changed_name": "损",
+      "changed_sequence": 41,
+      "changed_key": "001110",
+      "changed_value": 14,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        6,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 81,
+      "coord": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "primary_symbol": "䷬",
+      "primary_name": "萃",
+      "primary_sequence": 45,
+      "primary_key": "110000",
+      "primary_value": 48,
+      "changed_symbol": "䷰",
+      "changed_name": "革",
+      "changed_sequence": 49,
+      "changed_key": "110101",
+      "changed_value": 53,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        6,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 82,
+      "coord": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 83,
+      "coord": [
+        1,
+        1,
+        0,
+        3
+      ],
+      "primary_symbol": "䷔",
+      "primary_name": "噬嗑",
+      "primary_sequence": 21,
+      "primary_key": "101100",
+      "primary_value": 44,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        3,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        9,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 84,
+      "coord": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "primary_symbol": "䷹",
+      "primary_name": "兑",
+      "primary_sequence": 58,
+      "primary_key": "110110",
+      "primary_value": 54,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 85,
+      "coord": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "primary_symbol": "䷆",
+      "primary_name": "师",
+      "primary_sequence": 7,
+      "primary_key": "000010",
+      "primary_value": 2,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 86,
+      "coord": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "primary_symbol": "䷡",
+      "primary_name": "大壮",
+      "primary_sequence": 34,
+      "primary_key": "100111",
+      "primary_value": 39,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        9,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 87,
+      "coord": [
+        1,
+        1,
+        1,
+        3
+      ],
+      "primary_symbol": "䷪",
+      "primary_name": "夬",
+      "primary_sequence": 43,
+      "primary_key": "110111",
+      "primary_value": 55,
+      "changed_symbol": "䷮",
+      "changed_name": "困",
+      "changed_sequence": 47,
+      "changed_key": "110010",
+      "changed_value": 50,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        9,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 88,
+      "coord": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "primary_symbol": "䷔",
+      "primary_name": "噬嗑",
+      "primary_sequence": 21,
+      "primary_key": "101100",
+      "primary_value": 44,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 89,
+      "coord": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 90,
+      "coord": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        1,
+        2,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        9,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 91,
+      "coord": [
+        1,
+        1,
+        2,
+        3
+      ],
+      "primary_symbol": "䷏",
+      "primary_name": "豫",
+      "primary_sequence": 16,
+      "primary_key": "100000",
+      "primary_value": 32,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 92,
+      "coord": [
+        1,
+        1,
+        3,
+        0
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷾",
+      "changed_name": "既济",
+      "changed_sequence": 63,
+      "changed_key": "010101",
+      "changed_value": 21,
+      "changing_positions": [
+        3,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        6,
+        9,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 93,
+      "coord": [
+        1,
+        1,
+        3,
+        1
+      ],
+      "primary_symbol": "䷼",
+      "primary_name": "中孚",
+      "primary_sequence": 61,
+      "primary_key": "011110",
+      "primary_value": 30,
+      "changed_symbol": "䷂",
+      "changed_name": "屯",
+      "changed_sequence": 3,
+      "changed_key": "010100",
+      "changed_value": 20,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 94,
+      "coord": [
+        1,
+        1,
+        3,
+        2
+      ],
+      "primary_symbol": "䷱",
+      "primary_name": "鼎",
+      "primary_sequence": 50,
+      "primary_key": "101011",
+      "primary_value": 43,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 95,
+      "coord": [
+        1,
+        1,
+        3,
+        3
+      ],
+      "primary_symbol": "䷿",
+      "primary_name": "未济",
+      "primary_sequence": 64,
+      "primary_key": "101010",
+      "primary_value": 42,
+      "changed_symbol": "䷑",
+      "changed_name": "蛊",
+      "changed_sequence": 18,
+      "changed_key": "001011",
+      "changed_value": 11,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 96,
+      "coord": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷫",
+      "changed_name": "姤",
+      "changed_sequence": 44,
+      "changed_key": "111011",
+      "changed_value": 59,
+      "changing_positions": [
+        2,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        6,
+        8,
+        6,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 97,
+      "coord": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "primary_symbol": "䷨",
+      "primary_name": "损",
+      "primary_sequence": 41,
+      "primary_key": "001110",
+      "primary_value": 14,
+      "changed_symbol": "䷃",
+      "changed_name": "蒙",
+      "changed_sequence": 4,
+      "changed_key": "001010",
+      "changed_value": 10,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 98,
+      "coord": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷽",
+      "changed_name": "小过",
+      "changed_sequence": 62,
+      "changed_key": "100001",
+      "changed_value": 33,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 99,
+      "coord": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "primary_symbol": "䷛",
+      "primary_name": "大过",
+      "primary_sequence": 28,
+      "primary_key": "110011",
+      "primary_value": 51,
+      "changed_symbol": "䷮",
+      "changed_name": "困",
+      "changed_sequence": 47,
+      "changed_key": "110010",
+      "changed_value": 50,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 100,
+      "coord": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "primary_symbol": "䷍",
+      "primary_name": "大有",
+      "primary_sequence": 14,
+      "primary_key": "101111",
+      "primary_value": 47,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        9,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 101,
+      "coord": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷒",
+      "changed_name": "临",
+      "changed_sequence": 19,
+      "changed_key": "000110",
+      "changed_value": 6,
+      "changing_positions": [
+        3,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        6,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 102,
+      "coord": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "primary_symbol": "䷨",
+      "primary_name": "损",
+      "primary_sequence": 41,
+      "primary_key": "001110",
+      "primary_value": 14,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        2,
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        9,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 103,
+      "coord": [
+        1,
+        2,
+        1,
+        3
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        9,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 104,
+      "coord": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "primary_symbol": "䷶",
+      "primary_name": "丰",
+      "primary_sequence": 55,
+      "primary_key": "100101",
+      "primary_value": 37,
+      "changed_symbol": "䷞",
+      "changed_name": "咸",
+      "changed_sequence": 31,
+      "changed_key": "110001",
+      "changed_value": 49,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        8,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 105,
+      "coord": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        9,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 106,
+      "coord": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 107,
+      "coord": [
+        1,
+        2,
+        2,
+        3
+      ],
+      "primary_symbol": "䷜",
+      "primary_name": "坎",
+      "primary_sequence": 29,
+      "primary_key": "010010",
+      "primary_value": 18,
+      "changed_symbol": "䷻",
+      "changed_name": "节",
+      "changed_sequence": 60,
+      "changed_key": "010110",
+      "changed_value": 22,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        6,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 108,
+      "coord": [
+        1,
+        2,
+        3,
+        0
+      ],
+      "primary_symbol": "䷈",
+      "primary_name": "小畜",
+      "primary_sequence": 9,
+      "primary_key": "011111",
+      "primary_value": 31,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        9,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 109,
+      "coord": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "primary_symbol": "䷯",
+      "primary_name": "井",
+      "primary_sequence": 48,
+      "primary_key": "010011",
+      "primary_value": 19,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 110,
+      "coord": [
+        1,
+        2,
+        3,
+        2
+      ],
+      "primary_symbol": "䷟",
+      "primary_name": "恒",
+      "primary_sequence": 32,
+      "primary_key": "100011",
+      "primary_value": 35,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        1,
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        8,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 111,
+      "coord": [
+        1,
+        2,
+        3,
+        3
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        9,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 112,
+      "coord": [
+        1,
+        3,
+        0,
+        0
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷚",
+      "changed_name": "颐",
+      "changed_sequence": 27,
+      "changed_key": "001100",
+      "changed_value": 12,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 113,
+      "coord": [
+        1,
+        3,
+        0,
+        1
+      ],
+      "primary_symbol": "䷧",
+      "primary_name": "解",
+      "primary_sequence": 40,
+      "primary_key": "100010",
+      "primary_value": 34,
+      "changed_symbol": "䷑",
+      "changed_name": "蛊",
+      "changed_sequence": 18,
+      "changed_key": "001011",
+      "changed_value": 11,
+      "changing_positions": [
+        1,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        6,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 114,
+      "coord": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "primary_symbol": "䷲",
+      "primary_name": "震",
+      "primary_sequence": 51,
+      "primary_key": "100100",
+      "primary_value": 36,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 115,
+      "coord": [
+        1,
+        3,
+        0,
+        3
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷫",
+      "changed_name": "姤",
+      "changed_sequence": 44,
+      "changed_key": "111011",
+      "changed_value": 59,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 116,
+      "coord": [
+        1,
+        3,
+        1,
+        0
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        1,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 117,
+      "coord": [
+        1,
+        3,
+        1,
+        1
+      ],
+      "primary_symbol": "䷼",
+      "primary_name": "中孚",
+      "primary_sequence": 61,
+      "primary_key": "011110",
+      "primary_value": 30,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        2,
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        9,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 118,
+      "coord": [
+        1,
+        3,
+        1,
+        2
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷊",
+      "changed_name": "泰",
+      "changed_sequence": 11,
+      "changed_key": "000111",
+      "changed_value": 7,
+      "changing_positions": [
+        1,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        7,
+        9,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 119,
+      "coord": [
+        1,
+        3,
+        1,
+        3
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷐",
+      "changed_name": "随",
+      "changed_sequence": 17,
+      "changed_key": "110100",
+      "changed_value": 52,
+      "changing_positions": [
+        1,
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        7,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 120,
+      "coord": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷤",
+      "changed_name": "家人",
+      "changed_sequence": 37,
+      "changed_key": "011101",
+      "changed_value": 29,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        7,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 121,
+      "coord": [
+        1,
+        3,
+        2,
+        1
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 122,
+      "coord": [
+        1,
+        3,
+        2,
+        2
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷝",
+      "changed_name": "离",
+      "changed_sequence": 30,
+      "changed_key": "101101",
+      "changed_value": 45,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        6,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 123,
+      "coord": [
+        1,
+        3,
+        2,
+        3
+      ],
+      "primary_symbol": "䷿",
+      "primary_name": "未济",
+      "primary_sequence": 64,
+      "primary_key": "101010",
+      "primary_value": 42,
+      "changed_symbol": "䷏",
+      "changed_name": "豫",
+      "changed_sequence": 16,
+      "changed_key": "100000",
+      "changed_value": 32,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 124,
+      "coord": [
+        1,
+        3,
+        3,
+        0
+      ],
+      "primary_symbol": "䷰",
+      "primary_name": "革",
+      "primary_sequence": 49,
+      "primary_key": "110101",
+      "primary_value": 53,
+      "changed_symbol": "䷾",
+      "changed_name": "既济",
+      "changed_sequence": 63,
+      "changed_key": "010101",
+      "changed_value": 21,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        7,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 125,
+      "coord": [
+        1,
+        3,
+        3,
+        1
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷊",
+      "changed_name": "泰",
+      "changed_sequence": 11,
+      "changed_key": "000111",
+      "changed_value": 7,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        7,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 126,
+      "coord": [
+        1,
+        3,
+        3,
+        2
+      ],
+      "primary_symbol": "䷾",
+      "primary_name": "既济",
+      "primary_sequence": 63,
+      "primary_key": "010101",
+      "primary_value": 21,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 127,
+      "coord": [
+        1,
+        3,
+        3,
+        3
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷜",
+      "changed_name": "坎",
+      "changed_sequence": 29,
+      "changed_key": "010010",
+      "changed_value": 18,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        9,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 128,
+      "coord": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "primary_symbol": "䷝",
+      "primary_name": "离",
+      "primary_sequence": 30,
+      "primary_key": "101101",
+      "primary_value": 45,
+      "changed_symbol": "䷔",
+      "changed_name": "噬嗑",
+      "changed_sequence": 21,
+      "changed_key": "101100",
+      "changed_value": 44,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 129,
+      "coord": [
+        2,
+        0,
+        0,
+        1
+      ],
+      "primary_symbol": "䷯",
+      "primary_name": "井",
+      "primary_sequence": 48,
+      "primary_key": "010011",
+      "primary_value": 19,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 130,
+      "coord": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "primary_symbol": "䷅",
+      "primary_name": "讼",
+      "primary_sequence": 6,
+      "primary_key": "111010",
+      "primary_value": 58,
+      "changed_symbol": "䷜",
+      "changed_name": "坎",
+      "changed_sequence": 29,
+      "changed_key": "010010",
+      "changed_value": 18,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 131,
+      "coord": [
+        2,
+        0,
+        0,
+        3
+      ],
+      "primary_symbol": "䷎",
+      "primary_name": "谦",
+      "primary_sequence": 15,
+      "primary_key": "000001",
+      "primary_value": 1,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        6,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 132,
+      "coord": [
+        2,
+        0,
+        1,
+        0
+      ],
+      "primary_symbol": "䷴",
+      "primary_name": "渐",
+      "primary_sequence": 53,
+      "primary_key": "011001",
+      "primary_value": 25,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 133,
+      "coord": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 134,
+      "coord": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "primary_symbol": "䷓",
+      "primary_name": "观",
+      "primary_sequence": 20,
+      "primary_key": "011000",
+      "primary_value": 24,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 135,
+      "coord": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "primary_symbol": "䷻",
+      "primary_name": "节",
+      "primary_sequence": 60,
+      "primary_key": "010110",
+      "primary_value": 22,
+      "changed_symbol": "䷪",
+      "changed_name": "夬",
+      "changed_sequence": 43,
+      "changed_key": "110111",
+      "changed_value": 55,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        7,
+        8,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 136,
+      "coord": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷣",
+      "changed_name": "明夷",
+      "changed_sequence": 36,
+      "changed_key": "000101",
+      "changed_value": 5,
+      "changing_positions": [
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        7,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 137,
+      "coord": [
+        2,
+        0,
+        2,
+        1
+      ],
+      "primary_symbol": "䷜",
+      "primary_name": "坎",
+      "primary_sequence": 29,
+      "primary_key": "010010",
+      "primary_value": 18,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 138,
+      "coord": [
+        2,
+        0,
+        2,
+        2
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷃",
+      "changed_name": "蒙",
+      "changed_sequence": 4,
+      "changed_key": "001010",
+      "changed_value": 10,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 139,
+      "coord": [
+        2,
+        0,
+        2,
+        3
+      ],
+      "primary_symbol": "䷔",
+      "primary_name": "噬嗑",
+      "primary_sequence": 21,
+      "primary_key": "101100",
+      "primary_value": 44,
+      "changed_symbol": "䷏",
+      "changed_name": "豫",
+      "changed_sequence": 16,
+      "changed_key": "100000",
+      "changed_value": 32,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 140,
+      "coord": [
+        2,
+        0,
+        3,
+        0
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷜",
+      "changed_name": "坎",
+      "changed_sequence": 29,
+      "changed_key": "010010",
+      "changed_value": 18,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        6,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 141,
+      "coord": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "primary_symbol": "䷿",
+      "primary_name": "未济",
+      "primary_sequence": 64,
+      "primary_key": "101010",
+      "primary_value": 42,
+      "changed_symbol": "䷱",
+      "changed_name": "鼎",
+      "changed_sequence": 50,
+      "changed_key": "101011",
+      "changed_value": 43,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        7,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 142,
+      "coord": [
+        2,
+        0,
+        3,
+        2
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷐",
+      "changed_name": "随",
+      "changed_sequence": 17,
+      "changed_key": "110100",
+      "changed_value": 52,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 143,
+      "coord": [
+        2,
+        0,
+        3,
+        3
+      ],
+      "primary_symbol": "䷝",
+      "primary_name": "离",
+      "primary_sequence": 30,
+      "primary_key": "101101",
+      "primary_value": 45,
+      "changed_symbol": "䷣",
+      "changed_name": "明夷",
+      "changed_sequence": 36,
+      "changed_key": "000101",
+      "changed_value": 5,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        7,
+        9,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 144,
+      "coord": [
+        2,
+        1,
+        0,
+        0
+      ],
+      "primary_symbol": "䷬",
+      "primary_name": "萃",
+      "primary_sequence": 45,
+      "primary_key": "110000",
+      "primary_value": 48,
+      "changed_symbol": "䷽",
+      "changed_name": "小过",
+      "changed_sequence": 62,
+      "changed_key": "100001",
+      "changed_value": 33,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        8,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 145,
+      "coord": [
+        2,
+        1,
+        0,
+        1
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷅",
+      "changed_name": "讼",
+      "changed_sequence": 6,
+      "changed_key": "111010",
+      "changed_value": 58,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        7,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 146,
+      "coord": [
+        2,
+        1,
+        0,
+        2
+      ],
+      "primary_symbol": "䷂",
+      "primary_name": "屯",
+      "primary_sequence": 3,
+      "primary_key": "010100",
+      "primary_value": 20,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 147,
+      "coord": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "primary_symbol": "䷾",
+      "primary_name": "既济",
+      "primary_sequence": 63,
+      "primary_key": "010101",
+      "primary_value": 21,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 148,
+      "coord": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "primary_symbol": "䷕",
+      "primary_name": "贲",
+      "primary_sequence": 22,
+      "primary_key": "001101",
+      "primary_value": 13,
+      "changed_symbol": "䷕",
+      "changed_name": "贲",
+      "changed_sequence": 22,
+      "changed_key": "001101",
+      "changed_value": 13,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        7,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 149,
+      "coord": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 150,
+      "coord": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷈",
+      "changed_name": "小畜",
+      "changed_sequence": 9,
+      "changed_key": "011111",
+      "changed_value": 31,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        6,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 151,
+      "coord": [
+        2,
+        1,
+        1,
+        3
+      ],
+      "primary_symbol": "䷶",
+      "primary_name": "丰",
+      "primary_sequence": 55,
+      "primary_key": "100101",
+      "primary_value": 37,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 152,
+      "coord": [
+        2,
+        1,
+        2,
+        0
+      ],
+      "primary_symbol": "䷁",
+      "primary_name": "坤",
+      "primary_sequence": 2,
+      "primary_key": "000000",
+      "primary_value": 0,
+      "changed_symbol": "䷏",
+      "changed_name": "豫",
+      "changed_sequence": 16,
+      "changed_key": "100000",
+      "changed_value": 32,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 153,
+      "coord": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷊",
+      "changed_name": "泰",
+      "changed_sequence": 11,
+      "changed_key": "000111",
+      "changed_value": 7,
+      "changing_positions": [
+        3,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        6,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 154,
+      "coord": [
+        2,
+        1,
+        2,
+        2
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 155,
+      "coord": [
+        2,
+        1,
+        2,
+        3
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 156,
+      "coord": [
+        2,
+        1,
+        3,
+        0
+      ],
+      "primary_symbol": "䷶",
+      "primary_name": "丰",
+      "primary_sequence": 55,
+      "primary_key": "100101",
+      "primary_value": 37,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 157,
+      "coord": [
+        2,
+        1,
+        3,
+        1
+      ],
+      "primary_symbol": "䷰",
+      "primary_name": "革",
+      "primary_sequence": 49,
+      "primary_key": "110101",
+      "primary_value": 53,
+      "changed_symbol": "䷽",
+      "changed_name": "小过",
+      "changed_sequence": 62,
+      "changed_key": "100001",
+      "changed_value": 33,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 158,
+      "coord": [
+        2,
+        1,
+        3,
+        2
+      ],
+      "primary_symbol": "䷬",
+      "primary_name": "萃",
+      "primary_sequence": 45,
+      "primary_key": "110000",
+      "primary_value": 48,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        8,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 159,
+      "coord": [
+        2,
+        1,
+        3,
+        3
+      ],
+      "primary_symbol": "䷙",
+      "primary_name": "大畜",
+      "primary_sequence": 26,
+      "primary_key": "001111",
+      "primary_value": 15,
+      "changed_symbol": "䷨",
+      "changed_name": "损",
+      "changed_sequence": 41,
+      "changed_key": "001110",
+      "changed_value": 14,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        7,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 160,
+      "coord": [
+        2,
+        2,
+        0,
+        0
+      ],
+      "primary_symbol": "䷤",
+      "primary_name": "家人",
+      "primary_sequence": 37,
+      "primary_key": "011101",
+      "primary_value": 29,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        3,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 161,
+      "coord": [
+        2,
+        2,
+        0,
+        1
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 162,
+      "coord": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "primary_symbol": "䷥",
+      "primary_name": "睽",
+      "primary_sequence": 38,
+      "primary_key": "101110",
+      "primary_value": 46,
+      "changed_symbol": "䷵",
+      "changed_name": "归妹",
+      "changed_sequence": 54,
+      "changed_key": "100110",
+      "changed_value": 38,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 163,
+      "coord": [
+        2,
+        2,
+        0,
+        3
+      ],
+      "primary_symbol": "䷰",
+      "primary_name": "革",
+      "primary_sequence": 49,
+      "primary_key": "110101",
+      "primary_value": 53,
+      "changed_symbol": "䷂",
+      "changed_name": "屯",
+      "changed_sequence": 3,
+      "changed_key": "010100",
+      "changed_value": 20,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 164,
+      "coord": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "primary_symbol": "䷿",
+      "primary_name": "未济",
+      "primary_sequence": 64,
+      "primary_key": "101010",
+      "primary_value": 42,
+      "changed_symbol": "䷧",
+      "changed_name": "解",
+      "changed_sequence": 40,
+      "changed_key": "100010",
+      "changed_value": 34,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 165,
+      "coord": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷚",
+      "changed_name": "颐",
+      "changed_sequence": 27,
+      "changed_key": "001100",
+      "changed_value": 12,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 166,
+      "coord": [
+        2,
+        2,
+        1,
+        2
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷼",
+      "changed_name": "中孚",
+      "changed_sequence": 61,
+      "changed_key": "011110",
+      "changed_value": 30,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 167,
+      "coord": [
+        2,
+        2,
+        1,
+        3
+      ],
+      "primary_symbol": "䷘",
+      "primary_name": "无妄",
+      "primary_sequence": 25,
+      "primary_key": "111100",
+      "primary_value": 60,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 168,
+      "coord": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "primary_symbol": "䷅",
+      "primary_name": "讼",
+      "primary_sequence": 6,
+      "primary_key": "111010",
+      "primary_value": 58,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        1,
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        8,
+        9,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 169,
+      "coord": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷑",
+      "changed_name": "蛊",
+      "changed_sequence": 18,
+      "changed_key": "001011",
+      "changed_value": 11,
+      "changing_positions": [
+        3,
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        9,
+        7,
+        9,
+        9
+      ]
+    },
+    {
+      "index": 170,
+      "coord": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "primary_symbol": "䷳",
+      "primary_name": "艮",
+      "primary_sequence": 52,
+      "primary_key": "001001",
+      "primary_value": 9,
+      "changed_symbol": "䷃",
+      "changed_name": "蒙",
+      "changed_sequence": 4,
+      "changed_key": "001010",
+      "changed_value": 10,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        6,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 171,
+      "coord": [
+        2,
+        2,
+        2,
+        3
+      ],
+      "primary_symbol": "䷝",
+      "primary_name": "离",
+      "primary_sequence": 30,
+      "primary_key": "101101",
+      "primary_value": 45,
+      "changed_symbol": "䷽",
+      "changed_name": "小过",
+      "changed_sequence": 62,
+      "changed_key": "100001",
+      "changed_value": 33,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 172,
+      "coord": [
+        2,
+        2,
+        3,
+        0
+      ],
+      "primary_symbol": "䷚",
+      "primary_name": "颐",
+      "primary_sequence": 27,
+      "primary_key": "001100",
+      "primary_value": 12,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        3,
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        7,
+        6,
+        6
+      ]
+    },
+    {
+      "index": 173,
+      "coord": [
+        2,
+        2,
+        3,
+        1
+      ],
+      "primary_symbol": "䷼",
+      "primary_name": "中孚",
+      "primary_sequence": 61,
+      "primary_key": "011110",
+      "primary_value": 30,
+      "changed_symbol": "䷒",
+      "changed_name": "临",
+      "changed_sequence": 19,
+      "changed_key": "000110",
+      "changed_value": 6,
+      "changing_positions": [
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 174,
+      "coord": [
+        2,
+        2,
+        3,
+        2
+      ],
+      "primary_symbol": "䷩",
+      "primary_name": "益",
+      "primary_sequence": 42,
+      "primary_key": "011100",
+      "primary_value": 28,
+      "changed_symbol": "䷠",
+      "changed_name": "遁",
+      "changed_sequence": 33,
+      "changed_key": "111001",
+      "changed_value": 57,
+      "changing_positions": [
+        1,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        8,
+        9,
+        7,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 175,
+      "coord": [
+        2,
+        2,
+        3,
+        3
+      ],
+      "primary_symbol": "䷈",
+      "primary_name": "小畜",
+      "primary_sequence": 9,
+      "primary_key": "011111",
+      "primary_value": 31,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        3,
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        9,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 176,
+      "coord": [
+        2,
+        3,
+        0,
+        0
+      ],
+      "primary_symbol": "䷁",
+      "primary_name": "坤",
+      "primary_sequence": 2,
+      "primary_key": "000000",
+      "primary_value": 0,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        6,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 177,
+      "coord": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷷",
+      "changed_name": "旅",
+      "changed_sequence": 56,
+      "changed_key": "101001",
+      "changed_value": 41,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 178,
+      "coord": [
+        2,
+        3,
+        0,
+        2
+      ],
+      "primary_symbol": "䷈",
+      "primary_name": "小畜",
+      "primary_sequence": 9,
+      "primary_key": "011111",
+      "primary_value": 31,
+      "changed_symbol": "䷥",
+      "changed_name": "睽",
+      "changed_sequence": 38,
+      "changed_key": "101110",
+      "changed_value": 46,
+      "changing_positions": [
+        1,
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        7,
+        7,
+        9,
+        6
+      ]
+    },
+    {
+      "index": 179,
+      "coord": [
+        2,
+        3,
+        0,
+        3
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷝",
+      "changed_name": "离",
+      "changed_sequence": 30,
+      "changed_key": "101101",
+      "changed_value": 45,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        6,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 180,
+      "coord": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "primary_symbol": "䷭",
+      "primary_name": "升",
+      "primary_sequence": 46,
+      "primary_key": "000011",
+      "primary_value": 3,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 181,
+      "coord": [
+        2,
+        3,
+        1,
+        1
+      ],
+      "primary_symbol": "䷋",
+      "primary_name": "否",
+      "primary_sequence": 12,
+      "primary_key": "111000",
+      "primary_value": 56,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        9,
+        9
+      ]
+    },
+    {
+      "index": 182,
+      "coord": [
+        2,
+        3,
+        1,
+        2
+      ],
+      "primary_symbol": "䷓",
+      "primary_name": "观",
+      "primary_sequence": 20,
+      "primary_key": "011000",
+      "primary_value": 24,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 183,
+      "coord": [
+        2,
+        3,
+        1,
+        3
+      ],
+      "primary_symbol": "䷨",
+      "primary_name": "损",
+      "primary_sequence": 41,
+      "primary_key": "001110",
+      "primary_value": 14,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        7,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 184,
+      "coord": [
+        2,
+        3,
+        2,
+        0
+      ],
+      "primary_symbol": "䷧",
+      "primary_name": "解",
+      "primary_sequence": 40,
+      "primary_key": "100010",
+      "primary_value": 34,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        6,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 185,
+      "coord": [
+        2,
+        3,
+        2,
+        1
+      ],
+      "primary_symbol": "䷩",
+      "primary_name": "益",
+      "primary_sequence": 42,
+      "primary_key": "011100",
+      "primary_value": 28,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        9,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 186,
+      "coord": [
+        2,
+        3,
+        2,
+        2
+      ],
+      "primary_symbol": "䷸",
+      "primary_name": "巽",
+      "primary_sequence": 57,
+      "primary_key": "011011",
+      "primary_value": 27,
+      "changed_symbol": "䷸",
+      "changed_name": "巽",
+      "changed_sequence": 57,
+      "changed_key": "011011",
+      "changed_value": 27,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 187,
+      "coord": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷛",
+      "changed_name": "大过",
+      "changed_sequence": 28,
+      "changed_key": "110011",
+      "changed_value": 51,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 188,
+      "coord": [
+        2,
+        3,
+        3,
+        0
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷀",
+      "changed_name": "乾",
+      "changed_sequence": 1,
+      "changed_key": "111111",
+      "changed_value": 63,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        6,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 189,
+      "coord": [
+        2,
+        3,
+        3,
+        1
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷺",
+      "changed_name": "涣",
+      "changed_sequence": 59,
+      "changed_key": "011010",
+      "changed_value": 26,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 190,
+      "coord": [
+        2,
+        3,
+        3,
+        2
+      ],
+      "primary_symbol": "䷤",
+      "primary_name": "家人",
+      "primary_sequence": 37,
+      "primary_key": "011101",
+      "primary_value": 29,
+      "changed_symbol": "䷝",
+      "changed_name": "离",
+      "changed_sequence": 30,
+      "changed_key": "101101",
+      "changed_value": 45,
+      "changing_positions": [
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        7,
+        7,
+        9,
+        6
+      ]
+    },
+    {
+      "index": 191,
+      "coord": [
+        2,
+        3,
+        3,
+        3
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 192,
+      "coord": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "primary_symbol": "䷓",
+      "primary_name": "观",
+      "primary_sequence": 20,
+      "primary_key": "011000",
+      "primary_value": 24,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 193,
+      "coord": [
+        3,
+        0,
+        0,
+        1
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷼",
+      "changed_name": "中孚",
+      "changed_sequence": 61,
+      "changed_key": "011110",
+      "changed_value": 30,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 194,
+      "coord": [
+        3,
+        0,
+        0,
+        2
+      ],
+      "primary_symbol": "䷄",
+      "primary_name": "需",
+      "primary_sequence": 5,
+      "primary_key": "010111",
+      "primary_value": 23,
+      "changed_symbol": "䷂",
+      "changed_name": "屯",
+      "changed_sequence": 3,
+      "changed_key": "010100",
+      "changed_value": 20,
+      "changing_positions": [
+        1,
+        2
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        7,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 195,
+      "coord": [
+        3,
+        0,
+        0,
+        3
+      ],
+      "primary_symbol": "䷎",
+      "primary_name": "谦",
+      "primary_sequence": 15,
+      "primary_key": "000001",
+      "primary_value": 1,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 196,
+      "coord": [
+        3,
+        0,
+        1,
+        0
+      ],
+      "primary_symbol": "䷠",
+      "primary_name": "遁",
+      "primary_sequence": 33,
+      "primary_key": "111001",
+      "primary_value": 57,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 197,
+      "coord": [
+        3,
+        0,
+        1,
+        1
+      ],
+      "primary_symbol": "䷍",
+      "primary_name": "大有",
+      "primary_sequence": 14,
+      "primary_key": "101111",
+      "primary_value": 47,
+      "changed_symbol": "䷡",
+      "changed_name": "大壮",
+      "changed_sequence": 34,
+      "changed_key": "100111",
+      "changed_value": 39,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        7,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 198,
+      "coord": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "primary_symbol": "䷨",
+      "primary_name": "损",
+      "primary_sequence": 41,
+      "primary_key": "001110",
+      "primary_value": 14,
+      "changed_symbol": "䷥",
+      "changed_name": "睽",
+      "changed_sequence": 38,
+      "changed_key": "101110",
+      "changed_value": 46,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 199,
+      "coord": [
+        3,
+        0,
+        1,
+        3
+      ],
+      "primary_symbol": "䷰",
+      "primary_name": "革",
+      "primary_sequence": 49,
+      "primary_key": "110101",
+      "primary_value": 53,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 200,
+      "coord": [
+        3,
+        0,
+        2,
+        0
+      ],
+      "primary_symbol": "䷞",
+      "primary_name": "咸",
+      "primary_sequence": 31,
+      "primary_key": "110001",
+      "primary_value": 49,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        9,
+        9
+      ]
+    },
+    {
+      "index": 201,
+      "coord": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "primary_symbol": "䷷",
+      "primary_name": "旅",
+      "primary_sequence": 56,
+      "primary_key": "101001",
+      "primary_value": 41,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        1,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 202,
+      "coord": [
+        3,
+        0,
+        2,
+        2
+      ],
+      "primary_symbol": "䷐",
+      "primary_name": "随",
+      "primary_sequence": 17,
+      "primary_key": "110100",
+      "primary_value": 52,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 203,
+      "coord": [
+        3,
+        0,
+        2,
+        3
+      ],
+      "primary_symbol": "䷮",
+      "primary_name": "困",
+      "primary_sequence": 47,
+      "primary_key": "110010",
+      "primary_value": 50,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 204,
+      "coord": [
+        3,
+        0,
+        3,
+        0
+      ],
+      "primary_symbol": "䷙",
+      "primary_name": "大畜",
+      "primary_sequence": 26,
+      "primary_key": "001111",
+      "primary_value": 15,
+      "changed_symbol": "䷊",
+      "changed_name": "泰",
+      "changed_sequence": 11,
+      "changed_key": "000111",
+      "changed_value": 7,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        7,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 205,
+      "coord": [
+        3,
+        0,
+        3,
+        1
+      ],
+      "primary_symbol": "䷷",
+      "primary_name": "旅",
+      "primary_sequence": 56,
+      "primary_key": "101001",
+      "primary_value": 41,
+      "changed_symbol": "䷴",
+      "changed_name": "渐",
+      "changed_sequence": 53,
+      "changed_key": "011001",
+      "changed_value": 25,
+      "changing_positions": [
+        5,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        7,
+        6,
+        9
+      ]
+    },
+    {
+      "index": 206,
+      "coord": [
+        3,
+        0,
+        3,
+        2
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷃",
+      "changed_name": "蒙",
+      "changed_sequence": 4,
+      "changed_key": "001010",
+      "changed_value": 10,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        6,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 207,
+      "coord": [
+        3,
+        0,
+        3,
+        3
+      ],
+      "primary_symbol": "䷤",
+      "primary_name": "家人",
+      "primary_sequence": 37,
+      "primary_key": "011101",
+      "primary_value": 29,
+      "changed_symbol": "䷚",
+      "changed_name": "颐",
+      "changed_sequence": 27,
+      "changed_key": "001100",
+      "changed_value": 12,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        7,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 208,
+      "coord": [
+        3,
+        1,
+        0,
+        0
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 209,
+      "coord": [
+        3,
+        1,
+        0,
+        1
+      ],
+      "primary_symbol": "䷯",
+      "primary_name": "井",
+      "primary_sequence": 48,
+      "primary_key": "010011",
+      "primary_value": 19,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 210,
+      "coord": [
+        3,
+        1,
+        0,
+        2
+      ],
+      "primary_symbol": "䷮",
+      "primary_name": "困",
+      "primary_sequence": 47,
+      "primary_key": "110010",
+      "primary_value": 50,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        2
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        8,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 211,
+      "coord": [
+        3,
+        1,
+        0,
+        3
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 212,
+      "coord": [
+        3,
+        1,
+        1,
+        0
+      ],
+      "primary_symbol": "䷙",
+      "primary_name": "大畜",
+      "primary_sequence": 26,
+      "primary_key": "001111",
+      "primary_value": 15,
+      "changed_symbol": "䷒",
+      "changed_name": "临",
+      "changed_sequence": 19,
+      "changed_key": "000110",
+      "changed_value": 6,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        7,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 213,
+      "coord": [
+        3,
+        1,
+        1,
+        1
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 214,
+      "coord": [
+        3,
+        1,
+        1,
+        2
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷭",
+      "changed_name": "升",
+      "changed_sequence": 46,
+      "changed_key": "000011",
+      "changed_value": 3,
+      "changing_positions": [
+        1,
+        3
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        9,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 215,
+      "coord": [
+        3,
+        1,
+        1,
+        3
+      ],
+      "primary_symbol": "䷛",
+      "primary_name": "大过",
+      "primary_sequence": 28,
+      "primary_key": "110011",
+      "primary_value": 51,
+      "changed_symbol": "䷯",
+      "changed_name": "井",
+      "changed_sequence": 48,
+      "changed_key": "010011",
+      "changed_value": 19,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        7,
+        8,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 216,
+      "coord": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "primary_symbol": "䷳",
+      "primary_name": "艮",
+      "primary_sequence": 52,
+      "primary_key": "001001",
+      "primary_value": 9,
+      "changed_symbol": "䷳",
+      "changed_name": "艮",
+      "changed_sequence": 52,
+      "changed_key": "001001",
+      "changed_value": 9,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 217,
+      "coord": [
+        3,
+        1,
+        2,
+        1
+      ],
+      "primary_symbol": "䷁",
+      "primary_name": "坤",
+      "primary_sequence": 2,
+      "primary_key": "000000",
+      "primary_value": 0,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 218,
+      "coord": [
+        3,
+        1,
+        2,
+        2
+      ],
+      "primary_symbol": "䷌",
+      "primary_name": "同人",
+      "primary_sequence": 13,
+      "primary_key": "111101",
+      "primary_value": 61,
+      "changed_symbol": "䷓",
+      "changed_name": "观",
+      "changed_sequence": 20,
+      "changed_key": "011000",
+      "changed_value": 24,
+      "changing_positions": [
+        1,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        9,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 219,
+      "coord": [
+        3,
+        1,
+        2,
+        3
+      ],
+      "primary_symbol": "䷡",
+      "primary_name": "大壮",
+      "primary_sequence": 34,
+      "primary_key": "100111",
+      "primary_value": 39,
+      "changed_symbol": "䷎",
+      "changed_name": "谦",
+      "changed_sequence": 15,
+      "changed_key": "000001",
+      "changed_value": 1,
+      "changing_positions": [
+        2,
+        3,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        9,
+        8,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 220,
+      "coord": [
+        3,
+        1,
+        3,
+        0
+      ],
+      "primary_symbol": "䷽",
+      "primary_name": "小过",
+      "primary_sequence": 62,
+      "primary_key": "100001",
+      "primary_value": 33,
+      "changed_symbol": "䷶",
+      "changed_name": "丰",
+      "changed_sequence": 55,
+      "changed_key": "100101",
+      "changed_value": 37,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        6,
+        8,
+        8,
+        7
+      ]
+    },
+    {
+      "index": 221,
+      "coord": [
+        3,
+        1,
+        3,
+        1
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 222,
+      "coord": [
+        3,
+        1,
+        3,
+        2
+      ],
+      "primary_symbol": "䷐",
+      "primary_name": "随",
+      "primary_sequence": 17,
+      "primary_key": "110100",
+      "primary_value": 52,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        9,
+        6,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 223,
+      "coord": [
+        3,
+        1,
+        3,
+        3
+      ],
+      "primary_symbol": "䷪",
+      "primary_name": "夬",
+      "primary_sequence": 43,
+      "primary_key": "110111",
+      "primary_value": 55,
+      "changed_symbol": "䷽",
+      "changed_name": "小过",
+      "changed_sequence": 62,
+      "changed_key": "100001",
+      "changed_value": 33,
+      "changing_positions": [
+        2,
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        9,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 224,
+      "coord": [
+        3,
+        2,
+        0,
+        0
+      ],
+      "primary_symbol": "䷮",
+      "primary_name": "困",
+      "primary_sequence": 47,
+      "primary_key": "110010",
+      "primary_value": 50,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        8,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 225,
+      "coord": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "primary_symbol": "䷉",
+      "primary_name": "履",
+      "primary_sequence": 10,
+      "primary_key": "111110",
+      "primary_value": 62,
+      "changed_symbol": "䷻",
+      "changed_name": "节",
+      "changed_sequence": 60,
+      "changed_key": "010110",
+      "changed_value": 22,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        9,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 226,
+      "coord": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "primary_symbol": "䷅",
+      "primary_name": "讼",
+      "primary_sequence": 6,
+      "primary_key": "111010",
+      "primary_value": 58,
+      "changed_symbol": "䷬",
+      "changed_name": "萃",
+      "changed_sequence": 45,
+      "changed_key": "110000",
+      "changed_value": 48,
+      "changing_positions": [
+        2,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 227,
+      "coord": [
+        3,
+        2,
+        0,
+        3
+      ],
+      "primary_symbol": "䷼",
+      "primary_name": "中孚",
+      "primary_sequence": 61,
+      "primary_key": "011110",
+      "primary_value": 30,
+      "changed_symbol": "䷉",
+      "changed_name": "履",
+      "changed_sequence": 10,
+      "changed_key": "111110",
+      "changed_value": 62,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        7,
+        7,
+        6
+      ]
+    },
+    {
+      "index": 228,
+      "coord": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "primary_symbol": "䷖",
+      "primary_name": "剥",
+      "primary_sequence": 23,
+      "primary_key": "001000",
+      "primary_value": 8,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 229,
+      "coord": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "primary_symbol": "䷒",
+      "primary_name": "临",
+      "primary_sequence": 19,
+      "primary_key": "000110",
+      "primary_value": 6,
+      "changed_symbol": "䷊",
+      "changed_name": "泰",
+      "changed_sequence": 11,
+      "changed_key": "000111",
+      "changed_value": 7,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        6,
+        7,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 230,
+      "coord": [
+        3,
+        2,
+        1,
+        2
+      ],
+      "primary_symbol": "䷚",
+      "primary_name": "颐",
+      "primary_sequence": 27,
+      "primary_key": "001100",
+      "primary_value": 12,
+      "changed_symbol": "䷚",
+      "changed_name": "颐",
+      "changed_sequence": 27,
+      "changed_key": "001100",
+      "changed_value": 12,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 231,
+      "coord": [
+        3,
+        2,
+        1,
+        3
+      ],
+      "primary_symbol": "䷿",
+      "primary_name": "未济",
+      "primary_sequence": 64,
+      "primary_key": "101010",
+      "primary_value": 42,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        4,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        8,
+        9
+      ]
+    },
+    {
+      "index": 232,
+      "coord": [
+        3,
+        2,
+        2,
+        0
+      ],
+      "primary_symbol": "䷹",
+      "primary_name": "兑",
+      "primary_sequence": 58,
+      "primary_key": "110110",
+      "primary_value": 54,
+      "changed_symbol": "䷏",
+      "changed_name": "豫",
+      "changed_sequence": 16,
+      "changed_key": "100000",
+      "changed_value": 32,
+      "changing_positions": [
+        2,
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        9,
+        8,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 233,
+      "coord": [
+        3,
+        2,
+        2,
+        1
+      ],
+      "primary_symbol": "䷆",
+      "primary_name": "师",
+      "primary_sequence": 7,
+      "primary_key": "000010",
+      "primary_value": 2,
+      "changed_symbol": "䷻",
+      "changed_name": "节",
+      "changed_sequence": 60,
+      "changed_key": "010110",
+      "changed_value": 22,
+      "changing_positions": [
+        3,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        6,
+        8,
+        6,
+        8
+      ]
+    },
+    {
+      "index": 234,
+      "coord": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "primary_symbol": "䷘",
+      "primary_name": "无妄",
+      "primary_sequence": 25,
+      "primary_key": "111100",
+      "primary_value": 60,
+      "changed_symbol": "䷲",
+      "changed_name": "震",
+      "changed_sequence": 51,
+      "changed_key": "100100",
+      "changed_value": 36,
+      "changing_positions": [
+        4,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        9,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 235,
+      "coord": [
+        3,
+        2,
+        2,
+        3
+      ],
+      "primary_symbol": "䷕",
+      "primary_name": "贲",
+      "primary_sequence": 22,
+      "primary_key": "001101",
+      "primary_value": 13,
+      "changed_symbol": "䷗",
+      "changed_name": "复",
+      "changed_sequence": 24,
+      "changed_key": "000100",
+      "changed_value": 4,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        7,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 236,
+      "coord": [
+        3,
+        2,
+        3,
+        0
+      ],
+      "primary_symbol": "䷃",
+      "primary_name": "蒙",
+      "primary_sequence": 4,
+      "primary_key": "001010",
+      "primary_value": 10,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 237,
+      "coord": [
+        3,
+        2,
+        3,
+        1
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷴",
+      "changed_name": "渐",
+      "changed_sequence": 53,
+      "changed_key": "011001",
+      "changed_value": 25,
+      "changing_positions": [
+        2,
+        6
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        9,
+        8,
+        7,
+        7,
+        9
+      ]
+    },
+    {
+      "index": 238,
+      "coord": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "primary_symbol": "䷎",
+      "primary_name": "谦",
+      "primary_sequence": 15,
+      "primary_key": "000001",
+      "primary_value": 1,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 239,
+      "coord": [
+        3,
+        2,
+        3,
+        3
+      ],
+      "primary_symbol": "䷋",
+      "primary_name": "否",
+      "primary_sequence": 12,
+      "primary_key": "111000",
+      "primary_value": 56,
+      "changed_symbol": "䷘",
+      "changed_name": "无妄",
+      "changed_sequence": 25,
+      "changed_key": "111100",
+      "changed_value": 60,
+      "changing_positions": [
+        3
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        6,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 240,
+      "coord": [
+        3,
+        3,
+        0,
+        0
+      ],
+      "primary_symbol": "䷎",
+      "primary_name": "谦",
+      "primary_sequence": 15,
+      "primary_key": "000001",
+      "primary_value": 1,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 241,
+      "coord": [
+        3,
+        3,
+        0,
+        1
+      ],
+      "primary_symbol": "䷚",
+      "primary_name": "颐",
+      "primary_sequence": 27,
+      "primary_key": "001100",
+      "primary_value": 12,
+      "changed_symbol": "䷔",
+      "changed_name": "噬嗑",
+      "changed_sequence": 21,
+      "changed_key": "101100",
+      "changed_value": 44,
+      "changing_positions": [
+        6
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        7,
+        7,
+        8,
+        6
+      ]
+    },
+    {
+      "index": 242,
+      "coord": [
+        3,
+        3,
+        0,
+        2
+      ],
+      "primary_symbol": "䷀",
+      "primary_name": "乾",
+      "primary_sequence": 1,
+      "primary_key": "111111",
+      "primary_value": 63,
+      "changed_symbol": "䷹",
+      "changed_name": "兑",
+      "changed_sequence": 58,
+      "changed_key": "110110",
+      "changed_value": 54,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        7,
+        9,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 243,
+      "coord": [
+        3,
+        3,
+        0,
+        3
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷇",
+      "changed_name": "比",
+      "changed_sequence": 8,
+      "changed_key": "010000",
+      "changed_value": 16,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 244,
+      "coord": [
+        3,
+        3,
+        1,
+        0
+      ],
+      "primary_symbol": "䷱",
+      "primary_name": "鼎",
+      "primary_sequence": 50,
+      "primary_key": "101011",
+      "primary_value": 43,
+      "changed_symbol": "䷋",
+      "changed_name": "否",
+      "changed_sequence": 12,
+      "changed_key": "111000",
+      "changed_value": 56,
+      "changing_positions": [
+        1,
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        9,
+        8,
+        7,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 245,
+      "coord": [
+        3,
+        3,
+        1,
+        1
+      ],
+      "primary_symbol": "䷰",
+      "primary_name": "革",
+      "primary_sequence": 49,
+      "primary_key": "110101",
+      "primary_value": 53,
+      "changed_symbol": "䷠",
+      "changed_name": "遁",
+      "changed_sequence": 33,
+      "changed_key": "111001",
+      "changed_value": 57,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        9,
+        6,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 246,
+      "coord": [
+        3,
+        3,
+        1,
+        2
+      ],
+      "primary_symbol": "䷹",
+      "primary_name": "兑",
+      "primary_sequence": 58,
+      "primary_key": "110110",
+      "primary_value": 54,
+      "changed_symbol": "䷅",
+      "changed_name": "讼",
+      "changed_sequence": 6,
+      "changed_key": "111010",
+      "changed_value": 58,
+      "changing_positions": [
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        9,
+        6,
+        7,
+        7
+      ]
+    },
+    {
+      "index": 247,
+      "coord": [
+        3,
+        3,
+        1,
+        3
+      ],
+      "primary_symbol": "䷺",
+      "primary_name": "涣",
+      "primary_sequence": 59,
+      "primary_key": "011010",
+      "primary_value": 26,
+      "changed_symbol": "䷖",
+      "changed_name": "剥",
+      "changed_sequence": 23,
+      "changed_key": "001000",
+      "changed_value": 8,
+      "changing_positions": [
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        7,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 248,
+      "coord": [
+        3,
+        3,
+        2,
+        0
+      ],
+      "primary_symbol": "䷦",
+      "primary_name": "蹇",
+      "primary_sequence": 39,
+      "primary_key": "010001",
+      "primary_value": 17,
+      "changed_symbol": "䷦",
+      "changed_name": "蹇",
+      "changed_sequence": 39,
+      "changed_key": "010001",
+      "changed_value": 17,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        7,
+        8,
+        8,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 249,
+      "coord": [
+        3,
+        3,
+        2,
+        1
+      ],
+      "primary_symbol": "䷳",
+      "primary_name": "艮",
+      "primary_sequence": 52,
+      "primary_key": "001001",
+      "primary_value": 9,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        1,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        8,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 250,
+      "coord": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "primary_symbol": "䷅",
+      "primary_name": "讼",
+      "primary_sequence": 6,
+      "primary_key": "111010",
+      "primary_value": 58,
+      "changed_symbol": "䷢",
+      "changed_name": "晋",
+      "changed_sequence": 35,
+      "changed_key": "101000",
+      "changed_value": 40,
+      "changing_positions": [
+        2,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        9,
+        8,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 251,
+      "coord": [
+        3,
+        3,
+        2,
+        3
+      ],
+      "primary_symbol": "䷫",
+      "primary_name": "姤",
+      "primary_sequence": 44,
+      "primary_key": "111011",
+      "primary_value": 59,
+      "changed_symbol": "䷿",
+      "changed_name": "未济",
+      "changed_sequence": 64,
+      "changed_key": "101010",
+      "changed_value": 42,
+      "changing_positions": [
+        1,
+        5
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        8,
+        7,
+        9,
+        7
+      ]
+    },
+    {
+      "index": 252,
+      "coord": [
+        3,
+        3,
+        3,
+        0
+      ],
+      "primary_symbol": "䷇",
+      "primary_name": "比",
+      "primary_sequence": 8,
+      "primary_key": "010000",
+      "primary_value": 16,
+      "changed_symbol": "䷁",
+      "changed_name": "坤",
+      "changed_sequence": 2,
+      "changed_key": "000000",
+      "changed_value": 0,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        8,
+        8,
+        8,
+        9,
+        8
+      ]
+    },
+    {
+      "index": 253,
+      "coord": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "primary_symbol": "䷊",
+      "primary_name": "泰",
+      "primary_sequence": 11,
+      "primary_key": "000111",
+      "primary_value": 7,
+      "changed_symbol": "䷃",
+      "changed_name": "蒙",
+      "changed_sequence": 4,
+      "changed_key": "001010",
+      "changed_value": 10,
+      "changing_positions": [
+        1,
+        3,
+        4
+      ],
+      "line_values_bottom_to_top": [
+        9,
+        7,
+        9,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "index": 254,
+      "coord": [
+        3,
+        3,
+        3,
+        2
+      ],
+      "primary_symbol": "䷻",
+      "primary_name": "节",
+      "primary_sequence": 60,
+      "primary_key": "010110",
+      "primary_value": 22,
+      "changed_symbol": "䷻",
+      "changed_name": "节",
+      "changed_sequence": 60,
+      "changed_key": "010110",
+      "changed_value": 22,
+      "changing_positions": [],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        7,
+        8,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 255,
+      "coord": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "primary_symbol": "䷜",
+      "primary_name": "坎",
+      "primary_sequence": 29,
+      "primary_key": "010010",
+      "primary_value": 18,
+      "changed_symbol": "䷆",
+      "changed_name": "师",
+      "changed_sequence": 7,
+      "changed_key": "000010",
+      "changed_value": 2,
+      "changing_positions": [
+        5
+      ],
+      "line_values_bottom_to_top": [
+        8,
+        7,
+        8,
+        8,
+        9,
+        8
+      ]
+    }
+  ]
+}

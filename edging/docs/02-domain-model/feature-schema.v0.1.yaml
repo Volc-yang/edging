@@ -1,0 +1,33 @@
+version: "0.1"
+scale: "0_to_1"
+dimensions:
+  - key: agency
+    label: Agency
+    description: Degree of active initiation and push
+  - key: visibility
+    label: Visibility
+    description: Degree of externalized or observable form
+  - key: resource_mobilization
+    label: Resource Mobilization
+    description: Ability to activate resources, people, or channels
+  - key: stability
+    label: Stability
+    description: Degree of structural steadiness and continuity
+  - key: risk_exposure
+    label: Risk Exposure
+    description: Degree of fragility, conflict, or loss exposure
+  - key: momentum
+    label: Momentum
+    description: Degree of movement speed and carried force
+  - key: constraint_pressure
+    label: Constraint Pressure
+    description: Degree of external friction or limiting force
+  - key: coordination
+    label: Coordination
+    description: Degree of internal or external alignment
+  - key: timing_maturity
+    label: Timing Maturity
+    description: Degree to which the situation is ripe
+  - key: governance_capacity
+    label: Governance Capacity
+    description: Degree of ability to hold, regulate, or sustain outcomes

@@ -1,0 +1,1408 @@
+{
+  "111111": {
+    "name": "乾",
+    "pinyin": "qián",
+    "judgment": {
+      "text": "元亨，利贞。",
+      "commentary": "《彖》曰：大哉乾元，万物资始，乃统天。云行雨施，品物流形。大明终始，六位时成，时乘六龙以御天。乾道变化，各正性命，保合大和，乃利贞。首出庶物，万国咸宁。"
+    },
+    "image": {
+      "text": "天行健，君子以自强不息。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 9,
+        "text": "潜龙，勿用。",
+        "commentary": "《象》曰：潜龙勿用，阳在下也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "见龙在田，利见大人。",
+        "commentary": "《象》曰：见龙在田，德施普也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 9,
+        "text": "君子终日乾乾，夕惕若，厉无咎。",
+        "commentary": "《象》曰：终日乾乾，反复道也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 9,
+        "text": "或跃在渊，无咎。",
+        "commentary": "《象》曰：或跃在渊，进无咎也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "飞龙在天，利见大人。",
+        "commentary": "《象》曰：飞龙在天，大人造也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 9,
+        "text": "亢龙有悔。",
+        "commentary": "《象》曰：亢龙有悔，盈不可久也。"
+      },
+      {
+        "line_number": 7,
+        "line_type": 9,
+        "text": "用九：见群龙无首，吉。",
+        "commentary": "《象》曰：用九，天德不可为首也。"
+      }
+    ],
+    "sequence": 1,
+    "symbol": "䷀",
+    "upper_trigram": "乾",
+    "lower_trigram": "乾"
+  },
+  "000000": {
+    "name": "坤",
+    "pinyin": "kūn",
+    "judgment": {
+      "text": "元亨，利牝马之贞。君子有攸往，先迷后得主，利。西南得朋，东北丧朋。安贞，吉。",
+      "commentary": "《彖》曰：至哉坤元，万物资生，乃顺承天。坤厚载物，德合无疆。含弘光大，品物咸亨。牝马地类，行地无疆，柔顺利贞。君子善行，先迷失道，后顺得常。西南得朋，乃与类行；东北丧朋，乃终有庆。安贞之吉，应地无疆。"
+    },
+    "image": {
+      "text": "地势坤，君子以厚德载物。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 6,
+        "text": "履霜，坚冰至。",
+        "commentary": "《象》曰：履霜坚冰，阴始凝也。驯致其道，至坚冰也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 6,
+        "text": "直、方、大，不习，无不利。",
+        "commentary": "《象》曰：六二之动，直以方也。不习无不利，地道光也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "含章可贞。或从王事，无成有终。",
+        "commentary": "《象》曰：含章可贞，以时发也。或从王事，知光大也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "括囊，无咎无誉。",
+        "commentary": "《象》曰：括囊无咎，慎不害也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 6,
+        "text": "黄裳，元吉。",
+        "commentary": "《象》曰：黄裳元吉，文在中也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 6,
+        "text": "龙战于野，其血玄黄。",
+        "commentary": "《象》曰：龙战于野，其道穷也。"
+      },
+      {
+        "line_number": 7,
+        "line_type": 6,
+        "text": "用六：利永贞。",
+        "commentary": "《象》曰：用六永贞，以大终也。"
+      }
+    ],
+    "sequence": 2,
+    "symbol": "䷁",
+    "upper_trigram": "坤",
+    "lower_trigram": "坤"
+  },
+  "010100": {
+    "name": "屯",
+    "pinyin": "zhūn",
+    "judgment": {
+      "text": "元亨，利贞。勿用有攸往，利建侯。",
+      "commentary": "《彖》曰：屯，刚柔始交而难生。动乎险中，大亨贞。雷雨之动满盈，天造草昧，宜建侯而不宁。"
+    },
+    "image": {
+      "text": "云雷，屯。君子以经纶。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 9,
+        "text": "磐桓，利居贞，利建侯。",
+        "commentary": "《象》曰：虽磐桓，志行正也。以贵下贱，大得民也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 6,
+        "text": "屯如邅如，乘马班如。匪寇婚媾，女子贞不字，十年乃字。",
+        "commentary": "《象》曰：六二之难，乘刚也。十年乃字，反常也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "即鹿无虞，惟入于林中。君子几，不如舍，往吝。",
+        "commentary": "《象》曰：即鹿无虞，以从禽也。君子舍之，往吝穷也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "乘马班如，求婚媾，往吉，无不利。",
+        "commentary": "《象》曰：求而往，明也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "屯其膏，小贞吉，大贞凶。",
+        "commentary": "《象》曰：屯其膏，施未光也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 6,
+        "text": "乘马班如，泣血涟如。",
+        "commentary": "《象》曰：泣血涟如，何可长也。"
+      }
+    ],
+    "sequence": 3,
+    "symbol": "䷂",
+    "upper_trigram": "坎",
+    "lower_trigram": "震"
+  },
+  "001010": {
+    "name": "蒙",
+    "pinyin": "méng",
+    "judgment": {
+      "text": "亨。匪我求童蒙，童蒙求我。初噬告，再三渎，渎则不告。利贞。",
+      "commentary": "《彖》曰：蒙，山下有险，险而止，蒙。蒙亨，以亨行时中也。匪我求童蒙，童蒙求我，志应也。初噬告，以刚中也。再三渎，渎则不告，渎蒙也。蒙以养正，圣功也。"
+    },
+    "image": {
+      "text": "山下出泉，蒙。君子以果行育德。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 6,
+        "text": "发蒙，利用刑人，用说桎梏，以往吝。",
+        "commentary": "《象》曰：利用刑人，以正法也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "包蒙，吉。纳妇，吉。子克家。",
+        "commentary": "《象》曰：子克家，刚柔接也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "勿用取女，见金夫，不有躬，无攸利。",
+        "commentary": "《象》曰：勿用取女，行不顺也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "困蒙，吝。",
+        "commentary": "《象》曰：困蒙之吝，独远实也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 6,
+        "text": "童蒙，吉。",
+        "commentary": "《象》曰：童蒙之吉，顺以巽也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 9,
+        "text": "击蒙，不利为寇，利御寇。",
+        "commentary": "《象》曰：利御寇，上下顺也。"
+      }
+    ],
+    "sequence": 4,
+    "symbol": "䷃",
+    "upper_trigram": "艮",
+    "lower_trigram": "坎"
+  },
+  "010111": {
+    "name": "需",
+    "pinyin": "xū",
+    "judgment": {
+      "text": "有孚，光亨，贞吉。利涉大川。",
+      "commentary": "《彖》曰：需，须也。险在前也，刚健而不陷，其义不困穷矣。需有孚，光亨贞吉，位乎天位，以正中也。利涉大川，往有功也。"
+    },
+    "image": {
+      "text": "云上于天，需。君子以饮食宴乐。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 9,
+        "text": "需于郊，利用恒，无咎。",
+        "commentary": "《象》曰：需于郊，不犯难行也。利用恒无咎，未失常也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "需于沙，小有言，终吉。",
+        "commentary": "《象》曰：需于沙，衍在中也。虽小有言，以吉终也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 9,
+        "text": "需于泥，致寇至。",
+        "commentary": "《象》曰：需于泥，灾在外也。自我致寇，敬慎不败也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "需于血，出自穴。",
+        "commentary": "《象》曰：需于血，顺以听也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "需于酒食，贞吉。",
+        "commentary": "《象》曰：酒食贞吉，以中正也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 6,
+        "text": "入于穴，有不速之客三人来，敬之终吉。",
+        "commentary": "《象》曰：不速之客来，敬之终吉。虽不当位，未大失也。"
+      }
+    ],
+    "sequence": 5,
+    "symbol": "䷄",
+    "upper_trigram": "坎",
+    "lower_trigram": "乾"
+  },
+  "111010": {
+    "name": "讼",
+    "pinyin": "sòng",
+    "judgment": {
+      "text": "有孚，窒惕，中吉，终凶。利见大人，不利涉大川。",
+      "commentary": "《彖》曰：讼，上刚下险，险而健，讼。讼有孚，窒惕，中吉，刚来而得中也。终凶，讼不可成也。利见大人，尚中正也。不利涉大川，入于渊也。"
+    },
+    "image": {
+      "text": "天与水违行，讼。君子以作事谋始。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 6,
+        "text": "不永所事，小有言，终吉。",
+        "commentary": "《象》曰：不永所事，讼不可长也。虽小有言，其辩明也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "不克讼，归而逋，其邑人三百户，无眚。",
+        "commentary": "《象》曰：不克讼，归逋窜也。自下讼上，患至掇也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "食旧德，贞厉，终吉。或从王事，无成。",
+        "commentary": "《象》曰：食旧德，从上吉也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 9,
+        "text": "不克讼，复即命，渝安贞，吉。",
+        "commentary": "《象》曰：复即命，渝安贞，不失也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "讼，元吉。",
+        "commentary": "《象》曰：讼元吉，以中正也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 9,
+        "text": "或锡之鞶带，终朝三褫之。",
+        "commentary": "《象》曰：以讼受服，亦不足敬也。"
+      }
+    ],
+    "sequence": 6,
+    "symbol": "䷅",
+    "upper_trigram": "乾",
+    "lower_trigram": "坎"
+  },
+  "000010": {
+    "name": "师",
+    "pinyin": "shī",
+    "judgment": {
+      "text": "贞，丈人吉，无咎。",
+      "commentary": "《彖》曰：师，众也。贞，正也。能以众正，可以王矣。刚中而应，行险而顺，以此毒天下，而民从之，吉又何咎矣。"
+    },
+    "image": {
+      "text": "地中有水，师。君子以容民畜众。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 6,
+        "text": "师出以律，否臧凶。",
+        "commentary": "《象》曰：师出以律，失律凶也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "在师中，吉，无咎，王三锡命。",
+        "commentary": "《象》曰：在师中吉，承天宠也。王三锡命，怀万邦也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "师或舆尸，凶。",
+        "commentary": "《象》曰：师或舆尸，大无功也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "师左次，无咎。",
+        "commentary": "《象》曰：左次无咎，未失常也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 6,
+        "text": "田有禽，利执言，无咎。长子帅师，弟子舆尸，贞凶。",
+        "commentary": "《象》曰：长子帅师，以中行也。弟子舆尸，使不当也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 6,
+        "text": "大君有命，开国承家，小人勿用。",
+        "commentary": "《象》曰：大君有命，以正功也。小人勿用，必乱邦也。"
+      }
+    ],
+    "sequence": 7,
+    "symbol": "䷆",
+    "upper_trigram": "坤",
+    "lower_trigram": "坎"
+  },
+  "010000": {
+    "name": "比",
+    "pinyin": "bǐ",
+    "judgment": {
+      "text": "吉。原筮，元永贞，无咎。不宁方来，后夫凶。",
+      "commentary": "《彖》曰：比，吉也。比，辅也，下顺从也。原筮，元永贞，无咎，以刚中也。不宁方来，上下应也。后夫凶，其道穷也。"
+    },
+    "image": {
+      "text": "地上有水，比。先王以建万国，亲诸侯。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 6,
+        "text": "有孚比之，无咎。有孚盈缶，终来有他，吉。",
+        "commentary": "《象》曰：比之初六，有他吉也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 6,
+        "text": "比之自内，贞吉。",
+        "commentary": "《象》曰：比之自内，不自失也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "比之匪人。",
+        "commentary": "《象》曰：比之匪人，不亦伤乎。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "外比之，贞吉。",
+        "commentary": "《象》曰：外比于贤，以从上也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "显比，王用三驱，失前禽。邑人不诫，吉。",
+        "commentary": "《象》曰：显比之吉，位正中也。舍逆取顺，失前禽也。邑人不诫，上使中也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 6,
+        "text": "比之无首，凶。",
+        "commentary": "《象》曰：比之无首，无所终也。"
+      }
+    ],
+    "sequence": 8,
+    "symbol": "䷇",
+    "upper_trigram": "坎",
+    "lower_trigram": "坤"
+  },
+  "011111": {
+    "name": "小畜",
+    "pinyin": "xiǎo chù",
+    "judgment": {
+      "text": "亨。密云不雨，自我西郊。",
+      "commentary": "《彖》曰：小畜，柔得位而上下应之，曰小畜。健而巽，刚中而志行，乃亨。密云不雨，尚往也。自我西郊，施未行也。"
+    },
+    "image": {
+      "text": "风行天上，小畜。君子以懿文德。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 9,
+        "text": "复自道，何其咎，吉。",
+        "commentary": "《象》曰：复自道，其义吉也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "牵复，吉。",
+        "commentary": "《象》曰：牵复在中，亦不自失也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 9,
+        "text": "舆说辐，夫妻反目。",
+        "commentary": "《象》曰：夫妻反目，不能正室也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 6,
+        "text": "有孚，血去惕出，无咎。",
+        "commentary": "《象》曰：有孚惕出，上合志也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "有孚挛如，富以其邻。",
+        "commentary": "《象》曰：有孚挛如，不独富也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 9,
+        "text": "既雨既处，尚德载，妇贞厉。月几望，君子征凶。",
+        "commentary": "《象》曰：既雨既处，德积载也。君子征凶，有所疑也。"
+      }
+    ],
+    "sequence": 9,
+    "symbol": "䷈",
+    "upper_trigram": "巽",
+    "lower_trigram": "乾"
+  },
+  "111110": {
+    "name": "履",
+    "pinyin": "lǚ",
+    "judgment": {
+      "text": "履虎尾，不咥人，亨。",
+      "commentary": "《彖》曰：履，柔履刚也。说而应乎乾，是以履虎尾，不咥人，亨。刚中正，履帝位而不疚，光明也。"
+    },
+    "image": {
+      "text": "上天下泽，履。君子以辨上下，定民志。"
+    },
+    "lines": [
+      {
+        "line_number": 1,
+        "line_type": 9,
+        "text": "素履，往无咎。",
+        "commentary": "《象》曰：素履之往，独行愿也。"
+      },
+      {
+        "line_number": 2,
+        "line_type": 9,
+        "text": "履道坦坦，幽人贞吉。",
+        "commentary": "《象》曰：幽人贞吉，中不自乱也。"
+      },
+      {
+        "line_number": 3,
+        "line_type": 6,
+        "text": "眇能视，跛能履，履虎尾，咥人，凶。武人为于大君。",
+        "commentary": "《象》曰：眇能视，不足以有明也。跛能履，不足以与行也。咥人之凶，位不当也。武人为于大君，志刚也。"
+      },
+      {
+        "line_number": 4,
+        "line_type": 9,
+        "text": "履虎尾，愬愬终吉。",
+        "commentary": "《象》曰：愬愬终吉，志行也。"
+      },
+      {
+        "line_number": 5,
+        "line_type": 9,
+        "text": "夬履，贞厉。",
+        "commentary": "《象》曰：夬履贞厉，位正当也。"
+      },
+      {
+        "line_number": 6,
+        "line_type": 9,
+        "text": "视履考祥，其旋元吉。",
+        "commentary": "《象》曰：元吉在上，大有庆也。"
+      }
+    ],
+    "sequence": 10,
+    "symbol": "䷉",
+    "upper_trigram": "乾",
+    "lower_trigram": "兑"
+  },
+  "000111": {
+    "name": "泰",
+    "pinyin": "tài",
+    "sequence": 11,
+    "symbol": "䷊",
+    "upper_trigram": "坤",
+    "lower_trigram": "乾",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "111000": {
+    "name": "否",
+    "pinyin": "pǐ",
+    "sequence": 12,
+    "symbol": "䷋",
+    "upper_trigram": "乾",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "111101": {
+    "name": "同人",
+    "pinyin": "tóng rén",
+    "sequence": 13,
+    "symbol": "䷌",
+    "upper_trigram": "乾",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101111": {
+    "name": "大有",
+    "pinyin": "dà yǒu",
+    "sequence": 14,
+    "symbol": "䷍",
+    "upper_trigram": "离",
+    "lower_trigram": "乾",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "000001": {
+    "name": "谦",
+    "pinyin": "qiān",
+    "sequence": 15,
+    "symbol": "䷎",
+    "upper_trigram": "坤",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100000": {
+    "name": "豫",
+    "pinyin": "yù",
+    "sequence": 16,
+    "symbol": "䷏",
+    "upper_trigram": "震",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110100": {
+    "name": "随",
+    "pinyin": "suí",
+    "sequence": 17,
+    "symbol": "䷐",
+    "upper_trigram": "兑",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001011": {
+    "name": "蛊",
+    "pinyin": "gǔ",
+    "sequence": 18,
+    "symbol": "䷑",
+    "upper_trigram": "艮",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "000110": {
+    "name": "临",
+    "pinyin": "lín",
+    "sequence": 19,
+    "symbol": "䷒",
+    "upper_trigram": "坤",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011000": {
+    "name": "观",
+    "pinyin": "guān",
+    "sequence": 20,
+    "symbol": "䷓",
+    "upper_trigram": "巽",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101100": {
+    "name": "噬嗑",
+    "pinyin": "shì kè",
+    "sequence": 21,
+    "symbol": "䷔",
+    "upper_trigram": "离",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001101": {
+    "name": "贲",
+    "pinyin": "bì",
+    "sequence": 22,
+    "symbol": "䷕",
+    "upper_trigram": "艮",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001000": {
+    "name": "剥",
+    "pinyin": "bō",
+    "sequence": 23,
+    "symbol": "䷖",
+    "upper_trigram": "艮",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "000100": {
+    "name": "复",
+    "pinyin": "fù",
+    "sequence": 24,
+    "symbol": "䷗",
+    "upper_trigram": "坤",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "111100": {
+    "name": "无妄",
+    "pinyin": "wú wàng",
+    "sequence": 25,
+    "symbol": "䷘",
+    "upper_trigram": "乾",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001111": {
+    "name": "大畜",
+    "pinyin": "dà chù",
+    "sequence": 26,
+    "symbol": "䷙",
+    "upper_trigram": "艮",
+    "lower_trigram": "乾",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001100": {
+    "name": "颐",
+    "pinyin": "yí",
+    "sequence": 27,
+    "symbol": "䷚",
+    "upper_trigram": "艮",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110011": {
+    "name": "大过",
+    "pinyin": "dà guò",
+    "sequence": 28,
+    "symbol": "䷛",
+    "upper_trigram": "兑",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "010010": {
+    "name": "坎",
+    "pinyin": "kǎn",
+    "sequence": 29,
+    "symbol": "䷜",
+    "upper_trigram": "坎",
+    "lower_trigram": "坎",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101101": {
+    "name": "离",
+    "pinyin": "lí",
+    "sequence": 30,
+    "symbol": "䷝",
+    "upper_trigram": "离",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110001": {
+    "name": "咸",
+    "pinyin": "xián",
+    "sequence": 31,
+    "symbol": "䷞",
+    "upper_trigram": "兑",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100011": {
+    "name": "恒",
+    "pinyin": "héng",
+    "sequence": 32,
+    "symbol": "䷟",
+    "upper_trigram": "震",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "111001": {
+    "name": "遁",
+    "pinyin": "dùn",
+    "sequence": 33,
+    "symbol": "䷠",
+    "upper_trigram": "乾",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100111": {
+    "name": "大壮",
+    "pinyin": "dà zhuàng",
+    "sequence": 34,
+    "symbol": "䷡",
+    "upper_trigram": "震",
+    "lower_trigram": "乾",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101000": {
+    "name": "晋",
+    "pinyin": "jìn",
+    "sequence": 35,
+    "symbol": "䷢",
+    "upper_trigram": "离",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "000101": {
+    "name": "明夷",
+    "pinyin": "míng yí",
+    "sequence": 36,
+    "symbol": "䷣",
+    "upper_trigram": "坤",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011101": {
+    "name": "家人",
+    "pinyin": "jiā rén",
+    "sequence": 37,
+    "symbol": "䷤",
+    "upper_trigram": "巽",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101110": {
+    "name": "睽",
+    "pinyin": "kuí",
+    "sequence": 38,
+    "symbol": "䷥",
+    "upper_trigram": "离",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "010001": {
+    "name": "蹇",
+    "pinyin": "jiǎn",
+    "sequence": 39,
+    "symbol": "䷦",
+    "upper_trigram": "坎",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100010": {
+    "name": "解",
+    "pinyin": "xiè",
+    "sequence": 40,
+    "symbol": "䷧",
+    "upper_trigram": "震",
+    "lower_trigram": "坎",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001110": {
+    "name": "损",
+    "pinyin": "sǔn",
+    "sequence": 41,
+    "symbol": "䷨",
+    "upper_trigram": "艮",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011100": {
+    "name": "益",
+    "pinyin": "yì",
+    "sequence": 42,
+    "symbol": "䷩",
+    "upper_trigram": "巽",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110111": {
+    "name": "夬",
+    "pinyin": "guài",
+    "sequence": 43,
+    "symbol": "䷪",
+    "upper_trigram": "兑",
+    "lower_trigram": "乾",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "111011": {
+    "name": "姤",
+    "pinyin": "gòu",
+    "sequence": 44,
+    "symbol": "䷫",
+    "upper_trigram": "乾",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110000": {
+    "name": "萃",
+    "pinyin": "cuì",
+    "sequence": 45,
+    "symbol": "䷬",
+    "upper_trigram": "兑",
+    "lower_trigram": "坤",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "000011": {
+    "name": "升",
+    "pinyin": "shēng",
+    "sequence": 46,
+    "symbol": "䷭",
+    "upper_trigram": "坤",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110010": {
+    "name": "困",
+    "pinyin": "kùn",
+    "sequence": 47,
+    "symbol": "䷮",
+    "upper_trigram": "兑",
+    "lower_trigram": "坎",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "010011": {
+    "name": "井",
+    "pinyin": "jǐng",
+    "sequence": 48,
+    "symbol": "䷯",
+    "upper_trigram": "坎",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110101": {
+    "name": "革",
+    "pinyin": "gé",
+    "sequence": 49,
+    "symbol": "䷰",
+    "upper_trigram": "兑",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101011": {
+    "name": "鼎",
+    "pinyin": "dǐng",
+    "sequence": 50,
+    "symbol": "䷱",
+    "upper_trigram": "离",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100100": {
+    "name": "震",
+    "pinyin": "zhèn",
+    "sequence": 51,
+    "symbol": "䷲",
+    "upper_trigram": "震",
+    "lower_trigram": "震",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "001001": {
+    "name": "艮",
+    "pinyin": "gèn",
+    "sequence": 52,
+    "symbol": "䷳",
+    "upper_trigram": "艮",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011001": {
+    "name": "渐",
+    "pinyin": "jiàn",
+    "sequence": 53,
+    "symbol": "䷴",
+    "upper_trigram": "巽",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100110": {
+    "name": "归妹",
+    "pinyin": "guī mèi",
+    "sequence": 54,
+    "symbol": "䷵",
+    "upper_trigram": "震",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100101": {
+    "name": "丰",
+    "pinyin": "fēng",
+    "sequence": 55,
+    "symbol": "䷶",
+    "upper_trigram": "震",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101001": {
+    "name": "旅",
+    "pinyin": "lǚ",
+    "sequence": 56,
+    "symbol": "䷷",
+    "upper_trigram": "离",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011011": {
+    "name": "巽",
+    "pinyin": "xùn",
+    "sequence": 57,
+    "symbol": "䷸",
+    "upper_trigram": "巽",
+    "lower_trigram": "巽",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "110110": {
+    "name": "兑",
+    "pinyin": "duì",
+    "sequence": 58,
+    "symbol": "䷹",
+    "upper_trigram": "兑",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011010": {
+    "name": "涣",
+    "pinyin": "huàn",
+    "sequence": 59,
+    "symbol": "䷺",
+    "upper_trigram": "巽",
+    "lower_trigram": "坎",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "010110": {
+    "name": "节",
+    "pinyin": "jié",
+    "sequence": 60,
+    "symbol": "䷻",
+    "upper_trigram": "坎",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "011110": {
+    "name": "中孚",
+    "pinyin": "zhōng fú",
+    "sequence": 61,
+    "symbol": "䷼",
+    "upper_trigram": "巽",
+    "lower_trigram": "兑",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "100001": {
+    "name": "小过",
+    "pinyin": "xiǎo guò",
+    "sequence": 62,
+    "symbol": "䷽",
+    "upper_trigram": "震",
+    "lower_trigram": "艮",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "010101": {
+    "name": "既济",
+    "pinyin": "jì jì",
+    "sequence": 63,
+    "symbol": "䷾",
+    "upper_trigram": "坎",
+    "lower_trigram": "离",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  },
+  "101010": {
+    "name": "未济",
+    "pinyin": "wèi jì",
+    "sequence": 64,
+    "symbol": "䷿",
+    "upper_trigram": "离",
+    "lower_trigram": "坎",
+    "judgment": {
+      "text": "",
+      "commentary": ""
+    },
+    "image": {
+      "text": ""
+    },
+    "lines": []
+  }
+}
