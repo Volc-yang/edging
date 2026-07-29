@@ -187,7 +187,7 @@ Suggested status values:
 
 ## Current Progress Snapshot
 
-Verified on `2026-07-06`:
+Verified on `2026-07-15`:
 
 - feature schema: versioned and loaded by scorer
 - family registry: seeded for `64 / 64`
@@ -195,6 +195,14 @@ Verified on `2026-07-06`:
 - transition rules: seeded for `320 / 320` adjacent intra-family links
 - deterministic scorer: implemented in `bin/deterministic_scorer.rb`
 - sample observation: added in `examples/sample-observation.v0.1.yaml`
+- spacetime abstraction registry: confirmed for `384 / 384` line states
+- six-scale abstraction anchors: confirmed for `2304 / 2304` anchors
+- classical source correspondence: verified for `384 / 384` line states
+- eight-palace wandering-soul associations: verified for `64 / 64` hexagrams
+- eight-palace returning-soul associations: verified for `64 / 64` hexagrams
+- wandering-to-returning-soul composite changes: verified for `8 / 8` palaces
+- draft review queue: empty (`0` records)
+- structural completion gate: `ruby bin/validate_spacetime_abstractions.rb --complete` passes
 
 ## Priority Order
 

@@ -1,0 +1,27 @@
+---
+version: '0.1'
+scale_anchor_keys:
+- cosmic_max
+- planetary_natural
+- social_organizational
+- individual
+- biological
+- microscopic_min
+source_registry:
+  canonical_reconciliation:
+    file: classical-line-texts.v0.1.yaml
+    record_key: id
+    generated_by: "../../bin/reconcile_classical_line_texts.rb"
+  primary_display_edition:
+    file: sources/freizl-yijing-2.1.0-64gua.json
+    role: primary_display_edition
+    package: "@freizl/yijing"
+    version: 2.1.0
+    sha256: 5720ef8ff7428a487b87dabcb7f6952020312a10349b0bb763f44e8b026b4c7d
+  independent_check_edition:
+    file: sources/pro-vi-iching-0.5.0-lines.json
+    role: independent_check_edition
+    package: "@pro-vi/iching"
+    version: 0.5.0
+    sha256: 6028d055d1784095b121e73319282ce2b81622e293665b9f31fbff00d1b2154e
+abstractions: []

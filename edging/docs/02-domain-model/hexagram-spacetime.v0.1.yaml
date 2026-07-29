@@ -1,0 +1,2246 @@
+---
+version: '0.1'
+coordinate_convention: upper_xiantian_number, lower_xiantian_number; lines bottom-to-top
+circle_origin: qian_at_0_clockwise
+cycle_origin: fu_at_0
+hexagrams:
+- family_id: hex_01_qian
+  king_wen_index: 1
+  name_cn: 乾
+  symbol: "䷀"
+  hexagram_key: '111111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 0
+    cycle_index_fu_origin: 31
+    cycle_fraction: 0.484375
+    phase: taiyang
+    phase_index: 15
+    waxing_direction: yang_waxing
+- family_id: hex_02_kun
+  king_wen_index: 2
+  name_cn: 坤
+  symbol: "䷁"
+  hexagram_key: '000000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 32
+    cycle_index_fu_origin: 63
+    cycle_fraction: 0.984375
+    phase: taiyin
+    phase_index: 15
+    waxing_direction: yin_waxing
+- family_id: hex_03_zhun
+  king_wen_index: 3
+  name_cn: 屯
+  symbol: "䷂"
+  hexagram_key: '010100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 35
+    cycle_index_fu_origin: 2
+    cycle_fraction: 0.03125
+    phase: shaoyang
+    phase_index: 2
+    waxing_direction: yang_waxing
+- family_id: hex_04_meng
+  king_wen_index: 4
+  name_cn: 蒙
+  symbol: "䷃"
+  hexagram_key: '001010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 15
+    cycle_index_fu_origin: 46
+    cycle_fraction: 0.71875
+    phase: shaoyin
+    phase_index: 14
+    waxing_direction: yin_waxing
+- family_id: hex_05_xu
+  king_wen_index: 5
+  name_cn: 需
+  symbol: "䷄"
+  hexagram_key: '010111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 59
+    cycle_index_fu_origin: 26
+    cycle_fraction: 0.40625
+    phase: taiyang
+    phase_index: 10
+    waxing_direction: yang_waxing
+- family_id: hex_06_song
+  king_wen_index: 6
+  name_cn: 讼
+  symbol: "䷅"
+  hexagram_key: '111010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 9
+    cycle_index_fu_origin: 40
+    cycle_fraction: 0.625
+    phase: shaoyin
+    phase_index: 8
+    waxing_direction: yin_waxing
+- family_id: hex_07_shi
+  king_wen_index: 7
+  name_cn: 师
+  symbol: "䷆"
+  hexagram_key: '000010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 16
+    cycle_index_fu_origin: 47
+    cycle_fraction: 0.734375
+    phase: shaoyin
+    phase_index: 15
+    waxing_direction: yin_waxing
+- family_id: hex_08_bi
+  king_wen_index: 8
+  name_cn: 比
+  symbol: "䷇"
+  hexagram_key: '010000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 30
+    cycle_index_fu_origin: 61
+    cycle_fraction: 0.953125
+    phase: taiyin
+    phase_index: 13
+    waxing_direction: yin_waxing
+- family_id: hex_09_xiaochu
+  king_wen_index: 9
+  name_cn: 小畜
+  symbol: "䷈"
+  hexagram_key: '011111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 60
+    cycle_index_fu_origin: 27
+    cycle_fraction: 0.421875
+    phase: taiyang
+    phase_index: 11
+    waxing_direction: yang_waxing
+- family_id: hex_10_lu
+  king_wen_index: 10
+  name_cn: 履
+  symbol: "䷉"
+  hexagram_key: '111110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 56
+    cycle_index_fu_origin: 23
+    cycle_fraction: 0.359375
+    phase: taiyang
+    phase_index: 7
+    waxing_direction: yang_waxing
+- family_id: hex_11_tai
+  king_wen_index: 11
+  name_cn: 泰
+  symbol: "䷊"
+  hexagram_key: '000111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 57
+    cycle_index_fu_origin: 24
+    cycle_fraction: 0.375
+    phase: taiyang
+    phase_index: 8
+    waxing_direction: yang_waxing
+- family_id: hex_12_pi
+  king_wen_index: 12
+  name_cn: 否
+  symbol: "䷋"
+  hexagram_key: '111000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 25
+    cycle_index_fu_origin: 56
+    cycle_fraction: 0.875
+    phase: taiyin
+    phase_index: 8
+    waxing_direction: yin_waxing
+- family_id: hex_13_tongren
+  king_wen_index: 13
+  name_cn: 同人
+  symbol: "䷌"
+  hexagram_key: '111101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 48
+    cycle_index_fu_origin: 15
+    cycle_fraction: 0.234375
+    phase: shaoyang
+    phase_index: 15
+    waxing_direction: yang_waxing
+- family_id: hex_14_dayou
+  king_wen_index: 14
+  name_cn: 大有
+  symbol: "䷍"
+  hexagram_key: '101111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 62
+    cycle_index_fu_origin: 29
+    cycle_fraction: 0.453125
+    phase: taiyang
+    phase_index: 13
+    waxing_direction: yang_waxing
+- family_id: hex_15_qian_modesty
+  king_wen_index: 15
+  name_cn: 谦
+  symbol: "䷎"
+  hexagram_key: '000001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 24
+    cycle_index_fu_origin: 55
+    cycle_fraction: 0.859375
+    phase: taiyin
+    phase_index: 7
+    waxing_direction: yin_waxing
+- family_id: hex_16_yu
+  king_wen_index: 16
+  name_cn: 豫
+  symbol: "䷏"
+  hexagram_key: '100000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 28
+    cycle_index_fu_origin: 59
+    cycle_fraction: 0.921875
+    phase: taiyin
+    phase_index: 11
+    waxing_direction: yin_waxing
+- family_id: hex_17_sui
+  king_wen_index: 17
+  name_cn: 随
+  symbol: "䷐"
+  hexagram_key: '110100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 39
+    cycle_index_fu_origin: 6
+    cycle_fraction: 0.09375
+    phase: shaoyang
+    phase_index: 6
+    waxing_direction: yang_waxing
+- family_id: hex_18_gu
+  king_wen_index: 18
+  name_cn: 蛊
+  symbol: "䷑"
+  hexagram_key: '001011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 7
+    cycle_index_fu_origin: 38
+    cycle_fraction: 0.59375
+    phase: shaoyin
+    phase_index: 6
+    waxing_direction: yin_waxing
+- family_id: hex_19_lin
+  king_wen_index: 19
+  name_cn: 临
+  symbol: "䷒"
+  hexagram_key: '000110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 49
+    cycle_index_fu_origin: 16
+    cycle_fraction: 0.25
+    phase: taiyang
+    phase_index: 0
+    waxing_direction: yang_waxing
+- family_id: hex_20_guan
+  king_wen_index: 20
+  name_cn: 观
+  symbol: "䷓"
+  hexagram_key: '011000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 29
+    cycle_index_fu_origin: 60
+    cycle_fraction: 0.9375
+    phase: taiyin
+    phase_index: 12
+    waxing_direction: yin_waxing
+- family_id: hex_21_shike
+  king_wen_index: 21
+  name_cn: 噬嗑
+  symbol: "䷔"
+  hexagram_key: '101100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 38
+    cycle_index_fu_origin: 5
+    cycle_fraction: 0.078125
+    phase: shaoyang
+    phase_index: 5
+    waxing_direction: yang_waxing
+- family_id: hex_22_ben
+  king_wen_index: 22
+  name_cn: 贲
+  symbol: "䷕"
+  hexagram_key: '001101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 42
+    cycle_index_fu_origin: 9
+    cycle_fraction: 0.140625
+    phase: shaoyang
+    phase_index: 9
+    waxing_direction: yang_waxing
+- family_id: hex_23_bo
+  king_wen_index: 23
+  name_cn: 剥
+  symbol: "䷖"
+  hexagram_key: '001000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 31
+    cycle_index_fu_origin: 62
+    cycle_fraction: 0.96875
+    phase: taiyin
+    phase_index: 14
+    waxing_direction: yin_waxing
+- family_id: hex_24_fu
+  king_wen_index: 24
+  name_cn: 复
+  symbol: "䷗"
+  hexagram_key: '000100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 33
+    cycle_index_fu_origin: 0
+    cycle_fraction: 0.0
+    phase: shaoyang
+    phase_index: 0
+    waxing_direction: yang_waxing
+- family_id: hex_25_wuwang
+  king_wen_index: 25
+  name_cn: 无妄
+  symbol: "䷘"
+  hexagram_key: '111100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 40
+    cycle_index_fu_origin: 7
+    cycle_fraction: 0.109375
+    phase: shaoyang
+    phase_index: 7
+    waxing_direction: yang_waxing
+- family_id: hex_26_dachu
+  king_wen_index: 26
+  name_cn: 大畜
+  symbol: "䷙"
+  hexagram_key: '001111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 58
+    cycle_index_fu_origin: 25
+    cycle_fraction: 0.390625
+    phase: taiyang
+    phase_index: 9
+    waxing_direction: yang_waxing
+- family_id: hex_27_yi_nourishing
+  king_wen_index: 27
+  name_cn: 颐
+  symbol: "䷚"
+  hexagram_key: '001100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 34
+    cycle_index_fu_origin: 1
+    cycle_fraction: 0.015625
+    phase: shaoyang
+    phase_index: 1
+    waxing_direction: yang_waxing
+- family_id: hex_28_daguo
+  king_wen_index: 28
+  name_cn: 大过
+  symbol: "䷛"
+  hexagram_key: '110011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 2
+    cycle_index_fu_origin: 33
+    cycle_fraction: 0.515625
+    phase: shaoyin
+    phase_index: 1
+    waxing_direction: yin_waxing
+- family_id: hex_29_kan
+  king_wen_index: 29
+  name_cn: 坎
+  symbol: "䷜"
+  hexagram_key: '010010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 14
+    cycle_index_fu_origin: 45
+    cycle_fraction: 0.703125
+    phase: shaoyin
+    phase_index: 13
+    waxing_direction: yin_waxing
+- family_id: hex_30_li
+  king_wen_index: 30
+  name_cn: 离
+  symbol: "䷝"
+  hexagram_key: '101101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 46
+    cycle_index_fu_origin: 13
+    cycle_fraction: 0.203125
+    phase: shaoyang
+    phase_index: 13
+    waxing_direction: yang_waxing
+- family_id: hex_31_xian
+  king_wen_index: 31
+  name_cn: 咸
+  symbol: "䷞"
+  hexagram_key: '110001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 18
+    cycle_index_fu_origin: 49
+    cycle_fraction: 0.765625
+    phase: taiyin
+    phase_index: 1
+    waxing_direction: yin_waxing
+- family_id: hex_32_heng
+  king_wen_index: 32
+  name_cn: 恒
+  symbol: "䷟"
+  hexagram_key: '100011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 4
+    cycle_index_fu_origin: 35
+    cycle_fraction: 0.546875
+    phase: shaoyin
+    phase_index: 3
+    waxing_direction: yin_waxing
+- family_id: hex_33_dun
+  king_wen_index: 33
+  name_cn: 遁
+  symbol: "䷠"
+  hexagram_key: '111001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 17
+    cycle_index_fu_origin: 48
+    cycle_fraction: 0.75
+    phase: taiyin
+    phase_index: 0
+    waxing_direction: yin_waxing
+- family_id: hex_34_dazhuang
+  king_wen_index: 34
+  name_cn: 大壮
+  symbol: "䷡"
+  hexagram_key: '100111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 61
+    cycle_index_fu_origin: 28
+    cycle_fraction: 0.4375
+    phase: taiyang
+    phase_index: 12
+    waxing_direction: yang_waxing
+- family_id: hex_35_jin
+  king_wen_index: 35
+  name_cn: 晋
+  symbol: "䷢"
+  hexagram_key: '101000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 27
+    cycle_index_fu_origin: 58
+    cycle_fraction: 0.90625
+    phase: taiyin
+    phase_index: 10
+    waxing_direction: yin_waxing
+- family_id: hex_36_mingyi
+  king_wen_index: 36
+  name_cn: 明夷
+  symbol: "䷣"
+  hexagram_key: '000101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 41
+    cycle_index_fu_origin: 8
+    cycle_fraction: 0.125
+    phase: shaoyang
+    phase_index: 8
+    waxing_direction: yang_waxing
+- family_id: hex_37_jiaren
+  king_wen_index: 37
+  name_cn: 家人
+  symbol: "䷤"
+  hexagram_key: '011101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 44
+    cycle_index_fu_origin: 11
+    cycle_fraction: 0.171875
+    phase: shaoyang
+    phase_index: 11
+    waxing_direction: yang_waxing
+- family_id: hex_38_kui
+  king_wen_index: 38
+  name_cn: 睽
+  symbol: "䷥"
+  hexagram_key: '101110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 55
+    cycle_index_fu_origin: 22
+    cycle_fraction: 0.34375
+    phase: taiyang
+    phase_index: 6
+    waxing_direction: yang_waxing
+- family_id: hex_39_jian_obstruction
+  king_wen_index: 39
+  name_cn: 蹇
+  symbol: "䷦"
+  hexagram_key: '010001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 22
+    cycle_index_fu_origin: 53
+    cycle_fraction: 0.828125
+    phase: taiyin
+    phase_index: 5
+    waxing_direction: yin_waxing
+- family_id: hex_40_xie
+  king_wen_index: 40
+  name_cn: 解
+  symbol: "䷧"
+  hexagram_key: '100010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 12
+    cycle_index_fu_origin: 43
+    cycle_fraction: 0.671875
+    phase: shaoyin
+    phase_index: 11
+    waxing_direction: yin_waxing
+- family_id: hex_41_sun
+  king_wen_index: 41
+  name_cn: 损
+  symbol: "䷨"
+  hexagram_key: '001110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 50
+    cycle_index_fu_origin: 17
+    cycle_fraction: 0.265625
+    phase: taiyang
+    phase_index: 1
+    waxing_direction: yang_waxing
+- family_id: hex_42_yi_increase
+  king_wen_index: 42
+  name_cn: 益
+  symbol: "䷩"
+  hexagram_key: '011100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 36
+    cycle_index_fu_origin: 3
+    cycle_fraction: 0.046875
+    phase: shaoyang
+    phase_index: 3
+    waxing_direction: yang_waxing
+- family_id: hex_43_guai
+  king_wen_index: 43
+  name_cn: 夬
+  symbol: "䷪"
+  hexagram_key: '110111'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 1
+    row_top_to_bottom: 8
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 63
+    cycle_index_fu_origin: 30
+    cycle_fraction: 0.46875
+    phase: taiyang
+    phase_index: 14
+    waxing_direction: yang_waxing
+- family_id: hex_44_gou
+  king_wen_index: 44
+  name_cn: 姤
+  symbol: "䷫"
+  hexagram_key: '111011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 乾
+    name_en: qian
+    xiantian_number: 1
+    line_code_bottom_to_top: '111'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 1
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 8
+  circle_time:
+    circle_index_qian_origin_clockwise: 1
+    cycle_index_fu_origin: 32
+    cycle_fraction: 0.5
+    phase: shaoyin
+    phase_index: 0
+    waxing_direction: yin_waxing
+- family_id: hex_45_cui
+  king_wen_index: 45
+  name_cn: 萃
+  symbol: "䷬"
+  hexagram_key: '110000'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 0
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 8
+    row_top_to_bottom: 1
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 26
+    cycle_index_fu_origin: 57
+    cycle_fraction: 0.890625
+    phase: taiyin
+    phase_index: 9
+    waxing_direction: yin_waxing
+- family_id: hex_46_sheng
+  king_wen_index: 46
+  name_cn: 升
+  symbol: "䷭"
+  hexagram_key: '000011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 0
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 坤
+    name_en: kun
+    xiantian_number: 8
+    line_code_bottom_to_top: '000'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 8
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 1
+  circle_time:
+    circle_index_qian_origin_clockwise: 8
+    cycle_index_fu_origin: 39
+    cycle_fraction: 0.609375
+    phase: shaoyin
+    phase_index: 7
+    waxing_direction: yin_waxing
+- family_id: hex_47_kun_exhaustion
+  king_wen_index: 47
+  name_cn: 困
+  symbol: "䷮"
+  hexagram_key: '110010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 10
+    cycle_index_fu_origin: 41
+    cycle_fraction: 0.640625
+    phase: shaoyin
+    phase_index: 9
+    waxing_direction: yin_waxing
+- family_id: hex_48_jing
+  king_wen_index: 48
+  name_cn: 井
+  symbol: "䷯"
+  hexagram_key: '010011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 6
+    cycle_index_fu_origin: 37
+    cycle_fraction: 0.578125
+    phase: shaoyin
+    phase_index: 5
+    waxing_direction: yin_waxing
+- family_id: hex_49_ge
+  king_wen_index: 49
+  name_cn: 革
+  symbol: "䷰"
+  hexagram_key: '110101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 47
+    cycle_index_fu_origin: 14
+    cycle_fraction: 0.21875
+    phase: shaoyang
+    phase_index: 14
+    waxing_direction: yang_waxing
+- family_id: hex_50_ding
+  king_wen_index: 50
+  name_cn: 鼎
+  symbol: "䷱"
+  hexagram_key: '101011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 3
+    cycle_index_fu_origin: 34
+    cycle_fraction: 0.53125
+    phase: shaoyin
+    phase_index: 2
+    waxing_direction: yin_waxing
+- family_id: hex_51_zhen
+  king_wen_index: 51
+  name_cn: 震
+  symbol: "䷲"
+  hexagram_key: '100100'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 0
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 4
+    row_top_to_bottom: 5
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 37
+    cycle_index_fu_origin: 4
+    cycle_fraction: 0.0625
+    phase: shaoyang
+    phase_index: 4
+    waxing_direction: yang_waxing
+- family_id: hex_52_gen
+  king_wen_index: 52
+  name_cn: 艮
+  symbol: "䷳"
+  hexagram_key: '001001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 0
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 7
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 2
+  circle_time:
+    circle_index_qian_origin_clockwise: 23
+    cycle_index_fu_origin: 54
+    cycle_fraction: 0.84375
+    phase: taiyin
+    phase_index: 6
+    waxing_direction: yin_waxing
+- family_id: hex_53_jian_gradual
+  king_wen_index: 53
+  name_cn: 渐
+  symbol: "䷴"
+  hexagram_key: '011001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 21
+    cycle_index_fu_origin: 52
+    cycle_fraction: 0.8125
+    phase: taiyin
+    phase_index: 4
+    waxing_direction: yin_waxing
+- family_id: hex_54_guimei
+  king_wen_index: 54
+  name_cn: 归妹
+  symbol: "䷵"
+  hexagram_key: '100110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 53
+    cycle_index_fu_origin: 20
+    cycle_fraction: 0.3125
+    phase: taiyang
+    phase_index: 4
+    waxing_direction: yang_waxing
+- family_id: hex_55_feng
+  king_wen_index: 55
+  name_cn: 丰
+  symbol: "䷶"
+  hexagram_key: '100101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 45
+    cycle_index_fu_origin: 12
+    cycle_fraction: 0.1875
+    phase: shaoyang
+    phase_index: 12
+    waxing_direction: yang_waxing
+- family_id: hex_56_lu_traveler
+  king_wen_index: 56
+  name_cn: 旅
+  symbol: "䷷"
+  hexagram_key: '101001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 19
+    cycle_index_fu_origin: 50
+    cycle_fraction: 0.78125
+    phase: taiyin
+    phase_index: 2
+    waxing_direction: yin_waxing
+- family_id: hex_57_xun
+  king_wen_index: 57
+  name_cn: 巽
+  symbol: "䷸"
+  hexagram_key: '011011'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 1
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 5
+    row_top_to_bottom: 4
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 5
+    cycle_index_fu_origin: 36
+    cycle_fraction: 0.5625
+    phase: shaoyin
+    phase_index: 4
+    waxing_direction: yin_waxing
+- family_id: hex_58_dui
+  king_wen_index: 58
+  name_cn: 兑
+  symbol: "䷹"
+  hexagram_key: '110110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 1
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 2
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 7
+  circle_time:
+    circle_index_qian_origin_clockwise: 54
+    cycle_index_fu_origin: 21
+    cycle_fraction: 0.328125
+    phase: taiyang
+    phase_index: 5
+    waxing_direction: yang_waxing
+- family_id: hex_59_huan
+  king_wen_index: 59
+  name_cn: 涣
+  symbol: "䷺"
+  hexagram_key: '011010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 13
+    cycle_index_fu_origin: 44
+    cycle_fraction: 0.6875
+    phase: shaoyin
+    phase_index: 12
+    waxing_direction: yin_waxing
+- family_id: hex_60_jie
+  king_wen_index: 60
+  name_cn: 节
+  symbol: "䷻"
+  hexagram_key: '010110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 51
+    cycle_index_fu_origin: 18
+    cycle_fraction: 0.28125
+    phase: taiyang
+    phase_index: 2
+    waxing_direction: yang_waxing
+- family_id: hex_61_zhongfu
+  king_wen_index: 61
+  name_cn: 中孚
+  symbol: "䷼"
+  hexagram_key: '011110'
+  line_vector_bottom_to_top:
+  - 1
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  upper_trigram:
+    name_cn: 巽
+    name_en: xun
+    xiantian_number: 5
+    line_code_bottom_to_top: '011'
+  lower_trigram:
+    name_cn: 兑
+    name_en: dui
+    xiantian_number: 2
+    line_code_bottom_to_top: '110'
+  square:
+    coordinate_upper_lower:
+    - 5
+    - 2
+    row_top_to_bottom: 7
+    column_left_to_right: 4
+  circle_time:
+    circle_index_qian_origin_clockwise: 52
+    cycle_index_fu_origin: 19
+    cycle_fraction: 0.296875
+    phase: taiyang
+    phase_index: 3
+    waxing_direction: yang_waxing
+- family_id: hex_62_xiaoguo
+  king_wen_index: 62
+  name_cn: 小过
+  symbol: "䷽"
+  hexagram_key: '100001'
+  line_vector_bottom_to_top:
+  - 0
+  - 0
+  - 1
+  - 1
+  - 0
+  - 0
+  upper_trigram:
+    name_cn: 震
+    name_en: zhen
+    xiantian_number: 4
+    line_code_bottom_to_top: '100'
+  lower_trigram:
+    name_cn: 艮
+    name_en: gen
+    xiantian_number: 7
+    line_code_bottom_to_top: '001'
+  square:
+    coordinate_upper_lower:
+    - 4
+    - 7
+    row_top_to_bottom: 2
+    column_left_to_right: 5
+  circle_time:
+    circle_index_qian_origin_clockwise: 20
+    cycle_index_fu_origin: 51
+    cycle_fraction: 0.796875
+    phase: taiyin
+    phase_index: 3
+    waxing_direction: yin_waxing
+- family_id: hex_63_jiji
+  king_wen_index: 63
+  name_cn: 既济
+  symbol: "䷾"
+  hexagram_key: '010101'
+  line_vector_bottom_to_top:
+  - 1
+  - 0
+  - 1
+  - 0
+  - 1
+  - 0
+  upper_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  lower_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  square:
+    coordinate_upper_lower:
+    - 6
+    - 3
+    row_top_to_bottom: 6
+    column_left_to_right: 3
+  circle_time:
+    circle_index_qian_origin_clockwise: 43
+    cycle_index_fu_origin: 10
+    cycle_fraction: 0.15625
+    phase: shaoyang
+    phase_index: 10
+    waxing_direction: yang_waxing
+- family_id: hex_64_weiji
+  king_wen_index: 64
+  name_cn: 未济
+  symbol: "䷿"
+  hexagram_key: '101010'
+  line_vector_bottom_to_top:
+  - 0
+  - 1
+  - 0
+  - 1
+  - 0
+  - 1
+  upper_trigram:
+    name_cn: 离
+    name_en: li
+    xiantian_number: 3
+    line_code_bottom_to_top: '101'
+  lower_trigram:
+    name_cn: 坎
+    name_en: kan
+    xiantian_number: 6
+    line_code_bottom_to_top: '010'
+  square:
+    coordinate_upper_lower:
+    - 3
+    - 6
+    row_top_to_bottom: 3
+    column_left_to_right: 6
+  circle_time:
+    circle_index_qian_origin_clockwise: 11
+    cycle_index_fu_origin: 42
+    cycle_fraction: 0.65625
+    phase: shaoyin
+    phase_index: 10
+    waxing_direction: yin_waxing
