@@ -23,6 +23,18 @@ class YijingTextTests(unittest.TestCase):
 
         self.assertEqual(missing, [])
 
+    def test_all_hexagrams_have_judgment_image_and_six_canonical_lines(self):
+        for value in range(64):
+            hexagram = Hexagram(value)
+            self.assertTrue(hexagram.judgment["text"], hexagram.name)
+            self.assertTrue(hexagram.image["text"], hexagram.name)
+            self.assertEqual(
+                [hexagram.line(position)["line_number"] for position in range(1, 7)],
+                [1, 2, 3, 4, 5, 6],
+                hexagram.name,
+            )
+            self.assertTrue(all(hexagram.line(position)["text"] for position in range(1, 7)), hexagram.name)
+
     def test_acceptance_cast_hexagrams_have_expected_names(self):
         guan = Hexagram.from_trigrams(0b011, 0b000)
         jin = Hexagram.from_trigrams(0b101, 0b000)

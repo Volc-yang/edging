@@ -1,0 +1,1400 @@
+{
+  "schema_version": "edgeworld.chapter-one-snapshot.v2",
+  "chapter": "all_things_ensoul",
+  "seed": 20260920,
+  "tick": 21,
+  "cosmology": {
+    "world_order": "xiantian_bagua",
+    "change_order": "houtian_bagua",
+    "change_canon": "zhouyi_64_hexagrams",
+    "xiantian_world": {
+      "phase": 5,
+      "spirit": "wind",
+      "trigram_name": "巽",
+      "symbol": "☴",
+      "value": 3,
+      "direction": "SW",
+      "sequence": [
+        "heaven",
+        "lake",
+        "fire",
+        "thunder",
+        "wind",
+        "water",
+        "mountain",
+        "earth"
+      ]
+    },
+    "player_intervention": {
+      "action_axis": "stabilize",
+      "intensity": 0.7,
+      "expression": "玩家进入世界并尝试唤醒眼前之物。"
+    },
+    "houtian_transition": {
+      "focus_spirit": "thunder",
+      "direction": "E",
+      "luoshu_number": 3,
+      "ai_focus_spirit": "heaven",
+      "player_spirit": "mountain",
+      "player_direction": "NE",
+      "player_luoshu_number": 8,
+      "pressures": {
+        "ascend": 0.2,
+        "awaken": 0.8,
+        "stabilize": 0.7
+      }
+    }
+  },
+  "decision": {
+    "source": "ollama",
+    "model": "llama3.2:latest",
+    "accepted": true,
+    "fallback_reason": null,
+    "decision": {
+      "schema_version": "edgeworld.chapter-one-decision.v2",
+      "tick": 21,
+      "focus_spirit": "heaven",
+      "action_intents": {
+        "ascend": 0.2
+      },
+      "rationale": "玩家进入世界并尝试唤醒眼前之物。"
+    }
+  },
+  "encounter": {
+    "primary_hexagram": {
+      "value": 25,
+      "sequence": 53,
+      "name": "渐",
+      "symbol": "䷴",
+      "upper_trigram": "巽",
+      "lower_trigram": "艮",
+      "judgment": "女归吉，利贞。",
+      "image": "山上有木，渐；君子以居贤德，善俗。",
+      "canonical_text_available": true,
+      "structural_image": "上巽下艮，六爻值 25。"
+    },
+    "changing_positions": [
+      2,
+      4,
+      5
+    ],
+    "changing_lines": [
+      {
+        "position": 2,
+        "text": "鸿渐于磐，饮食衎衎，吉。",
+        "commentary": "《象》曰：饮食衎衎，吉，不素饱也。",
+        "canonical_text_available": true
+      },
+      {
+        "position": 4,
+        "text": "鸿渐于木，或得其桷，无咎。",
+        "commentary": "《象》曰：或得其桷，顺以巽也。",
+        "canonical_text_available": true
+      },
+      {
+        "position": 5,
+        "text": "鸿渐于陵，妇三岁不孕，终莫之胜，吉。",
+        "commentary": "《象》曰：终莫之胜，吉；得所愿也。",
+        "canonical_text_available": true
+      }
+    ],
+    "governing_line": {
+      "position": 5,
+      "text": "鸿渐于陵，妇三岁不孕，终莫之胜，吉。",
+      "commentary": "《象》曰：终莫之胜，吉；得所愿也。",
+      "canonical_text_available": true,
+      "name": "九五",
+      "polarity": "yang",
+      "evidence_score": 0.8,
+      "evidence_axes": [
+        "awaken"
+      ],
+      "selection_rule": "最高动爻证据；同分时依次优先玩家主动作、中爻、较低爻位。"
+    },
+    "changed_hexagram": {
+      "value": 3,
+      "sequence": 46,
+      "name": "升",
+      "symbol": "䷭",
+      "upper_trigram": "坤",
+      "lower_trigram": "巽",
+      "judgment": "元亨，用见大人，勿恤，南征吉。",
+      "image": "地中生木，升；君子以顺德，积小以高大。",
+      "canonical_text_available": true,
+      "structural_image": "上坤下巽，六爻值 3。"
+    },
+    "abstraction": {
+      "player_expression": "玩家进入世界并尝试唤醒眼前之物。",
+      "declared_action_axis": "stabilize",
+      "semantic_action_intents": {
+        "ascend": 0.2
+      },
+      "expression_action_evidence": {
+        "awaken": {
+          "pressure": 0.8,
+          "matched_keywords": [
+            "唤醒"
+          ]
+        }
+      },
+      "combined_action_pressures": {
+        "ascend": 0.2,
+        "awaken": 0.8,
+        "stabilize": 0.7
+      },
+      "upper_trigram_basis": "xiantian_world_phase",
+      "upper_trigram": "巽",
+      "lower_trigram_basis": "player_declared_action",
+      "lower_trigram": "艮",
+      "line_evidence": [
+        {
+          "position": 2,
+          "score": 0.2,
+          "axes": [
+            "ascend"
+          ],
+          "sources": [
+            "decision_action_pressure"
+          ],
+          "rule": "position=((houtian_luoshu_number+tick-2)%6)+1"
+        },
+        {
+          "position": 4,
+          "score": 0.7,
+          "axes": [
+            "stabilize"
+          ],
+          "sources": [
+            "player_declared_action"
+          ],
+          "rule": "position=((houtian_luoshu_number+tick-2)%6)+1"
+        },
+        {
+          "position": 5,
+          "score": 0.8,
+          "axes": [
+            "awaken"
+          ],
+          "sources": [
+            "expression_keyword_evidence"
+          ],
+          "rule": "position=((houtian_luoshu_number+tick-2)%6)+1"
+        }
+      ]
+    },
+    "houtian_transition": {
+      "focus_spirit": "thunder",
+      "direction": "E",
+      "luoshu_number": 3,
+      "ai_focus_spirit": "heaven",
+      "player_spirit": "mountain",
+      "player_direction": "NE",
+      "player_luoshu_number": 8,
+      "pressures": {
+        "ascend": 0.2,
+        "awaken": 0.8,
+        "stabilize": 0.7
+      }
+    }
+  },
+  "world_response": {
+    "forecast": {
+      "primary_judgment": "女归吉，利贞。",
+      "governing_line_name": "九五",
+      "governing_line_text": "鸿渐于陵，妇三岁不孕，终莫之胜，吉。",
+      "changed_judgment": "元亨，用见大人，勿恤，南征吉。",
+      "valence": "favorable",
+      "tendency": "可推进，但仍须服从主导爻的时位约束。",
+      "summary": "䷴渐卦辞：女归吉，利贞。 主导九五：鸿渐于陵，妇三岁不孕，终莫之胜，吉。 预判世界以“震发”响应，并趋向䷭升。"
+    },
+    "control": {
+      "target_spirit": "thunder",
+      "action_axis": "awaken",
+      "effect": "pulse",
+      "effect_cn": "震发",
+      "magnitude": 0.8,
+      "duration_ticks": 5,
+      "scale_multiplier": 1.28,
+      "emission_multiplier": 2.2,
+      "vertical_offset": -0.28,
+      "signature_deltas": {
+        "consciousness": 0.032,
+        "coherence": 0.072,
+        "entropy": -0.032
+      },
+      "basis": "canonical_judgment+governing_line+changed_hexagram"
+    },
+    "feedback": {
+      "status": "applied",
+      "entity_id": "spirit:thunder",
+      "before": {
+        "consciousness": 0.9057839999999999,
+        "coherence": 0.8137920000000001,
+        "entropy": 0.006959999999999994,
+        "yin_intent": 0.5312857142857144,
+        "yang_intent": 0.4687142857142857
+      },
+      "after": {
+        "consciousness": 0.937784,
+        "coherence": 0.885792,
+        "entropy": 0.0,
+        "yin_intent": 0.5312857142857144,
+        "yang_intent": 0.4687142857142857
+      },
+      "changed_hexagram_value": 3,
+      "message": "已对震灵（thunder）执行震发；主观状态已更新并交给引擎渲染。"
+    }
+  },
+  "presentation": {
+    "source": "ollama",
+    "title": "升",
+    "scene": "玩家进入世界并尝试唤醒眼前之物。",
+    "omen": "眼前之物唤醒，吉利",
+    "player_prompt": "玩家尝试唤醒眼前之物，结果是眼前之物唤醒，吉利。",
+    "fallback_reason": null
+  },
+  "validation": {
+    "chapter": "all_things_ensoul",
+    "success": true,
+    "score": 0.9664,
+    "criteria": [
+      {
+        "key": "edge_source_alive",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.0,
+        "detail": "edge source must exist as a living AI subjective authority."
+      },
+      {
+        "key": "primal_spirit_count",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.2,
+        "detail": "first chapter must awaken exactly eight unique primal spirits."
+      },
+      {
+        "key": "primal_trigram_coverage",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.2,
+        "detail": "awakened spirits must cover all eight pure trigram hexagrams."
+      },
+      {
+        "key": "spirit_consciousness",
+        "passed": true,
+        "score": 0.9032,
+        "weight": 1.4,
+        "detail": "every awakened spirit must hold enough subjective consciousness to count as alive."
+      },
+      {
+        "key": "spirit_coherence",
+        "passed": true,
+        "score": 0.7694,
+        "weight": 1.0,
+        "detail": "awakened subjectivity must be coherent enough to avoid immediate collapse."
+      },
+      {
+        "key": "no_spirit_death_or_split",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.4,
+        "detail": "first awakening succeeds only if no primal spirit dies or splits."
+      },
+      {
+        "key": "ritual_arbitration_count",
+        "passed": true,
+        "score": 1.0,
+        "weight": 0.8,
+        "detail": "each primal spirit must pass once through Yi Jing ritual arbitration."
+      },
+      {
+        "key": "deterministic_awakened_order",
+        "passed": true,
+        "score": 1.0,
+        "weight": 0.6,
+        "detail": "first chapter must produce a stable spirit identity and order for replayable gameplay."
+      },
+      {
+        "key": "action_resonance_self_proof",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.2,
+        "detail": "eight primitive action axes must each trigger a valid nonlinear spirit resonance."
+      },
+      {
+        "key": "evolution_traceability",
+        "passed": true,
+        "score": 1.0,
+        "weight": 1.1,
+        "detail": "first chapter must preserve one traceable matrix/resonance/arbitration step for each primal spirit."
+      }
+    ]
+  },
+  "cycle": {
+    "source_entity_id": "edge",
+    "input_action_intents": {
+      "ascend": 0.2,
+      "receive": 0.0,
+      "flow": 0.0,
+      "illuminate": 0.0,
+      "awaken": 0.0,
+      "adapt": 0.0,
+      "stabilize": 0.0,
+      "exchange": 0.0
+    },
+    "steps": [
+      {
+        "order": 1,
+        "phase": "di_emerges_from_thunder",
+        "phrase": "帝出乎震",
+        "spirit_id": "spirit:thunder",
+        "action_axis": "awaken",
+        "action_intents": {
+          "ascend": 0.0575,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.725,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.0,
+              0.0215,
+              0.0
+            ],
+            [
+              0.6365,
+              0.5223,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.4065
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5223
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0575,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.725,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.4065,
+            "earth": 0.0,
+            "water": 0.0,
+            "fire": 0.0215,
+            "thunder": 0.6365,
+            "wind": 0.0,
+            "mountain": 0.0,
+            "lake": 0.0
+          },
+          "dominant_spirits": [
+            "thunder"
+          ],
+          "world_run_score": 0.5223,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:thunder",
+          "primary_hexagram": 28,
+          "changed_hexagram": 28,
+          "changing_positions": [],
+          "palace": "巽",
+          "affinity": 0.7407,
+          "contradiction": 0.0468,
+          "chaos_score": 0.0,
+          "merge_score": 0.5767,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.1248,
+        "next_integrity": 0.3838,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 2,
+        "phase": "aligned_by_wind",
+        "phrase": "齐乎巽",
+        "spirit_id": "spirit:wind",
+        "action_axis": "adapt",
+        "action_intents": {
+          "ascend": 0.0523,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.7768,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.6559,
+              0.0195,
+              0.2408
+            ],
+            [
+              0.0222,
+              0.5476,
+              0.0
+            ],
+            [
+              0.0,
+              0.4053,
+              0.0375
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5476
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0523,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.7768,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.0375,
+            "earth": 0.2408,
+            "water": 0.4053,
+            "fire": 0.0195,
+            "thunder": 0.0222,
+            "wind": 0.6559,
+            "mountain": 0.0,
+            "lake": 0.0
+          },
+          "dominant_spirits": [
+            "wind"
+          ],
+          "world_run_score": 0.5476,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:wind",
+          "primary_hexagram": 59,
+          "changed_hexagram": 59,
+          "changing_positions": [],
+          "palace": "震",
+          "affinity": 0.5475,
+          "contradiction": 0.0531,
+          "chaos_score": 0.0,
+          "merge_score": 0.4785,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.3838,
+        "next_integrity": 0.4628,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 3,
+        "phase": "seen_by_fire",
+        "phrase": "相见乎离",
+        "spirit_id": "spirit:fire",
+        "action_axis": "illuminate",
+        "action_intents": {
+          "ascend": 0.0507,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.7926,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.0,
+              0.6963,
+              0.0
+            ],
+            [
+              0.0215,
+              0.5776,
+              0.2114
+            ],
+            [
+              0.1791,
+              0.0,
+              0.2999
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5776
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0507,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.7926,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.2999,
+            "earth": 0.0,
+            "water": 0.0,
+            "fire": 0.6963,
+            "thunder": 0.0215,
+            "wind": 0.0,
+            "mountain": 0.1791,
+            "lake": 0.2114
+          },
+          "dominant_spirits": [
+            "fire"
+          ],
+          "world_run_score": 0.5776,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:fire",
+          "primary_hexagram": 59,
+          "changed_hexagram": 36,
+          "changing_positions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "palace": "震",
+          "affinity": 0.5239,
+          "contradiction": 0.0648,
+          "chaos_score": 0.1744,
+          "merge_score": 0.4647,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.4628,
+        "next_integrity": 0.5196,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 4,
+        "phase": "served_by_earth",
+        "phrase": "致役乎坤",
+        "spirit_id": "spirit:earth",
+        "action_axis": "receive",
+        "action_intents": {
+          "ascend": 0.0496,
+          "receive": 0.8039,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.0,
+              0.0189,
+              0.6823
+            ],
+            [
+              0.021,
+              0.5617,
+              0.0
+            ],
+            [
+              0.2739,
+              0.2181,
+              0.0356
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5617
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0496,
+            "receive": 0.8039,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.0356,
+            "earth": 0.6823,
+            "water": 0.2181,
+            "fire": 0.0189,
+            "thunder": 0.021,
+            "wind": 0.0,
+            "mountain": 0.2739,
+            "lake": 0.0
+          },
+          "dominant_spirits": [
+            "earth"
+          ],
+          "world_run_score": 0.5617,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:earth",
+          "primary_hexagram": 18,
+          "changed_hexagram": 16,
+          "changing_positions": [
+            2
+          ],
+          "palace": "坎",
+          "affinity": 0.9791,
+          "contradiction": 0.0176,
+          "chaos_score": 0.0,
+          "merge_score": 0.7031,
+          "verdict": "harmony"
+        },
+        "previous_integrity": 0.5196,
+        "next_integrity": 0.6954,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 5,
+        "phase": "spoken_by_lake",
+        "phrase": "说言乎兑",
+        "spirit_id": "spirit:lake",
+        "action_axis": "exchange",
+        "action_intents": {
+          "ascend": 0.0461,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.8391
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.3264,
+              0.2743,
+              0.0
+            ],
+            [
+              0.2469,
+              0.5762,
+              0.6872
+            ],
+            [
+              0.0,
+              0.0,
+              0.033
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5762
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0461,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.8391
+          },
+          "spirit_resonance": {
+            "heaven": 0.033,
+            "earth": 0.0,
+            "water": 0.0,
+            "fire": 0.2743,
+            "thunder": 0.2469,
+            "wind": 0.3264,
+            "mountain": 0.0,
+            "lake": 0.6872
+          },
+          "dominant_spirits": [
+            "lake"
+          ],
+          "world_run_score": 0.5762,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:lake",
+          "primary_hexagram": 46,
+          "changed_hexagram": 20,
+          "changing_positions": [
+            2,
+            4,
+            5,
+            6
+          ],
+          "palace": "离",
+          "affinity": 0.4045,
+          "contradiction": 0.1355,
+          "chaos_score": 0.274,
+          "merge_score": 0.3795,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.6954,
+        "next_integrity": 0.5669,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 6,
+        "phase": "battled_by_heaven",
+        "phrase": "战乎乾",
+        "spirit_id": "spirit:heaven",
+        "action_axis": "ascend",
+        "action_intents": {
+          "ascend": 0.862,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.0,
+              0.3671,
+              0.0
+            ],
+            [
+              0.412,
+              0.6098,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.7314
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.6098
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.862,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.7314,
+            "earth": 0.0,
+            "water": 0.0,
+            "fire": 0.3671,
+            "thunder": 0.412,
+            "wind": 0.0,
+            "mountain": 0.0,
+            "lake": 0.0
+          },
+          "dominant_spirits": [
+            "heaven"
+          ],
+          "world_run_score": 0.6098,
+          "animism_confirmed": true
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:heaven",
+          "primary_hexagram": 60,
+          "changed_hexagram": 4,
+          "changing_positions": [
+            4,
+            5,
+            6
+          ],
+          "palace": "乾",
+          "affinity": 0.2803,
+          "contradiction": 0.0992,
+          "chaos_score": 0.2053,
+          "merge_score": 0.3327,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.5669,
+        "next_integrity": 0.5273,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 7,
+        "phase": "labored_by_water",
+        "phrase": "劳乎坎",
+        "spirit_id": "spirit:water",
+        "action_axis": "flow",
+        "action_intents": {
+          "ascend": 0.0495,
+          "receive": 0.0,
+          "flow": 0.8055,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.0,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.3837,
+              0.0189,
+              0.0
+            ],
+            [
+              0.021,
+              0.5576,
+              0.2872
+            ],
+            [
+              0.0,
+              0.6678,
+              0.0363
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5576
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0495,
+            "receive": 0.0,
+            "flow": 0.8055,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.0,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.0363,
+            "earth": 0.0,
+            "water": 0.6678,
+            "fire": 0.0189,
+            "thunder": 0.021,
+            "wind": 0.3837,
+            "mountain": 0.0,
+            "lake": 0.2872
+          },
+          "dominant_spirits": [
+            "water"
+          ],
+          "world_run_score": 0.5576,
+          "animism_confirmed": false
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:water",
+          "primary_hexagram": 35,
+          "changed_hexagram": 42,
+          "changing_positions": [
+            1,
+            4
+          ],
+          "palace": "震",
+          "affinity": 0.8158,
+          "contradiction": 0.0074,
+          "chaos_score": 0.0,
+          "merge_score": 0.6202,
+          "verdict": "harmony"
+        },
+        "previous_integrity": 0.5273,
+        "next_integrity": 0.6828,
+        "resulting_status": "alive"
+      },
+      {
+        "order": 8,
+        "phase": "completed_by_mountain",
+        "phrase": "成言乎艮",
+        "spirit_id": "spirit:mountain",
+        "action_axis": "stabilize",
+        "action_intents": {
+          "ascend": 0.0463,
+          "receive": 0.0,
+          "flow": 0.0,
+          "illuminate": 0.0,
+          "awaken": 0.0,
+          "adapt": 0.0,
+          "stabilize": 0.8366,
+          "exchange": 0.0
+        },
+        "matrix": {
+          "cells": [
+            [
+              0.0,
+              0.0177,
+              0.4463
+            ],
+            [
+              0.0196,
+              0.5801,
+              0.0
+            ],
+            [
+              0.7054,
+              0.0,
+              0.0339
+            ]
+          ],
+          "layout": [
+            [
+              "wind",
+              "fire",
+              "earth"
+            ],
+            [
+              "thunder",
+              "center",
+              "lake"
+            ],
+            [
+              "mountain",
+              "water",
+              "heaven"
+            ]
+          ],
+          "center_key": "subjective_integrity",
+          "center_value": 0.5801
+        },
+        "resonance": {
+          "action_intents": {
+            "ascend": 0.0463,
+            "receive": 0.0,
+            "flow": 0.0,
+            "illuminate": 0.0,
+            "awaken": 0.0,
+            "adapt": 0.0,
+            "stabilize": 0.8366,
+            "exchange": 0.0
+          },
+          "spirit_resonance": {
+            "heaven": 0.0339,
+            "earth": 0.4463,
+            "water": 0.0,
+            "fire": 0.0177,
+            "thunder": 0.0196,
+            "wind": 0.0,
+            "mountain": 0.7054,
+            "lake": 0.0
+          },
+          "dominant_spirits": [
+            "mountain"
+          ],
+          "world_run_score": 0.5801,
+          "animism_confirmed": true
+        },
+        "arbitration": {
+          "mode": "ritualize",
+          "actor_id": "edge",
+          "target_id": "spirit:mountain",
+          "primary_hexagram": 43,
+          "changed_hexagram": 35,
+          "changing_positions": [
+            4
+          ],
+          "palace": "震",
+          "affinity": 0.8083,
+          "contradiction": 0.0112,
+          "chaos_score": 0.0,
+          "merge_score": 0.6174,
+          "verdict": "conflict"
+        },
+        "previous_integrity": 0.6828,
+        "next_integrity": 0.6207,
+        "resulting_status": "alive"
+      }
+    ],
+    "initial_integrity": 0.1248,
+    "final_integrity": 0.6207,
+    "completed": true
+  },
+  "spirits": [
+    {
+      "slug": "heaven",
+      "name": "Heaven Spirit",
+      "trigram_name": "乾",
+      "symbol": "☰",
+      "description": "纯阳的自我发动意识，感知一切上升、开创、命令、生成方向的动作。",
+      "entity": {
+        "id": "spirit:heaven",
+        "name": "Heaven Spirit 乾",
+        "kind": "element",
+        "region_id": {
+          "x": 0,
+          "y": 1
+        },
+        "hexagram_value": 63,
+        "signature": {
+          "consciousness": 0.903496,
+          "coherence": 0.8108480000000001,
+          "entropy": 0.009840000000000002,
+          "yin_intent": 0.32299999999999995,
+          "yang_intent": 0.677
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "earth",
+      "name": "Earth Spirit",
+      "trigram_name": "坤",
+      "symbol": "☷",
+      "description": "纯阴的承载意识，感知接纳、孕育、包容、落地、保存形态的动作。",
+      "entity": {
+        "id": "spirit:earth",
+        "name": "Earth Spirit 坤",
+        "kind": "element",
+        "region_id": {
+          "x": 0,
+          "y": -1
+        },
+        "hexagram_value": 0,
+        "signature": {
+          "consciousness": 0.9150919999999999,
+          "coherence": 0.8220160000000002,
+          "entropy": 0.017759999999999998,
+          "yin_intent": 0.7464999999999999,
+          "yang_intent": 0.2535
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "water",
+      "name": "Water Spirit",
+      "trigram_name": "坎",
+      "symbol": "☵",
+      "description": "险中求通的流动意识，感知穿越、下潜、记忆、循环和路径选择。",
+      "entity": {
+        "id": "spirit:water",
+        "name": "Water Spirit 坎",
+        "kind": "element",
+        "region_id": {
+          "x": 0,
+          "y": 2
+        },
+        "hexagram_value": 18,
+        "signature": {
+          "consciousness": 0.8940319999999999,
+          "coherence": 0.7980160000000001,
+          "entropy": 0.02568000000000001,
+          "yin_intent": 0.6981428571428572,
+          "yang_intent": 0.3018571428571428
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "fire",
+      "name": "Fire Spirit",
+      "trigram_name": "离",
+      "symbol": "☲",
+      "description": "显现与辨识的意识，感知照明、分辨、附着、表达和图像化。",
+      "entity": {
+        "id": "spirit:fire",
+        "name": "Fire Spirit 离",
+        "kind": "element",
+        "region_id": {
+          "x": 0,
+          "y": -2
+        },
+        "hexagram_value": 45,
+        "signature": {
+          "consciousness": 0.9082279999999999,
+          "coherence": 0.8172640000000001,
+          "entropy": 0.001920000000000005,
+          "yin_intent": 0.45685714285714285,
+          "yang_intent": 0.5431428571428571
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "thunder",
+      "name": "Thunder Spirit",
+      "trigram_name": "震",
+      "symbol": "☳",
+      "description": "初动与惊醒的意识，感知震动、启动、突变、召唤和打破沉默。",
+      "entity": {
+        "id": "spirit:thunder",
+        "name": "Thunder Spirit 震",
+        "kind": "element",
+        "region_id": {
+          "x": 1,
+          "y": 0
+        },
+        "hexagram_value": 3,
+        "signature": {
+          "consciousness": 0.937784,
+          "coherence": 0.885792,
+          "entropy": 0.0,
+          "yin_intent": 0.5312857142857144,
+          "yang_intent": 0.4687142857142857
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul",
+          "zhouyi_world_response"
+        ]
+      }
+    },
+    {
+      "slug": "wind",
+      "name": "Wind Spirit",
+      "trigram_name": "巽",
+      "symbol": "☴",
+      "description": "入微与渗透的意识，感知适应、传播、扩散、协商和意识流转向。",
+      "entity": {
+        "id": "spirit:wind",
+        "name": "Wind Spirit 巽",
+        "kind": "element",
+        "region_id": {
+          "x": -1,
+          "y": 0
+        },
+        "hexagram_value": 27,
+        "signature": {
+          "consciousness": 0.911868,
+          "coherence": 0.8192640000000001,
+          "entropy": 0.013439999999999994,
+          "yin_intent": 0.5092142857142856,
+          "yang_intent": 0.49078571428571427
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "mountain",
+      "name": "Mountain Spirit",
+      "trigram_name": "艮",
+      "symbol": "☶",
+      "description": "边界与止定的意识，感知停止、守护、成形、阻隔和自我轮廓。",
+      "entity": {
+        "id": "spirit:mountain",
+        "name": "Mountain Spirit 艮",
+        "kind": "element",
+        "region_id": {
+          "x": 1,
+          "y": 1
+        },
+        "hexagram_value": 9,
+        "signature": {
+          "consciousness": 0.9056799999999999,
+          "coherence": 0.8110400000000001,
+          "entropy": 0.0228,
+          "yin_intent": 0.7185714285714286,
+          "yang_intent": 0.2814285714285714
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    },
+    {
+      "slug": "lake",
+      "name": "Lake Spirit",
+      "trigram_name": "兑",
+      "symbol": "☱",
+      "description": "交换与悦纳的意识，感知回应、交易、语言、共享和关系缔结。",
+      "entity": {
+        "id": "spirit:lake",
+        "name": "Lake Spirit 兑",
+        "kind": "element",
+        "region_id": {
+          "x": -1,
+          "y": -1
+        },
+        "hexagram_value": 54,
+        "signature": {
+          "consciousness": 0.88176,
+          "coherence": 0.7828800000000001,
+          "entropy": 0.0372,
+          "yin_intent": 0.19142857142857145,
+          "yang_intent": 0.8085714285714285
+        },
+        "status": "alive",
+        "lineage": [
+          "edge",
+          "all_things_ensoul"
+        ]
+      }
+    }
+  ]
+}
