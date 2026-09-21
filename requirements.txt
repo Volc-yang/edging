@@ -1,0 +1,15 @@
+# Edge World Python runtime dependencies
+#
+# Only two third-party packages are required; everything else in engine/,
+# tools/ and tests/ is Python standard library.
+#
+# The project venv was created from the Xcode-bundled Python 3.9.6, but the
+# code itself only uses 3.9-compatible syntax (`from __future__ import
+# annotations`), so a newer interpreter works too.
+#
+# Recreate the environment with:
+#   python3 -m venv .venv
+#   ./.venv/bin/python -m pip install -r requirements.txt
+
+numpy==2.0.2
+pillow==11.3.0

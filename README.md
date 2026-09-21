@@ -100,12 +100,28 @@ For snapshot inspection only, open `preview3d/Package.swift` in Xcode and select
 swift run --package-path preview3d EdgeWorldChapterOne
 ```
 
-## Python Tests
+## Verification
 
-Run the core test suite from this directory:
+One entry point for every gate:
 
 ```bash
-python3 -m unittest discover tests
+./scripts/test.sh            # Python tests + edging structural validation
+./scripts/test.sh --parity   # also run the Godot <-> UE5 parity gate
+./scripts/test.sh --all      # everything, including the UE5 commandlet
+```
+
+Or run the Python suite directly:
+
+```bash
+./.venv/bin/python -m unittest discover tests
+```
+
+Third-party dependencies are declared in `requirements.txt` (only `numpy` and
+`pillow`); everything else is Python standard library.
+
+```bash
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r requirements.txt
 ```
 
 ## Neural Network Foundation
