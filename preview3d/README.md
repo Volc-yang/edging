@@ -1,5 +1,16 @@
 # EdgeWorld Preview 3D
 
+The package now contains two macOS executables:
+
+- `EdgeWorldPreview3D`: the existing cast/voxel preview.
+- `EdgeWorldChapterOne`: the Chapter One world frontend shared with Godot.
+
+Open `Package.swift` in Xcode and select the `EdgeWorldChapterOne` scheme, or run:
+
+```bash
+swift run EdgeWorldChapterOne
+```
+
 This is a standalone macOS SwiftUI + SceneKit preview app for `edge-world` batch cast data.
 
 ## What it does

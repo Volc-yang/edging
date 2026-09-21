@@ -9,11 +9,16 @@ let package = Package(
     ],
     products: [
         .executable(name: "EdgeWorldPreview3D", targets: ["EdgeWorldPreview3D"]),
+        .executable(name: "EdgeWorldChapterOne", targets: ["EdgeWorldChapterOne"]),
     ],
     targets: [
         .executableTarget(
             name: "EdgeWorldPreview3D",
             path: "Sources/EdgeWorldPreview3D"
-        )
+        ),
+        .executableTarget(
+            name: "EdgeWorldChapterOne",
+            path: "Sources/EdgeWorldChapterOne"
+        ),
     ]
 )
