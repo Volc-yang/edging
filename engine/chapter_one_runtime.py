@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
-import tempfile
 import urllib.error
 import urllib.request
 from dataclasses import asdict, dataclass, is_dataclass
@@ -13,11 +11,11 @@ from pathlib import Path
 from typing import Any, Mapping, Optional
 
 from mathEdge import Hexagram, TRIGRAMS
+from snapshot_store import SNAPSHOT_SCHEMA_VERSION, write_snapshot_atomic
 from subjective_world import PRIMAL_ACTION_AXES, SubjectiveWorldModel
 
 
 DECISION_SCHEMA_VERSION = "edgeworld.chapter-one-decision.v2"
-SNAPSHOT_SCHEMA_VERSION = "edgeworld.chapter-one-snapshot.v2"
 DEFAULT_ACTION_INTENTS = {"awaken": 1.0, "stabilize": 0.35}
 
 ACTION_TO_SPIRIT = {
@@ -348,20 +346,15 @@ class ChapterOneRuntime:
         player_intensity: float = 0.7,
         player_expression: str = "玩家进入世界并尝试唤醒眼前之物。",
     ) -> dict[str, Any]:
+        """Compute one world round and write it atomically.
+
+        This method is intentionally lock-free: callers that perform a
+        read-modify-write cycle (that is, ``--advance``) must hold
+        ``snapshot_store.snapshot_lock`` around the whole cycle so that two
+        frontends cannot both advance from the same tick.
+        """
         snapshot = self.run(tick, player_action, player_intensity, player_expression)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        serialized = json.dumps(snapshot, ensure_ascii=False, indent=2)
-        temporary_path: Optional[Path] = None
-        try:
-            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as temporary:
-                temporary.write(serialized)
-                temporary.flush()
-                os.fsync(temporary.fileno())
-                temporary_path = Path(temporary.name)
-            temporary_path.replace(path)
-        finally:
-            if temporary_path is not None and temporary_path.exists():
-                temporary_path.unlink()
+        write_snapshot_atomic(path, snapshot)
         return snapshot
 
     def _resolve_decision(self, observation: Mapping[str, Any], tick: int) -> DecisionEnvelope:
