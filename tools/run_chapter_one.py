@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "engine"))
 
 from chapter_one_runtime import ChapterOneRuntime, OllamaDecisionClient
+from chapter_one_history import ChapterOneHistory
 from snapshot_store import SnapshotError, SnapshotLockTimeout, next_tick_from_snapshot, snapshot_lock
 
 #: Waiting for another frontend must outlast its own model call before giving up.
@@ -62,6 +63,13 @@ def main() -> int:
                 player_intensity=args.player_intensity,
                 player_expression=args.player_expression,
             )
+            # Archive the approved round so it can be replayed and audited
+            # after the live snapshot moves on. Append-only and per-tick
+            # idempotent, so re-running the same tick is harmless.
+            history_entry = ChapterOneHistory(args.output.parent).append(
+                snapshot,
+                source="offline" if args.offline else f"ollama:{args.model}",
+            )
     except SnapshotLockTimeout as exc:
         print(json.dumps({"error": "snapshot_lock_timeout", "detail": str(exc)}, ensure_ascii=False))
         return 75  # EX_TEMPFAIL: safe to retry
@@ -79,6 +87,8 @@ def main() -> int:
         "encounter": snapshot["encounter"]["primary_hexagram"]["name"],
         "changed_hexagram": snapshot["encounter"]["changed_hexagram"]["name"],
         "presentation_source": snapshot["presentation"]["source"],
+        "archived_round": history_entry["file"],
+        "history_rounds": len(ChapterOneHistory(args.output.parent).entries()),
     }
     print(json.dumps(summary, ensure_ascii=False))
     return 0

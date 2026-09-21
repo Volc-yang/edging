@@ -5,3 +5,4 @@ __pycache__/
 .godot/
 .build/
 doc/.obsidian/workspace.json
+*.lock

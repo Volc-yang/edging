@@ -1,0 +1,20 @@
+{
+  "schema_version": "edgeworld.chapter-one-history.v1",
+  "chain_head": "5b483c4db965b476dc21393c974bf57ae92ff38477fd5364bade31c4b34e2b02",
+  "entries": [
+    {
+      "tick": 21,
+      "file": "rounds/tick-000021.json",
+      "sha256": "0d68d3e85f7215e959cb89c0c9f33568a3882143ff23f3c1907fd2fc45109889",
+      "prev_hash": null,
+      "entry_hash": "5b483c4db965b476dc21393c974bf57ae92ff38477fd5364bade31c4b34e2b02",
+      "recorded_at": "2026-09-21T02:17:59+00:00",
+      "chapter_score": 0.9664,
+      "encounter": "渐",
+      "changed_hexagram": "升",
+      "decision_source": "ollama",
+      "source": "backfill:20260921"
+    }
+  ],
+  "updated_at": "2026-09-21T02:17:59+00:00"
+}

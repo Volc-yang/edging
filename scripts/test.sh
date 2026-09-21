@@ -40,7 +40,7 @@ info() { [ "$QUIET" -eq 1 ] || printf '  ....  %s\n' "$1"; }
 echo "Edge World verification  (python: $PYTHON)"
 
 # ---------------------------------------------------------------- gate 1
-echo "[1/4] Python test suite"
+echo "[1/5] Python test suite"
 if OUT="$("$PYTHON" -m unittest discover tests 2>&1)"; then
   pass "$(printf '%s' "$OUT" | grep -E '^Ran ' || echo 'unit tests ran')"
 else
@@ -49,7 +49,7 @@ else
 fi
 
 # ---------------------------------------------------------------- gate 2
-echo "[2/4] edging 64D/384 structural validation"
+echo "[2/5] edging 64D/384 structural validation"
 if command -v ruby >/dev/null 2>&1; then
   if OUT="$(cd "$REPO_ROOT/edging" && ruby bin/validate_spacetime_abstractions.rb --complete 2>&1)"; then
     pass "$(printf '%s' "$OUT" | tail -1)"
@@ -62,7 +62,7 @@ else
 fi
 
 # ---------------------------------------------------------------- gate 3
-echo "[3/4] Godot <-> UE5 parity gate"
+echo "[3/5] Godot <-> UE5 parity gate"
 if [ "$RUN_PARITY" -eq 1 ]; then
   if OUT="$("$PYTHON" tools/validate_godot_ue5_parity.py 2>&1)"; then
     if printf '%s' "$OUT" | grep -q '"status": "match"'; then
@@ -80,7 +80,7 @@ else
 fi
 
 # ---------------------------------------------------------------- gate 4
-echo "[4/4] UE5 headless contract check"
+echo "[4/5] UE5 headless contract check"
 UE5_PROJECT="${UE5_PROJECT:-/Volumes/DevSSD/Unreal/Projects/EdgeWorldUE}"
 UE5_CMD="${UE5_CMD:-/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor-Cmd}"
 if [ "$RUN_UE5" -eq 1 ]; then
@@ -102,6 +102,18 @@ if [ "$RUN_UE5" -eq 1 ]; then
   fi
 else
   info "skipped (pass --all to enable; requires UE 5.8)"
+fi
+
+echo "[5/5] round history integrity"
+if [ -f "$REPO_ROOT/models/history/index.json" ]; then
+  if OUT="$("$PYTHON" tools/chapter_one_history.py verify 2>&1)"; then
+    pass "hash chain intact ($(printf '%s' "$OUT" | grep -o '"rounds": [0-9]*' || echo 'rounds unknown'))"
+  else
+    fail "round history integrity"
+    printf '%s\n' "$OUT" | tail -20
+  fi
+else
+  info "no models/history yet - skipped"
 fi
 
 echo
