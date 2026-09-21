@@ -155,7 +155,23 @@ func build_interface() -> void:
 
 
 func snapshot_path() -> String:
+	# Every consumer (Godot, UE5, the parity gate) resolves the approved
+	# snapshot through EDGEWORLD_CHAPTER_ONE_JSON when it is set, so an
+	# external harness can point them all at the same file. Without it the
+	# project-relative default is used.
+	var override := OS.get_environment("EDGEWORLD_CHAPTER_ONE_JSON")
+	if override != "":
+		return override
 	return ProjectSettings.globalize_path("res://../../models/chapter_one_snapshot.json")
+
+
+func python_executable() -> String:
+	# Prefer the project virtualenv: the system python may lack the declared
+	# dependencies in requirements.txt.
+	var venv_python := repository_root().path_join(".venv/bin/python")
+	if FileAccess.file_exists(venv_python):
+		return venv_python
+	return "/usr/bin/python3"
 
 
 func repository_root() -> String:
@@ -335,12 +351,16 @@ func run_runtime(offline: bool) -> void:
 		"--advance",
 		"--player-action", PLAYER_ACTIONS[action_selector.selected],
 		"--player-intensity", str(intensity_slider.value),
-		"--player-expression", expression_input.text
+		"--player-expression", expression_input.text,
+		# Keep the write target identical to the read target so a harness that
+		# redirected the snapshot cannot end up reading one file and writing
+		# another.
+		"--output", snapshot_path()
 	]))
 	if offline:
 		arguments.append("--offline")
 	var output: Array = []
-	var exit_code := OS.execute("/usr/bin/python3", arguments, output, true)
+	var exit_code := OS.execute(python_executable(), arguments, output, true)
 	if exit_code != 0:
 		status_label.text = "运行失败：%s" % "\n".join(output)
 		return

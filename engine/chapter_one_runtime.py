@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Mapping, Optional
 
 from mathEdge import Hexagram, TRIGRAMS
+from destiny_layer import DestinyLayer
 from snapshot_store import SNAPSHOT_SCHEMA_VERSION, write_snapshot_atomic
 from subjective_world import PRIMAL_ACTION_AXES, SubjectiveWorldModel
 
@@ -275,10 +276,21 @@ class OllamaDecisionClient:
 
 
 class ChapterOneRuntime:
-    def __init__(self, seed: int, client: Optional[OllamaDecisionClient] = None):
+    def __init__(
+        self,
+        seed: int,
+        client: Optional[OllamaDecisionClient] = None,
+        destiny: bool = True,
+        repo_root: Optional[Path] = None,
+    ):
         self.seed = seed
         self.client = client
         self.validator = ChapterOneRuleValidator()
+        # The destiny layer reads the approved round through the edging 64D/384
+        # deterministic scorer. It never influences the hexagram, the changing
+        # lines or the world state; if the scorer is unavailable the block is
+        # recorded as such instead of being approximated.
+        self.destiny = DestinyLayer(repo_root or Path(__file__).resolve().parents[1], enabled=destiny)
 
     def run(
         self,
@@ -306,7 +318,7 @@ class ChapterOneRuntime:
         world_response = self._apply_world_response(world, encounter)
         presentation = self._present_encounter(encounter, world_response, tick)
 
-        return {
+        snapshot = {
             "schema_version": SNAPSHOT_SCHEMA_VERSION,
             "chapter": "all_things_ensoul",
             "seed": self.seed,
@@ -337,6 +349,12 @@ class ChapterOneRuntime:
                 for descriptor in world.describe_primal_spirits()
             ],
         }
+
+        # The destiny reading is computed from the already-approved round and is
+        # attached last, so it can never feed back into the hexagram, the
+        # changing lines or the world state.
+        snapshot["destiny"] = self.destiny.evaluate(snapshot)
+        return snapshot
 
     def write_snapshot(
         self,
