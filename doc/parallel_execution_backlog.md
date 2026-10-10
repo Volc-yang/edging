@@ -20,7 +20,7 @@ I2 阶段 2 worker-process 纵切
 ├── I 按依赖集成 Genesis API 报告、UE 插件、worker [完成]
 ├── T 补齐 UE 异步进程/管道传输和响应解析 [完成]
 ├── V UE 5.8.3 + Genesis 1.4.3 live roundtrip/恢复验收 [通过]
-└── G 更新上下文、提交检查点并前移主分支 [待提交时完成]
+└── G 更新上下文、提交检查点并前移主分支 [已完成：`354b5c9`，已快进 `feature/edge-world`]
 ```
 
 ## 子任务反馈与集成记录
