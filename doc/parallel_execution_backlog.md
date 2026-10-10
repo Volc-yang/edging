@@ -56,7 +56,7 @@
 | N4 | 原型契约与计划路线 | 三份报告及用户的 UE5 发布版优先原则 | **完成（原型范围锁定）**：`phase1_4d_prototype_contract.md`；执行计划更新为 v0.3。生产级 ADR 保持开放。 |
 | P1 | UE 5.8.3 Runtime 插件传输骨架 | 契约/计划基线 `203e632` 和 UE 5.8.3 安装 | **完成，待集成**：worktree `.worktrees/stage2-ue-plugin`，分支 `codex/stage2-ue-plugin`，提交 `326c113`。提供异步 JSONL `status/advance/observe` 请求构造和只读观察 Actor；UE 5.8.3 `EdgeWorldHostEditor Mac Development` 构建成功。无实际进程/pipe transport、响应解析和端到端验证；审查未发现阻断问题。 |
 | P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档；基线 `203e632` | **完成**：worktree `.worktrees/stage2-genesis-api`，分支 `codex/stage2-genesis-api`，提交 `363d23b`；报告 `doc/genesis_public_api_audit.md`。确认公开 `scene.rigid_solver.set_gravity()`、`scene.step()`、`Scene.save_checkpoint()`/`gs.Scene.load_checkpoint()`；单自由刚体 Metal 探针验证重设下一 tick 参数后的 checkpoint 续算与不中断轨迹一致。未测新 OS 进程重启或复杂 solver。 |
-| P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | **进行中**：worktree `.worktrees/stage2-worker`，分支 `codex/stage2-worker`，目标基线 `292ac0d`。实现有限单刚体 `status/advance/observe`、权威状态、revision/command 幂等、Genesis 公共 API adapter、checkpoint 与历史只读观察；advance 每次严格只允许 `target_tick == current_tick + 1`。只读参考主工作区未提交 PoC 和 P1/P2 分支成果。 |
+| P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | **交付待修复**：worktree `.worktrees/stage2-worker`，分支 `codex/stage2-worker`，初始提交 `2557ad2`。实现有限单刚体 `status/advance/observe`、revision/command 幂等、Genesis 公共 API、checkpoint 与历史观察；focused smoke 和新 OS 进程恢复报告通过。主审查发现 manifest 原子替换成功但目录 `fsync` 失败时，内存 head 可能落后磁盘提交；已要求针对提交不确定状态修复并注入故障验证，修复前不接受/集成。 |
 
 P1/P2 已在独立 worktree 完成并审查，尚未集成；P3 正依赖 P2 结论实施。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
 
@@ -86,7 +86,7 @@ P1/P2 已在独立 worktree 完成并审查，尚未集成；P3 正依赖 P2 结
 - `phase1_4d_prototype_contract.md` 只锁定有限实验边界；生产级时间、通用调度、跨平台确定性、复杂求解器恢复和产品规模仍开放。
 - UE 插件已按发布版 UE 5.8.3 构建，但没有真实 worker transport、Editor 启动/渲染、cook/打包或 UE↔worker↔Genesis 端到端证据。
 - Genesis 公开 API 已用单自由刚体 Metal 探针验证 checkpoint 续算；尚未验证全新 OS 进程重启、复杂 solver 或其他设备/精度。
-- P1/P2 交付尚未集成；P3 worker 任务仍运行。本轮保持进行中，待 worker 完成后审查其提交、更新上下文并作最终提交。
+- P1/P2 交付尚未集成；P3 初始实现已反馈，正按主审查意见修复提交不确定错误路径。修复和 focused fault-injection 验证完成前不接受/集成；本轮保持进行中。
 - 本轮执行计划已更新为 v0.3，最小原型契约已建立；领域原则已同步为 UE5 发布版优先、Godot 为辅助观察端。
 - 下一步：收取并审查 P3 worker 实现；之后决定按依赖顺序集成 worker 与插件，并设计真实 transport/UE 端到端验证。JSON 数值当前由 UE 客户端以 double 编码 int64，原型小 tick 可用，长期协议需定义安全整数或字符串编码。
 - UE 源码修改仍须等待发布版能力对批准契约的可复现缺口，并经主任务审议。
