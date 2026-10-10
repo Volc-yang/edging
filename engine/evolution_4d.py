@@ -15,6 +15,7 @@ from typing import Tuple
 
 
 EXPERIMENTAL_RULE_VERSION = "experimental.tree-growth.v1"
+EXPERIMENTAL_SEED_TREE_RULE_VERSION = "experimental.seed-tree.v1"
 
 
 class TimePhase(str, Enum):
@@ -29,6 +30,16 @@ class TimePhase(str, Enum):
 class TreeStage(str, Enum):
     """Small lifecycle vocabulary for this single-object experiment."""
 
+    SEEDLING = "seedling"
+    MATURE = "mature"
+    DECLINING = "declining"
+    DEAD = "dead"
+
+
+class SeedStage(str, Enum):
+    """Lifecycle stages in the Seed-to-tree experiment."""
+
+    SEEDED = "seed"
     SEEDLING = "seedling"
     MATURE = "mature"
     DECLINING = "declining"
@@ -159,6 +170,130 @@ class EvolutionResult:
 
     state: TreeState
     reasons: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class SeedTreeState:
+    """Authoritative single-Seed world state; geometry is derived elsewhere."""
+
+    seed_id: str
+    tree_id: str | None
+    logical_tick: int
+    stage: SeedStage
+    health: float
+    biomass: float
+    water_reserve: float
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.seed_id, str) or not self.seed_id.strip():
+            raise ValueError("seed_id must be a non-empty string")
+        if self.tree_id is not None and (not isinstance(self.tree_id, str) or not self.tree_id.strip()):
+            raise ValueError("tree_id must be None or a non-empty string")
+        if type(self.logical_tick) is not int or self.logical_tick < 0:
+            raise ValueError("logical_tick must be a non-negative integer")
+        if not isinstance(self.stage, SeedStage):
+            raise ValueError("stage must be a SeedStage")
+        if self.stage is SeedStage.SEEDED and self.tree_id is not None:
+            raise ValueError("an un-germinated Seed cannot have a tree_id")
+        if self.stage is not SeedStage.SEEDED and self.tree_id is None:
+            raise ValueError("a germinated Seed must have a stable tree_id")
+        _bounded_number(self.health, "health", 0.0, 1.0)
+        _bounded_number(self.biomass, "biomass", 0.0, 1.0)
+        _bounded_number(self.water_reserve, "water_reserve", 0.0, 1.0)
+
+
+@dataclass(frozen=True)
+class SeedTreeRules:
+    """Versioned demonstration rules for germination and scalar tree growth."""
+
+    version: str = EXPERIMENTAL_SEED_TREE_RULE_VERSION
+    germination_moisture_threshold: float = 0.30
+    germination_light_threshold: float = 0.10
+    seedling_health: float = 0.65
+    seedling_biomass: float = 0.20
+    seedling_water_reserve: float = 0.50
+    growth_rules: EvolutionRules = EvolutionRules()
+
+    def __post_init__(self) -> None:
+        if self.version != EXPERIMENTAL_SEED_TREE_RULE_VERSION:
+            raise ValueError(f"unsupported seed-tree rule version: {self.version!r}")
+        for name in (
+            "germination_moisture_threshold", "germination_light_threshold",
+            "seedling_health", "seedling_biomass", "seedling_water_reserve",
+        ):
+            _bounded_number(getattr(self, name), name, 0.0, 1.0)
+        if not isinstance(self.growth_rules, EvolutionRules):
+            raise ValueError("growth_rules must be EvolutionRules")
+
+
+@dataclass(frozen=True)
+class SeedTreeResult:
+    state: SeedTreeState
+    reasons: Tuple[str, ...]
+
+
+def seed_state(seed_id: str) -> SeedTreeState:
+    """Create the tick-zero un-germinated state for one stable Seed identity."""
+
+    return SeedTreeState(seed_id, None, 0, SeedStage.SEEDED, 1.0, 0.0, 0.0)
+
+
+def _tree_id_for_seed(seed_id: str) -> str:
+    # A full content digest gives a stable tree identity without assuming that
+    # arbitrary Seed IDs are safe or unique in another identity namespace.
+    import hashlib
+
+    return f"tree-{hashlib.sha256(seed_id.encode('utf-8')).hexdigest()}"
+
+
+def advance_seed_tree(
+    state: SeedTreeState,
+    environment: EnvironmentSample,
+    logical_tick: int,
+    rules: SeedTreeRules = SeedTreeRules(),
+) -> SeedTreeResult:
+    """Advance one Seed/tree state by one explicit tick without I/O or randomness."""
+
+    if not isinstance(state, SeedTreeState):
+        raise TypeError("state must be a SeedTreeState")
+    if not isinstance(environment, EnvironmentSample):
+        raise TypeError("environment must be an EnvironmentSample")
+    if not isinstance(rules, SeedTreeRules):
+        raise TypeError("rules must be SeedTreeRules")
+    if type(logical_tick) is not int or logical_tick != state.logical_tick + 1:
+        raise ValueError("logical_tick must be exactly state.logical_tick + 1")
+
+    reasons = ["tick_advanced"]
+    if state.stage is SeedStage.SEEDED:
+        if (environment.moisture < rules.germination_moisture_threshold
+                or environment.light < rules.germination_light_threshold):
+            return SeedTreeResult(
+                SeedTreeState(state.seed_id, None, logical_tick, SeedStage.SEEDED,
+                              state.health, state.biomass, state.water_reserve),
+                tuple(reasons + ["seed_dormant"]),
+            )
+        tree_id = _tree_id_for_seed(state.seed_id)
+        reasons.extend(("seed_germinated", "structure:tree_created"))
+        return SeedTreeResult(
+            SeedTreeState(tree_id=tree_id, seed_id=state.seed_id, logical_tick=logical_tick,
+                          stage=SeedStage.SEEDLING, health=rules.seedling_health,
+                          biomass=rules.seedling_biomass,
+                          water_reserve=rules.seedling_water_reserve),
+            tuple(reasons),
+        )
+
+    tree_state = TreeState(
+        stable_id=state.tree_id or "", logical_tick=state.logical_tick,
+        stage=TreeStage(state.stage.value), health=state.health,
+        biomass=state.biomass, water_reserve=state.water_reserve,
+    )
+    result = advance_tree(tree_state, environment, logical_tick, rules.growth_rules)
+    next_state = SeedTreeState(
+        seed_id=state.seed_id, tree_id=state.tree_id, logical_tick=logical_tick,
+        stage=SeedStage(result.state.stage.value), health=result.state.health,
+        biomass=result.state.biomass, water_reserve=result.state.water_reserve,
+    )
+    return SeedTreeResult(next_state, result.reasons)
 
 
 def advance_tree(

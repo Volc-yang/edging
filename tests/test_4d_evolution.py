@@ -14,6 +14,10 @@ from evolution_4d import (  # noqa: E402
     EnvironmentSample,
     EvolutionRules,
     TimePhase,
+    SeedStage,
+    SeedTreeRules,
+    advance_seed_tree,
+    seed_state,
     TreeStage,
     TreeState,
     advance_tree,
@@ -119,6 +123,45 @@ class Evolution4DTests(unittest.TestCase):
             self.assertLessEqual(state.biomass, 1.0)
             self.assertGreaterEqual(state.water_reserve, 0.0)
             self.assertLessEqual(state.water_reserve, 1.0)
+
+    def test_seed_germinates_only_with_fixed_environment_inputs(self) -> None:
+        state = seed_state("seed-alpha")
+        dry = advance_seed_tree(
+            state, EnvironmentSample(TimePhase.SHAOYANG, moisture=0.0, light=1.0), 1,
+        )
+        self.assertIs(dry.state.stage, SeedStage.SEEDED)
+        self.assertIsNone(dry.state.tree_id)
+        self.assertEqual(dry.reasons, ("tick_advanced", "seed_dormant"))
+
+        wet = advance_seed_tree(
+            dry.state, EnvironmentSample(TimePhase.TAIYANG, moisture=0.8, light=0.7), 2,
+        )
+        self.assertIs(wet.state.stage, SeedStage.SEEDLING)
+        self.assertEqual(wet.state.tree_id, advance_seed_tree(
+            dry.state, EnvironmentSample(TimePhase.TAIYANG, moisture=0.8, light=0.7), 2,
+        ).state.tree_id)
+        self.assertEqual(wet.state.seed_id, "seed-alpha")
+
+    def test_seed_tree_fixed_trace_reaches_mature_deterministically(self) -> None:
+        environments = tuple(
+            EnvironmentSample(TimePhase.TAIYANG, moisture=0.9, light=0.9)
+            for _ in range(8)
+        )
+
+        def replay():
+            state = seed_state("seed-replay")
+            trace = []
+            for tick, environment in enumerate(environments, start=1):
+                result = advance_seed_tree(state, environment, tick, SeedTreeRules())
+                state = result.state
+                trace.append((state, result.reasons))
+            return trace
+
+        first, second = replay(), replay()
+        self.assertEqual(first, second)
+        self.assertIs(first[0][0].stage, SeedStage.SEEDLING)
+        self.assertIs(first[-1][0].stage, SeedStage.MATURE)
+        self.assertTrue(all(item[0].tree_id == first[0][0].tree_id for item in first))
 
 
 if __name__ == "__main__":
