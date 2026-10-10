@@ -20,6 +20,30 @@ A4D 第四维演化算法
 
 **结论与后续：**算法/测试差异审查通过，当前为可审查原型，尚不升级为已批准世界规则。健康、生物量、水分、生命周期阈值及四象系数均未校准；尚无因果记录/快照接口，也未接入 worker。下一步由统筹评估是否批准规则语义及是否另开持久化/因果适配子任务。
 
+## 新迭代：单 Seed → 树的 UE5 4D 呈现纵切（进行中）
+
+目标：一个树种子按显式逻辑时间与环境规则演化为树；从固定 tick/watermark 查询 4D 状态，并由 UE5 发布版在生成场景中呈现；证明相机、帧率和 Observe 不改权威状态。
+
+方案树（契约 `doc/seed_tree_4d_render_slice_contract.md` 已冻结为本轮实验边界）：
+
+```text
+A4D-2 Seed → Tree UE5 4D Render
+├── C 主任务冻结 Seed/Tree 状态、环境输入、JSONL 与 SampleQuery 契约 [完成]
+├── W 独立 tree worker：确定性萌发/生长、事件历史、精确观察、恢复 [待派发]
+├── U UE 5.8.3：代码生成 PIE 世界、树视觉代理、固定时间观察呈现 [待派发]
+└── I 集成 W/U：固定 tick 时间切片、真实 RHI 可见证据、呈现只读门 [待执行]
+```
+
+**接受决定：**树规则保持实验模型；一个树 Worker 与 Genesis 刚体 Worker/存档隔离，复用 JSONL v1 和既有 UE 进程传输；环境输入每次显式提供；观察水位必须精确匹配历史记录。UE 使用 Engine BasicShapes 生成地面/树代理/灯光/相机，不引入外部美术、不提交二进制地图、不改 UE 源码。具体契约、字段和阶段门见 `doc/seed_tree_4d_render_slice_contract.md`。
+
+| 子任务 | 负责人/状态 | 代码所有权 | 依赖与验收 |
+|---|---|---|---|
+| T4D-WORKER-01 树种子演化 worker | subagent，待派发；独立 worktree `.worktrees/seed-tree-worker` / `codex/seed-tree-worker` | `engine/evolution_4d.py`、`engine/edgeworld_worker/tree_worker.py`、专属 Python 测试 | 按冻结契约，status/advance/observe、幂等/历史水位/崩溃恢复；不改现有 Genesis `worker.py` 或 UE 文件。 |
+| T4D-UE-01 UE 生成世界与树投影 | subagent，待派发；独立 worktree `.worktrees/seed-tree-ue` / `codex/seed-tree-ue` | UE Runtime 观察 Actor/JSON client、Host GameMode/config、UE 自动化及 README | 按冻结契约消费 worker 样本；Actor 无 Tick；UE 5.8.3 Editor 构建，目标为 PIE 真实 RHI 可见；不改 Python worker。 |
+| T4D-INT-01 端到端阶段门 | 统筹任务，待执行 | 集成、证据、最终 backlog | W/U 提交经审查后集成；验证萌发前/幼苗/成树固定历史观察、重启重放、视角/帧率/重复 Observe 不变更状态；保留 NullRHI 与真实画面证据边界。 |
+
+实现 worktree 从本迭代规划检查点创建；代码基线为当前主线 `82d51ef`，输入报告为主工作区未跟踪只读材料；只集成任务卡拥有的路径，保留主工作区其他脏改动。阶段门成功前，不宣称树生长规则已批准或完整 4D 引擎就绪。
+
 ## 上一迭代：阶段 2 worker-process 纵切
 
 ## 统一开发原则
