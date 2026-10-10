@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 
+struct FEdgeWorldTreeObservation;
+
 /** One JSON Lines request. RequestId must be unique among in-flight requests. */
 struct EDGEWORLDRUNTIME_API FEdgeWorldRequest
 {
@@ -93,6 +95,8 @@ public:
 	void Status(const FString& WorldId, FEdgeWorldResponseHandler Handler) const;
 	void Advance(const FString& WorldId, int64 ExpectedRevision, int64 TargetTick,
 		const FString& CommandId, FEdgeWorldResponseHandler Handler) const;
+	void Advance(const FString& WorldId, int64 ExpectedRevision, int64 TargetTick,
+		const FString& CommandId, const FString& EnvironmentJson, FEdgeWorldResponseHandler Handler) const;
 	void Observe(const FString& WorldId, int64 LogicalTick, const FString& ViewSpecJson,
 		FEdgeWorldResponseHandler Handler) const;
 
@@ -101,3 +105,9 @@ private:
 		FEdgeWorldResponseHandler Handler) const;
 	TSharedRef<IEdgeWorldJsonlTransport, ESPMode::ThreadSafe> Transport;
 };
+
+/** Parse and validate one exact-tick tree Observe response against its query. */
+EDGEWORLDRUNTIME_API bool EdgeWorldParseTreeObservation(const FEdgeWorldResponse& Response,
+	const FString& ExpectedWorldId, int64 ExpectedTick, int64 ExpectedWatermark,
+	const FString& ExpectedRulesetVersion, const FString& ExpectedProjectionVersion,
+	FEdgeWorldTreeObservation& OutObservation, FString& OutError);

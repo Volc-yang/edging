@@ -1,7 +1,11 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "EdgeWorldJsonlClient.h"
+#include "EdgeWorldObservationActor.h"
 
+#include "Async/Async.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/World.h"
 #include "HAL/PlatformProcess.h"
 #include "Dom/JsonObject.h"
 #include "Misc/AutomationTest.h"
@@ -179,6 +183,140 @@ bool FEdgeWorldWorkerProtocolTest::RunTest(const FString& Parameters)
 		TestEqual(TEXT("Restart preserves revision 1"), NumberField(ResultObject(*RecoveredStatus), TEXT("state_revision")), 1.0);
 		Transport->Shutdown();
 	}
+	return true;
+}
+
+namespace
+{
+	FEdgeWorldResponse MakeTreeObservationFixture(int64 Tick, int64 Watermark, const TCHAR* Stage,
+		const TCHAR* TreeIdJson, const TCHAR* PhaseJson, double Biomass)
+	{
+		FEdgeWorldResponse Response;
+		Response.bSuccess = true;
+		Response.JsonLine = FString::Printf(
+			TEXT("{\"protocol_version\":1,\"request_id\":\"fixture\",\"ok\":true,\"result\":{\"world_id\":\"seed-tree-demo\",\"logical_tick\":%lld,\"source_revision\":%lld,\"watermark\":%lld,\"sample\":{\"seed_id\":\"seed-7\",\"tree_id\":%s,\"stage\":\"%s\",\"health\":0.8,\"biomass\":%.3f,\"water_reserve\":0.4,\"phase\":%s,\"ruleset_version\":\"experimental.seed-tree.v1\"},\"projection_version\":\"stylized-tree-ue-v1\",\"state_hash\":\"state-%lld\",\"event_hash\":\"event-%lld\",\"view_spec\":{\"watermark\":%lld,\"region\":\"single-tree-world\"}}}"),
+			static_cast<long long>(Tick), static_cast<long long>(Watermark), static_cast<long long>(Watermark),
+			TreeIdJson, Stage, Biomass, PhaseJson, static_cast<long long>(Tick),
+			static_cast<long long>(Tick), static_cast<long long>(Watermark));
+		return Response;
+	}
+
+	class FRecordingTreeTransport final : public IEdgeWorldJsonlTransport
+	{
+	public:
+		FEdgeWorldRequest LastRequest;
+
+		virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override
+		{
+			LastRequest = MoveTemp(Request);
+			Async(EAsyncExecution::ThreadPool, [Handler = MoveTemp(Handler)]() mutable
+			{
+				FEdgeWorldResponse Response;
+				Response.ErrorCode = TEXT("fixture_complete");
+				Handler(MoveTemp(Response));
+			});
+		}
+	};
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEdgeWorldTreeObserveFixtureTest,
+	"edgeWorld.TreeObservation.ExactTimeSeedSeedlingAndMatureFixtures",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FEdgeWorldTreeObserveFixtureTest::RunTest(const FString& Parameters)
+{
+	struct FFixtureCase
+	{
+		int64 Tick;
+		int64 Watermark;
+		const TCHAR* Stage;
+		const TCHAR* TreeIdJson;
+		const TCHAR* PhaseJson;
+		double Biomass;
+	};
+	const FFixtureCase Fixtures[] = {
+		{ 0, 0, TEXT("seed"), TEXT("null"), TEXT("null"), 0.0 },
+		{ 3, 3, TEXT("seedling"), TEXT("\"tree-7\""), TEXT("\"shaoyang\""), 0.3 },
+		{ 8, 8, TEXT("mature"), TEXT("\"tree-7\""), TEXT("\"taiyang\""), 0.8 }
+	};
+
+	FEdgeWorldTreeObservation MatureObservation;
+	for (const FFixtureCase& Fixture : Fixtures)
+	{
+		const FEdgeWorldResponse Response = MakeTreeObservationFixture(Fixture.Tick, Fixture.Watermark,
+			Fixture.Stage, Fixture.TreeIdJson, Fixture.PhaseJson, Fixture.Biomass);
+		FEdgeWorldTreeObservation Parsed;
+		FString Error;
+		const bool bParsed = EdgeWorldParseTreeObservation(Response, TEXT("seed-tree-demo"), Fixture.Tick,
+			Fixture.Watermark, TEXT("experimental.seed-tree.v1"), TEXT("stylized-tree-ue-v1"), Parsed, Error);
+		TestTrue(FString::Printf(TEXT("Fixture tick %lld parses: %s"), static_cast<long long>(Fixture.Tick), *Error), bParsed);
+		if (bParsed)
+		{
+			TestEqual(TEXT("Parser preserves requested logical tick"), Parsed.LogicalTick, Fixture.Tick);
+			TestEqual(TEXT("Parser preserves exact source watermark"), Parsed.SourceRevision, Fixture.Watermark);
+			TestEqual(TEXT("Parser preserves lifecycle stage"), Parsed.Stage, FString(Fixture.Stage));
+			TestEqual(TEXT("Parser preserves biomass"), Parsed.Biomass, Fixture.Biomass);
+			if (Fixture.Tick == 8)
+			{
+				MatureObservation = Parsed;
+			}
+		}
+	}
+
+	FString Error;
+	FEdgeWorldTreeObservation Rejected;
+	const FEdgeWorldResponse Mature = MakeTreeObservationFixture(8, 8, TEXT("mature"), TEXT("\"tree-7\""), TEXT("\"taiyang\""), 0.8);
+	TestFalse(TEXT("A response for a different requested tick is rejected"),
+		EdgeWorldParseTreeObservation(Mature, TEXT("seed-tree-demo"), 7, 8, TEXT("experimental.seed-tree.v1"),
+			TEXT("stylized-tree-ue-v1"), Rejected, Error));
+	TestFalse(TEXT("A response with a mismatched watermark is rejected"),
+		EdgeWorldParseTreeObservation(Mature, TEXT("seed-tree-demo"), 8, 7, TEXT("experimental.seed-tree.v1"),
+			TEXT("stylized-tree-ue-v1"), Rejected, Error));
+	TestFalse(TEXT("An unrecognized projection version is rejected"),
+		EdgeWorldParseTreeObservation(Mature, TEXT("seed-tree-demo"), 8, 8, TEXT("experimental.seed-tree.v1"),
+			TEXT("other-projection"), Rejected, Error));
+
+	UWorld* TestWorld = UWorld::CreateWorld(EWorldType::Game, false);
+	if (TestNotNull(TEXT("Transient world is created for presentation verification"), TestWorld))
+	{
+		AEdgeWorldObservationActor* TreeActor = TestWorld->SpawnActor<AEdgeWorldObservationActor>();
+		if (TestNotNull(TEXT("Tree observation actor is spawned"), TreeActor))
+		{
+			TestFalse(TEXT("Tree observation actor has no enabled tick"), TreeActor->IsActorTickEnabled());
+			TestTrue(TEXT("A mature fixed-time sample applies"), TreeActor->ApplyTreeObservation(MatureObservation, 8, 8, Error));
+			TArray<UStaticMeshComponent*> Components;
+			TreeActor->GetComponents<UStaticMeshComponent>(Components);
+			TArray<FTransform> FirstTransforms;
+			TArray<bool> FirstVisibility;
+			for (const UStaticMeshComponent* Component : Components)
+			{
+				FirstTransforms.Add(Component->GetRelativeTransform());
+				FirstVisibility.Add(Component->IsVisible());
+			}
+			TestTrue(TEXT("Repeating the same fixed sample applies"), TreeActor->ApplyTreeObservation(MatureObservation, 8, 8, Error));
+			TestEqual(TEXT("Proxy component count is fixed"), Components.Num(), FirstTransforms.Num());
+			for (int32 Index = 0; Index < Components.Num(); ++Index)
+			{
+				TestTrue(TEXT("Repeated sample produces identical component transform"), Components[Index]->GetRelativeTransform().Equals(FirstTransforms[Index]));
+				TestEqual(TEXT("Repeated sample preserves component visibility"), Components[Index]->IsVisible(), FirstVisibility[Index]);
+			}
+		}
+		TestWorld->DestroyWorld(false);
+	}
+
+	TSharedRef<FRecordingTreeTransport, ESPMode::ThreadSafe> RecordingTransport =
+		MakeShared<FRecordingTreeTransport, ESPMode::ThreadSafe>();
+	FEdgeWorldJsonlClient Client(RecordingTransport);
+	const TOptional<FEdgeWorldResponse> AdvanceResponse = WaitForResponse(*this,
+		[&Client](FEdgeWorldResponseHandler Handler)
+		{
+			Client.Advance(TEXT("seed-tree-demo"), 3, 4, TEXT("cmd-4"),
+				TEXT("{\"phase\":\"taiyang\",\"moisture\":0.8,\"light\":0.7}"), MoveTemp(Handler));
+		});
+	TestTrue(TEXT("Environment advance reaches the transport"), RecordingTransport->LastRequest.JsonLine.Contains(TEXT("\"environment\"")));
+	TestTrue(TEXT("Environment phase is serialized explicitly"), RecordingTransport->LastRequest.JsonLine.Contains(TEXT("\"phase\":\"taiyang\"")));
+	TestTrue(TEXT("Advance request retains the exact target tick"), RecordingTransport->LastRequest.JsonLine.Contains(TEXT("\"target_tick\":4")));
+
 	return true;
 }
 
