@@ -16,6 +16,7 @@ WORKER_SCRIPT = ENGINE_DIR / "edgeworld_worker" / "tree_worker.py"
 sys.path.insert(0, str(ENGINE_DIR))
 
 from evolution_4d import EXPERIMENTAL_SEED_TREE_RULE_VERSION  # noqa: E402
+from edgeworld_worker import tree_worker as tree_worker_module  # noqa: E402
 from edgeworld_worker.tree_worker import Worker  # noqa: E402
 
 
@@ -165,6 +166,34 @@ class SeedTreeWorkerTests(unittest.TestCase):
             self.assertEqual(event["logical_tick"], index)
             self.assertEqual(event["previous_event_hash"], "0" * 64 if index == 0 else recovered.manifest["events"][index - 1]["event_hash"])
             self.assertEqual(event["state_hash"], recovered.manifest["history"][index]["state_hash"])
+
+    def test_restart_rejects_tampered_previous_state_hash_even_with_rehashed_event(self) -> None:
+        self.result(self.worker.handle(advance_request(1)))
+        manifest_path = self.state_dir / "tree_world.json"
+        manifest = json.loads(manifest_path.read_text())
+        event = manifest["events"][1]
+        event["previous_state_hash"] = "f" * 64
+        unsigned = {key: value for key, value in event.items() if key != "event_hash"}
+        event["event_hash"] = tree_worker_module._digest(unsigned)
+        manifest["history"][1]["event_hash"] = event["event_hash"]
+        manifest["event_head_hash"] = event["event_hash"]
+        command_result = manifest["commands"]["advance-1"]["result"]
+        command_result["event_head_hash"] = event["event_hash"]
+        command_result["record"]["event_hash"] = event["event_hash"]
+        manifest_path.write_text(json.dumps(manifest, sort_keys=True))
+
+        with self.assertRaisesRegex(RuntimeError, "previous-state hash mismatch"):
+            Worker(self.state_dir, "world-seed-tree", seed=7)
+
+    def test_restart_rejects_command_index_missing_a_committed_history_command(self) -> None:
+        self.result(self.worker.handle(advance_request(1)))
+        manifest_path = self.state_dir / "tree_world.json"
+        manifest = json.loads(manifest_path.read_text())
+        del manifest["commands"]["advance-1"]
+        manifest_path.write_text(json.dumps(manifest, sort_keys=True))
+
+        with self.assertRaisesRegex(RuntimeError, "command index does not match"):
+            Worker(self.state_dir, "world-seed-tree", seed=7)
 
     def test_launcher_compatibility_flags_are_accepted_and_ignored(self) -> None:
         command = [sys.executable, str(WORKER_SCRIPT), "--state-dir", str(self.state_dir / "cli"),

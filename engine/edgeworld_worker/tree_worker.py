@@ -144,7 +144,7 @@ class Worker:
                 previous_state_hash=None, state=initial,
                 command_id=None, environment=None, reasons=("world_initialized",),
             )
-            record = {"logical_tick": 0, "state_revision": 0, "state": state_data,
+            record = {"logical_tick": 0, "state_revision": 0, "command_id": None, "state": state_data,
                       "environment": None, "reasons": ["world_initialized"],
                       "state_hash": state_hash, "event_hash": event["event_hash"]}
             self.manifest = {
@@ -200,6 +200,9 @@ class Worker:
         if len(history) != tick + 1 or len(events) != tick + 1:
             raise RuntimeError("tree world history/event length does not match head tick")
         previous_hash = ZERO_HASH
+        previous_state_hash: str | None = None
+        previous_state: SeedTreeState | None = None
+        expected_commands: dict[str, tuple[int, str]] = {}
         for index, (record, event) in enumerate(zip(history, events)):
             if not isinstance(record, dict) or not isinstance(event, dict):
                 raise RuntimeError("tree world history and events must contain objects")
@@ -207,18 +210,94 @@ class Worker:
             state_hash = _digest(_state_dict(state))
             if record.get("logical_tick") != index or record.get("state_revision") != index or state.logical_tick != index:
                 raise RuntimeError("tree world history is not a contiguous tick sequence")
+            if state.seed_id != self.seed_id:
+                raise RuntimeError(f"tree world Seed identity mismatch at tick {index}")
             if record.get("state_hash") != state_hash or event.get("state_hash") != state_hash:
                 raise RuntimeError(f"tree world state hash mismatch at tick {index}")
+
+            if index == 0:
+                if state != seed_state(self.seed_id):
+                    raise RuntimeError("tree world tick-zero state is not the configured un-germinated Seed")
+                if record.get("environment") is not None or record.get("command_id") is not None:
+                    raise RuntimeError("tree world tick-zero record must not have an environment or command")
+                if record.get("reasons") != ["world_initialized"]:
+                    raise RuntimeError("tree world tick-zero reasons are invalid")
+            else:
+                try:
+                    environment = _environment_from_request(record.get("environment"))
+                except ProtocolError as exc:
+                    raise RuntimeError(f"tree world history has invalid environment at tick {index}: {exc}") from exc
+                if _environment_dict(environment) != record.get("environment"):
+                    raise RuntimeError(f"tree world environment is not canonical at tick {index}")
+                command_id = record.get("command_id")
+                if not isinstance(command_id, str) or not command_id:
+                    raise RuntimeError(f"tree world history has invalid command ID at tick {index}")
+                if command_id in expected_commands:
+                    raise RuntimeError(f"tree world command ID is reused at tick {index}")
+                try:
+                    replayed = advance_seed_tree(previous_state, environment, index, _DEFAULT_RULES)
+                except Exception as exc:
+                    raise RuntimeError(f"cannot replay tree state at tick {index}: {exc}") from exc
+                if _state_dict(replayed.state) != _state_dict(state):
+                    raise RuntimeError(f"tree world state does not match deterministic replay at tick {index}")
+                if record.get("reasons") != list(replayed.reasons):
+                    raise RuntimeError(f"tree world reasons do not match deterministic replay at tick {index}")
+                expected_fingerprint = _digest({
+                    "world_id": self.world_id,
+                    "expected_revision": index - 1,
+                    "target_tick": index,
+                    "command_id": command_id,
+                    "environment": _environment_dict(environment),
+                })
+                expected_commands[command_id] = (index, expected_fingerprint)
+
             unsigned_event = {key: value for key, value in event.items() if key != "event_hash"}
             if event.get("logical_tick") != index or event.get("previous_event_hash") != previous_hash:
                 raise RuntimeError(f"tree world event sequence mismatch at tick {index}")
+            if event.get("state_revision") != index or event.get("event_id") != f"tree-event-{index}":
+                raise RuntimeError(f"tree world event identity mismatch at tick {index}")
+            if event.get("seed_id") != state.seed_id or event.get("tree_id") != state.tree_id:
+                raise RuntimeError(f"tree world event Seed/tree identity mismatch at tick {index}")
+            if event.get("previous_state_hash") != previous_state_hash:
+                raise RuntimeError(f"tree world previous-state hash mismatch at tick {index}")
+            if event.get("command_id") != record.get("command_id"):
+                raise RuntimeError(f"tree world event command does not match history at tick {index}")
+            if event.get("ruleset_id") != RULESET_ID or event.get("ruleset_version") != EXPERIMENTAL_SEED_TREE_RULE_VERSION:
+                raise RuntimeError(f"tree world event ruleset mismatch at tick {index}")
+            if event.get("environment") != record.get("environment") or event.get("reasons") != record.get("reasons"):
+                raise RuntimeError(f"tree world event inputs/reasons do not match history at tick {index}")
+            expected_environment_hash = _digest(record["environment"]) if record["environment"] is not None else None
+            if event.get("environment_hash") != expected_environment_hash:
+                raise RuntimeError(f"tree world event environment hash mismatch at tick {index}")
+            if record.get("event_hash") != event.get("event_hash"):
+                raise RuntimeError(f"tree world history/event link mismatch at tick {index}")
             if event.get("event_hash") != _digest(unsigned_event) or record.get("event_hash") != event.get("event_hash"):
                 raise RuntimeError(f"tree world event hash mismatch at tick {index}")
             previous_hash = event["event_hash"]
+            previous_state_hash = state_hash
+            previous_state = state
         if data.get("head_state_hash") != history[-1].get("state_hash") or data.get("event_head_hash") != previous_hash:
             raise RuntimeError("tree world head hash mismatch")
-        if _state_from_dict(history[-1]["state"]).seed_id != f"seed-{self.seed}":
-            raise RuntimeError("tree world Seed ID does not match startup seed")
+        commands = data["commands"]
+        if set(commands) != set(expected_commands):
+            raise RuntimeError("tree world command index does not match committed history")
+        for command_id, (command_tick, request_fingerprint) in expected_commands.items():
+            entry = commands.get(command_id)
+            if not isinstance(entry, dict) or entry.get("request_fingerprint") != request_fingerprint:
+                raise RuntimeError(f"tree world command fingerprint mismatch for {command_id!r}")
+            record = history[command_tick]
+            event = events[command_tick]
+            expected_result = {
+                "world_id": self.world_id,
+                "logical_tick": command_tick,
+                "state_revision": command_tick,
+                "head_state_hash": record["state_hash"],
+                "event_head_hash": event["event_hash"],
+                "command_id": command_id,
+                "record": record,
+            }
+            if entry.get("result") != expected_result:
+                raise RuntimeError(f"tree world command result mismatch for {command_id!r}")
         return data
 
     @staticmethod
@@ -399,6 +478,7 @@ class Worker:
         )
         revision = expected_revision + 1
         record = {"logical_tick": target_tick, "state_revision": revision,
+                  "command_id": command_id,
                   "state": state_data, "environment": _environment_dict(environment),
                   "reasons": list(transitioned.reasons), "state_hash": state_hash,
                   "event_hash": event["event_hash"]}
