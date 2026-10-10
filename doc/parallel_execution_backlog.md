@@ -40,7 +40,7 @@ A4D-2 Seed → Tree UE5 4D Render
 |---|---|---|---|
 | T4D-WORKER-01 树种子演化 worker | 完成；worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-worker` / `codex/seed-tree-worker`；基线 `26947af`；提交 `5995d11`、审查修复 `845dfba`（集成为 `adef082`） | `engine/evolution_4d.py`、`engine/edgeworld_worker/tree_worker.py`、`tests/test_4d_evolution.py`、`tests/test_seed_tree_worker.py` | 确定性萌发/生长、JSONL status/advance/observe、幂等/水位/事件链/恢复；未改 Genesis `worker.py` 或 UE 文件。 |
 | T4D-UE-01 UE 生成世界与树投影 | 实现完成；worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-ue` / `codex/seed-tree-ue`；基线 `26947af`、集成 worker `5995d11`；提交 `97d9372`、`9959ec1`、清理 `38e097c` | UE Runtime 观察 Actor/JSON client、Host GameMode/config、UE 自动化及 README | 冻结样本解析、BasicShapes PIE 场景和显式 Advance；UE 5.8.3 Editor 构建及 NullRHI fixture 通过；真实 RHI PIE 仍未验证。 |
-| T4D-INT-01 端到端阶段门 | 部分完成；统筹提交 `待本次提交` | Worker/UE 集成、协议探针、阶段门记录 | Worker 阶段的 seed→seedling→mature、幂等/只读/精确水位/重启通过；真实 RHI 画面与场景级状态隔离检查保持开放。 |
+| T4D-INT-01 端到端阶段门 | 部分完成；统筹提交 `ac9d5bc`、JSONL 探针记录 `58f67aa`、UE Host 模块启动修复 `716560c` | Worker/UE 集成、协议探针、阶段门记录 | Worker 阶段 seed→seedling→mature、幂等/只读/精确水位/重启通过；真实 RHI Standalone 成树画面已取得。PIE 与场景级状态隔离检查保持开放。 |
 
 规划/实现任务基线为本轮检查点 `bdabc60`（代码祖先 `82d51ef`）。输入报告为主工作区未跟踪只读材料；子任务只读报告/已提交上下文，不接触主工作区其他脏改动，只集成任务卡拥有的路径。阶段门成功前，不宣称树生长规则已批准或完整 4D 引擎就绪。
 
@@ -51,7 +51,7 @@ A4D-2 Seed → Tree UE5 4D Render
 | 子任务 | 结果与提交 | 验证与限制 |
 |---|---|---|
 | T4D-WORKER-01 | `codex/seed-tree-worker`，基线 `26947af`；实现 `5995d11`，恢复完整性审查修复 `845dfba`。新增独立 `tree_worker.py`，扩展 `evolution_4d.py`，新增演化/worker 测试。 | 16 项 Python 定向测试通过，`py_compile` 与 `git diff --check` 通过。恢复会核对状态重放、前态哈希、事件/历史字段、环境与原因、命令索引/指纹/结果。Genesis worker 未修改。仍为单进程单写者，规则系数纯实验。 |
-| T4D-UE-01 | `codex/seed-tree-ue`，基线 `26947af`，集成 Worker `5995d11`；实现 `97d9372`、契约 fixture/README `9959ec1`、删除编辑器自动生成的 `DefaultInput.ini`：`38e097c`。 | UE 5.8.3 / CL 58210709 `EdgeWorldHostEditor Mac Development` 构建成功；NullRHI `edgeWorld.TreeObservation.ExactTimeSeedSeedlingAndMatureFixtures` 成功。Actor 无 Tick，重复同一样本的组件变换/显隐一致；覆盖 seed/seedling/mature、错误 tick/watermark、Advance 环境序列化。真实 RHI PIE、相机/帧率/显隐前后状态摘要尚未验证。 |
+| T4D-UE-01 | `codex/seed-tree-ue`，基线 `26947af`，集成 Worker `5995d11`；实现 `97d9372`、契约 fixture/README `9959ec1`、删除编辑器自动生成的 `DefaultInput.ini`：`38e097c`。统筹补充 `.uproject` 主模块声明修复 Standalone Game 的 GameMode 加载：`716560c`。 | UE 5.8.3 / CL 58210709 `EdgeWorldHostEditor Mac Development` 构建成功；NullRHI `edgeWorld.TreeObservation.ExactTimeSeedSeedlingAndMatureFixtures` 成功。Actor 无 Tick，重复同一样本的组件变换/显隐一致；覆盖 seed/seedling/mature、错误 tick/watermark、Advance 环境序列化。另在 Metal RHI Standalone Game 启动 Live Worker，日志观测 tick 5 mature，并保存画面到本地 Saved/Screenshots；PIE、相机/帧率/显隐前后状态摘要尚未验证。 |
 
 **统筹端 Worker 探针：**使用真实 Python Worker 与固定环境序列，tick 0 观察为 `seed`，tick 1 为 `seedling`，tick 5 为 `mature`；重复 tick 5 Observe 响应相同且 manifest 字节不变；错误 watermark 返回 `watermark_mismatch`；重启新 Worker 后恢复到 tick/revision 5。另以真实 JSONL 子进程完成 `status → advance(environment) → observe` 并正常关闭。此探针与 UE NullRHI parser fixture 构成进程协议/解析证据，不等同于 UE Host 启动 Worker 的真实 RHI PIE 渲染。
 
@@ -60,15 +60,15 @@ A4D-2 Seed → Tree UE5 4D Render
 | Seed → seedling → mature 确定性状态推进 | 通过（实验规则） | Worker 定向测试与固定环境端到端序列。参数未校准，不代表真实植物规律。 |
 | 幂等、精确历史水位、Observe 只读、重启恢复 | 通过（单进程） | Worker/演化 16 项测试；探针验证重复 Observe 字节级只读、错误水位拒绝及 tick 5 恢复。未实现跨进程 writer lock。 |
 | UE 固定字段解析与 BasicShapes 确定性投影 | 通过（NullRHI/fixture） | UE 5.8.3 Editor 构建成功；`ExactTimeSeedSeedlingAndMatureFixtures` 成功，源码与自动化检查 Actor 禁用 Tick。 |
-| UE 启动 Worker 的真实 PIE/RHI 可见画面 | 未验证 | 没有截图或 PIE 画面证据；NullRHI 不计为渲染通过。下一轮第一步：配置 `EDGEWORLD_TREE_PYTHON`/`EDGEWORLD_TREE_WORKER`，使用真实 RHI 启动 Host PIE，观察 seed tick 0 并显式推进到幼苗/成树，保存固定相机画面及 manifest/hash 对照。 |
+| UE Host 启动 Worker 的真实 RHI 可见画面 | Standalone 通过；PIE 未验证 | UE 5.8.3 Metal RHI Standalone Game 使用 Host GameMode 启动 live Worker，日志记录 `Observed seed-7 at tick 5/revision 5 (mature, biomass 0.379, state_hash=4bbd13…e33de)`；截图 `engine_platforms/unreal/EdgeWorldHost/Saved/Screenshots/MacEditor/HighresScreenshot00000.png`。截图可见 BasicShapes 树冠和树干代理，但场景较暗、代理较简化。下一轮验证真正的 PIE 环境及 tick 0/幼苗/成树三个画面，并完善灯光/地面可见度。 |
 | 相机、帧率、暂停/显隐不改变权威哈希 | 未验证 | 仅有相同样本重复应用的组件变换 fixture；未完成场景运行前后的 worker manifest/state/event hash 对照。与真实 PIE 证据一并补齐。 |
 | Cook/package、跨 OS/GPU、复杂几何/生态真实性 | 未验证/不在本轮 | 仍属于契约中明确非目标或后续阶段。 |
 
-**集成结论：**代码纵切已集成到 `feature/edge-world`，但 UE 渲染阶段门保持开放；本轮记录为“Worker 与 UE 插件/Host 原型集成，真实渲染部分完成”。UE 只消费 Observe 样本，演化仅由 Space 显式 Advance；没有证据触发 UE 源码修改。
+**集成结论：**代码纵切已集成到 `feature/edge-world`。UE Host 真实 RHI Standalone 运行已显示 Worker 的成树观察结果；PIE 与场景级状态隔离阶段门仍开放。本轮记录为“Worker 与 UE 插件/Host 原型集成，Standalone 真实渲染通过，PIE/只读不变量部分未验”。UE 只消费 Observe 样本，演化仅由 Space 显式 Advance；没有证据触发 UE 源码修改。
 
 **工作区边界：**本轮只纳入契约、Worker、UE Host/插件、UE README 与本统筹 backlog。原主工作区其他未提交/未跟踪改动全部保留，未纳入提交；Seed-Edge 分析报告继续仅作为只读输入。
 
-**下一迭代入口：**获取 `feature/edge-world` 最新 worktree，载入本文与 `doc/seed_tree_4d_render_slice_contract.md`；优先完成真实 RHI PIE + live Worker 证据和呈现前后状态摘要对照，再决定是否扩展树形投影或演化参数。不得将 NullRHI 或编译成功写成画面渲染通过。
+**下一迭代入口：**获取 `feature/edge-world` 最新 worktree，载入本文与 `doc/seed_tree_4d_render_slice_contract.md`；优先完成 PIE 下 tick 0/幼苗/成树画面、提升树干/地面/灯光可见度，并做相机/帧率/暂停/显隐前后 manifest/state/event hash 对照，再决定是否扩展树形投影或演化参数。NullRHI/编译通过与本轮 Standalone RHI 证据分别记录，不互相替代。
 
 ## 上一迭代：阶段 2 worker-process 纵切
 
