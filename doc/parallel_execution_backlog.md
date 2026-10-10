@@ -1,7 +1,7 @@
 # edgeWorld 并行开发统筹清单
 
 日期：2026-10-10
-状态：迭代 2 进行中：原型契约/路线已提交；UE 插件与 Genesis API 子任务运行中
+状态：迭代 2 进行中：UE 插件与 Genesis API 前置交付已审查；P3 worker 实现进行中
 
 ## 主任务统一开发原则（最新）
 
@@ -54,11 +54,11 @@
 | N2 | 发布版 UE5 插件纵切方案 | UE 5.8.3 发布版 | **完成（静态）**：`ue5_release_plugin_vertical_slice.md`，分支 `codex/ue5-release-plugin-path`，提交 `85a57a8`。未创建/构建插件。 |
 | N3 | UE 许可与分发问题 | Epic 当前在线 EULA | **完成（资料整理）**：`ue_license_distribution_questions.md`，分支 `codex/edgeworld-license-boundary`，提交 `ce39e53`；非法律意见。 |
 | N4 | 原型契约与计划路线 | 三份报告及用户的 UE5 发布版优先原则 | **完成（原型范围锁定）**：`phase1_4d_prototype_contract.md`；执行计划更新为 v0.3。生产级 ADR 保持开放。 |
-| P1 | UE 5.8.3 Runtime 插件传输骨架 | 契约/计划基线 `203e632` 和 UE 5.8.3 安装 | **进行中**：worktree `.worktrees/stage2-ue-plugin`，分支 `codex/stage2-ue-plugin`。实现最小插件/host、JSONL 异步请求接口和 Renderer 投影骨架；不改引擎源码或主工作区。 |
-| P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档；基线 `203e632` | **进行中**：worktree `.worktrees/stage2-genesis-api`，分支 `codex/stage2-genesis-api`。核验公开物理参数、步进、checkpoint API，重点替代/隔离 `scene._sim.set_gravity()`；只读参考主工作区源文件。 |
-| P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | P2 完成后再派发：实现 `status/advance/observe`、单写者/幂等、Genesis adapter、checkpoint/restart；当前未提交 PoC 仅作只读参考。 |
+| P1 | UE 5.8.3 Runtime 插件传输骨架 | 契约/计划基线 `203e632` 和 UE 5.8.3 安装 | **完成，待集成**：worktree `.worktrees/stage2-ue-plugin`，分支 `codex/stage2-ue-plugin`，提交 `326c113`。提供异步 JSONL `status/advance/observe` 请求构造和只读观察 Actor；UE 5.8.3 `EdgeWorldHostEditor Mac Development` 构建成功。无实际进程/pipe transport、响应解析和端到端验证；审查未发现阻断问题。 |
+| P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档；基线 `203e632` | **完成**：worktree `.worktrees/stage2-genesis-api`，分支 `codex/stage2-genesis-api`，提交 `363d23b`；报告 `doc/genesis_public_api_audit.md`。确认公开 `scene.rigid_solver.set_gravity()`、`scene.step()`、`Scene.save_checkpoint()`/`gs.Scene.load_checkpoint()`；单自由刚体 Metal 探针验证重设下一 tick 参数后的 checkpoint 续算与不中断轨迹一致。未测新 OS 进程重启或复杂 solver。 |
+| P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | **进行中**：worktree `.worktrees/stage2-worker`，分支 `codex/stage2-worker`，目标基线 `292ac0d`。实现有限单刚体 `status/advance/observe`、权威状态、revision/command 幂等、Genesis 公共 API adapter、checkpoint 与历史只读观察；advance 每次严格只允许 `target_tick == current_tick + 1`。只读参考主工作区未提交 PoC 和 P1/P2 分支成果。 |
 
-P1/P2 已在独立 worktree 派发，P3 依赖 P2。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
+P1/P2 已在独立 worktree 完成并审查，尚未集成；P3 正依赖 P2 结论实施。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
 
 ## 实现阶段的拆分准则
 
@@ -84,9 +84,10 @@ P1/P2 已在独立 worktree 派发，P3 依赖 P2。当前不允许 UE 源码修
 - 六份研究/方案报告仍在各自分支，尚未集成到主分支。
 - 主工作区未提交实现已经只读审计，但没有运行测试；历史日志中的通过结果不代表当前工作树复验。
 - `phase1_4d_prototype_contract.md` 只锁定有限实验边界；生产级时间、通用调度、跨平台确定性、复杂求解器恢复和产品规模仍开放。
-- UE 5.8.3 Runtime 插件尚未创建/构建，Genesis adapter 尚未验证公开 API，也没有 UE↔worker↔Genesis 端到端证据。
-- P1/P2 尚未反馈；本轮仍进行中。完成后审阅两个子分支，再派发依赖 API 结论的 worker 任务，并再次更新上下文/commit。
+- UE 插件已按发布版 UE 5.8.3 构建，但没有真实 worker transport、Editor 启动/渲染、cook/打包或 UE↔worker↔Genesis 端到端证据。
+- Genesis 公开 API 已用单自由刚体 Metal 探针验证 checkpoint 续算；尚未验证全新 OS 进程重启、复杂 solver 或其他设备/精度。
+- P1/P2 交付尚未集成；P3 worker 任务仍运行。本轮保持进行中，待 worker 完成后审查其提交、更新上下文并作最终提交。
 - 本轮执行计划已更新为 v0.3，最小原型契约已建立；领域原则已同步为 UE5 发布版优先、Godot 为辅助观察端。
-- 下一步：并行验证 Genesis 稳定 API 与 UE5.8.3 插件骨架；API 结论完成后派发 worker，实现后做发布版集成验收并更新能力矩阵。
+- 下一步：收取并审查 P3 worker 实现；之后决定按依赖顺序集成 worker 与插件，并设计真实 transport/UE 端到端验证。JSON 数值当前由 UE 客户端以 double 编码 int64，原型小 tick 可用，长期协议需定义安全整数或字符串编码。
 - UE 源码修改仍须等待发布版能力对批准契约的可复现缺口，并经主任务审议。
-- P1/P2 worktree 基于原型文档提交 `203e632`；任务发布后的上下文检查点为 `df32599`。迭代结束时需收齐反馈、更新 backlog 并再提交。
+- P1/P2 worktree 基于原型文档提交 `203e632`；任务发布后的上下文检查点为 `df32599`。P1/P2 子任务 SHA 分别为 `326c113`、`363d23b`。P3 worktree 以 `292ac0d` 为基线；迭代结束时需收齐反馈、更新 backlog 并再提交。
