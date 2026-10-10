@@ -60,6 +60,36 @@ EDGEWORLD_TEST_WORKER="$(pwd)/engine/edgeworld_worker/worker.py" \
 This test does not claim packaged-game, cross-platform, high-contention, or
 production durability coverage.
 
+## Seed-to-tree PIE demonstration
+
+The host's `AEdgeWorldGeneratedWorldGameMode` creates a BasicShapes ground,
+directional light, fixed camera, and presentation-only tree actor at runtime;
+there is no project map or external art dependency. Configure the separate,
+Genesis-free tree worker before launching the editor:
+
+```sh
+export EDGEWORLD_TREE_PYTHON="/path/to/python"
+export EDGEWORLD_TREE_WORKER="$(pwd)/engine/edgeworld_worker/tree_worker.py"
+"/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor" \
+  "$(pwd)/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject"
+```
+
+Enter Play In Editor. The host observes the worker's current exact tick, then
+Space issues one explicit `advance` with a fixed environment and observes that
+committed tick. Actor, game, and render ticks never advance the worker. The
+state directory is under `EdgeWorldHost/Saved/EdgeWorldTree/seed-tree-demo`.
+The tree proxy accepts only the frozen `experimental.seed-tree.v1` and
+`stylized-tree-ue-v1` versions and rejects mismatched tick/watermark responses.
+Its seed, seedling, mature, declining, and dead forms are deterministic
+component-scale projections, not botanical geometry.
+
+The `edgeWorld.TreeObservation.ExactTimeSeedSeedlingAndMatureFixtures` Editor
+automation test validates pre-germination, seedling, and mature JSON fixtures,
+wrong tick/watermark rejection, explicit environment serialization, disabled
+actor ticking, and repeatability of the component transforms. This fixture
+test works without a live worker. Real-RHI visual acceptance still requires
+PIE screenshots at fixed ticks; a `-nullrhi` run is not visual evidence.
+
 ## Build
 
 With the UE 5.8.3 release installed at `/Users/Shared/Epic Games/UE_5.8`:

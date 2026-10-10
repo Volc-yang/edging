@@ -194,7 +194,7 @@ namespace
 		FEdgeWorldResponse Response;
 		Response.bSuccess = true;
 		Response.JsonLine = FString::Printf(
-			TEXT("{\"protocol_version\":1,\"request_id\":\"fixture\",\"ok\":true,\"result\":{\"world_id\":\"seed-tree-demo\",\"logical_tick\":%lld,\"source_revision\":%lld,\"watermark\":%lld,\"sample\":{\"seed_id\":\"seed-7\",\"tree_id\":%s,\"stage\":\"%s\",\"health\":0.8,\"biomass\":%.3f,\"water_reserve\":0.4,\"phase\":%s,\"ruleset_version\":\"experimental.seed-tree.v1\"},\"projection_version\":\"stylized-tree-ue-v1\",\"state_hash\":\"state-%lld\",\"event_hash\":\"event-%lld\",\"view_spec\":{\"watermark\":%lld,\"region\":\"single-tree-world\"}}}"),
+			TEXT("{\"protocol_version\":1,\"request_id\":\"fixture\",\"ok\":true,\"result\":{\"world_id\":\"seed-tree-demo\",\"logical_tick\":%lld,\"source_revision\":%lld,\"watermark\":%lld,\"sample\":{\"seed_id\":\"seed-7\",\"tree_id\":%s,\"stage\":\"%s\",\"health\":0.8,\"biomass\":%.3f,\"water_reserve\":0.4,\"phase\":%s,\"ruleset_version\":\"experimental.seed-tree.v1\"},\"projection_version\":\"stylized-tree-ue-v1\",\"state_hash\":\"state-%lld\",\"event_hash\":\"event-%lld\",\"view_spec\":{\"watermark\":%lld,\"region\":\"single-tree-world\",\"observer\":\"ue-default-camera-v1\",\"resolution\":\"single-tree-proxy-v1\",\"error_budget\":{\"semantic_state\":\"exact\",\"visual_geometry\":\"unmeasured-proxy\"},\"rules\":{\"evolution\":\"experimental.seed-tree.v1\",\"projection\":\"stylized-tree-ue-v1\"}}}}"),
 			static_cast<long long>(Tick), static_cast<long long>(Watermark), static_cast<long long>(Watermark),
 			TreeIdJson, Stage, Biomass, PhaseJson, static_cast<long long>(Tick),
 			static_cast<long long>(Tick), static_cast<long long>(Watermark));
