@@ -1,7 +1,7 @@
 # edgeWorld 并行开发统筹清单
 
 日期：2026-10-10
-状态：本次阶段 2 传输纵切已完成并通过 macOS/UE 5.8.3 自动化验收；渲染呈现、打包和跨平台阶段门仍未通过。
+状态：阶段 2 传输纵切已完成；A4D 单树演化算法实验原型已实现并通过定向测试。真实 UE 渲染、打包和跨平台阶段门仍未通过。
 
 ## 新迭代：第四维演化算法最小原型（进行中）
 
@@ -10,13 +10,15 @@
 ```text
 A4D 第四维演化算法
 ├── P 只读分析报告与代码并形成执行提案 [完成]
-├── I 单树、确定性、逐 tick 状态转移纯函数 [进行中；独立 subagent/worktree]
-└── R 主任务审查算法假设、代码差异和证据后决定是否集成 [待执行]
+├── I 单树、确定性、逐 tick 状态转移纯函数 [完成：`04fe246` + `e316898`]
+└── R 主任务审查算法假设、代码差异和证据后决定是否集成 [审查通过，待统筹检查点]
 ```
 
 **已接受范围：**实验性单树模型；显式前态、环境样本、逻辑 tick 和版本化规则参数产生后态及可解释原因。纯 Python 函数，不使用随机数，不接入 Genesis、worker 持久化协议或 UE。生物量、健康、生命周期阶段和系数都是待审的实验参数，不升级为已批准世界规则。
 
-**实现任务卡 A4D-ALG-01：**基线 `1d6444d`（`feature/edge-world` 阶段 2 检查点）；实现 worktree `.worktrees/4d-algorithm`，分支 `codex/4d-algorithm-prototype`。只允许新增 `engine/evolution_4d.py` 和 `tests/test_4d_evolution.py`。输入分析报告仍是主工作区未跟踪材料，只读引用，SHA-256 `36a8291727affc658826023e5aa63c9d5eb7f31d8cd22ccb04ae441b21012422`；不复制/提交它，也不带入主工作区其他脏改动。验收要求：同输入逐位相同；字段边界校验明确；阶段转移合法；固定逐 tick 轨迹可复算。测试只证明纯函数原型，不代表持久化、因果图、预算控制、Genesis 或 UE 阶段门通过。
+**实现任务卡 A4D-ALG-01：**源码基线 `1d6444d`；任务上下文提交 `9891cc5`；实现 worktree `.worktrees/4d-algorithm`，分支 `codex/4d-algorithm-prototype`，子任务提交 `04fe246`、`e316898`。新增 `engine/evolution_4d.py` 和 `tests/test_4d_evolution.py`。输入分析报告仍是主工作区未跟踪材料，只读引用，SHA-256 `36a8291727affc658826023e5aa63c9d5eb7f31d8cd22ccb04ae441b21012422`；未复制/提交该报告，也未带入主工作区其他脏改动。`python3 -m unittest tests.test_4d_evolution -v`：6 项通过；`git diff --cached --check` 通过。审查修正超大整数输入会抛出意外 `OverflowError` 的边界。测试仅证明纯函数实验原型，不代表持久化、因果图、预算控制、Genesis 或 UE 阶段门通过。
+
+**结论与后续：**算法/测试差异审查通过，当前为可审查原型，尚不升级为已批准世界规则。健康、生物量、水分、生命周期阈值及四象系数均未校准；尚无因果记录/快照接口，也未接入 worker。下一步由统筹评估是否批准规则语义及是否另开持久化/因果适配子任务。
 
 ## 上一迭代：阶段 2 worker-process 纵切
 
@@ -74,10 +76,10 @@ I2 阶段 2 worker-process 纵切
 
 ## 仍然开放与下一轮入口
 
-- 本轮阶段 2 **传输和 worker 纵切任务关闭**；更大的 UE 呈现阶段门仍开放。下一轮首项：在 UE 5.8.3 真实关卡中接入 `AEdgeWorldObservationActor`，实测其从 observe 响应应用变换且渲染/帧率不写权威状态；之后再决定 cook/package 验证范围。
+- 阶段 2 **传输和 worker 纵切任务关闭**；更大的 UE 呈现阶段门仍开放，需单独在 UE 5.8.3 真实关卡中验证 `AEdgeWorldObservationActor` 投影和帧率/渲染对权威状态的隔离，再决定 cook/package 范围。A4D 单树实验不替代该门，也未改动 UE/worker。
 - 当前 worker 仅支持 macOS/Apple Silicon Metal、单刚体、单进程单写者；没有跨进程 writer lock。`view_spec` 只校验并回显。长期 tick 整数编码需在逼近 `2^53-1` 前升级协议。
 - 当前 UE client 要求宿主显式创建 `FEdgeWorldProcessTransport` 并设置 Python、worker script、state directory 和 world ID；没有 Project Settings UI 或自动启动 Subsystem。
 - P0/P1 研究报告仍保留在各自原始分支；已列出的 stage2 报告/实现已纳入本轮集成分支。未经后续审查的原分支不视为关闭或删除。
 - 生产级时间/调度契约、跨平台确定性、通用状态迁移、复杂物理 solver 恢复、性能/规模和 UE 许可分类仍开放。没有证据触发引擎源码修改。
 - 网站 `www.edging.cloud` DNS 状态独立跟进；保留现有 `api.edging.cloud` 路由，不代用户修改 DNS。
-- 本轮上下文提交后，下一轮从目标 worktree、本文、`doc/phase1_4d_prototype_contract.md` 和相关报告恢复；主工作区其余未提交改动保持原样。
+- 下一轮从当前统筹分支、本文、4D 执行计划、阶段 1 原型契约、A4D 子任务提交/报告及仍开放的 UE 呈现门恢复；主工作区其余未提交改动保持原样。
