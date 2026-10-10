@@ -120,6 +120,7 @@ class Worker:
         self.blob_dir = self.state_dir / "checkpoints"
         self.manifest_path = self.state_dir / "world.json"
         self.world_id = world_id
+        self._fatal_error: str | None = None
         self.config = {"backend": "metal", "dt": dt, "physical_steps": physical_steps, "seed": seed,
                        "genesis_version": GENESIS_VERSION, "ruleset_id": RULESET_ID,
                        "ruleset_version": RULESET_VERSION}
@@ -232,18 +233,33 @@ class Worker:
             os.close(fd)
 
     def _write_manifest(self, payload: dict[str, Any]) -> None:
-        encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
-        fd, name = tempfile.mkstemp(prefix="world-", suffix=".json.tmp", dir=self.state_dir)
+        try:
+            encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
+            fd, name = tempfile.mkstemp(prefix="world-", suffix=".json.tmp", dir=self.state_dir)
+        except Exception as exc:
+            raise ManifestWriteFailure(False, exc) from exc
         tmp = Path(name)
+        replacement_started = False
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
                 stream.write(encoded)
                 stream.flush()
                 os.fsync(stream.fileno())
+            # Once replace is attempted, an exception may leave either version
+            # visible. The caller must fail-stop instead of trusting stale memory.
+            replacement_started = True
             os.replace(tmp, self.manifest_path)
             self._fsync_dir(self.state_dir)
-        finally:
+        except Exception as exc:
+            try:
+                tmp.unlink(missing_ok=True)
+            except OSError:
+                pass
+            raise ManifestWriteFailure(replacement_started, exc) from exc
+        try:
             tmp.unlink(missing_ok=True)
+        except OSError:
+            pass
 
     def _response(self, request_id: str, result: dict[str, Any] | None = None, error: dict[str, str] | None = None) -> dict[str, Any]:
         response = {"protocol_version": PROTOCOL_VERSION, "request_id": request_id}
@@ -277,6 +293,11 @@ class Worker:
                 raise ProtocolError("invalid_request_id", "request_id must be a non-empty string")
             operation = request.get("operation")
             with self._lock:
+                if self._fatal_error is not None:
+                    return self._response(request_id, error={
+                        "code": "worker_stopped",
+                        "message": "worker stopped after an uncertain commit; restart to recover from disk",
+                    })
                 if operation == "status":
                     if request.get("world_id") != self.world_id:
                         raise ProtocolError("world_not_found", "world_id does not match this worker")
@@ -355,11 +376,37 @@ class Worker:
                 "event_head_hash": event["event_hash"], "checkpoint_sha256": checkpoint_sha,
                 "history": self.manifest["history"] + [record], "events": self.manifest["events"] + [event],
                 "commands": {**self.manifest["commands"], command_id: {"request_fingerprint": fingerprint, "result": result}}}
-            self._write_manifest(next_manifest)
+            try:
+                self._write_manifest(next_manifest)
+            except ManifestWriteFailure as exc:
+                if exc.replacement_started:
+                    self._fatal_error = str(exc)
+                    return self._response(request_id, error={
+                        "code": "commit_status_uncertain",
+                        "message": "manifest replacement was attempted but durability could not be confirmed; restart the worker to recover from disk",
+                    })
+                try:
+                    self._restore_committed_scene()
+                except Exception as restore_exc:
+                    self._fatal_error = f"manifest write failed and committed Genesis restore failed: {restore_exc}"
+                    return self._response(request_id, error={
+                        "code": "worker_stopped",
+                        "message": "manifest was not replaced, but the committed Genesis state could not be restored; restart the worker",
+                    })
+                raise ProtocolError("persistence_failed", "manifest failed before replacement; tick was not committed") from exc
             self.manifest = next_manifest
             return self._response(request_id, result)
+        except ProtocolError:
+            raise
         except Exception:
-            self._restore_committed_scene()
+            try:
+                self._restore_committed_scene()
+            except Exception as restore_exc:
+                self._fatal_error = f"failed command and failed restoring committed Genesis checkpoint: {restore_exc}"
+                return self._response(request_id, error={
+                    "code": "worker_stopped",
+                    "message": "command failed and the committed Genesis state could not be restored; restart the worker",
+                })
             raise
 
     def _restore_committed_scene(self) -> None:
@@ -371,6 +418,12 @@ class ProtocolError(Exception):
     def __init__(self, code: str, message: str):
         super().__init__(message)
         self.code = code
+
+
+class ManifestWriteFailure(Exception):
+    def __init__(self, replacement_started: bool, cause: Exception):
+        super().__init__(str(cause))
+        self.replacement_started = replacement_started
 
 
 def main() -> int:
@@ -399,6 +452,8 @@ def main() -> int:
                         "error": {"code": "worker_error", "message": str(exc)}}
         sys.stdout.write(json.dumps(response, ensure_ascii=False, separators=(",", ":"), allow_nan=False) + "\n")
         sys.stdout.flush()
+        if worker._fatal_error is not None:
+            return 3
     return 0
 
 

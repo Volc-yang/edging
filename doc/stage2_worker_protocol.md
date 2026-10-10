@@ -73,6 +73,18 @@ manifest fsynced to a temporary file and atomically renamed over `world.json`.
 An interrupted write may leave an unreferenced checkpoint, which is ignored.
 An unreferenced blob is never treated as a committed tick.
 
+If manifest replacement fails before `os.replace` is attempted, the worker
+reloads the prior committed Genesis checkpoint and returns
+`persistence_failed`. Once replacement has been attempted, an exception (for
+example, directory fsync failure) makes the commit outcome uncertain: the
+worker returns `commit_status_uncertain`, rejects all later requests, and the
+CLI exits. Restart validates whichever manifest is visible and its checkpoint
+before serving requests. The uncertain response intentionally omits a head;
+the caller must query status after restart before retrying a command.
+
+Run the focused replacement/fsync fault checks with the isolated environment:
+`.venv-edgeworld-worker/bin/python engine/edgeworld_worker/test_commit_boundary.py`.
+
 On startup, the worker validates the schema, contiguous tick sequence, state
 hashes, event hash chain, configured world identity, and referenced checkpoint
 hash before loading it through `gs.Scene.load_checkpoint(...,
