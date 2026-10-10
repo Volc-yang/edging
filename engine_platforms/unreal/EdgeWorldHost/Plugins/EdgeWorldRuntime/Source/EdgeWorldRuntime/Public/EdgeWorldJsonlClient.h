@@ -33,11 +33,55 @@ public:
 	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) = 0;
 };
 
-/** Honest placeholder used until a worker process/pipe lifecycle is supplied. */
+/** Honest placeholder for projects that have not configured a worker process. */
 class EDGEWORLDRUNTIME_API FEdgeWorldUnavailableTransport final : public IEdgeWorldJsonlTransport
 {
 public:
 	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override;
+};
+
+/** Launch configuration for the single-world Python worker process. */
+struct EDGEWORLDRUNTIME_API FEdgeWorldWorkerLaunchConfig
+{
+	FString PythonExecutable;
+	FString WorkerScript;
+	FString StateDirectory;
+	FString WorldId;
+	double DeltaTime = 0.01;
+	int32 PhysicalStepsPerTick = 8;
+	int32 Seed = 7;
+	double RequestTimeoutSeconds = 30.0;
+};
+
+/**
+ * Asynchronous, serialized JSONL transport backed by one child worker process.
+ * The process is started lazily, reused for requests, and shut down with the
+ * transport. One transport must own one world/state directory.
+ */
+class EDGEWORLDRUNTIME_API FEdgeWorldProcessTransport final
+	: public IEdgeWorldJsonlTransport
+	, public TSharedFromThis<FEdgeWorldProcessTransport, ESPMode::ThreadSafe>
+{
+public:
+	explicit FEdgeWorldProcessTransport(FEdgeWorldWorkerLaunchConfig InConfig);
+	virtual ~FEdgeWorldProcessTransport();
+
+	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override;
+	void Shutdown();
+
+private:
+	bool EnsureStarted(FString& OutError);
+	FEdgeWorldResponse Exchange(const FEdgeWorldRequest& Request);
+	void StopProcess(bool bTerminate);
+
+	FEdgeWorldWorkerLaunchConfig Config;
+	FCriticalSection RequestMutex;
+	FProcHandle ProcessHandle;
+	void* StdoutReadPipe = nullptr;
+	void* StdinWritePipe = nullptr;
+	void* StderrReadPipe = nullptr;
+	FString PendingStdout;
+	bool bShutdown = false;
 };
 
 /** Small request builder for the prototype operations; it does not own state. */

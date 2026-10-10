@@ -1,93 +1,66 @@
 # edgeWorld 并行开发统筹清单
 
 日期：2026-10-10
-状态：迭代 2 子任务完成并审查；交付待集成和 UE↔worker 接线验证
+状态：本次阶段 2 传输纵切已完成并通过 macOS/UE 5.8.3 自动化验收；渲染呈现、打包和跨平台阶段门仍未通过。
 
-## 主任务统一开发原则（最新）
+## 统一开发原则
 
-所有 subagents/subtasks 必须遵循以下顺序：
+1. 优先使用 UE5 发布版的成熟引擎与渲染能力，通过插件/适配层连接 edgeWorld 与 Genesis。
+2. 以已批准的有限 4D 原型契约和可复现运行证据验收；草案和静态映射不算阶段门通过。
+3. 仅在发布版插件/旁路方案对已批准契约出现可复现缺口且替代路径失败后，才评估 UE 源码改造；必须由统筹任务审阅缺口、替代方案、成本与许可影响。
+4. 主工作区已有用户未提交修改，禁止 reset、clean、stash、覆盖或顺手纳入本轮提交；writing tasks 使用独立 Git worktree。
 
-1. **优先使用 UE5 发布引擎的成熟能力和渲染管线。** 通过发布版 UE5 插件/模块/适配层连接 Genesis 与 edgeWorld 第四维状态演化，先验证最小纵切；不预设需要维护 UE 源码 fork。
-2. **以已批准的 4D 契约作为验收依据。** 把具体契约条目映射到发布版 UE5 的能力，记录实际差距、复现步骤和证据；不能只以架构偏好或静态源码猜测判定不符。
-3. **仅当发布版 UE5 无法满足契约时，才评估引擎源码修改。** 源码修改方案需指出无法满足的契约、不改源码的插件/旁路替代方案及其失败证据、源码改造范围/升级成本/许可影响，并由主任务评审后再开实现任务。
+## 本轮目标与方案树
 
-此前 UE5 子系统映射报告中的“旁路或替换”仅作为风险分析材料，不代表已决定改引擎源码。源码构建/子系统 PoC 属备用路线，不得取代对发布版 UE5 + 插件集成路径的优先验证。
+目标：集成 P1 UE Runtime 插件、P2 Genesis 公开 API 审计、P3 单刚体 worker，并补齐可实际启动的异步 JSONL 进程传输，验证最小 `status → advance → observe` 链路。
 
-## 目的与工作区约束
+```text
+I2 阶段 2 worker-process 纵切
+├── R 收齐并审查研究/实现分支反馈 [完成]
+├── I 按依赖集成 Genesis API 报告、UE 插件、worker [完成]
+├── T 补齐 UE 异步进程/管道传输和响应解析 [完成]
+├── V UE 5.8.3 + Genesis 1.4.3 live roundtrip/恢复验收 [通过]
+└── G 更新上下文、提交检查点并前移主分支 [待提交时完成]
+```
 
-采用一个主任务维护架构、接口、阶段门与集成，多个子任务各自负责有边界的研究或实现。子任务使用独立 Git worktree/分支；每项任务只提交自己的交付物，并报告依据、未验证点和集成风险。
+## 子任务反馈与集成记录
 
-主工作区 `/Users/yangacan/edgeWorld/edge-world` 当前有大量未提交改动。已创建的三个 worktree 都从提交 `51a16b9` 分支，**不包含主工作区的这些改动**。计划副本被复制到各 worktree 作为输入；资产盘点报告明确只认已提交基线。后续涉及现有实现的任务必须显式读取主工作区文件，采用只读审查，或先由主任务将指定成果安全地提交/同步到基线；不得以旧提交推断当前工作树实现。
-
-## 已完成并行工作包
-
-| 工作包 | 交付 | 分支 / 提交 | 结论与限制 |
+| 工作包 | 状态 | 分支原始交付 / 报告 | 集成或验证结果 |
 |---|---|---|---|
-| 阶段 0：代码资产盘点 | `phase0_edgeworld_inventory.md` | `codex/edgeworld-phase0-inventory` / `b338328` | 确认提交基线有章节级规则、快照、逐轮历史和消费端实验；指出主工作区未提交内容未复核。 |
-| 阶段 0：UE5 子系统映射 | `phase0_ue5_subsystem_map.md` | `codex/edgeworld-phase0-ue-map` / `95a4e82` | 静态源码定位扩展入口；建议先做不依赖 Actor 的薄层纵切，尚无 PoC 证据。 |
-| 阶段 1：4D 核心契约 | `phase1_4d_core_contract_draft.md` | `codex/edgeworld-phase1-contract` / `58d3f4a` | 提出权威状态、逻辑时间、调度/提交、因果、事务、观察纯读草案；明确尚未批准。 |
-| 阶段 0：主工作区改动审阅 | `phase0_dirty_tree_audit.md` | `codex/edgeworld-dirty-tree-audit` / `47851f8` | 实际检查未提交实现；Genesis 只证明自由球简化 checkpoint；完整持久自然演化、局部传播、UE 发布版纵切和批准契约仍未证明。只读，没有运行测试。 |
-| 发布版 UE5 插件纵切方案 | `ue5_release_plugin_vertical_slice.md` | `codex/ue5-release-plugin-path` / `85a57a8` | 建议 UE 插件 + Python worker/Genesis adapter + 现有 Renderer；静态方案未启动/编译/验证。发现 Launcher 是 UE 5.8.3 CL 58210709，源码 checkout 是 5.8.2，需按发布版版本重验。 |
-| UE 许可与分发边界 | `ue_license_distribution_questions.md` | `codex/edgeworld-license-boundary` / `ce39e53` | 按 Epic 在线 EULA update 21 整理边界与问题，非法律意见；发布版优先及独立 edgeWorld 核心有利于隔离，但不自动决定插件分类。 |
+| 阶段 0 基线资产盘点 | 完成 | `codex/edgeworld-phase0-inventory` / `b338328`；`doc/phase0_edgeworld_inventory.md` | 研究报告留在分支，结论作为上下文输入；不代表现工作树全面验证。 |
+| 主工作区改动审阅 | 完成 | `codex/edgeworld-dirty-tree-audit` / `47851f8`；`doc/phase0_dirty_tree_audit.md` | 只读审阅，无测试；报告留在分支。主工作区原改动已保留。 |
+| UE5 子系统映射与发布版插件方案 | 完成（静态） | `codex/ue5-release-plugin-path` / `95a4e82`, `85a57a8`；两份 `doc/phase0_ue5_subsystem_map.md`、`doc/ue5_release_plugin_vertical_slice.md` | 方案报告留在分支；本轮后续改用 UE 5.8.3 安装版进行实际插件构建和自动化运行。 |
+| 原型契约与许可边界 | 完成（有限原型契约已采用；商业归类未决） | `codex/edgeworld-license-boundary` / `58d3f4a`, `ce39e53`；契约草案、`doc/ue_license_distribution_questions.md` | 许可报告留在分支，非法律意见；生产契约/许可结论仍开放。 |
+| P2 Genesis 公开 API 审计 | 完成 | 原提交 `363d23b`；`doc/genesis_public_api_audit.md` | 集成提交 `e70badc`；公开 `rigid_solver.set_gravity`、`Scene.step` 和 checkpoint API；探针范围为单自由刚体、Metal。 |
+| P1 UE Runtime 插件 | 完成 | 原提交 `326c113` | 集成提交 `0738569`；本轮增加进程传输、紧凑 JSONL、响应校验及 UE 自动化用例。 |
+| P3 Genesis worker | 完成 | 原提交 `2557ad2` + 修复 `e143c23`；`doc/stage2_worker_protocol.md` | 集成提交 `3b62331`、`fd9fb48`；保留单世界/单写进程、Genesis 1.4.3、Metal/macOS 的实验边界。 |
+| edging.cloud 主页 | 已发布，DNS 验证待完成 | 站点源码提交 `e358fba`；`doc/edging_cloud_homepage_plan.md` | 主页已部署；`www.edging.cloud` 在 Sites 仍为 pending，验证 TXT/CNAME 尚未配置；不属于引擎迭代关闭门。 |
 
-报告位于各自 worktree 的 `doc/` 下，尚未合并到主工作区分支。报告和分支链接是研究/设计交付，不等于实现集成。
+### 本轮集成实现
 
-## 综合判断
+- UE `FEdgeWorldProcessTransport` 异步启动 Python worker，串行化请求，管理 stdin/stdout/stderr 管道、响应 request ID/协议版本校验、超时和进程清理。
+- `FEdgeWorldJsonlClient` 使用紧凑单行 JSON，并拒绝超出 IEEE-754 精确范围的 tick/revision（`2^53-1`）。
+- 新增 UE 自动化用例覆盖首次状态、推进、幂等重复命令、两次只读历史观察、manifest 不变及 worker 关闭重启恢复。
+- `AEdgeWorldObservationActor` 仍禁用 Tick，只应用已提交观察结果；本轮用 NullRHI 自动化验证 worker/只读查询，未验证实际渲染帧输出。
 
-三份报告对架构方向一致：edgeWorld 自己定义权威世界状态、逻辑时间、规则提交和因果；UE5 首先作为成熟宿主、工具和呈现后端，通过发布版 UE5 插件/适配层集成 Genesis 与第四维状态演化。Actor、逐帧 Tick、TimerManager、World Partition 的加载状态以及画面都不应自动成为持久世界事实。UE 源码构建通过只证明构建链在本机可用，不证明交互启动或目标语义成立；是否改源码取决于发布版集成对已批准契约的实测结果。
+## 阶段门与证据
 
-现有执行计划中的阶段 0/1 仍未全部关闭，至少有三项证据缺口：
+| 阶段门 | 状态 | 证据/限制 |
+|---|---|---|
+| UE 5.8.3 插件 `EdgeWorldHostEditor Mac Development` 构建 | 通过 | 安装版 UE 5.8.3 / CL 58210709，Build.sh 成功。 |
+| UE→worker→Genesis 实际 `status → advance → observe` | 通过 | `edgeWorld.WorkerProtocol.ProcessRoundTripRecoveryAndReadOnlyObserve` 自动化测试通过，退出码 0；使用当前隔离 Genesis 1.4.3 Metal 环境。 |
+| 幂等和只读观察 | 通过 | 重复相同 command ID 后 tick/revision 保持 1；两次 observe 前后 `world.json` 字节一致。 |
+| worker 进程重启恢复 | 通过 | 新 worker 进程从 checkpoint/manifest 恢复至 tick 1、revision 1。 |
+| worker 持久化故障注入 | 通过 | `test_commit_boundary.py` 2 项通过，覆盖 manifest replace 和目录 fsync 不确定状态 fail-stop/restart。 |
+| UE Actor 实际投影/Renderer 输出 | 未验证 | 静态确认 Actor 无 Tick；自动化采用 `-nullrhi`，未启动真实关卡验证帧/相机行为。 |
+| Cook/package、其他 OS/GPU、并发多写、复杂 Genesis solver | 未验证 | 不属于本轮已证明能力。 |
 
-1. **主工作区改动复核**：已由只读审计复核，详见 `phase0_dirty_tree_audit.md`；审计引用历史测试日志，本次未运行测试，仍需按当前工作树验证。
-2. **发布版 UE5 纵切验证**：发布版 UE5 插件/适配层承载 Genesis、非 Actor 权威状态、逻辑时钟、恢复/重演和只读观察仍未验证。已知 Launcher 是 UE 5.8.3，备用源码 checkout 是 5.8.2；此前面向源码 5.8.2 的启动记录不能替代发布版插件纵切验证。
-3. **契约与产品决策**：最小原型契约已写入 `doc/phase1_4d_prototype_contract.md`；生产级时间政策、通用规则仲裁、跨平台确定性、完整物理求解器恢复、规模和商业许可归类仍开放。
+## 仍然开放与下一轮入口
 
-因此，当前不应把阶段 0 或阶段 1 标为通过，也不应将 UE Renderer 深改、规模化、内容生产分配为实现任务。
-
-## 当前迭代：发布版插件与 Genesis 纵切
-
-原型范围和路线已由统筹任务完成；下面两个前置工作可并行。原型契约仅适用于有限实验，不代表生产架构全部定案。
-
-| ID | 工作包 | 依赖 / 输入 | 状态与交付 |
-|---|---|---|---|
-| N1 | 主工作区现有资产复核 | 只读访问当前工作树 | **完成**：`phase0_dirty_tree_audit.md`，分支 `codex/edgeworld-dirty-tree-audit`，提交 `47851f8`。未运行测试。 |
-| N2 | 发布版 UE5 插件纵切方案 | UE 5.8.3 发布版 | **完成（静态）**：`ue5_release_plugin_vertical_slice.md`，分支 `codex/ue5-release-plugin-path`，提交 `85a57a8`。未创建/构建插件。 |
-| N3 | UE 许可与分发问题 | Epic 当前在线 EULA | **完成（资料整理）**：`ue_license_distribution_questions.md`，分支 `codex/edgeworld-license-boundary`，提交 `ce39e53`；非法律意见。 |
-| N4 | 原型契约与计划路线 | 三份报告及用户的 UE5 发布版优先原则 | **完成（原型范围锁定）**：`phase1_4d_prototype_contract.md`；执行计划更新为 v0.3。生产级 ADR 保持开放。 |
-| P1 | UE 5.8.3 Runtime 插件传输骨架 | 契约/计划基线 `203e632` 和 UE 5.8.3 安装 | **完成，待集成**：worktree `.worktrees/stage2-ue-plugin`，分支 `codex/stage2-ue-plugin`，提交 `326c113`。提供异步 JSONL `status/advance/observe` 请求构造和只读观察 Actor；UE 5.8.3 `EdgeWorldHostEditor Mac Development` 构建成功。无实际进程/pipe transport、响应解析和端到端验证；审查未发现阻断问题。 |
-| P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档；基线 `203e632` | **完成**：worktree `.worktrees/stage2-genesis-api`，分支 `codex/stage2-genesis-api`，提交 `363d23b`；报告 `doc/genesis_public_api_audit.md`。确认公开 `scene.rigid_solver.set_gravity()`、`scene.step()`、`Scene.save_checkpoint()`/`gs.Scene.load_checkpoint()`；单自由刚体 Metal 探针验证重设下一 tick 参数后的 checkpoint 续算与不中断轨迹一致。未测新 OS 进程重启或复杂 solver。 |
-| P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | **完成，主审查通过，待集成**：worktree `.worktrees/stage2-worker`，分支 `codex/stage2-worker`，基线 `292ac0d`，提交 `e143c23`（含初始提交 `2557ad2`）。提供有限单刚体 `status/advance/observe`、revision/command 幂等、Genesis 公共 API、checkpoint 和历史观察；新 OS 进程恢复、常规 JSONL smoke 及 2 项 manifest 替换/目录 fsync 故障注入通过。替换状态不确定时 fail-stop，不再服务旧 head。细节见该分支 `doc/stage2_worker_protocol.md`。 |
-
-P1/P2/P3 已在独立 worktree 完成并由主任务审查，尚未集成。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
-
-## 实现阶段的拆分准则
-
-契约通过后，可按模块和文件边界建立后续并行批次：
-
-1. **状态与存档核心**：独立 schema、稳定 ID、检查点/迁移；拥有核心数据与持久化文件。
-2. **规则调度与因果日志**：显式时间、触发依赖、候选变更仲裁、提交日志；不得同时改存储 schema，接口需先冻结。
-3. **UE5 发布版宿主适配**：Runtime 插件/Subsystem 只负责生命周期接线和调用核心，优先复用现有 Renderer；不改 UE 源码。
-4. **观察投影原型**：只读查询和 UE 表现层；不写权威状态，不与宿主适配任务修改同一模块文件。
-
-每个实现任务都应写清：基线提交、允许修改目录、禁止修改目录、依赖接口版本、验收命令/证据、是否需要运行测试、分支交付方式。主任务负责审查差异、解决接口冲突和串行集成。
-
-## 交付与集成流程
-
-1. 主任务先公布任务卡和稳定输入版本；若有未提交成果，明确哪些作为只读输入，或先建立可引用提交。
-2. 每个 Agent 在自己的 worktree/分支工作，只改认领文件；未经安排不共享写同一文件。
-3. Agent 完成时报告提交号、文件清单、验证证据、限制与潜在冲突。
-4. 主任务逐项审查。文档可 cherry-pick 或摘取；代码按接口顺序集成，任何失败都保留在原分支，不重置用户工作区。
-5. 更新能力矩阵和阶段门；通过后才派发依赖它的实现工作包。
-
-## 尚未完成
-
-- 六份研究/方案报告仍在各自分支，尚未集成到主分支。
-- 主工作区未提交实现已经只读审计，但没有运行测试；历史日志中的通过结果不代表当前工作树复验。
-- `phase1_4d_prototype_contract.md` 只锁定有限实验边界；生产级时间、通用调度、跨平台确定性、复杂求解器恢复和产品规模仍开放。
-- UE 插件已按发布版 UE 5.8.3 构建，但没有真实 worker transport、Editor 启动/渲染、cook/打包或 UE↔worker↔Genesis 端到端证据。
-- Genesis 公开 API 已用单自由刚体 Metal 探针验证 checkpoint 续算；尚未验证全新 OS 进程重启、复杂 solver 或其他设备/精度。
-- P1/P2/P3 交付均尚未集成。P3 已按主审查修复提交不确定错误路径；worker、Genesis API 调查和 UE 插件纵切仍是原型工作，不代表 UE↔worker↔Genesis 端到端阶段门通过。
-- 本轮执行计划已更新为 v0.3，最小原型契约已建立；领域原则已同步为 UE5 发布版优先、Godot 为辅助观察端。
-- 下一步：将已审查的 P1 插件、P2 API 报告、P3 worker 按依赖次序集成到主分支；随后实现/接通 UE 异步 worker process/pipe transport，进行真实 `status/advance/observe` 往返和 UE 发布版运行/渲染验收。当前 worker 只支持 Metal/macOS、单世界单写进程，`view_spec` 暂为校验并回显；JSON tick/revision 限于 IEEE-754 安全整数 `2^53-1`，长期协议再定义精确整数编码。
-- UE 源码修改仍须等待发布版能力对批准契约的可复现缺口，并经主任务审议。
-- P1/P2 worktree 基于原型文档提交 `203e632`；任务发布后的上下文检查点为 `df32599`。P1/P2/P3 子任务 SHA 分别为 `326c113`、`363d23b`、`e143c23`，均尚未集成。统筹上下文检查点：`001d176`（P3 发布）、`786d77d`（审查跟进）。本轮收尾后，新迭代从获取目标 worktree、载入本 backlog 和相应子任务报告开始。
+- 本轮阶段 2 **传输和 worker 纵切任务关闭**；更大的 UE 呈现阶段门仍开放。下一轮首项：在 UE 5.8.3 真实关卡中接入 `AEdgeWorldObservationActor`，实测其从 observe 响应应用变换且渲染/帧率不写权威状态；之后再决定 cook/package 验证范围。
+- 当前 worker 仅支持 macOS/Apple Silicon Metal、单刚体、单进程单写者；没有跨进程 writer lock。`view_spec` 只校验并回显。长期 tick 整数编码需在逼近 `2^53-1` 前升级协议。
+- 当前 UE client 要求宿主显式创建 `FEdgeWorldProcessTransport` 并设置 Python、worker script、state directory 和 world ID；没有 Project Settings UI 或自动启动 Subsystem。
+- P0/P1 研究报告仍保留在各自原始分支；已列出的 stage2 报告/实现已纳入本轮集成分支。未经后续审查的原分支不视为关闭或删除。
+- 生产级时间/调度契约、跨平台确定性、通用状态迁移、复杂物理 solver 恢复、性能/规模和 UE 许可分类仍开放。没有证据触发引擎源码修改。
+- 网站 `www.edging.cloud` DNS 状态独立跟进；保留现有 `api.edging.cloud` 路由，不代用户修改 DNS。
+- 本轮上下文提交后，下一轮从目标 worktree、本文、`doc/phase1_4d_prototype_contract.md` 和相关报告恢复；主工作区其余未提交改动保持原样。
