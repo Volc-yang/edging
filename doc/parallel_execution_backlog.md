@@ -53,7 +53,7 @@ A4D-2 Seed → Tree UE5 4D Render
 | T4D-WORKER-01 | `codex/seed-tree-worker`，基线 `26947af`；实现 `5995d11`，恢复完整性审查修复 `845dfba`。新增独立 `tree_worker.py`，扩展 `evolution_4d.py`，新增演化/worker 测试。 | 16 项 Python 定向测试通过，`py_compile` 与 `git diff --check` 通过。恢复会核对状态重放、前态哈希、事件/历史字段、环境与原因、命令索引/指纹/结果。Genesis worker 未修改。仍为单进程单写者，规则系数纯实验。 |
 | T4D-UE-01 | `codex/seed-tree-ue`，基线 `26947af`，集成 Worker `5995d11`；实现 `97d9372`、契约 fixture/README `9959ec1`、删除编辑器自动生成的 `DefaultInput.ini`：`38e097c`。 | UE 5.8.3 / CL 58210709 `EdgeWorldHostEditor Mac Development` 构建成功；NullRHI `edgeWorld.TreeObservation.ExactTimeSeedSeedlingAndMatureFixtures` 成功。Actor 无 Tick，重复同一样本的组件变换/显隐一致；覆盖 seed/seedling/mature、错误 tick/watermark、Advance 环境序列化。真实 RHI PIE、相机/帧率/显隐前后状态摘要尚未验证。 |
 
-**统筹端 Worker 探针：**使用真实 Python Worker 与固定环境序列，tick 0 观察为 `seed`，tick 1 为 `seedling`，tick 5 为 `mature`；重复 tick 5 Observe 响应相同且 manifest 字节不变；错误 watermark 返回 `watermark_mismatch`；重启新 Worker 后恢复到 tick/revision 5。此探针与 UE NullRHI parser fixture 构成协议/解析证据，不等同于 UE 启动 Worker 的真实 RHI PIE 渲染。
+**统筹端 Worker 探针：**使用真实 Python Worker 与固定环境序列，tick 0 观察为 `seed`，tick 1 为 `seedling`，tick 5 为 `mature`；重复 tick 5 Observe 响应相同且 manifest 字节不变；错误 watermark 返回 `watermark_mismatch`；重启新 Worker 后恢复到 tick/revision 5。另以真实 JSONL 子进程完成 `status → advance(environment) → observe` 并正常关闭。此探针与 UE NullRHI parser fixture 构成进程协议/解析证据，不等同于 UE Host 启动 Worker 的真实 RHI PIE 渲染。
 
 | 阶段门 | 状态 | 证据/边界 |
 |---|---|---|
