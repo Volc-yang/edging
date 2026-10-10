@@ -3,6 +3,13 @@
 	"EngineAssociation": "5.8",
 	"Category": "Samples",
 	"Description": "Minimal host project for the edgeWorld Runtime plugin.",
+	"Modules": [
+		{
+			"Name": "EdgeWorldHost",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
 	"Plugins": [
 		{ "Name": "EdgeWorldRuntime", "Enabled": true }
 	]
