@@ -64,6 +64,33 @@
 
 `watermark` 必须精确匹配请求 tick 对应的已提交 revision。历史不存在或水位不匹配时返回明确错误，不得回退到当前状态。响应带请求 tick、source revision、水位、seed/tree ID、生命周期阶段、表现所需标量、相位、规则/投影版本、state hash 和 event hash。重复同一查询须返回相同样本。
 
+响应字段固定如下，UE parser 不得各自发明别名：
+
+```json
+{
+  "world_id": "seed-tree-demo",
+  "logical_tick": 3,
+  "source_revision": 3,
+  "watermark": 3,
+  "sample": {
+    "seed_id": "seed-7",
+    "tree_id": "tree-<stable-derived-id-or-null-before-germination>",
+    "stage": "seedling",
+    "health": 0.8,
+    "biomass": 0.3,
+    "water_reserve": 0.4,
+    "phase": "shaoyang",
+    "ruleset_version": "<version>"
+  },
+  "projection_version": "stylized-tree-ue-v1",
+  "state_hash": "<digest>",
+  "event_hash": "<digest>",
+  "view_spec": {"watermark": 3, "region": "single-tree-world"}
+}
+```
+
+阶段枚举固定为 `seed | seedling | mature | declining | dead`；萌发前 `tree_id` 为 JSON `null`，tick 0 的 `phase` 也为 `null`。Observe 顶层 `logical_tick` 必须等于请求 tick；`source_revision` 与请求及回显的 `watermark` 必须指向同一历史快照。`sample.ruleset_version` 和 `projection_version` 必须与请求的版本清单匹配。Python/UE 序列化的整数遵守 JSON 精确整数上限 `2^53-1`。
+
 ## 4. UE5 视觉代理
 
 - Host GameMode 运行时生成一个 BasicShapes 地面、灯光、固定观察相机和树观察 Actor，以避免外部美术与二进制地图依赖。
