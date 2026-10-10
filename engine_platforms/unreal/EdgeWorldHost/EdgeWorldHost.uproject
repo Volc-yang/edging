@@ -1,0 +1,9 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Category": "Samples",
+	"Description": "Minimal host project for the edgeWorld Runtime plugin.",
+	"Plugins": [
+		{ "Name": "EdgeWorldRuntime", "Enabled": true }
+	]
+}
