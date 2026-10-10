@@ -10,6 +10,11 @@
 #include "Engine/DirectionalLight.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "Materials/MaterialInterface.h"
+#include "Engine/SkyLight.h"
+#include "Components/DirectionalLightComponent.h"
+#include "Components/SkyLightComponent.h"
+#include "Components/SkyAtmosphereComponent.h"
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
 #include "Math/RotationMatrix.h"
@@ -89,14 +94,35 @@ void AEdgeWorldGeneratedWorldGameMode::SpawnGeneratedWorld()
 	}
 
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	UMaterialInterface* ShapeMaterial = LoadObject<UMaterialInterface>(nullptr,
+		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (AStaticMeshActor* Ground = World->SpawnActor<AStaticMeshActor>(FVector(0.0, 0.0, -25.0), FRotator::ZeroRotator))
 	{
-		Ground->GetStaticMeshComponent()->SetStaticMesh(Cube);
+		UStaticMeshComponent* GroundMesh = Ground->GetStaticMeshComponent();
+		GroundMesh->SetMobility(EComponentMobility::Movable);
+		GroundMesh->SetStaticMesh(Cube);
+		GroundMesh->SetMaterial(0, ShapeMaterial);
 		Ground->SetActorScale3D(FVector(35.0, 35.0, 0.5));
+		if (UMaterialInstanceDynamic* GroundMaterial = GroundMesh->CreateAndSetMaterialInstanceDynamic(0))
+		{
+			GroundMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.18f, 0.28f, 0.14f, 1.0f));
+		}
 	}
 
+	if (World->SpawnActor<ASkyAtmosphere>())
+	{
+	}
+	if (ASkyLight* Sky = World->SpawnActor<ASkyLight>())
+	{
+		Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
+		Sky->GetLightComponent()->SetIntensity(0.8f);
+		Sky->GetLightComponent()->bRealTimeCapture = true;
+		Sky->GetLightComponent()->RecaptureSky();
+	}
 	if (ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(FVector(0.0, 0.0, 900.0), FRotator(-48.0, -32.0, 0.0)))
 	{
+		Sun->GetLightComponent()->SetIntensity(50.0f);
+		Sun->GetLightComponent()->SetLightColor(FLinearColor(1.0f, 0.96f, 0.86f));
 	}
 
 	if (AEdgeWorldObservationActor* Tree = World->SpawnActor<AEdgeWorldObservationActor>(FVector::ZeroVector, FRotator::ZeroRotator))
@@ -109,7 +135,10 @@ void AEdgeWorldGeneratedWorldGameMode::SpawnGeneratedWorld()
 	const FRotator CameraRotation = FRotationMatrix::MakeFromX(FocusPoint - CameraLocation).Rotator();
 	if (ACameraActor* Camera = World->SpawnActor<ACameraActor>(CameraLocation, CameraRotation))
 	{
-		Camera->GetCameraComponent()->SetFieldOfView(48.0f);
+		UCameraComponent* CameraComponent = Camera->GetCameraComponent();
+		CameraComponent->SetFieldOfView(48.0f);
+		CameraComponent->PostProcessSettings.bOverride_AutoExposureBias = true;
+		CameraComponent->PostProcessSettings.AutoExposureBias = -0.5f;
 		ObservationCamera = Camera;
 		if (APlayerController* PlayerController = World->GetFirstPlayerController())
 		{

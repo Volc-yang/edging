@@ -133,3 +133,10 @@ I2 阶段 2 worker-process 纵切
 - 生产级时间/调度契约、跨平台确定性、通用状态迁移、复杂物理 solver 恢复、性能/规模和 UE 许可分类仍开放。没有证据触发引擎源码修改。
 - 网站 `www.edging.cloud` DNS 状态独立跟进；保留现有 `api.edging.cloud` 路由，不代用户修改 DNS。
 - 下一轮从当前统筹分支、本文、4D 执行计划、阶段 1 原型契约、A4D 子任务提交/报告及仍开放的 UE 呈现门恢复；主工作区其余未提交改动保持原样。
+
+### 真实渲染展示续作记录（2026-10-10）
+
+- **可展示证据：**UE 5.8.3 Metal RHI Standalone 运行截图 `engine_platforms/unreal/EdgeWorldHost/Saved/Screenshots/MacEditor/HighresScreenshot00005.png` 显示 Worker tick 5/revision 5 的成熟树观察。运行日志记录 state hash `4bbd13bb2befcc8b3c61bb1176afc48321644a583d9294955cc8fc9c6d2e33de`。这是 BasicShapes 的实验性视觉代理，不是植物几何；画面仍有黑天空、地面观感偏平以及一个未解释的异色球体，不能当作视觉验收完成。
+- **状态只读观察：**演示前后 `tree_world.json` SHA-256 均为 `f529714e109b845e0118939316964faaa9eee1db78e7723b4dc1bee63c64c903`；tick/revision 为 5，state/event head 分别为 `4bbd13bb…e33de` / `440652d5…ce333`。运行/退出观察期间未见权威状态改变。发现多个孤儿 worker 进程共用同一状态目录后已停止它们；停止后没有遗留 worker。此项不替代相机、帧率、暂停和显隐各自的前后哈希对照。
+- **采证限制：**命令行带 `-ExecCmds=HighResShot 2` 的游戏进程在 SceneViewport 报 `IsInGameThread()` 断言并崩溃，故不把该启动方式用于后续阶段门。截图可用于展示原型，但当前没有本次改动后的 PIE 截图证据。
+- **下一轮第一步：**从 UE Editor 实际进入 PIE，固定并记录 seed、seedling、mature 三个观察水位；先修复天空/异色球体与地面观感，再分别对相机移动、帧率变化、暂停和显隐做 worker manifest/state/event hash 对照。PIE 与隔离门有实证前继续保持未通过。

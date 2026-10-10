@@ -3,6 +3,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
 #include "UObject/ConstructorHelpers.h"
 
 AEdgeWorldObservationActor::AEdgeWorldObservationActor()
@@ -16,6 +17,8 @@ AEdgeWorldObservationActor::AEdgeWorldObservationActor()
 		TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CylinderMesh(
 		TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ShapeMaterial(
+		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 
 	SeedMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Seed"));
 	SeedMesh->SetupAttachment(SceneRoot);
@@ -24,6 +27,11 @@ AEdgeWorldObservationActor::AEdgeWorldObservationActor()
 	{
 		SeedMesh->SetStaticMesh(SphereMesh.Object);
 	}
+	if (ShapeMaterial.Succeeded()) SeedMesh->SetMaterial(0, ShapeMaterial.Object);
+	if (UMaterialInstanceDynamic* SeedMaterial = SeedMesh->CreateAndSetMaterialInstanceDynamic(0))
+	{
+		SeedMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.76f, 0.45f, 0.16f, 1.0f));
+	}
 
 	TrunkMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Trunk"));
 	TrunkMesh->SetupAttachment(SceneRoot);
@@ -31,6 +39,11 @@ AEdgeWorldObservationActor::AEdgeWorldObservationActor()
 	if (CylinderMesh.Succeeded())
 	{
 		TrunkMesh->SetStaticMesh(CylinderMesh.Object);
+	}
+	if (ShapeMaterial.Succeeded()) TrunkMesh->SetMaterial(0, ShapeMaterial.Object);
+	if (UMaterialInstanceDynamic* TrunkMaterial = TrunkMesh->CreateAndSetMaterialInstanceDynamic(0))
+	{
+		TrunkMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.28f, 0.13f, 0.055f, 1.0f));
 	}
 
 	for (int32 Index = 0; Index < 5; ++Index)
@@ -42,6 +55,11 @@ AEdgeWorldObservationActor::AEdgeWorldObservationActor()
 		if (SphereMesh.Succeeded())
 		{
 			Canopy->SetStaticMesh(SphereMesh.Object);
+		}
+		if (ShapeMaterial.Succeeded()) Canopy->SetMaterial(0, ShapeMaterial.Object);
+		if (UMaterialInstanceDynamic* CanopyMaterial = Canopy->CreateAndSetMaterialInstanceDynamic(0))
+		{
+			CanopyMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.16f, 0.48f, 0.20f, 1.0f));
 		}
 		CanopyMeshes.Add(Canopy);
 	}
