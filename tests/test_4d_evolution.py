@@ -69,6 +69,8 @@ class Evolution4DTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             TreeState("tree", 0, TreeStage.SEEDLING, 1.1, 0.2, 0.5)
         with self.assertRaises(ValueError):
+            TreeState("tree", 0, TreeStage.SEEDLING, 10**10000, 0.2, 0.5)
+        with self.assertRaises(ValueError):
             EnvironmentSample(TimePhase.SHAOYANG, moisture=float("nan"), light=0.5)
         with self.assertRaises(ValueError):
             EvolutionRules(version="unrecognized.rules.v9")

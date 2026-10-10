@@ -38,7 +38,9 @@ class TreeStage(str, Enum):
 def _bounded_number(value: object, name: str, low: float, high: float) -> None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be a finite number in [{low}, {high}]")
-    if not math.isfinite(value) or value < low or value > high:
+    # Compare against the declared bounds before calling isfinite: converting
+    # an arbitrarily large Python int to a float inside isfinite may overflow.
+    if value < low or value > high or not math.isfinite(value):
         raise ValueError(f"{name} must be a finite number in [{low}, {high}]")
 
 
