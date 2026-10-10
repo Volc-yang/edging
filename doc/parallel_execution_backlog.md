@@ -29,8 +29,8 @@ A4D 第四维演化算法
 ```text
 A4D-2 Seed → Tree UE5 4D Render
 ├── C 主任务冻结 Seed/Tree 状态、环境输入、JSONL 与 SampleQuery 契约 [完成]
-├── W 独立 tree worker：确定性萌发/生长、事件历史、精确观察、恢复 [待派发]
-├── U UE 5.8.3：代码生成 PIE 世界、树视觉代理、固定时间观察呈现 [待派发]
+├── W 独立 tree worker：确定性萌发/生长、事件历史、精确观察、恢复 [执行中]
+├── U UE 5.8.3：代码生成 PIE 世界、树视觉代理、固定时间观察呈现 [执行中]
 └── I 集成 W/U：固定 tick 时间切片、真实 RHI 可见证据、呈现只读门 [待执行]
 ```
 
@@ -38,11 +38,11 @@ A4D-2 Seed → Tree UE5 4D Render
 
 | 子任务 | 负责人/状态 | 代码所有权 | 依赖与验收 |
 |---|---|---|---|
-| T4D-WORKER-01 树种子演化 worker | subagent，待派发；独立 worktree `.worktrees/seed-tree-worker` / `codex/seed-tree-worker` | `engine/evolution_4d.py`、`engine/edgeworld_worker/tree_worker.py`、专属 Python 测试 | 按冻结契约，status/advance/observe、幂等/历史水位/崩溃恢复；不改现有 Genesis `worker.py` 或 UE 文件。 |
-| T4D-UE-01 UE 生成世界与树投影 | subagent，待派发；独立 worktree `.worktrees/seed-tree-ue` / `codex/seed-tree-ue` | UE Runtime 观察 Actor/JSON client、Host GameMode/config、UE 自动化及 README | 按冻结契约消费 worker 样本；Actor 无 Tick；UE 5.8.3 Editor 构建，目标为 PIE 真实 RHI 可见；不改 Python worker。 |
+| T4D-WORKER-01 树种子演化 worker | subagent，执行中；worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-worker` / `codex/seed-tree-worker`；基线 `bdabc60` | `engine/evolution_4d.py`、`engine/edgeworld_worker/tree_worker.py`、`tests/test_4d_evolution.py`、专属 worker 测试 | 按冻结契约实现萌发/生长及 JSONL status/advance/observe、幂等/水位/恢复；不改现有 Genesis `worker.py` 或 UE 文件。 |
+| T4D-UE-01 UE 生成世界与树投影 | subagent，执行中；worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-ue` / `codex/seed-tree-ue`；基线 `bdabc60` | UE Runtime 观察 Actor/JSON client、Host GameMode/config、UE 自动化及 README | 按冻结契约消费 worker 样本；Actor 无 Tick；构建 UE 5.8.3 Editor 并尽可能取得 PIE 真实 RHI 可见证据；不改 Python worker。 |
 | T4D-INT-01 端到端阶段门 | 统筹任务，待执行 | 集成、证据、最终 backlog | W/U 提交经审查后集成；验证萌发前/幼苗/成树固定历史观察、重启重放、视角/帧率/重复 Observe 不变更状态；保留 NullRHI 与真实画面证据边界。 |
 
-实现 worktree 从本迭代规划检查点创建；代码基线为当前主线 `82d51ef`，输入报告为主工作区未跟踪只读材料；只集成任务卡拥有的路径，保留主工作区其他脏改动。阶段门成功前，不宣称树生长规则已批准或完整 4D 引擎就绪。
+规划/实现任务基线为本轮检查点 `bdabc60`（代码祖先 `82d51ef`）。输入报告为主工作区未跟踪只读材料；子任务只读报告/已提交上下文，不接触主工作区其他脏改动，只集成任务卡拥有的路径。阶段门成功前，不宣称树生长规则已批准或完整 4D 引擎就绪。
 
 ## 上一迭代：阶段 2 worker-process 纵切
 
