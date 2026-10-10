@@ -1,7 +1,7 @@
 # edgeWorld 并行开发统筹清单
 
 日期：2026-10-10
-状态：迭代 2 已启动：原型契约与路线更新完成；插件/Genesis 验证任务准备发布
+状态：迭代 2 进行中：原型契约/路线已提交；UE 插件与 Genesis API 子任务运行中
 
 ## 主任务统一开发原则（最新）
 
@@ -54,11 +54,11 @@
 | N2 | 发布版 UE5 插件纵切方案 | UE 5.8.3 发布版 | **完成（静态）**：`ue5_release_plugin_vertical_slice.md`，分支 `codex/ue5-release-plugin-path`，提交 `85a57a8`。未创建/构建插件。 |
 | N3 | UE 许可与分发问题 | Epic 当前在线 EULA | **完成（资料整理）**：`ue_license_distribution_questions.md`，分支 `codex/edgeworld-license-boundary`，提交 `ce39e53`；非法律意见。 |
 | N4 | 原型契约与计划路线 | 三份报告及用户的 UE5 发布版优先原则 | **完成（原型范围锁定）**：`phase1_4d_prototype_contract.md`；执行计划更新为 v0.3。生产级 ADR 保持开放。 |
-| P1 | UE 5.8.3 Runtime 插件传输骨架 | 本轮契约/计划文档和 UE 5.8.3 安装 | 待派发：实现最小插件/host，按 JSONL 协议异步调用 worker 并复用现有 Renderer；不改引擎源码或主工作区。交付独立分支、构建记录和未验证项。 |
-| P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档 | 待派发：核验公开物理参数、步进、checkpoint API，重点替代/隔离 `scene._sim.set_gravity()`；交付版本/API 证据与适配边界。 |
+| P1 | UE 5.8.3 Runtime 插件传输骨架 | 契约/计划基线 `203e632` 和 UE 5.8.3 安装 | **进行中**：worktree `.worktrees/stage2-ue-plugin`，分支 `codex/stage2-ue-plugin`。实现最小插件/host、JSONL 异步请求接口和 Renderer 投影骨架；不改引擎源码或主工作区。 |
+| P2 | Genesis 稳定 API 适配调查 | Genesis 1.4.3 PoC 与官方 API 文档；基线 `203e632` | **进行中**：worktree `.worktrees/stage2-genesis-api`，分支 `codex/stage2-genesis-api`。核验公开物理参数、步进、checkpoint API，重点替代/隔离 `scene._sim.set_gravity()`；只读参考主工作区源文件。 |
 | P3 | edgeWorld worker 实现 | P2 API 结论和 `phase1_4d_prototype_contract.md` | P2 完成后再派发：实现 `status/advance/observe`、单写者/幂等、Genesis adapter、checkpoint/restart；当前未提交 PoC 仅作只读参考。 |
 
-P1/P2 可并行，P3 依赖 P2。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
+P1/P2 已在独立 worktree 派发，P3 依赖 P2。当前不允许 UE 源码修改，除非发布版针对批准契约的实测缺口经主任务审议。
 
 ## 实现阶段的拆分准则
 
@@ -85,6 +85,7 @@ P1/P2 可并行，P3 依赖 P2。当前不允许 UE 源码修改，除非发布�
 - 主工作区未提交实现已经只读审计，但没有运行测试；历史日志中的通过结果不代表当前工作树复验。
 - `phase1_4d_prototype_contract.md` 只锁定有限实验边界；生产级时间、通用调度、跨平台确定性、复杂求解器恢复和产品规模仍开放。
 - UE 5.8.3 Runtime 插件尚未创建/构建，Genesis adapter 尚未验证公开 API，也没有 UE↔worker↔Genesis 端到端证据。
+- P1/P2 尚未反馈；本轮仍进行中。完成后审阅两个子分支，再派发依赖 API 结论的 worker 任务，并再次更新上下文/commit。
 - 本轮执行计划已更新为 v0.3；领域原则文档需后续同步阶段表述。
 - 下一步：并行验证 Genesis 稳定 API 与 UE5.8.3 插件骨架；API 结论完成后派发 worker，实现后做发布版集成验收并更新能力矩阵。
 - UE 源码修改仍须等待发布版能力对批准契约的可复现缺口，并经主任务审议。
