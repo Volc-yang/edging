@@ -68,7 +68,9 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 	}
 	if (Config.PythonExecutable.Contains(TEXT("\"")) || Config.WorkerScript.Contains(TEXT("\""))
 		|| Config.StateDirectory.Contains(TEXT("\"")) || Config.WorldId.Contains(TEXT("\""))
-		|| Config.WorldId.Contains(TEXT("\n")) || Config.WorldId.Contains(TEXT("\r")))
+		|| Config.WorldId.Contains(TEXT("\n")) || Config.WorldId.Contains(TEXT("\r"))
+		|| Config.InitialWorldPath.Contains(TEXT("\""))
+		|| Config.InitialWorldPath.Contains(TEXT("\n")) || Config.InitialWorldPath.Contains(TEXT("\r")))
 	{
 		OutError = TEXT("Worker paths and world ID must not contain quotes or line breaks.");
 		return false;
@@ -100,10 +102,15 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 	const FString PythonPath = FPaths::ConvertRelativePathToFull(Config.PythonExecutable);
 	const FString ScriptPath = FPaths::ConvertRelativePathToFull(Config.WorkerScript);
 	const FString StatePath = FPaths::ConvertRelativePathToFull(Config.StateDirectory);
-	const FString Arguments = FString::Printf(
+	FString Arguments = FString::Printf(
 		TEXT("\"%s\" --state-dir \"%s\" --world-id \"%s\" --dt %.17g --physical-steps %d --seed %d"),
 		*ScriptPath, *StatePath, *Config.WorldId, Config.DeltaTime,
 		Config.PhysicalStepsPerTick, Config.Seed);
+	if (!Config.InitialWorldPath.IsEmpty())
+	{
+		Arguments += FString::Printf(TEXT(" --initial-world \"%s\""),
+			*FPaths::ConvertRelativePathToFull(Config.InitialWorldPath));
+	}
 	ProcessHandle = FPlatformProcess::CreateProc(*PythonPath, *Arguments, false, true, true,
 		nullptr, 0, nullptr, StdoutChildWrite, StdinChildRead, StderrChildWrite);
 
@@ -386,6 +393,31 @@ void FEdgeWorldJsonlClient::Advance(const FString& WorldId, int64 ExpectedRevisi
 	Payload->SetNumberField(TEXT("target_tick"), static_cast<double>(TargetTick));
 	Payload->SetStringField(TEXT("command_id"), CommandId);
 	Payload->SetObjectField(TEXT("environment"), Environment.ToSharedRef());
+	SendOperation(TEXT("advance"), Payload, MoveTemp(Handler));
+}
+
+void FEdgeWorldJsonlClient::AdvanceOrigin(const FString& WorldId, int64 ExpectedRevision, int64 TargetTick,
+	const FString& CommandId, FEdgeWorldResponseHandler Handler) const
+{
+	constexpr int64 MaxSafeJsonInteger = (1LL << 53) - 1;
+	if (WorldId.IsEmpty() || CommandId.IsEmpty() || ExpectedRevision < 0 || TargetTick < 0
+		|| ExpectedRevision > MaxSafeJsonInteger || TargetTick > MaxSafeJsonInteger)
+	{
+		Async(EAsyncExecution::ThreadPool, [Handler = MoveTemp(Handler)]() mutable
+		{
+			FEdgeWorldResponse Response;
+			Response.ErrorCode = TEXT("invalid_advance");
+			Response.ErrorMessage = TEXT("Origin advance requires world/command IDs and safe non-negative revision/tick.");
+			Handler(MoveTemp(Response));
+		});
+		return;
+	}
+	TSharedRef<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("world_id"), WorldId);
+	Payload->SetNumberField(TEXT("expected_revision"), static_cast<double>(ExpectedRevision));
+	Payload->SetNumberField(TEXT("target_tick"), static_cast<double>(TargetTick));
+	Payload->SetStringField(TEXT("command_id"), CommandId);
+	Payload->SetStringField(TEXT("origin_action"), TEXT("reveal_world_spirit"));
 	SendOperation(TEXT("advance"), Payload, MoveTemp(Handler));
 }
 
