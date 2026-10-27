@@ -6,7 +6,7 @@
 
 | ID | 负责人 / 状态 | worktree / 分支 / 基线 | 所有权 | 依赖与交付 | PR / 测试移交 / 清理 |
 | --- | --- | --- | --- | --- | --- |
-| P0 | `/root/chaos_p0`；执行中 | `.worktrees/chaos-p0` / `codex/chaos-p0` / `8f5ca98` | `doc/chaos_origin_contract.md` | 冻结 tick 0、O1、观察契约；统筹审查后固定共享基线 | 待反馈；保留 worktree |
+| P0 | `/root/chaos_p0`；完成，已审查集成 | `.worktrees/chaos-p0` / `codex/chaos-p0` / `8f5ca98` | `doc/chaos_origin_contract.md` | 提交 `3713991`；初态/state/event 固定摘要由统筹独立复算一致 | PR #1 已合并为 `2659242`，CI verify 成功；工作树待清理 |
 | D1 | 待分配 | 待 P0 审查后固定 | 新 `engine/chaos/world_generation.py`、`initial_state.py`、示例 manifest、定向测试 | 世界初态与拓扑 | 待执行 |
 | D2 | 待分配 | 待 P0 审查后固定 | 新 `origin_runtime.py`、`origin_store.py`、`origin_worker.py`、定向测试 | O1 权威提交与恢复 | 待执行 |
 | D3 | 待分配 | 待 P0 审查后固定 | 新 UE `ChaosWorld*` 源码 | 六类场所静态呈现 | 待执行 |
@@ -15,4 +15,4 @@
 | C2 | 待分配 | 待 D4 | `doc/evidence/chaos-pdca-01/visual-review.md` | 真实画面/只读独立核查 | 待执行 |
 | A1 | 主任务；待执行 | 集成 worktree | 本登记、统筹清单、集成决策 | PDCA 复盘及下一轮入口 | 待执行 |
 
-下一动作：审查 P0 精确提交与样例消息，消除 D1/D2/D3 接口冲突后，在同一固定基线创建各自 worktree 并并行派工。不得把 P0 的提交或 PR 本身当作共享契约已通过审查。
+下一动作：以已审查的 P0 契约与统筹上下文提交为共同固定基线，创建 D1/D2/D3 各自 worktree 并并行派工。P0 的居民/玩家身份自然触发机制仍是明确开放的世界观问题，不阻塞本轮显式 O1 技术纵切。
