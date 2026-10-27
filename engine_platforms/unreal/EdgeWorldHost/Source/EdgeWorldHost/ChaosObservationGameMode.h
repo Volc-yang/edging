@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChaosGameMode.h"
+#include "ChaosValidationControl.h"
 #include "GameFramework/PlayerController.h"
 #include "ChaosObservationGameMode.generated.h"
 
@@ -9,6 +10,7 @@ EDGEWORLDHOST_API bool ChaosCanonicalInitialWorldHash(const FString& Json, FStri
 
 class FEdgeWorldJsonlClient;
 class FEdgeWorldProcessTransport;
+class FJsonObject;
 
 /** Worker-backed origin demo. Only explicit input can commit O1. */
 UCLASS()
@@ -22,6 +24,8 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void RevealWorldSpirit();
 	void ObserveHistoricalTick(int64 Tick);
+	/** Local opt-in validation command; never advances except explicit reveal. */
+	bool ExecuteValidationCommand(const TSharedPtr<FJsonObject>& Command, FString& OutDetail);
 private:
 	void ObserveAt(int64 Tick);
 	TSharedPtr<FEdgeWorldProcessTransport, ESPMode::ThreadSafe> Transport;
@@ -31,6 +35,7 @@ private:
 	int64 HeadTick = 0;
 	int64 HeadRevision = 0;
 	bool bRequestInFlight = false;
+	TUniquePtr<FChaosValidationControl> ValidationControl;
 };
 
 UCLASS()
