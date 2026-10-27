@@ -1,8 +1,10 @@
 # edgeWorld 并行开发统筹清单
 
-## 第一轮 PDCA：初始混沌宇宙（D4 已集成，C2 执行中）
+## 第一轮 PDCA：初始混沌宇宙（技术纵切部分通过，A1 复盘完成）
 
-用户确认第一章起点是“天地玄黄，宇宙洪荒”的完整混沌世界：城市、蛮荒、原野、森林、海洋、河泽已经存在；万物之灵及玩家世界内化身的独立身份与因果关系由后续演化显现。空间表现不预设方块。总方案见 `doc/chaos_universe_pdca_01_plan.md`；任务卡见 `doc/chaos_universe_pdca_01_subplans.md`；工作树与精确状态见 `doc/chaos_universe_pdca_01_register.md`。P0/D1/D2/D3/D4 已分别经 PR #1–#4、#6 审查集成；C1 独立状态报告 PR #5 已集成，有限单进程 Python 阶段门通过。seed 7 初态与 O1 黄金摘要、Worker 恢复/幂等、UE Editor 构建和 NullRHI 协议/场景启动有局部证据；C2 正在独立核查真实 Metal RHI 画面及场景只读隔离。D3 仍是 BasicShapes 代理，不将其称为“近乎完美”的最终美术效果。D4 canonical hash 核验限 macOS，初态文件双次读取存在竞态，C2 使用固定只读输入。该新迭代不改变正在进行的 Seed→Tree PIE 阶段门或其 worktree。
+用户确认第一章起点是“天地玄黄，宇宙洪荒”的完整混沌世界：城市、蛮荒、原野、森林、海洋、河泽已经存在；万物之灵及玩家世界内化身的独立身份与因果关系由后续演化显现。空间表现不预设方块。总方案见 `doc/chaos_universe_pdca_01_plan.md`；任务卡见 `doc/chaos_universe_pdca_01_subplans.md`；工作树、PR 与精确状态见 `doc/chaos_universe_pdca_01_register.md`。P0/D1/D2/D3/D4 和 C1/C2 均已通过独立 PR #1–#7 集成至 `codex/chaos-universe-pdca-plan`，最终 C2 报告合并提交 `72e52da`；未合并到主工作区 `feature/edge-world`。C1 有限单进程 Python 状态门通过。C2 Metal RHI 画面、显式 O1 和有限历史只读观察通过；相机、帧率、UE 游戏内暂停、六类场所连贯性和视觉质量仍未通过完整阶段门。D3 仍是 BasicShapes 代理，不将其称为“近乎完美”的最终美术效果。D4 canonical hash 核验限 macOS，初态文件双次读取存在竞态，本轮 C2 使用固定只读输入。该迭代未改变 Seed→Tree PIE 工作树或其阶段门。
+
+**A1 复盘（2026-10-27）：**本轮判为部分完成：CHAOS→ONE 的固定 seed7 技术纵切可运行；完整“近乎完美的初始混沌宇宙”尚无六类场所连贯、视觉质量和全部呈现只读门的实证。C1 报告 `doc/evidence/chaos-pdca-01/state-review.md`；C2 报告 `doc/evidence/chaos-pdca-01/visual-review.md`，两张原始画面及日志留在主工作区 `engine_platforms/unreal/EdgeWorldHost/Saved/ChaosC2Evidence/`，未纳入 Git。C2 每项只读操作逐项比对的是原始 manifest SHA；state/event/head 在 O1 前后及矩阵结束解析，不能称为每项独立核验。所有本轮任务 worktree 均已清理，迭代集成 worktree 保留以供下一轮读取；主工作区未提交内容未触碰。暂不启动 TWO：下一轮先增加可自动驱动的 UE 相机/帧率/暂停/显隐测试入口，逐项记录 manifest/state/event，再逐区截图核验六类场所与路线，之后裁决视觉目标和 TWO 起点。
 
 日期：2026-10-10
 状态：阶段 2 传输纵切已完成；A4D 单树演化算法实验原型已实现并通过定向测试。真实 UE 渲染、打包和跨平台阶段门仍未通过。
