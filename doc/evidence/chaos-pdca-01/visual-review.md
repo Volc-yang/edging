@@ -23,7 +23,7 @@
 
 ## 只读操作矩阵
 
-O1 后基准为 manifest 原始 SHA `5b9311df…81057`，state `d6b6ec5b…2cbb8c`，event `3b7a8899…4450548f`，tick/revision/watermark 均为 1。每项后直接读取同一 `world.json`；除截图外未写该状态文件。
+O1 后基准为 manifest 原始 SHA `5b9311df…81057`，state `d6b6ec5b…2cbb8c`，event `3b7a8899…4450548f`，tick/revision/watermark 均为 1。**下表每项前后直接比较的是同一 `world.json` 的原始 SHA-256；state/event 摘要和 head/command 数只在 O1 前后及矩阵结束后解析核对，并非每项单独输出。**字节级 SHA 相同支持各项没有改写该 manifest，但不证明其他未观察文件或内存绝对不变。除截图外未写该状态文件。
 
 | 操作 | 实测结果与裁决 |
 |---|---|
