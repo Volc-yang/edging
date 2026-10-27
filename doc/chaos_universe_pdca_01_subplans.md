@@ -56,16 +56,16 @@ P0 起源语义与共享契约 [主任务裁决；可交给一个规划 Agent �
 
 - **目标/交付：**在 UE5 发布版构建一片连贯、可游览的混沌世界视觉样本，显示六类场所。状态：等待 P0。
 - **固定输入：**P0 地理/场所字段和 D1 样例 fixture；仅消费数据，不自行决定区域身份或 O1。
-- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosWorld*` 命名的场景/投影源码及其专属配置或文档；如需要改现有 GameMode/项目配置，由主任务先划定接入点，避免与未完成的 Seed→Tree PIE 工作冲突。不得提交自动生成 `DefaultInput.ini`、二进制地图或未经许可资产。
-- **执行步骤：**① 盘点 UE5 发布版地形、水体、植被与程序化/模块化建筑能力及可用资产许可；② 固定一条城市→原野/森林→河泽→海洋的观察路线，保留蛮荒可见区；③ 从 fixture 建立场景；④ 记录镜头、光照、比例与加载预算；⑤ 对无法通过发布版能力实现的部分提供可复现缺口。
+- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosWorld*` 场景源码和专用 `ChaosGameMode*` 入口；不改现有树演示 GameMode 或全局 `DefaultEngine.ini`。如启动命令必须修改共享项目配置，由主任务先划定接入点。不得提交自动生成 `DefaultInput.ini`、二进制地图或未经许可资产。
+- **执行步骤：**① 从已安装 UE5 发布版的 BasicShapes、PCG、ProceduralMesh 等能力选择首轮方案；Water/Landmass 当前为 Experimental，启用前须另行评估；② 固定一条城市→原野/森林→河泽→海洋的观察路线，保留蛮荒可见区；③ 从 fixture 建立连续场景与独立入口；④ 记录镜头、光照、比例与加载预算；⑤ 对无法通过发布版能力实现的部分提供可复现缺口。
 - **验收：**Editor target 构建；真实 RHI 可辨认六类场所和连续路线；场景逻辑不调用权威 Advance；截图、环境、资源来源与构建日志可复查。此任务的静态画面不等于 O1 4D 阶段门通过。
-- **风险/开放：**“近乎完美”是艺术与体验目标，本轮先验可辨认、连贯和无明显断裂；城市复杂度、性能预算与资产许可须在实测后裁决。
+- **风险/开放：**项目当前无 Content 美术资产，仅靠 Engine BasicShapes 难达到“近乎完美”；本轮先验可辨认、连贯和无明显断裂，真实画面质量由 C2 单独审查。城市复杂度、性能预算与资产许可须在实测后裁决。
 
 ## Subplan D4：UE5 固定状态观察接线
 
 - **目标/交付：**让 D3 场景从 D2 的固定 tick/watermark Observe 样本切换 CHAOS 与 ONE 呈现，且只有用户明确操作才请求 O1。状态：依赖 D1+D2+D3。
 - **固定输入：**P0 的 JSONL/Observe 契约；D1/D2 已审查提交；D3 场景投影接口。
-- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservation*` 命名文件和相应 UE 自动化 fixture；现有 `EdgeWorldRuntime` 传输层只复用，若须改动先由主任务裁决。不得改树观察 Actor 或其状态目录。
+- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservation*` 命名文件（可含继承 D3 `ChaosGameMode` 的 `ChaosObservationGameMode`）和相应 UE 自动化 fixture；现有 `EdgeWorldRuntime` 传输层只复用，若须改动 D3/共享接口先由主任务裁决。不得改树观察 Actor 或其状态目录。
 - **执行步骤：**① 用现有异步进程传输连接独立 chaos worker；② 校验响应版本、tick、水位和 hash；③ 把已提交样本映射到场景表现；④ 提供显式 O1 与当前/历史 Observe 操作；⑤ 处理 worker 错误与关闭重启。
 - **验收：**固定状态重复观察产生相同投影参数；UE 的 Tick、相机、帧率、暂停和显隐不会发送 Advance；错误水位显式失败；真实 RHI 能切换并展示 CHAOS 与 ONE。若仅有 NullRHI fixture，则保持真实画面门未通过。
 - **风险/开放：**UE 内多个 demo 的 GameMode/环境变量可能冲突；必须为 chaos 使用独立启动参数、world ID 和 state directory。
