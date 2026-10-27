@@ -10,11 +10,11 @@
 | D1 | `/root/chaos_d1`；完成，已审查集成 | `.worktrees/chaos-d1` / `codex/chaos-d1` / `10ff215` | 新 `engine/chaos/world_generation.py`、`initial_state.py`、示例 manifest、定向测试 | 提交 `b0c97f6`；seed 7 与 P0 SHA-256 一致，6 项定向检查通过；其他 seed 只改潜势 | PR #2 已合并为 `3e7a8c2`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
 | D2 | `/root/chaos_d2`；完成，已审查集成 | `.worktrees/chaos-d2` / `codex/chaos-d2` / `10ff215` | 新 `origin_runtime.py`、`origin_store.py`、`origin_worker.py`、定向测试 | 提交 `2b7fc3d`、修复 `0397030`；复用 D1 完整地理校验，临时文件失败正确归类；8 项定向检查与真实 D1 JSON 通过 | PR #3 已合并为 `f7eaef8`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
 | D3 | `/root/chaos_d3`；静态场景任务完成，已审查集成 | `.worktrees/chaos-d3` / `codex/chaos-d3` / `10ff215` | 新 UE `ChaosWorld*`、`ChaosGameMode*` 源码与专用说明 | 提交 `cbbf8d2`；UE 5.8.3 Editor build、NullRHI 六类场所启动与 fixture 摘要核对通过；BasicShapes 代理、真实 RHI/美术质量未验证 | PR #4 已合并为 `0fe0a82`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
-| D4 | 待分配 | 待 D1+D2+D3 接口审查 | 新 UE `ChaosObservation*` 源码 | 固定状态观察接线 | 待执行 |
-| C1 | 待分配 | 待 D1+D2 | `doc/evidence/chaos-pdca-01/state-review.md` | 因果/恢复独立核查 | 待执行 |
+| D4 | `/root/chaos_d4`；执行中 | `.worktrees/chaos-d4` / `codex/chaos-d4` / `5dc6b6a` | 新 UE `ChaosObservation*`，核准范围内的 `EdgeWorldJsonlClient.h/.cpp` | 固定状态观察/O1 接线；保留树与 Genesis 兼容 | 待反馈；保留工作树 |
+| C1 | `/root/chaos_c1`；执行中 | `.worktrees/chaos-c1` / `codex/chaos-c1` / `5dc6b6a` | `doc/evidence/chaos-pdca-01/state-review.md` | 初态、因果、恢复独立核查 | 待反馈；保留工作树 |
 | C2 | 待分配 | 待 D4 | `doc/evidence/chaos-pdca-01/visual-review.md` | 真实画面/只读独立核查 | 待执行 |
 | A1 | 主任务；待执行 | 集成 worktree | 本登记、统筹清单、集成决策 | PDCA 复盘及下一轮入口 | 待执行 |
 
 接口裁决：D2 的 chaos worker 从 `--initial-world` 读取 D1 JSON，并兼容现有 UE 进程启动器的 `--dt/--physical-steps/--seed`；D4 可对 `EdgeWorldJsonlClient.h/.cpp` 增加可选初态路径和 O1 专用请求，必须保持既有树/Genesis 请求不变并有回归证据。D1/D2 无共享 Python 源码所有权。
 
-下一动作：收齐 D1/D2/D3 精确提交、检查和 PR，按文件所有权与 P0 契约逐一审查，再启动依赖任务。P0 的居民/玩家身份自然触发机制仍是明确开放的世界观问题，不阻塞本轮显式 O1 技术纵切。
+下一动作：收齐 D4/C1 精确提交与证据；D4 审查集成后再启动 C2 真实 RHI/只读矩阵。P0 的居民/玩家身份自然触发机制仍是明确开放的世界观问题，不阻塞本轮显式 O1 技术纵切。
