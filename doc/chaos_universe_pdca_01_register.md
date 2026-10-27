@@ -15,4 +15,6 @@
 | C2 | 待分配 | 待 D4 | `doc/evidence/chaos-pdca-01/visual-review.md` | 真实画面/只读独立核查 | 待执行 |
 | A1 | 主任务；待执行 | 集成 worktree | 本登记、统筹清单、集成决策 | PDCA 复盘及下一轮入口 | 待执行 |
 
+接口裁决：D2 的 chaos worker 从 `--initial-world` 读取 D1 JSON，并兼容现有 UE 进程启动器的 `--dt/--physical-steps/--seed`；D4 可对 `EdgeWorldJsonlClient.h/.cpp` 增加可选初态路径和 O1 专用请求，必须保持既有树/Genesis 请求不变并有回归证据。D1/D2 无共享 Python 源码所有权。
+
 下一动作：收齐 D1/D2/D3 精确提交、检查和 PR，按文件所有权与 P0 契约逐一审查，再启动依赖任务。P0 的居民/玩家身份自然触发机制仍是明确开放的世界观问题，不阻塞本轮显式 O1 技术纵切。

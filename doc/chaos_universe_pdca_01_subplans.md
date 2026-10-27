@@ -65,7 +65,7 @@ P0 起源语义与共享契约 [主任务裁决；可交给一个规划 Agent �
 
 - **目标/交付：**让 D3 场景从 D2 的固定 tick/watermark Observe 样本切换 CHAOS 与 ONE 呈现，且只有用户明确操作才请求 O1。状态：依赖 D1+D2+D3。
 - **固定输入：**P0 的 JSONL/Observe 契约；D1/D2 已审查提交；D3 场景投影接口。
-- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservation*` 命名文件（可含继承 D3 `ChaosGameMode` 的 `ChaosObservationGameMode`）和相应 UE 自动化 fixture；现有 `EdgeWorldRuntime` 传输层只复用，若须改动 D3/共享接口先由主任务裁决。不得改树观察 Actor 或其状态目录。
+- **所有权：**新建 `engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservation*` 命名文件（可含继承 D3 `ChaosGameMode` 的 `ChaosObservationGameMode`）和相应 UE 自动化 fixture。主任务已确认现有进程启动器固定传 `--dt/--physical-steps/--seed` 且无法传 `--initial-world`，现有 `Advance` 也没有 `origin_action`；因此 D4 可对 `EdgeWorldRuntime/Public/EdgeWorldJsonlClient.h` 和 `Private/EdgeWorldJsonlClient.cpp` 作**仅限可选初态路径与 O1 专用请求**的兼容扩展，须保留既有树/Genesis 行为与相应回归证据。其他共享接口改动须再交主任务裁决。不得改树观察 Actor 或其状态目录。
 - **执行步骤：**① 用现有异步进程传输连接独立 chaos worker；② 校验响应版本、tick、水位和 hash；③ 把已提交样本映射到场景表现；④ 提供显式 O1 与当前/历史 Observe 操作；⑤ 处理 worker 错误与关闭重启。
 - **验收：**固定状态重复观察产生相同投影参数；UE 的 Tick、相机、帧率、暂停和显隐不会发送 Advance；错误水位显式失败；真实 RHI 能切换并展示 CHAOS 与 ONE。若仅有 NullRHI fixture，则保持真实画面门未通过。
 - **风险/开放：**UE 内多个 demo 的 GameMode/环境变量可能冲突；必须为 chaos 使用独立启动参数、world ID 和 state directory。
