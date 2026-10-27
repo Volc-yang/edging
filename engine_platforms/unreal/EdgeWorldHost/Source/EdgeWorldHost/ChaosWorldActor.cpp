@@ -3,7 +3,10 @@
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Dom/JsonObject.h"
+#include "Engine/Level.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/World.h"
+#include "EngineUtils.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "Serialization/JsonReader.h"
@@ -96,6 +99,65 @@ AChaosWorldActor::AChaosWorldActor()
 	PrimaryActorTick.bCanEverTick = false;
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("ChaosSceneRoot"));
 	RootComponent = SceneRoot;
+}
+
+void AChaosWorldActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (LevelAddedHandle.IsValid())
+	{
+		FWorldDelegates::LevelAddedToWorld.Remove(LevelAddedHandle);
+		LevelAddedHandle.Reset();
+	}
+	Super::EndPlay(EndPlayReason);
+}
+
+bool AChaosWorldActor::HideLandscapeActor(AActor* Actor, const TCHAR* Source)
+{
+	if (!Actor || Actor == this) return false;
+	const FString ClassPath = Actor->GetClass()->GetPathName();
+	if (!ClassPath.StartsWith(TEXT("/Script/Landscape.Landscape"))) return false;
+	Actor->SetActorHiddenInGame(true);
+	Actor->SetActorEnableCollision(false);
+	UE_LOG(LogTemp, Display, TEXT("Chaos template landscape hidden: source=%s actor=%s class=%s"),
+		Source, *Actor->GetName(), *ClassPath);
+	return true;
+}
+
+void AChaosWorldActor::OnLevelAdded(ULevel* Level, UWorld* World)
+{
+	if (World != GetWorld() || !Level) return;
+	int32 HiddenCount = 0;
+	for (AActor* Actor : Level->Actors)
+	{
+		if (HideLandscapeActor(Actor, TEXT("streamed-level"))) ++HiddenCount;
+	}
+	if (HiddenCount > 0)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Chaos streamed template landscape hide: count=%d"), HiddenCount);
+	}
+}
+
+void AChaosWorldActor::HideTemplateLandscape()
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+	const FString MapPackage = World->GetOutermost()->GetName();
+	if (!MapPackage.StartsWith(TEXT("/Engine/Maps/Templates/")) || !MapPackage.EndsWith(TEXT("OpenWorld")))
+	{
+		UE_LOG(LogTemp, Display, TEXT("Chaos template landscape hide skipped: map=%s"), *MapPackage);
+		return;
+	}
+	if (!LevelAddedHandle.IsValid())
+	{
+		LevelAddedHandle = FWorldDelegates::LevelAddedToWorld.AddUObject(this, &AChaosWorldActor::OnLevelAdded);
+	}
+	int32 HiddenCount = 0;
+	for (TActorIterator<AActor> It(World); It; ++It)
+	{
+		if (HideLandscapeActor(*It, TEXT("initial-level"))) ++HiddenCount;
+	}
+	UE_LOG(LogTemp, Display, TEXT("Chaos template landscape hide complete: map=%s count=%d"),
+		*MapPackage, HiddenCount);
 }
 
 UStaticMeshComponent* AChaosWorldActor::AddShape(UStaticMesh* Mesh, const FVector& CenterCm,
@@ -205,6 +267,7 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 		OutError = TEXT("Invalid InitialWorld extent");
 		return false;
 	}
+	HideTemplateLandscape();
 	AddShape(Cube, FVector((MinX + MaxX) * 0.5f, (MinY + MaxY) * 0.5f, -110.0f),
 		FVector(MaxX - MinX, MaxY - MinY, 200.0f), FLinearColor(0.32f, 0.35f, 0.25f), TEXT("continuous-ground"));
 

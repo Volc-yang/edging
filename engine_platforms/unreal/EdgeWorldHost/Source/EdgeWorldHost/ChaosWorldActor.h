@@ -5,6 +5,7 @@
 #include "ChaosWorldActor.generated.h"
 
 class UMaterialInterface;
+class ULevel;
 class USceneComponent;
 class UStaticMesh;
 class UStaticMeshComponent;
@@ -17,6 +18,7 @@ class EDGEWORLDHOST_API AChaosWorldActor : public AActor
 
 public:
 	AChaosWorldActor();
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	/** Build once from the P0 InitialWorld JSON. Geometry is a disposable presentation cache. */
 	bool BuildFromInitialWorldJson(const FString& Json, const FString& ExpectedInitialHash, FString& OutError);
@@ -28,6 +30,9 @@ public:
 	const FString& GetInitialManifestHash() const { return InitialManifestHash; }
 
 private:
+	void HideTemplateLandscape();
+	void OnLevelAdded(ULevel* Level, UWorld* World);
+	bool HideLandscapeActor(AActor* Actor, const TCHAR* Source);
 	UStaticMeshComponent* AddShape(UStaticMesh* Mesh, const FVector& CenterCm,
 		const FVector& SizeCm, const FLinearColor& Color, const FString& Label);
 	void AddSegment(UStaticMesh* Mesh, const FVector& Start, const FVector& End,
@@ -40,4 +45,5 @@ private:
 	FString WorldId;
 	FString InitialManifestHash;
 	bool bBuilt = false;
+	FDelegateHandle LevelAddedHandle;
 };
