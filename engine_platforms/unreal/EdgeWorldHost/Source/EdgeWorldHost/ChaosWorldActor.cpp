@@ -82,12 +82,12 @@ namespace
 
 	FLinearColor PlaceColor(const FString& Kind)
 	{
-		if (Kind == TEXT("city")) return FLinearColor(0.43f, 0.39f, 0.33f);
-		if (Kind == TEXT("wildland")) return FLinearColor(0.38f, 0.30f, 0.21f);
-		if (Kind == TEXT("plain")) return FLinearColor(0.48f, 0.55f, 0.26f);
-		if (Kind == TEXT("forest")) return FLinearColor(0.15f, 0.32f, 0.18f);
-		if (Kind == TEXT("river_marsh")) return FLinearColor(0.24f, 0.39f, 0.32f);
-		return FLinearColor(0.07f, 0.25f, 0.39f);
+		if (Kind == TEXT("city")) return FLinearColor(0.60f, 0.47f, 0.34f);
+		if (Kind == TEXT("wildland")) return FLinearColor(0.43f, 0.30f, 0.22f);
+		if (Kind == TEXT("plain")) return FLinearColor(0.65f, 0.66f, 0.30f);
+		if (Kind == TEXT("forest")) return FLinearColor(0.08f, 0.34f, 0.15f);
+		if (Kind == TEXT("river_marsh")) return FLinearColor(0.18f, 0.48f, 0.42f);
+		return FLinearColor(0.04f, 0.32f, 0.61f);
 	}
 }
 
@@ -238,7 +238,16 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 		Kinds.Add(Kind);
 		const FVector2D Center = Bounds.GetCenter();
 		const FVector2D Size = Bounds.GetSize();
-		AddShape(Cube, FVector(Center.X, Center.Y, 3.0f), FVector(Size.X, Size.Y, 6.0f), PlaceColor(Kind), Id);
+		const FLinearColor Color = PlaceColor(Kind);
+		AddShape(Cube, FVector(Center.X, Center.Y, 3.0f), FVector(Size.X, Size.Y, 6.0f), Color, Id);
+		// Bright footprint edges stay readable in both the overview and local review cameras.
+		for (int32 Index = 1; Index < Polygon.Num(); ++Index)
+		{
+			AddSegment(Cube, FVector(Polygon[Index - 1], 42.0f), FVector(Polygon[Index], 42.0f),
+				180.0f, 45.0f, Color * 1.6f, Id + TEXT("-edge"));
+		}
+		UE_LOG(LogTemp, Display, TEXT("Chaos place projection: id=%s kind=%s center_cm=(%.0f,%.0f) extent_cm=(%.0f,%.0f)"),
+			*Id, *Kind, Center.X, Center.Y, Size.X, Size.Y);
 
 		if (Kind == TEXT("city"))
 		{
@@ -249,6 +258,10 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 					Bounds.Min.Y + (Y + 0.5f) * Size.Y / 4.0f, Height * 0.5f + 7.0f),
 					FVector(950.0f, 950.0f, Height), FLinearColor(0.64f, 0.58f, 0.48f), TEXT("city-building"));
 			}
+			AddShape(Cylinder, FVector(Center.X, Center.Y, 1850.0f), FVector(500.0f, 500.0f, 3700.0f),
+				FLinearColor(0.86f, 0.72f, 0.48f), Id + TEXT("-landmark"));
+			AddShape(Cone, FVector(Center.X, Center.Y, 4200.0f), FVector(1200.0f, 1200.0f, 1000.0f),
+				FLinearColor(0.96f, 0.83f, 0.52f), Id + TEXT("-roof"));
 		}
 		else if (Kind == TEXT("forest"))
 		{
@@ -271,6 +284,17 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 				AddShape(Cone, FVector(Px, Py, 400.0f), FVector(850.0f, 850.0f, 800.0f),
 					FLinearColor(0.35f, 0.30f, 0.25f), TEXT("wildland-rock"));
 			}
+			AddShape(Cone, FVector(Center.X, Center.Y, 2300.0f), FVector(5200.0f, 5200.0f, 4600.0f),
+				FLinearColor(0.58f, 0.45f, 0.34f), Id + TEXT("-landmark"));
+		}
+		else if (Kind == TEXT("plain"))
+		{
+			for (int32 Index = 0; Index < 5; ++Index)
+			{
+				const float Px = Bounds.Min.X + (Index + 0.5f) * Size.X / 5.0f;
+				AddShape(Cube, FVector(Px, Center.Y, 120.0f), FVector(1100.0f, Size.Y * 0.56f, 220.0f),
+					FLinearColor(0.79f, 0.71f, 0.31f), Id + TEXT("-field"));
+			}
 		}
 		else if (Kind == TEXT("river_marsh"))
 		{
@@ -281,11 +305,27 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 				AddShape(Cylinder, FVector(Px, Py, 180.0f), FVector(75.0f, 75.0f, 350.0f),
 					FLinearColor(0.48f, 0.50f, 0.21f), TEXT("marsh-reed"));
 			}
+			for (int32 Index = 0; Index < 5; ++Index)
+			{
+				const float Px = Bounds.Min.X + (Index + 0.5f) * Size.X / 5.0f;
+				AddShape(Cylinder, FVector(Px, Center.Y + (Index % 2 ? 1800.0f : -1800.0f), 280.0f),
+					FVector(850.0f, 850.0f, 550.0f), FLinearColor(0.76f, 0.72f, 0.31f), Id + TEXT("-reed-island"));
+			}
 		}
 		if (Kind == TEXT("ocean") || Kind == TEXT("river_marsh"))
 		{
 			AddShape(Cube, FVector(Center.X, Center.Y, 10.0f), FVector(Size.X, Size.Y, 8.0f),
-				FLinearColor(0.05f, 0.29f, 0.42f), TEXT("surface-water"));
+				Kind == TEXT("ocean") ? FLinearColor(0.04f, 0.31f, 0.66f) : FLinearColor(0.08f, 0.43f, 0.55f),
+				Id + TEXT("-surface-water"));
+			if (Kind == TEXT("ocean"))
+			{
+				for (int32 Index = 1; Index <= 4; ++Index)
+				{
+					const float X = Bounds.Min.X + Index * Size.X / 5.0f;
+					AddShape(Cube, FVector(X, Center.Y, 18.0f), FVector(140.0f, Size.Y * 0.78f, 6.0f),
+						FLinearColor(0.44f, 0.73f, 0.81f), Id + TEXT("-wave"));
+				}
+			}
 		}
 	}
 	if (Kinds.Num() != 6)
@@ -300,10 +340,19 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 		{
 			OutError = TEXT("Invalid watercourse"); return false;
 		}
+		FString WaterId;
+		if (!Water->TryGetStringField(TEXT("watercourse_id"), WaterId) || WaterId.IsEmpty())
+		{
+			OutError = TEXT("Watercourse lacks identity"); return false;
+		}
+		UE_LOG(LogTemp, Display, TEXT("Chaos watercourse projection: id=%s points=%d start_cm=(%.0f,%.0f) end_cm=(%.0f,%.0f)"),
+			*WaterId, Points.Num(), Points[0].X, Points[0].Y, Points.Last().X, Points.Last().Y);
 		for (int32 Index = 1; Index < Points.Num(); ++Index)
 		{
-			AddSegment(Cube, FVector(Points[Index - 1], 18.0f), FVector(Points[Index], 18.0f),
-				1200.0f, 12.0f, FLinearColor(0.03f, 0.34f, 0.47f), TEXT("river-to-ocean"));
+			AddSegment(Cube, FVector(Points[Index - 1], 26.0f), FVector(Points[Index], 26.0f),
+				1800.0f, 20.0f, FLinearColor(0.05f, 0.46f, 0.67f), WaterId + TEXT("-channel"));
+			AddSegment(Cube, FVector(Points[Index - 1], 40.0f), FVector(Points[Index], 40.0f),
+				900.0f, 8.0f, FLinearColor(0.42f, 0.74f, 0.82f), WaterId + TEXT("-surface"));
 		}
 	}
 	for (const TSharedPtr<FJsonValue>& Entry : *Routes)
@@ -314,10 +363,19 @@ bool AChaosWorldActor::BuildFromInitialWorldJson(const FString& Json,
 		{
 			OutError = TEXT("Invalid route"); return false;
 		}
+		FString RouteId;
+		if (!Route->TryGetStringField(TEXT("route_id"), RouteId) || RouteId.IsEmpty())
+		{
+			OutError = TEXT("Route lacks identity"); return false;
+		}
+		UE_LOG(LogTemp, Display, TEXT("Chaos route projection: id=%s points=%d start_cm=(%.0f,%.0f) end_cm=(%.0f,%.0f)"),
+			*RouteId, Points.Num(), Points[0].X, Points[0].Y, Points.Last().X, Points.Last().Y);
 		for (int32 Index = 1; Index < Points.Num(); ++Index)
 		{
-			AddSegment(Cube, FVector(Points[Index - 1], 25.0f), FVector(Points[Index], 25.0f),
-				320.0f, 9.0f, FLinearColor(0.71f, 0.59f, 0.29f), TEXT("city-to-ocean-route"));
+			AddSegment(Cube, FVector(Points[Index - 1], 57.0f), FVector(Points[Index], 57.0f),
+				950.0f, 20.0f, FLinearColor(0.20f, 0.18f, 0.12f), RouteId + TEXT("-edge"));
+			AddSegment(Cube, FVector(Points[Index - 1], 73.0f), FVector(Points[Index], 73.0f),
+				580.0f, 9.0f, FLinearColor(0.94f, 0.72f, 0.25f), RouteId + TEXT("-surface"));
 		}
 	}
 	const float BorderZ = 150.0f;
