@@ -1,6 +1,7 @@
 #include "ChaosObservationGameMode.h"
 
 #include "ChaosWorldActor.h"
+#include "ChaosValidationControl.h"
 #include "EdgeWorldJsonlClient.h"
 #include "Async/Async.h"
 #include "Dom/JsonObject.h"
@@ -10,6 +11,11 @@
 #include "Misc/Parse.h"
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
+#include "Camera/CameraActor.h"
+#include "Camera/CameraComponent.h"
+#include "Engine/Engine.h"
+#include "Kismet/GameplayStatics.h"
+#include "Math/RotationMatrix.h"
 #include "Containers/StringConv.h"
 #if PLATFORM_MAC
 #include <CommonCrypto/CommonDigest.h>
@@ -255,6 +261,15 @@ void AChaosObservationGameMode::StartPlay()
 	Config.RequestTimeoutSeconds = 60.0;
 	Transport = MakeShared<FEdgeWorldProcessTransport, ESPMode::ThreadSafe>(MoveTemp(Config));
 	Client = MakeShared<FEdgeWorldJsonlClient>(Transport.ToSharedRef());
+	FString ValidationPath;
+	FString ValidationAckPath;
+	FParse::Value(FCommandLine::Get(), TEXT("ChaosValidationControl="), ValidationPath);
+	FParse::Value(FCommandLine::Get(), TEXT("ChaosValidationAck="), ValidationAckPath);
+	if (!ValidationPath.IsEmpty() && !ValidationAckPath.IsEmpty())
+	{
+		ValidationControl = MakeUnique<FChaosValidationControl>(this, ValidationPath, ValidationAckPath);
+		UE_LOG(LogTemp, Display, TEXT("ChaosValidation control enabled: %s"), *ValidationPath);
+	}
 	bRequestInFlight = true;
 	TWeakObjectPtr<AChaosObservationGameMode> WeakThis(this);
 	Client->Status(WorldId, [WeakThis](FEdgeWorldResponse&& Response)
@@ -281,6 +296,7 @@ void AChaosObservationGameMode::StartPlay()
 
 void AChaosObservationGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	ValidationControl.Reset();
 	if (Transport.IsValid()) Transport->Shutdown();
 	Client.Reset();
 	Transport.Reset();
@@ -313,6 +329,110 @@ void AChaosObservationGameMode::ObserveAt(int64 Tick)
 }
 
 void AChaosObservationGameMode::ObserveHistoricalTick(int64 Tick) { ObserveAt(Tick); }
+
+bool AChaosObservationGameMode::ExecuteValidationCommand(
+	const TSharedPtr<FJsonObject>& Command, FString& OutDetail)
+{
+	if (!Command.IsValid()) { OutDetail = TEXT("invalid JSON object"); return false; }
+	FString Action;
+	if (!Command->TryGetStringField(TEXT("action"), Action))
+	{
+		OutDetail = TEXT("missing action"); return false;
+	}
+	if (Action == TEXT("camera"))
+	{
+		const TArray<TSharedPtr<FJsonValue>>* Position = nullptr;
+		const TArray<TSharedPtr<FJsonValue>>* Focus = nullptr;
+		double Fov = 0;
+		if (!OverviewCamera || !Command->TryGetArrayField(TEXT("position"), Position)
+			|| !Command->TryGetArrayField(TEXT("focus"), Focus)
+			|| !Position || !Focus || Position->Num() != 3 || Focus->Num() != 3
+			|| !Command->TryGetNumberField(TEXT("fov"), Fov)
+			|| !FMath::IsFinite(Fov) || Fov < 20 || Fov > 120)
+		{
+			OutDetail = TEXT("invalid camera arguments"); return false;
+		}
+		double P[3], F[3];
+		for (int32 Index = 0; Index < 3; ++Index)
+		{
+			if (!(*Position)[Index]->TryGetNumber(P[Index]) || !(*Focus)[Index]->TryGetNumber(F[Index])
+				|| !FMath::IsFinite(P[Index]) || !FMath::IsFinite(F[Index]))
+			{
+				OutDetail = TEXT("nonfinite camera coordinate"); return false;
+			}
+		}
+		const FVector Location(P[0], P[1], P[2]);
+		const FVector Target(F[0], F[1], F[2]);
+		if (Location.Equals(Target)) { OutDetail = TEXT("camera equals focus"); return false; }
+		OverviewCamera->SetActorLocationAndRotation(Location,
+			FRotationMatrix::MakeFromX(Target - Location).Rotator());
+		OverviewCamera->GetCameraComponent()->SetFieldOfView(static_cast<float>(Fov));
+		if (APlayerController* Controller = GetWorld()->GetFirstPlayerController())
+		{
+			Controller->SetViewTarget(OverviewCamera);
+		}
+		OutDetail = FString::Printf(TEXT("camera position=%s focus=%s fov=%.1f"),
+			*OverviewCamera->GetActorLocation().ToString(), *Target.ToString(),
+			OverviewCamera->GetCameraComponent()->FieldOfView);
+		return true;
+	}
+	if (Action == TEXT("max_fps"))
+	{
+		double Limit = 0;
+		if (!GEngine || !Command->TryGetNumberField(TEXT("fps"), Limit)
+			|| !FMath::IsFinite(Limit) || Limit < 5 || Limit > 240)
+		{
+			OutDetail = TEXT("invalid fps"); return false;
+		}
+		GEngine->SetMaxFPS(static_cast<float>(Limit));
+		OutDetail = FString::Printf(TEXT("max_fps=%.1f"), GEngine->GetMaxFPS());
+		return true;
+	}
+	if (Action == TEXT("pause") || Action == TEXT("resume"))
+	{
+		const bool bPaused = Action == TEXT("pause");
+		const bool bChanged = UGameplayStatics::SetGamePaused(GetWorld(), bPaused);
+		const bool bActual = UGameplayStatics::IsGamePaused(GetWorld());
+		OutDetail = FString::Printf(TEXT("world_paused=%s"), bActual ? TEXT("true") : TEXT("false"));
+		return bChanged && bActual == bPaused;
+	}
+	if (Action == TEXT("visibility"))
+	{
+		bool bVisible = false;
+		if (!ChaosWorld || !Command->TryGetBoolField(TEXT("visible"), bVisible))
+		{
+			OutDetail = TEXT("invalid visibility"); return false;
+		}
+		ChaosWorld->SetWorldSpiritVisible(bVisible);
+		OutDetail = bVisible ? TEXT("spirit_boundary_visible=true") : TEXT("spirit_boundary_visible=false");
+		return true;
+	}
+	if (Action == TEXT("observe"))
+	{
+		int64 Tick = -1;
+		if (!Command->TryGetNumberField(TEXT("tick"), Tick) || !Client.IsValid()
+			|| bRequestInFlight || Tick < 0 || Tick > HeadTick || Tick > 1)
+		{
+			OutDetail = TEXT("observe unavailable"); return false;
+		}
+		ObserveAt(Tick);
+		OutDetail = FString::Printf(TEXT("observe dispatched tick=%lld; await committed observation log"),
+			static_cast<long long>(Tick));
+		return true;
+	}
+	if (Action == TEXT("reveal"))
+	{
+		if (!Client.IsValid() || bRequestInFlight || HeadTick != 0 || HeadRevision != 0)
+		{
+			OutDetail = TEXT("O1 unavailable"); return false;
+		}
+		RevealWorldSpirit();
+		OutDetail = TEXT("explicit O1 dispatched; await committed observation log");
+		return true;
+	}
+	OutDetail = TEXT("unknown action");
+	return false;
+}
 
 void AChaosObservationGameMode::RevealWorldSpirit()
 {
