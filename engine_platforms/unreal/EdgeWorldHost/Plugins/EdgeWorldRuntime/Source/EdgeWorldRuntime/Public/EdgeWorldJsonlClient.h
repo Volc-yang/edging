@@ -48,6 +48,8 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldWorkerLaunchConfig
 	FString PythonExecutable;
 	FString WorkerScript;
 	FString StateDirectory;
+	/** Optional immutable InitialWorld input for the chaos origin worker. */
+	FString InitialWorldPath;
 	FString WorldId;
 	double DeltaTime = 0.01;
 	int32 PhysicalStepsPerTick = 8;
@@ -97,6 +99,8 @@ public:
 		const FString& CommandId, FEdgeWorldResponseHandler Handler) const;
 	void Advance(const FString& WorldId, int64 ExpectedRevision, int64 TargetTick,
 		const FString& CommandId, const FString& EnvironmentJson, FEdgeWorldResponseHandler Handler) const;
+	void AdvanceOrigin(const FString& WorldId, int64 ExpectedRevision, int64 TargetTick,
+		const FString& CommandId, FEdgeWorldResponseHandler Handler) const;
 	void Observe(const FString& WorldId, int64 LogicalTick, const FString& ViewSpecJson,
 		FEdgeWorldResponseHandler Handler) const;
 
