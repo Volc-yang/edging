@@ -65,7 +65,10 @@ class ManifestStore:
 
     def _write(self, payload: dict[str, Any]) -> None:
         encoded = canonical(payload) + b"\n"
-        fd, name = tempfile.mkstemp(prefix="chaos-world-", suffix=".json.tmp", dir=self.state_dir)
+        try:
+            fd, name = tempfile.mkstemp(prefix="chaos-world-", suffix=".json.tmp", dir=self.state_dir)
+        except OSError as exc:
+            raise ManifestWriteFailure(False, exc) from exc
         temp_path = Path(name)
         replacement_started = False
         try:

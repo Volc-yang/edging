@@ -10,6 +10,8 @@ import hashlib
 import json
 from typing import Any
 
+from .initial_state import validate_initial_world as validate_geography
+
 
 SCHEMA_VERSION = "edgeworld.chaos-origin.v1"
 RULESET_VERSION = "chaos-o1-exp-v1"
@@ -145,6 +147,10 @@ def validate_initial_world(value: Any) -> dict[str, Any]:
         canonical(value)
     except (TypeError, ValueError, OverflowError) as exc:
         raise OriginError("invalid_initial_world", f"InitialWorld is not canonical JSON: {exc}") from exc
+    try:
+        validate_geography(value)
+    except (ValueError, TypeError, KeyError, IndexError) as exc:
+        raise OriginError("invalid_initial_world", f"InitialWorld geography is invalid: {exc}") from exc
     return value
 
 

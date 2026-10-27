@@ -123,6 +123,10 @@ class ChaosOriginRuntimeTest(unittest.TestCase):
         changed["places"][0]["potential"]["civilization"] = 0.5
         with self.assertRaisesRegex(OriginError, "finite safe integers"):
             Worker(Path(self.temp.name) / "bad", changed, world_id="chaos-demo")
+        disconnected = fixture()
+        disconnected["watercourses"][0]["polyline_cm"][-1] = [65000, 40000]
+        with self.assertRaisesRegex(OriginError, "does not terminate in ocean"):
+            Worker(Path(self.temp.name) / "disconnected", disconnected, world_id="chaos-demo")
         with self.assertRaisesRegex(OriginError, "seed differs"):
             Worker(Path(self.temp.name) / "wrong-seed", fixture(), world_id="chaos-demo", seed=8)
         before = self.manifest_bytes()
@@ -133,6 +137,14 @@ class ChaosOriginRuntimeTest(unittest.TestCase):
         self.assertEqual(self.worker.handle(invalid_tick)["error"]["code"],
                          "invalid_target_tick")
         self.assertEqual(self.manifest_bytes(), before)
+
+    def test_mkstemp_failure_is_pre_replacement_persistence_failure(self) -> None:
+        initial_bytes = self.manifest_bytes()
+        with mock.patch("engine.chaos.origin_store.tempfile.mkstemp", side_effect=OSError("disk full")):
+            failed = self.worker.handle(advance())
+        self.assertEqual(failed["error"]["code"], "persistence_failed")
+        self.assertEqual(self.manifest_bytes(), initial_bytes)
+        self.assertEqual(self.worker.handle(request("status", "after-disk-full"))["result"]["logical_tick"], 0)
 
     def test_commit_failures_do_not_claim_success(self) -> None:
         initial_bytes = self.manifest_bytes()
