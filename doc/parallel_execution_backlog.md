@@ -2,7 +2,7 @@
 
 ## 第一轮 PDCA：初始混沌宇宙（P 已完成，待方案审阅）
 
-用户确认第一章起点是“天地玄黄，宇宙洪荒”的完整混沌世界：城市、蛮荒、原野、森林、海洋、河泽已经存在；万物之灵及玩家世界内化身的独立身份与因果关系由后续演化显现。空间表现不预设方块。总方案见 `doc/chaos_universe_pdca_01_plan.md`；可独立派工的 P0、D1–D4、C1/C2、A1 subplan 见 `doc/chaos_universe_pdca_01_subplans.md`；工作树与交付状态见 `doc/chaos_universe_pdca_01_register.md`。P0 实验契约 `doc/chaos_origin_contract.md` 已经统筹审查，PR #1 合并为 `2659242`，固定摘要复算一致；D1/D2/D3 可从同一基线并行实施。其余 D/C/A 尚未完成。该新规划不改变正在进行的 Seed→Tree PIE 阶段门或其 worktree。
+用户确认第一章起点是“天地玄黄，宇宙洪荒”的完整混沌世界：城市、蛮荒、原野、森林、海洋、河泽已经存在；万物之灵及玩家世界内化身的独立身份与因果关系由后续演化显现。空间表现不预设方块。总方案见 `doc/chaos_universe_pdca_01_plan.md`；任务卡见 `doc/chaos_universe_pdca_01_subplans.md`；工作树与精确状态见 `doc/chaos_universe_pdca_01_register.md`。P0 实验契约 PR #1、D1 初态生成 PR #2、D2 起源 Worker PR #3 和 D3 静态 UE 场景 PR #4 均已审查集成。seed 7 初态与 O1 黄金摘要、Worker 恢复/幂等、UE Editor 构建和 NullRHI 场景启动已有局部证据；D4 观察接线、C1 独立状态核查和 C2 真实 RHI/只读画面门尚未完成。D3 仍是 BasicShapes 代理，不将其称为“近乎完美”的最终美术效果。该新迭代不改变正在进行的 Seed→Tree PIE 阶段门或其 worktree。
 
 日期：2026-10-10
 状态：阶段 2 传输纵切已完成；A4D 单树演化算法实验原型已实现并通过定向测试。真实 UE 渲染、打包和跨平台阶段门仍未通过。

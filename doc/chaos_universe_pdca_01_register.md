@@ -7,9 +7,9 @@
 | ID | 负责人 / 状态 | worktree / 分支 / 基线 | 所有权 | 依赖与交付 | PR / 测试移交 / 清理 |
 | --- | --- | --- | --- | --- | --- |
 | P0 | `/root/chaos_p0`；完成，已审查集成 | `.worktrees/chaos-p0` / `codex/chaos-p0` / `8f5ca98` | `doc/chaos_origin_contract.md` | 提交 `3713991`；初态/state/event 固定摘要由统筹独立复算一致 | PR #1 已合并为 `2659242`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
-| D1 | `/root/chaos_d1`；执行中 | `.worktrees/chaos-d1` / `codex/chaos-d1` / `10ff215` | 新 `engine/chaos/world_generation.py`、`initial_state.py`、示例 manifest、定向测试 | 世界初态与拓扑 | 待反馈；保留工作树 |
-| D2 | `/root/chaos_d2`；执行中 | `.worktrees/chaos-d2` / `codex/chaos-d2` / `10ff215` | 新 `origin_runtime.py`、`origin_store.py`、`origin_worker.py`、定向测试 | O1 权威提交与恢复 | 待反馈；保留工作树 |
-| D3 | `/root/chaos_d3`；执行中 | `.worktrees/chaos-d3` / `codex/chaos-d3` / `10ff215` | 新 UE `ChaosWorld*`、`ChaosGameMode*` 源码 | 六类场所静态呈现；不改树默认 GameMode | 待反馈；保留工作树 |
+| D1 | `/root/chaos_d1`；完成，已审查集成 | `.worktrees/chaos-d1` / `codex/chaos-d1` / `10ff215` | 新 `engine/chaos/world_generation.py`、`initial_state.py`、示例 manifest、定向测试 | 提交 `b0c97f6`；seed 7 与 P0 SHA-256 一致，6 项定向检查通过；其他 seed 只改潜势 | PR #2 已合并为 `3e7a8c2`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
+| D2 | `/root/chaos_d2`；完成，已审查集成 | `.worktrees/chaos-d2` / `codex/chaos-d2` / `10ff215` | 新 `origin_runtime.py`、`origin_store.py`、`origin_worker.py`、定向测试 | 提交 `2b7fc3d`、修复 `0397030`；复用 D1 完整地理校验，临时文件失败正确归类；8 项定向检查与真实 D1 JSON 通过 | PR #3 已合并为 `f7eaef8`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
+| D3 | `/root/chaos_d3`；静态场景任务完成，已审查集成 | `.worktrees/chaos-d3` / `codex/chaos-d3` / `10ff215` | 新 UE `ChaosWorld*`、`ChaosGameMode*` 源码与专用说明 | 提交 `cbbf8d2`；UE 5.8.3 Editor build、NullRHI 六类场所启动与 fixture 摘要核对通过；BasicShapes 代理、真实 RHI/美术质量未验证 | PR #4 已合并为 `0fe0a82`，CI verify 成功；干净工作树已移除，本地任务分支已删除 |
 | D4 | 待分配 | 待 D1+D2+D3 接口审查 | 新 UE `ChaosObservation*` 源码 | 固定状态观察接线 | 待执行 |
 | C1 | 待分配 | 待 D1+D2 | `doc/evidence/chaos-pdca-01/state-review.md` | 因果/恢复独立核查 | 待执行 |
 | C2 | 待分配 | 待 D4 | `doc/evidence/chaos-pdca-01/visual-review.md` | 真实画面/只读独立核查 | 待执行 |
