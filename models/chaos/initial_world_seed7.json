@@ -1,0 +1,260 @@
+{
+  "schema_version": "edgeworld.chaos-origin.v1",
+  "world_id": "chaos-demo",
+  "world_seed": 7,
+  "generator_version": "chaos-geography-exp-v1",
+  "ruleset_version": "chaos-o1-exp-v1",
+  "logical_tick": 0,
+  "state_revision": 0,
+  "phase": "CHAOS",
+  "random_stream": {
+    "algorithm": "sha256-counter",
+    "version": 1,
+    "cursor": 0
+  },
+  "extent_cm": [
+    0,
+    0,
+    100000,
+    100000
+  ],
+  "places": [
+    {
+      "place_id": "city-1",
+      "kind": "city",
+      "footprint_cm": [
+        [
+          10000,
+          10000
+        ],
+        [
+          20000,
+          10000
+        ],
+        [
+          20000,
+          20000
+        ],
+        [
+          10000,
+          20000
+        ],
+        [
+          10000,
+          10000
+        ]
+      ],
+      "elevation_cm": 200,
+      "potential": {
+        "civilization": 8000
+      }
+    },
+    {
+      "place_id": "wildland-1",
+      "kind": "wildland",
+      "footprint_cm": [
+        [
+          5000,
+          70000
+        ],
+        [
+          30000,
+          70000
+        ],
+        [
+          30000,
+          90000
+        ],
+        [
+          5000,
+          90000
+        ],
+        [
+          5000,
+          70000
+        ]
+      ],
+      "elevation_cm": 600,
+      "potential": {
+        "ecology": 4000
+      }
+    },
+    {
+      "place_id": "plain-1",
+      "kind": "plain",
+      "footprint_cm": [
+        [
+          20000,
+          10000
+        ],
+        [
+          50000,
+          10000
+        ],
+        [
+          50000,
+          30000
+        ],
+        [
+          20000,
+          30000
+        ],
+        [
+          20000,
+          10000
+        ]
+      ],
+      "elevation_cm": 150,
+      "potential": {
+        "ecology": 6000
+      }
+    },
+    {
+      "place_id": "forest-1",
+      "kind": "forest",
+      "footprint_cm": [
+        [
+          30000,
+          30000
+        ],
+        [
+          60000,
+          30000
+        ],
+        [
+          60000,
+          60000
+        ],
+        [
+          30000,
+          60000
+        ],
+        [
+          30000,
+          30000
+        ]
+      ],
+      "elevation_cm": 350,
+      "potential": {
+        "ecology": 9000
+      }
+    },
+    {
+      "place_id": "river-marsh-1",
+      "kind": "river_marsh",
+      "footprint_cm": [
+        [
+          50000,
+          30000
+        ],
+        [
+          70000,
+          30000
+        ],
+        [
+          70000,
+          50000
+        ],
+        [
+          50000,
+          50000
+        ],
+        [
+          50000,
+          30000
+        ]
+      ],
+      "elevation_cm": 50,
+      "potential": {
+        "wetness": 9500
+      }
+    },
+    {
+      "place_id": "ocean-1",
+      "kind": "ocean",
+      "footprint_cm": [
+        [
+          70000,
+          0
+        ],
+        [
+          100000,
+          0
+        ],
+        [
+          100000,
+          100000
+        ],
+        [
+          70000,
+          100000
+        ],
+        [
+          70000,
+          0
+        ]
+      ],
+      "elevation_cm": 0,
+      "potential": {
+        "wetness": 10000
+      }
+    }
+  ],
+  "watercourses": [
+    {
+      "watercourse_id": "river-1",
+      "polyline_cm": [
+        [
+          40000,
+          55000
+        ],
+        [
+          60000,
+          40000
+        ],
+        [
+          80000,
+          40000
+        ]
+      ],
+      "marsh_place_id": "river-marsh-1",
+      "outlet_place_id": "ocean-1"
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "origin-route-1",
+      "polyline_cm": [
+        [
+          15000,
+          15000
+        ],
+        [
+          35000,
+          20000
+        ],
+        [
+          45000,
+          40000
+        ],
+        [
+          60000,
+          40000
+        ],
+        [
+          80000,
+          40000
+        ]
+      ],
+      "place_ids": [
+        "city-1",
+        "plain-1",
+        "forest-1",
+        "river-marsh-1",
+        "ocean-1"
+      ]
+    }
+  ],
+  "world_spirit_id": null,
+  "event_watermark": 0
+}
