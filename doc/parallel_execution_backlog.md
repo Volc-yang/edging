@@ -1,8 +1,12 @@
 # edgeWorld 并行开发统筹清单
 
-## 第二轮 PDCA：混沌世界呈现可测性（执行中）
+## 第二轮 PDCA：混沌世界呈现可测性（A2 复盘完成）
 
-以第一轮集成提交 `7cb65d2` 为固定基线，统筹分支 `codex/chaos-pdca-02`。本轮先关闭第一轮 C2 留下的相机、帧率、UE Pause、六类场所与路线核查缺口，不进入 TWO。方案树及任务卡见 `doc/chaos_universe_pdca_02_plan.md`，工作树登记见 `doc/chaos_universe_pdca_02_register.md`。H1 自动驱动 UE 呈现入口与 V1 六类场所代理可并行；C3 在二者集成后独立执行真实 Metal 矩阵；A2 最后按证据复盘。主工作区原有未提交内容与旧 Seed→Tree PIE 工作树保留。
+以第一轮集成提交 `7cb65d2` 为固定基线，统筹分支 `codex/chaos-pdca-02`。方案树见 `doc/chaos_universe_pdca_02_plan.md`，完整 PR、提交和工作树记录见 `doc/chaos_universe_pdca_02_register.md`。H1 控制入口 PR #9、V1 六类代理 PR #8、C3 独立失败报告 PR #10、V1R 遮挡修复 PR #11 和 C4 独立复测 PR #12 均经审查与 CI 集成；C4 合并提交 `363c2de`。所有本轮任务 worktree 已清理，统筹 worktree 保留；主工作区原有未提交内容与旧 Seed→Tree PIE 工作树未触碰，迭代分支尚未合并到 `feature/edge-world`。
+
+**阶段门裁决：**C3 在 UE 5.8.3 Metal、单 UE/Worker 下对 20 项相机、FPS 上限设定、UE Pause/Resume、显隐、历史/重复 Observe 和显式 O1 逐项记录 ack、manifest/state/event/head；仅 O1 改变权威状态，技术控制与已执行操作的只读门通过。C3 发现模板 OpenWorld Landscape 与 World Partition 流入遮挡森林、河泽、海洋和路线，视觉门曾失败。V1R 只在 Chaos 模板地图隐藏相应 Landscape；C4 从集成后的新进程独立复测，固定 seed7 下六类 BasicShapes 代理及 city→plain→forest→marsh→ocean 路线和河道可辨，镜头逐项不改权威摘要，故**固定代理可辨门通过**。证据见 `doc/evidence/chaos-pdca-02/visual-control-review.md`、`visual-retest.md` 及两份 JSONL 索引；原始大图/日志保留在主工作区 `Saved/ChaosC3Evidence`、`Saved/ChaosC4Evidence`。
+
+**仍开放：**FPS=30 仅有引擎设定回读，没有实测 Metal 帧时间/cadence；BasicShapes 不达到用户期望的“近乎完美”世界美术，地形/生态资产及视觉验收标准未定；D3/D4 双次读取初态文件的竞态、macOS 限定 canonical hash、其他地图/OS/GPU、并发 writer 与生产规模未验。下一轮先定义视觉质量标准和资产预算，再分别安排帧时间计量、同源初态读取与跨平台哈希任务；未启动 TWO 演化。
 
 ## 第一轮 PDCA：初始混沌宇宙（技术纵切部分通过，A1 复盘完成）
 

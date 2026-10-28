@@ -1,6 +1,6 @@
 # PDCA-CHAOS-01 工作树与任务登记
 
-状态：进行中。用户于 2026-10-27 明确要求执行已提交的 PDCA 任务卡并分配 subagents；此授权视为方案树实现审阅通过。详细任务边界见 `doc/chaos_universe_pdca_01_subplans.md`。
+状态：已复盘，技术纵切部分通过。用户于 2026-10-27 明确要求执行已提交的 PDCA 任务卡并分配 subagents；此授权视为方案树实现审阅通过。详细任务边界见 `doc/chaos_universe_pdca_01_subplans.md`。
 
 仓库：`/Users/yangacan/edgeWorld/edge-world`。统筹/集成 worktree：`.worktrees/chaos-universe-pdca-plan`，分支 `codex/chaos-universe-pdca-plan`，派工前 HEAD `8f5ca98`。主工作区 `feature/edge-world` 含用户未提交内容；既有 Seed→Tree PIE worktree 仍进行中。两者不作为本轮写入位置。
 
@@ -13,7 +13,7 @@
 | D4 | `/root/chaos_d4`；实现完成、真实画面待 C2 | `.worktrees/chaos-d4` / `codex/chaos-d4` / `5dc6b6a` | 新 UE `ChaosObservation*`，核准范围内的 `EdgeWorldJsonlClient.h/.cpp` | PR #6、`7d9afcd`、合并 `2bbc3aa`；UE Editor 构建、NullRHI 协议、14 项 Python 与 CI 通过；真实 RHI 未验 | 干净工作树已移除，本地分支已删除 |
 | C1 | `/root/chaos_c1`；完成 | `.worktrees/chaos-c1` / `codex/chaos-c1` / `5dc6b6a` | `doc/evidence/chaos-pdca-01/state-review.md` | PR #5、`b5da0a5`、合并 `34dec83`；14 项定向测试及 CI 通过，有限单进程 Python 状态门通过 | 干净工作树已移除，本地分支已删除 |
 | C2 | `/root/chaos_c2`；部分完成 | `.worktrees/chaos-c2` / `codex/chaos-c2` / `2bbc3aa` | `doc/evidence/chaos-pdca-01/visual-review.md` | PR #7、`d89fef2` + `98f85ec`、合并 `72e52da`；Metal tick 0/1 与显式 O1、有限只读通过；相机/帧率/UE 暂停、六类连贯性及视觉质量未验；CI 通过 | 干净工作树已移除，本地分支已删除 |
-| A1 | 主任务；待执行 | 集成 worktree | 本登记、统筹清单、集成决策 | PDCA 复盘及下一轮入口 | 待执行 |
+| A1 | 主任务；已完成 | 集成 worktree | 本登记、统筹清单、集成决策 | PDCA 复盘及下一轮入口 | 上下文提交 `7cb65d2`；集成 worktree 保留 |
 
 接口裁决：D2 的 chaos worker 从 `--initial-world` 读取 D1 JSON，并兼容现有 UE 进程启动器的 `--dt/--physical-steps/--seed`；D4 可对 `EdgeWorldJsonlClient.h/.cpp` 增加可选初态路径和 O1 专用请求，必须保持既有树/Genesis 请求不变并有回归证据。D1/D2 无共享 Python 源码所有权。
 
