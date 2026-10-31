@@ -1,0 +1,5 @@
+# CHAOS-REALISM-01 assembly
+
+Select `?game=/Script/EdgeWorldHost.ChaosRealismGameMode` on the installed UE5.8.3 OpenWorld template with the same `-ChaosWorldData`, `-ChaosInitialHash`, `EDGEWORLD_CHAOS_PYTHON` and `EDGEWORLD_CHAOS_WORKER` inputs described in `CHAOS_OBSERVATION.md`. The opt-in GameMode inherits the existing status/Observe/O1 path, hides only old BasicShapes proxy components, keeps the O1 boundary, and assembles T1 terrain/water, E1 ecology and L1 daylight. The world remains authoritative in the existing Worker. Space triggers O1; 0/1 request historical observations.
+
+The assembly uses only installed UE modules and built-in mesh proxies. T1's standalone Entry-map preview produced a black screenshot, so a successful build or actor log is insufficient. The independent V1 Metal run must prove that this assembled scene is visible and compare manifest/state/event/head before and after observation and camera actions. All large render/log outputs belong under `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`.
