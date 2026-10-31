@@ -29,6 +29,8 @@ R0 森林—河泽—海岸写实样区
 
 新建 `ChaosRealismTerrain*` 专属源码与对应说明；不改 Worker、InitialWorld、树/Genesis、UE 引擎源码。用 UE 发布版能力从固定 seed7 地理输入构造森林→河泽→海岸连续样区，确保水体/道路不被模板 Landscape 遮挡。输出真实运行画面或明确失败证据。大型中间资产进 DevSSD `Assets/Terrain`，渲染进 `Renders/Terrain`。
 
+接口裁决：UE runtime Landscape 创建依赖 Editor 路径，T1 可使用安装版 `ProceduralMeshComponent` 生成连续三角地形与水面。主任务批准 T1 在其独立 PR 内仅为此启用 `.uproject` 插件并在 `EdgeWorldHost.Build.cs` 增加模块依赖，保留真实编译证据；不得顺带改默认 GameMode、其他插件或引擎源码。Water Experimental 保持后续可撤销试验，不作为本轮强制依赖。
+
 ### E1 生态
 
 新建 `ChaosRealismEcology*` 专属源码/配方，消费 T1 冻结的坐标与地形采样接口；按区域确定性放置树木、草、河泽植物代理，说明树种差异尚属实验表现。不得推进 Worker。大型资产进 `Assets/Ecology`。
