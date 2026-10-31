@@ -11,6 +11,7 @@
 		}
 	],
 	"Plugins": [
-		{ "Name": "EdgeWorldRuntime", "Enabled": true }
+		{ "Name": "EdgeWorldRuntime", "Enabled": true },
+		{ "Name": "ProceduralMeshComponent", "Enabled": true }
 	]
 }
