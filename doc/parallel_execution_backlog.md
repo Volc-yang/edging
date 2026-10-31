@@ -1,8 +1,8 @@
 # edgeWorld 并行开发统筹清单
 
-## 写实样区迭代 CHAOS-REALISM-01（规划/可行性执行中）
+## 写实样区迭代 CHAOS-REALISM-01（技术纵切完成；写实美术与性能门开放）
 
-用户要求执行写实引擎模块，并允许世界渲染产物存放于 DevSSD。以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与任务登记见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。目标先做森林—河泽—海岸及通往城市路线的 UE5.8.3 写实样区；大型资产、渲染和缓存放 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`。P1 先核实插件、资产来源和接口，再派 T1/E1/L1；V1 独立 Metal 验收。旧 Chaos 技术纵切与主工作区未提交改动保持原样。
+以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与逐任务状态见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。P1/T1/E1/L1 经 PR #13–#16 集成，主任务组装提交 `95601b6`。V1 的 PR #17 记录 Metal 蓝色空背景、权威只读隔离通过和视觉失败；T1-VF 的 PR #18 翻转地形/水面/路线绕序；V2 的 PR #19 在独立 Metal + Worker 运行中确认森林、河泽、海岸与路线可辨，tick 0/1 的相机/历史观察不改 manifest/state/event，只有显式 O1 推进状态。技术视觉链路通过，真实写实资产/材质和实际 CPU/GPU 帧时间仍未验证，不称为写实世界达标。原始画面/日志在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`，Git 仅保留小型证据索引；当前迭代分支未合入 `feature/edge-world`，该工作区未提交改动未触碰。下一轮先确定授权资产与质量基准，再实现地表、水面、植物材质和实际帧时间采集。
 
 ## 第二轮 PDCA：混沌世界呈现可测性（A2 复盘完成）
 
