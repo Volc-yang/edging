@@ -4,10 +4,10 @@
 
 | ID | Owner / 状态 | worktree / 分支 / 基线 | 交付 | PR / 测试 / 清理 |
 | --- | --- | --- | --- | --- |
-| P1 | `/root/chaos_realism_p1`；执行中 | `.worktrees/chaos-realism-p1` / `codex/chaos-realism-p1` / `72b25d8` | 插件、资产来源与接口可行性 | 待反馈，保留 worktree |
-| T1 | 待 P1 | 待建 | 地形与水体样区 | 待执行 |
+| P1 | `/root/chaos_realism_p1`；完成 | `.worktrees/chaos-realism-p1` / `codex/chaos-realism-p1` / `72b25d8` | 插件、资产来源与接口提案；无写实外部资产 | PR #13，`36f8590`，合并 `564ce35`；CI 通过，干净 worktree 已移除 |
+| T1 | `/root/chaos_realism_t1`；执行中 | `.worktrees/chaos-realism-t1` / `codex/chaos-realism-t1` / `564ce35` | 地形与水体样区 | 待反馈，保留 worktree |
 | E1 | 待 T1 | 待建 | 生态呈现 | 待执行 |
-| L1 | 待 P1 | 待建 | 材质与天空 | 待执行 |
+| L1 | `/root/chaos_realism_l1`；执行中 | `.worktrees/chaos-realism-l1` / `codex/chaos-realism-l1` / `564ce35` | 材质与天空 | 待反馈，保留 worktree |
 | V1 | 待 T1/E1/L1 | 待建 | Metal 独立证据 | 待执行 |
 | A1 | 主任务 | 统筹 worktree | 审查集成与上下文 | 进行中 |
 
