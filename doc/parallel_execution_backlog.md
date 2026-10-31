@@ -4,7 +4,9 @@
 
 以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与逐任务状态见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。P1/T1/E1/L1 经 PR #13–#16 集成，主任务组装提交 `95601b6`。V1 的 PR #17 记录 Metal 蓝色空背景、权威只读隔离通过和视觉失败；T1-VF 的 PR #18 翻转地形/水面/路线绕序；V2 的 PR #19 在独立 Metal + Worker 运行中确认森林、河泽、海岸与路线可辨，tick 0/1 的相机/历史观察不改 manifest/state/event，只有显式 O1 推进状态。技术视觉链路通过，真实写实资产/材质和实际 CPU/GPU 帧时间仍未验证，不称为写实世界达标。原始画面/日志在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`，Git 仅保留小型证据索引；当前迭代分支未合入 `feature/edge-world`，该工作区未提交改动未触碰。下一轮先确定授权资产与质量基准，再实现地表、水面、植物材质和实际帧时间采集。
 
-2026-11-01 输入修复：写实样区原先只有 Space/0/1，无键盘镜头导航。新增样区专属 PlayerController，WASD/QE/方向键/Shift 控制观察相机，保留 Space 显式 O1 和 0/1 历史观察。UE 5.8.3 Mac Editor 构建通过；交互手感与窗口焦点仍需实际运行确认。操作说明见 `doc/chaos_realism_01_assembly.md`。
+2026-11-01 输入修复：写实样区原先只有 Space/0/1，无键盘镜头导航。新增样区专属 PlayerController，WASD/QE/方向键/Shift 控制观察相机，保留 Space 显式 O1 和 0/1 历史观察。UE 5.8.3 Mac Editor 构建通过；操作说明见 `doc/chaos_realism_01_assembly.md`。
+
+2026-11-01 运行复核：用户所见旧进程仍从 `chaos-pdca-02` 启动 `ChaosObservationGameMode`，并未加载写实输入修复。已正常结束该旧 UE 进程，另从本统筹 worktree 启动 `ChaosRealismGameMode` 与独立 Worker。macOS 实际视口中点击聚焦后，长按 E、左方向键和 W 均使画面按预期改变；写实样区键盘导航已实测可用。当前新 UE 实例保留运行供用户操作。
 
 ## 第二轮 PDCA：混沌世界呈现可测性（A2 复盘完成）
 
