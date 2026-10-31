@@ -1,5 +1,9 @@
 # edgeWorld 并行开发统筹清单
 
+## 写实样区迭代 CHAOS-REALISM-01（规划/可行性执行中）
+
+用户要求执行写实引擎模块，并允许世界渲染产物存放于 DevSSD。以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与任务登记见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。目标先做森林—河泽—海岸及通往城市路线的 UE5.8.3 写实样区；大型资产、渲染和缓存放 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`。P1 先核实插件、资产来源和接口，再派 T1/E1/L1；V1 独立 Metal 验收。旧 Chaos 技术纵切与主工作区未提交改动保持原样。
+
 ## 第二轮 PDCA：混沌世界呈现可测性（A2 复盘完成）
 
 以第一轮集成提交 `7cb65d2` 为固定基线，统筹分支 `codex/chaos-pdca-02`。方案树见 `doc/chaos_universe_pdca_02_plan.md`，完整 PR、提交和工作树记录见 `doc/chaos_universe_pdca_02_register.md`。H1 控制入口 PR #9、V1 六类代理 PR #8、C3 独立失败报告 PR #10、V1R 遮挡修复 PR #11 和 C4 独立复测 PR #12 均经审查与 CI 集成；C4 合并提交 `363c2de`。所有本轮任务 worktree 已清理，统筹 worktree 保留；主工作区原有未提交内容与旧 Seed→Tree PIE 工作树未触碰，迭代分支尚未合并到 `feature/edge-world`。
