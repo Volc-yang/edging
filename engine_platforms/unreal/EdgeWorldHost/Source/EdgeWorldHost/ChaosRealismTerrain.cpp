@@ -9,6 +9,9 @@
 #include "Components/DirectionalLightComponent.h"
 #include "EngineUtils.h"
 #include "Math/RotationMatrix.h"
+#include "Misc/CommandLine.h"
+#include "TimerManager.h"
+#include "UnrealClient.h"
 
 namespace
 {
@@ -60,7 +63,8 @@ namespace
 			Colors.Append({FLinearColor::White, FLinearColor::White, FLinearColor::White, FLinearColor::White});
 			Tangents.Append({FProcMeshTangent(1, 0, 0), FProcMeshTangent(1, 0, 0),
 				FProcMeshTangent(1, 0, 0), FProcMeshTangent(1, 0, 0)});
-			Triangles.Append({Index, Index + 1, Index + 2, Index, Index + 2, Index + 3});
+			// ProceduralMeshComponent treats this winding as the visible top face in UE.
+			Triangles.Append({Index, Index + 2, Index + 1, Index, Index + 3, Index + 2});
 		}
 
 		void Submit(UProceduralMeshComponent* Mesh, int32 SectionIndex, const FLinearColor& Color)
@@ -263,4 +267,17 @@ void AChaosRealismTerrainPreviewGameMode::StartPlay()
 		if (APlayerController* Controller = World->GetFirstPlayerController()) Controller->SetViewTarget(Camera);
 	}
 	UE_LOG(LogTemp, Display, TEXT("Chaos realism terrain preview ready: world=%s camera=(50000,8000,23000)"), *World->GetName());
+	FString BeforeScreenshot;
+	FString ScreenshotArgument;
+	if (FString(FCommandLine::Get()).Split(TEXT("-RealismScreenshot="), &BeforeScreenshot, &ScreenshotArgument))
+	{
+		FString ScreenshotPath;
+		if (!ScreenshotArgument.Split(TEXT(" "), &ScreenshotPath, nullptr)) ScreenshotPath = ScreenshotArgument;
+		FTimerHandle ScreenshotTimer;
+		World->GetTimerManager().SetTimer(ScreenshotTimer, [ScreenshotPath]()
+		{
+			FScreenshotRequest::RequestScreenshot(ScreenshotPath, false, false);
+			UE_LOG(LogTemp, Display, TEXT("Chaos realism screenshot requested: %s"), *ScreenshotPath);
+		}, 2.0f, false);
+	}
 }
