@@ -1,5 +1,9 @@
 # edgeWorld 并行开发统筹清单
 
+## AI 4D 数字宇宙总计划（PDCA 规划与并行派工中）
+
+用户明确本轮要用 PDCA **规划和控制 4D 世界游戏的开发过程**，不由框架提炼游戏玩法规则。`doc/ai_4d_universe_pdca_master_plan.md` v0.2 以总节点 G、递归任务卡、G0–G5/GQ 开发 DAG 定义 Plan/Do/Check/Act、独立质量门、失败局部返工及上下文提交；任务状态见 `doc/ai_4d_universe_pdca_register.md`。统筹分支 `codex/universe-pdca-master` 从 `abc990a` 建立，不触碰主工作区脏改动。F0 框架与 F1 证据门已派只读提案，F2 编排依赖审查后启动；G0/G1 产品技术任务尚未派发。曾创建的两个新对话因应用默认模型不受当前账号支持而立即失败，未做任何开发；暂用当前会话 subagents 继续。旧 Google 对比原文尚未找到，不据此制定开发流程。
+
 ## 写实样区迭代 CHAOS-REALISM-01（技术纵切完成；写实美术与性能门开放）
 
 以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与逐任务状态见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。P1/T1/E1/L1 经 PR #13–#16 集成，主任务组装提交 `95601b6`。V1 的 PR #17 记录 Metal 蓝色空背景、权威只读隔离通过和视觉失败；T1-VF 的 PR #18 翻转地形/水面/路线绕序；V2 的 PR #19 在独立 Metal + Worker 运行中确认森林、河泽、海岸与路线可辨，tick 0/1 的相机/历史观察不改 manifest/state/event，只有显式 O1 推进状态。技术视觉链路通过，真实写实资产/材质和实际 CPU/GPU 帧时间仍未验证，不称为写实世界达标。原始画面/日志在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`，Git 仅保留小型证据索引；当前迭代分支未合入 `feature/edge-world`，该工作区未提交改动未触碰。下一轮先确定授权资产与质量基准，再实现地表、水面、植物材质和实际帧时间采集。
