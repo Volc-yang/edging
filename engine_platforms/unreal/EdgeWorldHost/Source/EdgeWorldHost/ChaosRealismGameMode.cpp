@@ -13,7 +13,43 @@
 #include "Engine/SkyLight.h"
 #include "EngineUtils.h"
 #include "GameFramework/PlayerController.h"
+#include "InputCoreTypes.h"
 #include "Math/RotationMatrix.h"
+
+AChaosRealismGameMode::AChaosRealismGameMode()
+{
+	PlayerControllerClass = AChaosRealismPlayerController::StaticClass();
+}
+
+void AChaosRealismPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	ACameraActor* Camera = Cast<ACameraActor>(GetViewTarget());
+	if (!IsLocalController() || !Camera || DeltaTime <= 0.0f) return;
+
+	const auto Axis = [this](FKey Positive, FKey Negative)
+	{
+		return (IsInputKeyDown(Positive) ? 1.0f : 0.0f) - (IsInputKeyDown(Negative) ? 1.0f : 0.0f);
+	};
+	const float Forward = Axis(EKeys::W, EKeys::S);
+	const float Right = Axis(EKeys::D, EKeys::A);
+	const float Up = Axis(EKeys::E, EKeys::Q);
+	const float Yaw = Axis(EKeys::Right, EKeys::Left);
+	const float Pitch = Axis(EKeys::Up, EKeys::Down);
+	if (FMath::IsNearlyZero(Forward) && FMath::IsNearlyZero(Right) && FMath::IsNearlyZero(Up)
+		&& FMath::IsNearlyZero(Yaw) && FMath::IsNearlyZero(Pitch)) return;
+
+	FRotator Rotation = Camera->GetActorRotation();
+	Rotation.Yaw += Yaw * 65.0f * DeltaTime;
+	Rotation.Pitch = FMath::ClampAngle(Rotation.Pitch + Pitch * 65.0f * DeltaTime, -85.0f, 85.0f);
+	Camera->SetActorRotation(Rotation);
+
+	const FVector HorizontalForward = FRotationMatrix(FRotator(0.0f, Rotation.Yaw, 0.0f)).GetUnitAxis(EAxis::X);
+	const FVector HorizontalRight = FRotationMatrix(FRotator(0.0f, Rotation.Yaw, 0.0f)).GetUnitAxis(EAxis::Y);
+	const FVector Direction = (HorizontalForward * Forward + HorizontalRight * Right + FVector::UpVector * Up).GetClampedToMaxSize(1.0f);
+	const float SpeedCmPerSecond = IsInputKeyDown(EKeys::LeftShift) || IsInputKeyDown(EKeys::RightShift) ? 12000.0f : 3500.0f;
+	Camera->AddActorWorldOffset(Direction * SpeedCmPerSecond * DeltaTime);
+}
 
 void AChaosRealismGameMode::StartPlay()
 {

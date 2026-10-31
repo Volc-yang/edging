@@ -4,6 +4,8 @@
 
 以 `6697512` 为基线，统筹分支 `codex/chaos-realism-01`；方案树与逐任务状态见 `doc/chaos_realism_01_plan.md`、`doc/chaos_realism_01_register.md`。P1/T1/E1/L1 经 PR #13–#16 集成，主任务组装提交 `95601b6`。V1 的 PR #17 记录 Metal 蓝色空背景、权威只读隔离通过和视觉失败；T1-VF 的 PR #18 翻转地形/水面/路线绕序；V2 的 PR #19 在独立 Metal + Worker 运行中确认森林、河泽、海岸与路线可辨，tick 0/1 的相机/历史观察不改 manifest/state/event，只有显式 O1 推进状态。技术视觉链路通过，真实写实资产/材质和实际 CPU/GPU 帧时间仍未验证，不称为写实世界达标。原始画面/日志在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/Realism01/`，Git 仅保留小型证据索引；当前迭代分支未合入 `feature/edge-world`，该工作区未提交改动未触碰。下一轮先确定授权资产与质量基准，再实现地表、水面、植物材质和实际帧时间采集。
 
+2026-11-01 输入修复：写实样区原先只有 Space/0/1，无键盘镜头导航。新增样区专属 PlayerController，WASD/QE/方向键/Shift 控制观察相机，保留 Space 显式 O1 和 0/1 历史观察。UE 5.8.3 Mac Editor 构建通过；交互手感与窗口焦点仍需实际运行确认。操作说明见 `doc/chaos_realism_01_assembly.md`。
+
 ## 第二轮 PDCA：混沌世界呈现可测性（A2 复盘完成）
 
 以第一轮集成提交 `7cb65d2` 为固定基线，统筹分支 `codex/chaos-pdca-02`。方案树见 `doc/chaos_universe_pdca_02_plan.md`，完整 PR、提交和工作树记录见 `doc/chaos_universe_pdca_02_register.md`。H1 控制入口 PR #9、V1 六类代理 PR #8、C3 独立失败报告 PR #10、V1R 遮挡修复 PR #11 和 C4 独立复测 PR #12 均经审查与 CI 集成；C4 合并提交 `363c2de`。所有本轮任务 worktree 已清理，统筹 worktree 保留；主工作区原有未提交内容与旧 Seed→Tree PIE 工作树未触碰，迭代分支尚未合并到 `feature/edge-world`。
