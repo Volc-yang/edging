@@ -2,7 +2,7 @@
 
 ## AI 4D 数字宇宙总计划（PDCA 规划与并行派工中）
 
-用户明确本轮用 PDCA **规划和控制 4D 世界游戏的开发过程**，不由框架提炼游戏玩法规则。`doc/ai_4d_universe_pdca_master_plan.md` v0.2 以总节点 G、递归任务卡、G0–G5/GQ 开发 DAG 定义 Plan/Do/Check/Act；F0 递归框架 PR #22 与 F1 证据门 PR #23 已经独立审查并集成，F2 编排见 `doc/pdca_f2_orchestration_plan.md`。逐任务、分支、旧对话状态见 `doc/ai_4d_universe_pdca_register.md`。统筹分支 `codex/universe-pdca-master` 从 `abc990a` 建立，不触碰主工作区脏改动。旧新对话初次报默认模型不支持后异步执行了已撤回的产品任务卡；旧 PR #20/#21 已关闭，正确 F0/F1 由当前会话 subagents 在干净独立 PR 交付。下一步冻结 F2，按拓扑发布 G0 版本目标/基线与质量门，不进入玩法规则设计。旧 Google 对比原文尚未找到，不据此制定开发流程。
+用户明确本轮用 PDCA **规划和控制 4D 世界游戏的开发过程**，不由框架提炼游戏玩法规则。`doc/ai_4d_universe_pdca_master_plan.md` v0.2 以总节点 G、递归任务卡、G0–G5/GQ 开发 DAG 定义 Plan/Do/Check/Act；F0 递归框架 PR #22 与 F1 证据门 PR #23 已经独立审查并集成，F2 编排见 `doc/pdca_f2_orchestration_plan.md`。逐任务、分支、旧对话状态见 `doc/ai_4d_universe_pdca_register.md`。统筹分支 `codex/universe-pdca-master` 从 `abc990a` 建立，不触碰主工作区脏改动。旧新对话初次报默认模型不支持后异步执行了已撤回的产品任务卡；旧 PR #20/#21 已关闭，正确 F0/F1 由当前会话 subagents 在干净独立 PR 交付。下一步 G0 版本目标/基线与质量门已发布到新对话，但该对话初次启动同样报默认模型不支持，尚未执行；在模型配置可运行前不宣称已开工。旧 Google 对比原文尚未找到，不据此制定开发流程。
 
 ## 写实样区迭代 CHAOS-REALISM-01（技术纵切完成；写实美术与性能门开放）
 
