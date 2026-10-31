@@ -4,7 +4,7 @@
 
 | ID | Owner / 状态 | worktree / 分支 / 基线 | 交付 | PR / 测试 / 清理 |
 | --- | --- | --- | --- | --- |
-| P1 | 待派 | 待建 | 插件、资产来源与接口可行性 | 待执行 |
+| P1 | `/root/chaos_realism_p1`；执行中 | `.worktrees/chaos-realism-p1` / `codex/chaos-realism-p1` / `72b25d8` | 插件、资产来源与接口可行性 | 待反馈，保留 worktree |
 | T1 | 待 P1 | 待建 | 地形与水体样区 | 待执行 |
 | E1 | 待 T1 | 待建 | 生态呈现 | 待执行 |
 | L1 | 待 P1 | 待建 | 材质与天空 | 待执行 |
