@@ -1,0 +1,9 @@
+# Chaos origin observation (D4)
+
+Select `?game=/Script/EdgeWorldHost.ChaosObservationGameMode` with `-ChaosWorldData=<absolute path to models/chaos/initial_world_seed7.json>` and `-ChaosInitialHash=75f6c3d719e9e0afefb64e582750cf9fcc70e932fe1192886abdc99e78d91da3`. Set `EDGEWORLD_CHAOS_PYTHON` to the Python executable and `EDGEWORLD_CHAOS_WORKER` to the absolute `engine/chaos/origin_worker.py` path. The mode uses its own `Saved/EdgeWorldChaos/chaos-demo` state directory; it never uses tree or Genesis state.
+
+At startup, D3 builds the static scene from `ChaosWorldData`. D4 independently parses and hashes that file using the P0 canonical JSON subset, checks the fixed seed 7 digest, and starts the origin worker with the same path. It compares the worker's status and observation `initial_manifest_hash` with this digest before changing the world spirit boundary. The canonical hashing implementation currently runs on macOS; other platforms fail closed until a portable SHA-256 implementation is added. The worker also checks the InitialWorld against an existing state directory on restart. Use a read-only input file for evidence collection: D3 and D4 read it separately, so a concurrent file change between those reads remains a race. For the committed seed 7 fixture, the raw file SHA-256 is `0fa198a9cec8a3cc9b4c5aabba02367e68e05b5e34b144df75882123c8bde629`; record and compare it alongside each C2 run.
+
+`Space` explicitly issues O1 once from CHAOS. `0` observes committed tick 0; `1` observes committed tick 1, if it exists. A query must match the exact tick/watermark and frozen rules/projection versions. The GameMode and world actor do not advance from UE Tick or rendering. On restart at ONE, the mode initially shows historical tick 0; press `1` to show ONE again.
+
+This is a BasicShapes proxy integration. An Editor build and NullRHI request/hash fixture do not prove real RHI visibility or camera/frame-rate/pause isolation; those remain C2 gates.

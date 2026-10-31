@@ -1,0 +1,7 @@
+# Unreal build/editor products
+**/Binaries/
+**/Intermediate/
+**/DerivedDataCache/
+**/Saved/
+**/.vs/
+*.sln
