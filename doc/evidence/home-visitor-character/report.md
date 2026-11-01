@@ -1,6 +1,6 @@
 # H6B visitor character implementation record
 
-Status: partial; implementation and focused automation complete, interactive Metal checks waiting for coordinator's Mac-unlock notice. Draft PR https://github.com/Volc-yang/edging/pull/66 targets `codex/plan-consolidation`; do not merge yet. Parent V-HOME/H6B; approved implementation card `doc/evidence/home-visitor-implementation-plan.md`. Base `489b97c`; branch `codex/home-visitor-character`; worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/home-visitor-character`.
+Status: partial; implementation and focused automation complete. Mac unlocked and real-input/Metal checks have progressed; see [live-report.md](live-report.md) for current status. Physical mouse-only confirmation and final recovery close remain pending. Earlier locked-run notes below are preserved history, not the current live process state. Draft PR https://github.com/Volc-yang/edging/pull/66 targets `codex/plan-consolidation`; do not merge yet. Parent V-HOME/H6B; approved implementation card `doc/evidence/home-visitor-implementation-plan.md`. Base `489b97c`; branch `codex/home-visitor-character`; worktree `/Users/yangacan/edgeWorld/edge-world/.worktrees/home-visitor-character`.
 
 ## Execution and ownership
 
