@@ -14,17 +14,36 @@
 #include "Engine/SkyLight.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "EngineUtils.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SkyLightComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "HAL/PlatformMisc.h"
+#include "HAL/IConsoleManager.h"
 #include "InputCoreTypes.h"
 #include "Misc/Paths.h"
 #include "Serialization/JsonSerializer.h"
 
 namespace
 {
+	FAutoConsoleCommandWithWorld DumpCausalLightingEvidence(
+		TEXT("edgeworld.DumpLightingEvidence"),
+		TEXT("Log actual world lighting counts and runtime light mobility, then dump unbuilt interactions."),
+		FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World)
+		{
+			if (!World || !IsInGameThread()) return;
+			UE_LOG(LogTemp, Display, TEXT("Lighting evidence: world=%s NumLightingUnbuiltObjects=%u"),
+				*World->GetPathName(), World->NumLightingUnbuiltObjects);
+			for (TActorIterator<ADirectionalLight> It(World); It; ++It)
+				UE_LOG(LogTemp, Display, TEXT("Lighting evidence: directional=%s mobility=%d"),
+					*It->GetPathName(), static_cast<int32>(It->GetLightComponent()->GetMobility()));
+			for (TActorIterator<ASkyLight> It(World); It; ++It)
+				UE_LOG(LogTemp, Display, TEXT("Lighting evidence: sky=%s mobility=%d"),
+					*It->GetPathName(), static_cast<int32>(It->GetLightComponent()->GetMobility()));
+			if (GEngine) GEngine->Exec(World, TEXT("DumpUnbuiltLightInteractions"));
+		}));
+
 	bool ExactInt(const TSharedPtr<FJsonObject>& Object, const TCHAR* Key, int64& Value)
 	{
 		double N = 0;
@@ -110,7 +129,10 @@ void AEdgeWorldCausalGameMode::StartPlay()
 	if (!World) return;
 	CausalActor = World->SpawnActor<AEdgeWorldCausalActor>();
 	if (ADirectionalLight* Light = World->SpawnActor<ADirectionalLight>(FVector(0, 0, 500), FRotator(-50, -35, 0)))
+	{
+		Light->GetLightComponent()->SetMobility(EComponentMobility::Movable);
 		Light->GetLightComponent()->SetIntensity(40.0f);
+	}
 	if (ASkyLight* Light = World->SpawnActor<ASkyLight>())
 	{
 		Light->GetLightComponent()->SetMobility(EComponentMobility::Movable);
