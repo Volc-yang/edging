@@ -323,6 +323,9 @@ Lease's opaque internal ownership. Exceptions are not silently retried.
   never extracted from a request/archive. `ValidatedClosure` has `head:str`,
   `world_id:str`, `records:Mapping[digest,Record]`, `retained:tuple[str,...]`
   (head first), `commands:Mapping[tuple[principal,command_id],result_digest]`.
+  commands is constructed **only** from indexes/results reached by manifests on
+  that pinned retained chain; orphan command/index/result objects, even fully
+  valid and complete, never enter the committed idempotency success table.
   Class construction is internal to validation; Store must not accept an
   arbitrary hand-constructed object as proof without rechecking contents.
 - `select(closure:ValidatedClosure, *, tick:int, revision:int,
@@ -377,7 +380,8 @@ Lease's opaque internal ownership. Exceptions are not silently retried.
   no new I/O, returns defensive pinned snapshot with `.storage_state:str`,
   `.closure:ValidatedClosure`. Unconfirmed snapshot cannot authorize writes.
 - `lookup_result(principal:str, command_id:str, fingerprint:str) -> Record|None`:
-  searches snapshot's persistent command index; mismatch COMMAND_CONFLICT;
+  searches only snapshot's pinned retained-manifest command index, never
+  unreferenced objects/orphan results; mismatch COMMAND_CONFLICT;
   unknown None. This does not authorize access; I4 must authenticate first.
 - `commit(bundle:CommitBundle) -> CommitReceipt`: ready only, valid lease,
   `bundle.expected_head:str`, `records:tuple[Record,...]`, `head:str`,
