@@ -206,11 +206,12 @@ def cleanup_check(output):
     check(outcome['reaped'] and outcome['exit_code'] == 0 and isinstance(error,BrokenPipeError),'stdin close skipped reap')
     check('genesis' not in sys.modules,'cleanup check imported solver')
     argv=[sys.executable,'-c',"import os,time\nwhile True: os.write(1,b'x'*16384);time.sleep(0.01)"]
+    baseline=aggregate_bytes(output)
     with (output/'watchdog-child.stdout').open('xb') as stream:
         child=subprocess.Popen(argv,stdout=stream,stderr=subprocess.DEVNULL,start_new_session=True)
-        outcome=supervise_owned(child,output,soft_bytes=128<<10,hard_bytes=512<<10,seconds=5)
+        outcome=supervise_owned(child,output,soft_bytes=baseline+(64<<10),hard_bytes=baseline+(256<<10),seconds=5)
     write(output/'watchdog-check.json',dict(outcome,argv=argv))
-    check(outcome['reaped'] and outcome['trigger'] == 'soft-bytes' and outcome['peak_aggregate_bytes'] < 512<<10,'aggregate watchdog failed')
+    check(outcome['reaped'] and outcome['trigger'] == 'soft-bytes' and outcome['peak_aggregate_bytes'] < baseline+(256<<10) and outcome['polls'] >= 2,'aggregate watchdog failed')
     write(output/'cleanup-check.json',dict(ok=True,solver_imported=False))
 
 
