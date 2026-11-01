@@ -22,9 +22,9 @@
 | I7 物理fixture/API契约 | `/root/u2_physics_design`；`.worktrees/i7-universe-physics-contract` / `codex/i7-universe-physics-contract` / `a9506eb` | complete / PR #80 source `e005c2c`，merge `fe2176a` / G-P0静态pass；G-C0.2未接受 / 干净worktree已清理、分支保留 |
 | I8 真实Genesis新适配 | u2；原`.worktrees/i8-universe-genesis` / `codex/i8-universe-genesis` / `13899a2` | complete / PR95 finale4f12f4 / merge51b95de / 有限G-P1 pass、finalCI/root review；批准clean worktree清理 |
 | I9 UE新域严格解析 | u9；原`.worktrees/i9-universe-ue-parser` / `codex/i9-universe-ue-parser` / `3e02376` | complete / PR #86 source `0a905cf`，merge `e47065a` / 最终Build与StrictV02 NullRHI真实exit0、finalCI/root review / 生成物归档后干净worktree已清理 |
-| I10 单root worker/初态 | u9；I10A `.worktrees/i10-universe-worker` / `codex/i10-universe-worker` / `761a967` | partial / I10A PR96 final3b07fde / mergedcfd3bc CPU接受；I10B真实CLI/propose/restart下一卡 |
-| I11 Host/启动接线 | 等I9/I10/G-B0/R-B | queued / 未建 / G-B1 planned / 未建worktree |
-| I12 独立组合验收 | 非相关实现owner，待I10/I11/G-P1/G-B1/R-12 | queued / 未建 / G-B2 planned / 未建worktree |
+| I10 单root worker/初态 | u9；I10A/ I10B独立branch/worktree | complete / PR96 mergedcfd3bc CPU，PR98 mergeb1c0371真实CLI/Genesis/propose/restart；root raw/CI接受 |
+| I11 Host/启动接线 | u7；I11A原`.worktrees/i11-universe-host` / `codex/i11-universe-host` | partial / PR97 merge96466b5，全部构造/NullRHI及finalCI接受；真实LiveReadOnly入口/初始相机归I11B |
+| I12 独立组合验收 | fresh i12；`.worktrees/i12-universe-acceptance` / `codex/i12-universe-acceptance` / `0a7a0fb` | I12A CPU准备complete/d6e30f7，未真实run；G-B2 planned，等I11B/R12与准确合并树 |
 
 | I0E 共享契约局部重开 | `/root/u7_projection_design`；`.worktrees/i0e-universe-contract` / `codex/i0e-universe-contract` / `d2b7d29` | complete / PR #84 source `f13a73d`，merge `9ad01c3` / G-C0.2格式门pass（S_typed/G-Q不通过）/ 干净worktree已清理 |
 
@@ -118,3 +118,9 @@ root批准最小修复：bootstrap通过同参数public Scene.build零步后导�
 I8 PR95与I10A PR96已root独立review/finalCI/merge，见[I8/I10A统筹复核](design/universe-i8-i10a-coordination-review.md)。G-P1仅有限物理probe pass，真实world propose/单root CLI/UE组合尚未通过。前文失败/计划按原版本保留，当前有效B/O为post-build source9270349对应289d4f52/7165e3f0（实际world i8-physical-probe），旧pre-build pins不得用于新运行。
 
 I10B下一任务从本精确合并树新建worktree，先固定采证driver/owner私有输入，再正式GPU卡验证真实CLI初始化/retain/weak/strong/幂等/历史/真实进程重访；新world wrapper要实际重新audit/零步测O、owner provision/pins，不把旧world记录直接拼接。I11R在原13路径内补被动trace与门控Exec采证接口/地理proxy，CPU先行，UE窗口未授。I12 fresh owner `/root/i12_universe_acceptance`只读计划已接受，等G-P1/I10B/I11B/R12；其新增driver路径已批准但未建worktree/未运行。
+
+## 当前接受：I10B / I11A，下一I11B / I12
+
+[I10B/I11A统筹复核](design/universe-i10b-i11a-coordination-review.md)为最新裁决。PR98 source/final15e0dc9/mergeb1c0371，真实CLI/propose/两正常worker恢复通过；PR97 final13498d7/merge96466b5，所有CPU/build/Protocol/Strict/TransportRaw通过，仅构造接受。原相对路径/compile/采证排序失败全部保留。I11B真实NullRHI existing入口与首次camera aim修正尚未执行；I12G-B2仍未执行。
+
+I12A工具source a2b9fa2/final d6e30f7，纯stdlib verifier/被动driver/actionplan已交；首4/6、唯一2case targeted及新guard小卡2case通过，失败/源码区别保留。run仍硬拒绝，实际R12才授权dispatch，不把synthetic工具检查称组合接受。

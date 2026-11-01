@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（I8真实物理；I10A/I11A并行构造）
+## 当前入口：I 实现轮执行中（I10真实worker接受；I11B入口与I12后置）
 
 总目标仍为持久AI 4D数字宇宙；Seed→Tree是抽象初态的因果发展。用户已批准I0–I12树并要求分配实现。集成branch `codex/plan-consolidation` / `.worktrees/plan-consolidation`，本地主工作区用户改动不碰。Goal旧“继续执行计划”blocked且API无resume，未冒称active。
 
@@ -21,9 +21,9 @@
 **当前方案与owner：**[执行依赖细化](design/universe-runtime-execution-refinement.md)已由root接受，允许固定接口的CPU构造并行，真实门不变。
 
 - I8已接受PR95 / merge51b95de：source9270349的post-build B/O与两臂/恢复/真实exit及root292raw+逐步FractionD核对通过，G-P1有限pass；首默认解析失败及全部原件保留。[I8/I10A复核](design/universe-i8-i10a-coordination-review.md)。
-- I10A已接受PR96 / mergedcfd3bc：15CPU tests/finalCI/root完整source/raw审查；同进程恢复限制如实保留。I10B下一卡验证真实CLI/propose/进程重访，尚未通过。
-- I11A（u7，`.worktrees/i11-universe-host`）：新Host/严格raw transport/control parser/launcher与mock检查，独占13源码路径+I11证据；CPU≤120s/raw16MiB，UE构建窗口待root资源卡。legacy默认不改。I11B真实入口等I10B。
-- I12：非相关实现owner，等G-P1/I10B/I11B与R-12，执行真实UE↔worker↔Genesis、逐动作只读map、历史/重启/原图/实际退出。未派发，未通过。
+- I10完整接受：I10A PR96 / mergedcfd3bc；I10B PR98 / mergeb1c0371，真实初始化/retain/weak/strong/历史/幂等与worker双PID正常恢复通过，D−7/−48；root131+445raw/81records5roots3raw/32readonlypairs及finalCI复核，[最新审查](design/universe-i10b-i11a-coordination-review.md)。
+- I11A PR97 / merge96466b5已接受CPU/build/Protocol/Strict/TransportRaw/实际synthetic exit evidence，finalCI/root审查；真实I11B LiveReadOnly入口及初始相机LookAt修正下一卡。legacy默认不改。
+- I12：fresh独立owner已完成I12A stdlib verifier/被动driver准备，实际run仍拒绝；等I11B/G-B1/R12与准确合并树后执行两UE会话/动作map/Metal原图/历史/恢复/真实退出，G-B2未通过。
 
 owner-config/public-pins接口与typed36的明确分类、原件/资源总账见[I登记](universe_implementation_register.md)。S_records30、S_typed36、H≤64及资产A独立计量；旧U8初态≤32和G-Q不称通过。没有新域真实组合或写实产品门通过结论。默认网站/DNS与api.edging.cloud路由不变。
 
