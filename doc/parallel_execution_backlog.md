@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（I0–I5/I7接受；I6独立故障验收与I0E并行）
+## 当前入口：I 实现轮执行中（I0–I7/I0E接受；v0.2核心扩展与UE解析并行）
 
 [架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
@@ -19,7 +19,9 @@ U9已由未参与U1–U8交付的新reviewer完成：基线 `4bb7452`，source `
 
 I1 PR #78/source `ae4fd16`/merge `efba6fa`、I2 PR #79/source `232e0a7`/merge `d2b7d29`已接受；父级集成39tests通过、输入hash不变。I2首轮漏磁盘归档已披露，唯一attempt2补证24tests通过，非首轮原件。I7 PR #80/source `e005c2c`/merge `fe2176a`静态门G-P0通过；真实物理未运行。三卡干净worktree已清理，分支/证据保留，[复核](design/universe-i2-i7-coordination-review.md)。
 
-I3已由PR #81/source `9a27207`/merge `69daec3`接受，22tests/CI、root静态review与375/375原始字节摘要一致，[复核](design/universe-i3-coordination-review.md)；干净worktree已清理。I5 PR #82/source `49f7b7a`/merge `09ed3bb`接受，16tests/CI与488/488原始字节摘要一致，[复核](design/universe-i5-coordination-review.md)，干净worktree已清理；I4 PR #83/source `5fcd8d3`/merge `607e550`接受，首loader失败保留、唯一attempt2共78tests通过，[复核](design/universe-i4-coordination-review.md)；干净worktree清理。当前I6由fresh非I1–I5作者`i6_fault_acceptance`实施独立真实进程故障矩阵，G-S1尚未接受。I0E由`u7_projection_design`合成新v0.2共享契约，u2准备非作者复算，准确基线/路径/正式B-C额度/Goal限制见[I实现登记](universe_implementation_register.md)。I7揭示真实checkpoint/raw blob、六区typed初态、有界Observe proof、provider/build/default身份与同tick异revision接口差距；按原U9允许局部重开I0，G-C0.2和受影响局部实现/故障复验接受前不放行I8/I9/I10接线。v0.1内核I6继续，不把fake当物理。不重做U规划；总计划/V-HOME、世界规律/灵域时刻/载具权威性/资产及产品质量门仍开放。
+I3已由PR #81/source `9a27207`/merge `69daec3`接受，22tests/CI、root静态review与375/375原始字节摘要一致，[复核](design/universe-i3-coordination-review.md)；干净worktree已清理。I5 PR #82/source `49f7b7a`/merge `09ed3bb`接受，16tests/CI与488/488原始字节摘要一致，[复核](design/universe-i5-coordination-review.md)，干净worktree已清理；I4 PR #83/source `5fcd8d3`/merge `607e550`接受，首loader失败保留、唯一attempt2共78tests通过，[复核](design/universe-i4-coordination-review.md)；干净worktree清理。I6 PR #85/source `d8636d6`/merge `3e02376`已接受：本地20cases/85child/12真SIGKILL全回收，首harness失败保留，final CI与root旧output拒绝check通过，G-S1有限pass。I0E PR #84/source `f13a73d`/merge `9ad01c3`独立67golden/6MAC/4root/5proof复算及最终CI通过，G-C0.2格式/API门接受；[复核与后继树](design/universe-i0e-i6-coordination-review.md)。干净worktree已清理、原件/分支保留。
+
+当前E1(u7) codec/records/trust、E2(u2) ownership扩展、I9(u9) UE严格parser从同一`3e02376`并行；E2静态`aaef012`等待E1接受后实际Check。I9获限定R-B 15min/256MiB build+NullRHI准入，尚未build；无真实GPU/PIE许可。E3 Store→E4/E5 commands/recovery→非作者E6扩展故障接受后才接I8真实Genesis/I10 worker/Host/I12组合。精确路径/资源/Goal工具限制见[I登记](universe_implementation_register.md)。S_records30不冒称U8 S_typed/G-Q，实际asset依赖/defaults/build与完整typed计量仍须真实冻结；目前没有新域真实物理/UE组合证据。总计划/V-HOME和产品质量门开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 
