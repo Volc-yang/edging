@@ -1,21 +1,85 @@
 #include "EdgeWorldUniverseObservation.h"
+#include "Misc/Crc.h"
 #if PLATFORM_MAC
 #include <CommonCrypto/CommonDigest.h>
 #endif
 
 namespace EdgeUniverse
 {
+// FString's default equality/hash fold case, and C-string comparisons stop at NUL.
+// Protocol strings and decoded JSON keys instead compare every counted UTF16 unit.
+static bool SameText(const FString& A, const FString& B)
+{
+ return A.Len() == B.Len() && (A.IsEmpty() || FMemory::Memcmp(*A, *B, SIZE_T(A.Len()) * sizeof(TCHAR)) == 0);
+}
+static uint32 TextHash(const FString& S)
+{
+ return FCrc::MemCrc32(*S, S.Len() * int32(sizeof(TCHAR)));
+}
+template<typename T> struct FTextMapKeys : TDefaultMapKeyFuncs<FString, T, false>
+{
+ static bool Matches(const FString& A, const FString& B) { return SameText(A, B); }
+ static uint32 GetKeyHash(const FString& Key) { return TextHash(Key); }
+};
+template<typename T> using TextMap = TMap<FString, T, FDefaultSetAllocator, FTextMapKeys<T>>;
+struct FTextSetKeys : DefaultKeyFuncs<FString, false>
+{
+ static bool Matches(const FString& A, const FString& B) { return SameText(A, B); }
+ static uint32 GetKeyHash(const FString& Key) { return TextHash(Key); }
+};
+using TextSet = TSet<FString, FTextSetKeys>;
+static bool HasText(const TArray<FString>& Values, const FString& Wanted)
+{
+ return Values.ContainsByPredicate([&](const FString& S) { return SameText(S, Wanted); });
+}
+static void AppendUnit(FString& S, TCHAR C)
+{
+ // FString::AppendChar silently drops zero; decoded JSON must retain it.
+ int32 N = S.Len(); auto& Data = S.GetCharArray(); Data.SetNumUninitialized(N + 2);
+ Data[N] = C; Data[N + 1] = 0;
+}
+static FString TextSlice(const FString& S, int32 Start, int32 Count)
+{
+ FString Result; Result.GetCharArray().Append(*S + Start, Count); Result.GetCharArray().Add(0); return Result;
+}
+static TArray<FString> SplitUnits(const FString& S, TCHAR Delimiter, bool CullEmpty = true)
+{
+ TArray<FString> Result; int32 Start = 0;
+ for (int32 I = 0; I <= S.Len(); ++I)
+ {
+  if (I == S.Len() || S[I] == Delimiter)
+  {
+   if (!CullEmpty || I > Start) Result.Add(TextSlice(S, Start, I - Start));
+   Start = I + 1;
+  }
+ }
+ return Result;
+}
+static bool StartsText(const FString& S, const FString& Prefix)
+{
+ return S.Len() >= Prefix.Len() && SameText(TextSlice(S, 0, Prefix.Len()), Prefix);
+}
+static bool EndsText(const FString& S, const FString& Suffix)
+{
+ return S.Len() >= Suffix.Len() && SameText(TextSlice(S, S.Len() - Suffix.Len(), Suffix.Len()), Suffix);
+}
+static bool HasSubText(const FString& S, const FString& Needle)
+{
+ for (int32 I = 0; I + Needle.Len() <= S.Len(); ++I)
+  if (SameText(TextSlice(S, I, Needle.Len()), Needle)) return true;
+ return false;
+}
 constexpr int64 MaxInt = 9007199254740991LL;
 struct FValue;
 using V = TSharedPtr<FValue>;
 struct FValue
 {
  enum EType { Null, Bool, Int, String, Array, Object } Type = Null;
- bool B = false; int64 I = 0; FString S; TArray<V> A; TMap<FString,V> O;
+ bool B = false; int64 I = 0; FString S; TArray<V> A; TextMap<V> O;
 };
 static V Make(FValue::EType Type) { V X = MakeShared<FValue>(); X->Type = Type; return X; }
 static bool Is(const V& X, FValue::EType T) { return X && X->Type == T; }
-static V Get(const V& X, const TCHAR* Key) { if (!Is(X,FValue::Object)) return {}; const V* P=X->O.Find(Key); return P ? *P : V(); }
+static V Get(const V& X, const FString& Key) { if (!Is(X,FValue::Object)) return {}; const V* P=X->O.Find(Key); return P ? *P : V(); }
 static FString Str(const V& X) { return Is(X,FValue::String) ? X->S : FString(); }
 static int64 Num(const V& X) { return Is(X,FValue::Int) ? X->I : -MaxInt; }
 static V Body(const V& R) { return Get(R,TEXT("body")); }
@@ -25,8 +89,10 @@ static bool Eq(const V& A, const V& B);
 static int32 Hex(uint32 C) { return C>='0'&&C<='9'?C-'0':C>='a'&&C<='f'?C-'a'+10:C>='A'&&C<='F'?C-'A'+10:-1; }
 static bool LowerHex(const FString& S,int32 N) { if(S.Len()!=N)return false; for(TCHAR C:S)if(!(C>='0'&&C<='9')&&!(C>='a'&&C<='f'))return false; return true; }
 static bool Id(const FString& S) { if(S.IsEmpty()||S.Len()>64||S[0]<'a'||S[0]>'z')return false; for(TCHAR C:S)if(!(C>='a'&&C<='z')&&!(C>='0'&&C<='9')&&C!='.'&&C!='_'&&C!='-')return false; return true; }
-static void Scalar(FString& S,uint32 C) { if(C>0xffff){C-=0x10000;S.AppendChar(TCHAR(0xd800+(C>>10)));S.AppendChar(TCHAR(0xdc00+(C&1023)));}else S.AppendChar(TCHAR(C)); }
+static void Scalar(FString& S,uint32 C) { if(C>0xffff){C-=0x10000;AppendUnit(S,TCHAR(0xd800+(C>>10)));AppendUnit(S,TCHAR(0xdc00+(C&1023)));}else AppendUnit(S,TCHAR(C)); }
 static uint32 NextScalar(const FString& S,int32& I) { uint32 C=uint32(S[I++]); if(C>=0xd800&&C<=0xdbff&&I<S.Len())C=0x10000+((C-0xd800)<<10)+(uint32(S[I++])-0xdc00); return C; }
+static int32 ScalarCount(const FString& S) { int32 I = 0, N = 0; while (I < S.Len()) { NextScalar(S, I); ++N; } return N; }
+
 static bool OrdinalLess(const FString& A,const FString& B) {int32 I=0,J=0;while(I<A.Len()&&J<B.Len()){uint32 X=NextScalar(A,I),Y=NextScalar(B,J);if(X!=Y)return X<Y;}return I==A.Len()&&J<B.Len();}
 
 /** Byte parser: no UE JSON numeric coercion or replacement-character UTF-8 decoding. */
@@ -117,7 +183,7 @@ static FString Canon(const V& X)
  case FValue::Object:{TArray<FString> Keys;X->O.GetKeys(Keys);Keys.Sort(OrdinalLess);FString S=TEXT("{");for(int32 I=0;I<Keys.Num();++I){if(I)S+=TEXT(",");S+=Quote(Keys[I])+TEXT(":")+Canon(X->O[Keys[I]]);}return S+TEXT("}");}}
  return {};
 }
-static bool Eq(const V& A,const V& B){return A&&B&&Canon(A)==Canon(B);}
+static bool Eq(const V& A,const V& B){return A&&B&&SameText(Canon(A),Canon(B));}
 static FString Sha(const FString& Text,bool Record=false)
 {
  FTCHARToUTF8 Utf8(*Text);TArray<uint8> B;
@@ -169,7 +235,7 @@ static const ANSICHAR SchemaJson[] = R"schema({"archive_profile":"composite-rigi
 class FValidator
 {
 public:
- FString Error; V Schema; TMap<FString,V> Records; TSet<FString> Needed, Membership;
+ FString Error; V Schema; TextMap<V> Records; TextSet Needed, Membership;
  explicit FValidator(){FReader R(MakeArrayView(reinterpret_cast<const uint8*>(SchemaJson),int32(sizeof(SchemaJson)-1)));Schema=R.Parse(false);Error=R.Error;}
  bool Require(bool B,const TCHAR* E){if(!B&&Error.IsEmpty())Error=E;return B;}
  bool Exact(const V& X,const V& Shape){if(!Require(Is(X,FValue::Object)&&Is(Shape,FValue::Object),TEXT("SCHEMA")))return false;if(!Require(X->O.Num()==Shape->O.Num(),TEXT("SCHEMA")))return false;for(const auto& K:Shape->O)if(!Require(X->O.Contains(K.Key),TEXT("SCHEMA")))return false;return true;}
@@ -182,72 +248,72 @@ public:
  bool IntVec(const V& X,int32 N){if(!Require(Is(X,FValue::Array)&&X->A.Num()==N,TEXT("GEOGRAPHY")))return false;for(const V& C:X->A)if(!Require(Is(C,FValue::Int),TEXT("INTEGER")))return false;return true;}
  bool Field(const V& X,const FString& S)
  {
-  if(S==TEXT("id"))return Identity(X);if(S==TEXT("hash"))return Hash(X);if(S==TEXT("nullable_hash"))return Is(X,FValue::Null)||Hash(X);
-  if(S==TEXT("uint"))return Uint(X);if(S==TEXT("sint"))return Require(Is(X,FValue::Int),TEXT("INTEGER"));
-  if(S==TEXT("f64")){double D;return Require(F64(X,D),TEXT("F64"));}
-  if(S==TEXT("nullable_mm"))return Require(Is(X,FValue::Null)||(Is(X,FValue::Int)&&FMath::Abs(X->I)<=1000),TEXT("PHYSICS_INVALID"));
-  if(S==TEXT("delta")||S==TEXT("steps")||S==TEXT("blob_size"))return Uint(X)&&Require(S==TEXT("delta")?X->I<=1:S==TEXT("steps")?X->I<=256:X->I>0&&X->I<=8388608,TEXT("LIMIT"));
-  if(S==TEXT("nullable_case"))return Require(Is(X,FValue::Null)||Str(X)==TEXT("weak")||Str(X)==TEXT("strong"),TEXT("SCHEMA"));
-  if(S==TEXT("class"))return Require(Str(X)==TEXT("synthetic-contract-only")||Str(X)==TEXT("genesis-runtime"),TEXT("PROFILE"));
-  if(S==TEXT("media"))return Require(Str(X)==TEXT("application/x-edgeworld-static-vector")||Str(X)==TEXT("application/x-genesis-gstraj;version=1.4.3"),TEXT("PROFILE"));
-  if(S==TEXT("output"))return Require(Is(X,FValue::String)&&X->S.Len()<=1024,TEXT("SCHEMA"));
-  if(S==TEXT("json_object"))return Require(Is(X,FValue::Object),TEXT("SCHEMA"));
-  if(S==TEXT("i7_config"))return Require(Eq(X,Get(Schema,TEXT("physics_parameters"))),TEXT("PROFILE"));
-  if(S==TEXT("signs"))return Require(Canon(X)==TEXT("[1,-1,1]"),TEXT("SCHEMA"));
-  if(S==TEXT("vec3"))return Vec(X,3,TNumericLimits<double>::Max());
-  if(S==TEXT("extent"))return IntVec(X,4)&&Require(Num(X->A[0])<Num(X->A[2])&&Num(X->A[1])<Num(X->A[3]),TEXT("GEOGRAPHY"));
-  if(S==TEXT("polygon")||S==TEXT("polyline"))
+  if(SameText(S,TEXT("id")))return Identity(X);if(SameText(S,TEXT("hash")))return Hash(X);if(SameText(S,TEXT("nullable_hash")))return Is(X,FValue::Null)||Hash(X);
+  if(SameText(S,TEXT("uint")))return Uint(X);if(SameText(S,TEXT("sint")))return Require(Is(X,FValue::Int),TEXT("INTEGER"));
+  if(SameText(S,TEXT("f64"))){double D;return Require(F64(X,D),TEXT("F64"));}
+  if(SameText(S,TEXT("nullable_mm")))return Require(Is(X,FValue::Null)||(Is(X,FValue::Int)&&FMath::Abs(X->I)<=1000),TEXT("PHYSICS_INVALID"));
+  if(SameText(S,TEXT("delta"))||SameText(S,TEXT("steps"))||SameText(S,TEXT("blob_size")))return Uint(X)&&Require(SameText(S,TEXT("delta"))?X->I<=1:SameText(S,TEXT("steps"))?X->I<=256:X->I>0&&X->I<=8388608,TEXT("LIMIT"));
+  if(SameText(S,TEXT("nullable_case")))return Require(Is(X,FValue::Null)||SameText(Str(X),TEXT("weak"))||SameText(Str(X),TEXT("strong")),TEXT("SCHEMA"));
+  if(SameText(S,TEXT("class")))return Require(SameText(Str(X),TEXT("synthetic-contract-only"))||SameText(Str(X),TEXT("genesis-runtime")),TEXT("PROFILE"));
+  if(SameText(S,TEXT("media")))return Require(SameText(Str(X),TEXT("application/x-edgeworld-static-vector"))||SameText(Str(X),TEXT("application/x-genesis-gstraj;version=1.4.3")),TEXT("PROFILE"));
+  if(SameText(S,TEXT("output")))return Require(Is(X,FValue::String)&&ScalarCount(X->S)<=1024,TEXT("SCHEMA"));
+  if(SameText(S,TEXT("json_object")))return Require(Is(X,FValue::Object),TEXT("SCHEMA"));
+  if(SameText(S,TEXT("i7_config")))return Require(Eq(X,Get(Schema,TEXT("physics_parameters"))),TEXT("PROFILE"));
+  if(SameText(S,TEXT("signs")))return Require(SameText(Canon(X),TEXT("[1,-1,1]")),TEXT("SCHEMA"));
+  if(SameText(S,TEXT("vec3")))return Vec(X,3,TNumericLimits<double>::Max());
+  if(SameText(S,TEXT("extent")))return IntVec(X,4)&&Require(Num(X->A[0])<Num(X->A[2])&&Num(X->A[1])<Num(X->A[3]),TEXT("GEOGRAPHY"));
+  if(SameText(S,TEXT("polygon"))||SameText(S,TEXT("polyline")))
   {
-   if(!Require(Is(X,FValue::Array)&&X->A.Num()>=(S==TEXT("polygon")?4:2),TEXT("GEOGRAPHY")))return false;
+   if(!Require(Is(X,FValue::Array)&&X->A.Num()>=(SameText(S,TEXT("polygon"))?4:2),TEXT("GEOGRAPHY")))return false;
    for(const V& P:X->A)if(!IntVec(P,2))return false;
-   return Require(S!=TEXT("polygon")||Eq(X->A[0],X->A.Last()),TEXT("GEOGRAPHY"));
+   return Require(!SameText(S,TEXT("polygon"))||Eq(X->A[0],X->A.Last()),TEXT("GEOGRAPHY"));
   }
-  if(S==TEXT("ids")){if(!Require(Is(X,FValue::Array)&&X->A.Num()>=2&&X->A.Num()<=6,TEXT("GEOGRAPHY")))return false;TSet<FString> Seen;for(const V& C:X->A){if(!Identity(C)||!Require(!Seen.Contains(C->S),TEXT("ID")))return false;Seen.Add(C->S);}return true;}
-  if(S==TEXT("assets")||S==TEXT("decorations")||S==TEXT("sources")||S==TEXT("dependencies")||S==TEXT("bindings")||S==TEXT("bodies")||S==TEXT("contacts"))return Entries(X,S);
-  TArray<FString> Values;S.ParseIntoArray(Values,TEXT("|"));return Require(Is(X,FValue::String)&&Values.Contains(X->S),TEXT("SCHEMA"));
+  if(SameText(S,TEXT("ids"))){if(!Require(Is(X,FValue::Array)&&X->A.Num()>=2&&X->A.Num()<=6,TEXT("GEOGRAPHY")))return false;TextSet Seen;for(const V& C:X->A){if(!Identity(C)||!Require(!Seen.Contains(C->S),TEXT("ID")))return false;Seen.Add(C->S);}return true;}
+  if(SameText(S,TEXT("assets"))||SameText(S,TEXT("decorations"))||SameText(S,TEXT("sources"))||SameText(S,TEXT("dependencies"))||SameText(S,TEXT("bindings"))||SameText(S,TEXT("bodies"))||SameText(S,TEXT("contacts")))return Entries(X,S);
+  TArray<FString> Values;S.ParseIntoArray(Values,TEXT("|"));return Require(Is(X,FValue::String)&&HasText(Values,X->S),TEXT("SCHEMA"));
  }
  bool Entries(const V& X,const FString& K)
  {
-  int32 Limit=K==TEXT("assets")?64:K==TEXT("decorations")?1000:K==TEXT("sources")?32:K==TEXT("dependencies")?16:K==TEXT("contacts")?32:2;
+  int32 Limit=SameText(K,TEXT("assets"))?64:SameText(K,TEXT("decorations"))?1000:SameText(K,TEXT("sources"))?32:SameText(K,TEXT("dependencies"))?16:SameText(K,TEXT("contacts"))?32:2;
   if(!Require(Is(X,FValue::Array)&&X->A.Num()<=Limit,TEXT("LIMIT")))return false;
-  TSet<FString> Seen;FString Last;int64 Total=0;int32 Index=0;
+  TextSet Seen;FString Last;int64 Total=0;int32 Index=0;
   for(const V& Item:X->A)
   {
    FString IdentityValue;
-   if(K==TEXT("assets"))
+   if(SameText(K,TEXT("assets")))
    {
     if(!Keys(Item,TEXT("asset_id,uri,content_sha256,byte_count,source,use,license_status,dependencies"))||!Identity(Get(Item,TEXT("asset_id")))||!Hash(Get(Item,TEXT("content_sha256")))||!Uint(Get(Item,TEXT("byte_count"))))return false;
     IdentityValue=Str(Get(Item,TEXT("asset_id")));Total+=Num(Get(Item,TEXT("byte_count")));
-    FString Uri=Str(Get(Item,TEXT("uri")));FString Path,Name;
-    if(!Require(Uri.StartsWith(TEXT("/Engine/"))&&Uri.Split(TEXT("."),&Path,&Name)&&!Name.IsEmpty(),TEXT("ASSET")))return false;
+    FString Uri=Str(Get(Item,TEXT("uri")));TArray<FString> UriParts=SplitUnits(Uri,TCHAR('.'),false);FString Path=UriParts[0],Name=UriParts.Num()==2?UriParts[1]:FString();
+    if(!Require(StartsText(Uri,TEXT("/Engine/"))&&UriParts.Num()==2&&!Name.IsEmpty(),TEXT("ASSET")))return false;
     auto AssetChar=[](TCHAR C){return (C>='A'&&C<='Z')||(C>='a'&&C<='z')||(C>='0'&&C<='9')||C=='_';};
     for(TCHAR C:Path)if(!Require(C=='/'||AssetChar(C),TEXT("ASSET")))return false;for(TCHAR C:Name)if(!Require(AssetChar(C),TEXT("ASSET")))return false;
-    if(!Require(Str(Get(Item,TEXT("source")))==TEXT("installed-ue-5.8.3-basicshapes")&&Str(Get(Item,TEXT("use")))==TEXT("technical-proxy-not-realism")&&Str(Get(Item,TEXT("license_status")))==TEXT("ue-installed-content-no-shipping-review"),TEXT("ASSET")))return false;
-    V Deps=Get(Item,TEXT("dependencies"));if(!Require(Is(Deps,FValue::Array),TEXT("ASSET")))return false;TSet<FString> Ds;for(const V& D:Deps->A){if(!Identity(D)||!Require(!Ds.Contains(D->S),TEXT("ASSET")))return false;Ds.Add(D->S);}
+    if(!Require(SameText(Str(Get(Item,TEXT("source"))),TEXT("installed-ue-5.8.3-basicshapes"))&&SameText(Str(Get(Item,TEXT("use"))),TEXT("technical-proxy-not-realism"))&&SameText(Str(Get(Item,TEXT("license_status"))),TEXT("ue-installed-content-no-shipping-review")),TEXT("ASSET")))return false;
+    V Deps=Get(Item,TEXT("dependencies"));if(!Require(Is(Deps,FValue::Array),TEXT("ASSET")))return false;TextSet Ds;for(const V& D:Deps->A){if(!Identity(D)||!Require(!Ds.Contains(D->S),TEXT("ASSET")))return false;Ds.Add(D->S);}
     if(!Require((Last.IsEmpty()||OrdinalLess(Last,IdentityValue))&&Total<=2147483648LL,TEXT("ASSET")))return false;Last=IdentityValue;
    }
-   else if(K==TEXT("decorations"))
+   else if(SameText(K,TEXT("decorations")))
    {
     if(!Keys(Item,TEXT("instance_id,place_id,asset_id,position_cm,scale_milli")))return false;
     for(const TCHAR* Key:{TEXT("instance_id"),TEXT("place_id"),TEXT("asset_id")})if(!Identity(Get(Item,Key)))return false;
     if(!IntVec(Get(Item,TEXT("position_cm")),3)||!IntVec(Get(Item,TEXT("scale_milli")),3))return false;
     for(const V& N:Get(Item,TEXT("scale_milli"))->A)if(!Require(N->I>0,TEXT("SCHEMA")))return false;IdentityValue=Str(Get(Item,TEXT("instance_id")));
    }
-   else if(K==TEXT("sources"))
+   else if(SameText(K,TEXT("sources")))
    {
-    if(!Keys(Item,TEXT("path,sha256"))||!Hash(Get(Item,TEXT("sha256"))))return false;IdentityValue=Str(Get(Item,TEXT("path")));TArray<FString> Parts;IdentityValue.ParseIntoArray(Parts,TEXT("/"),false);
-    if(!Require(Is(Get(Item,TEXT("path")),FValue::String)&&!IdentityValue.StartsWith(TEXT("/"))&&!Parts.Contains(TEXT("..")),TEXT("BUILD")))return false;
+    if(!Keys(Item,TEXT("path,sha256"))||!Hash(Get(Item,TEXT("sha256"))))return false;IdentityValue=Str(Get(Item,TEXT("path")));TArray<FString> Parts=SplitUnits(IdentityValue,TCHAR('/'),false);
+    if(!Require(Is(Get(Item,TEXT("path")),FValue::String)&&!StartsText(IdentityValue,TEXT("/"))&&!HasText(Parts,TEXT("..")),TEXT("BUILD")))return false;
    }
-   else if(K==TEXT("dependencies"))
+   else if(SameText(K,TEXT("dependencies")))
    {
     if(!Keys(Item,TEXT("name,version,metadata_sha256"))||!Hash(Get(Item,TEXT("metadata_sha256")))||!Require(Is(Get(Item,TEXT("name")),FValue::String)&&Is(Get(Item,TEXT("version")),FValue::String),TEXT("BUILD")))return false;IdentityValue=Str(Get(Item,TEXT("name")));
    }
-   else if(K==TEXT("bindings"))
+   else if(SameText(K,TEXT("bindings")))
    {
     if(!Keys(Item,TEXT("physical_id,existence_id,genesis_name,role,config_entity_index")))return false;for(const TCHAR* Key:{TEXT("physical_id"),TEXT("existence_id"),TEXT("genesis_name")})if(!Identity(Get(Item,Key)))return false;
-    if(!Uint(Get(Item,TEXT("config_entity_index")))||!Require(Str(Get(Item,TEXT("role")))==TEXT("dynamic")||Str(Get(Item,TEXT("role")))==TEXT("support"),TEXT("PHYSICS_INVALID")))return false;IdentityValue=Str(Get(Item,TEXT("physical_id")));
+    if(!Uint(Get(Item,TEXT("config_entity_index")))||!Require(SameText(Str(Get(Item,TEXT("role"))),TEXT("dynamic"))||SameText(Str(Get(Item,TEXT("role"))),TEXT("support")),TEXT("PHYSICS_INVALID")))return false;IdentityValue=Str(Get(Item,TEXT("physical_id")));
    }
-   else if(K==TEXT("bodies"))
+   else if(SameText(K,TEXT("bodies")))
    {
     if(!Keys(Item,TEXT("physical_id,position_m,quaternion_wxyz,linear_velocity_m_s,angular_velocity_rad_s,mass_kg"))||!Identity(Get(Item,TEXT("physical_id"))))return false;
     if(!Vec(Get(Item,TEXT("position_m")),3,10)||!Vec(Get(Item,TEXT("quaternion_wxyz")),4,1.001)||!Vec(Get(Item,TEXT("linear_velocity_m_s")),3,100)||!Vec(Get(Item,TEXT("angular_velocity_rad_s")),3,100))return false;
@@ -256,91 +322,91 @@ public:
    }
    else
    {
-    if(!Keys(Item,TEXT("pair,position_m,force_on_dynamic_n"))||!Require(Canon(Get(Item,TEXT("pair")))==TEXT("[\"body-dynamic\",\"body-support\"]"),TEXT("PHYSICS_INVALID"))||!Vec(Get(Item,TEXT("position_m")),3,10)||!Vec(Get(Item,TEXT("force_on_dynamic_n")),3,1e6))return false;
+    if(!Keys(Item,TEXT("pair,position_m,force_on_dynamic_n"))||!Require(SameText(Canon(Get(Item,TEXT("pair"))),TEXT("[\"body-dynamic\",\"body-support\"]")),TEXT("PHYSICS_INVALID"))||!Vec(Get(Item,TEXT("position_m")),3,10)||!Vec(Get(Item,TEXT("force_on_dynamic_n")),3,1e6))return false;
     // Same fixed pair for every contact, then lexical f64 bit-vector ordering.
     FString Order=Canon(Get(Item,TEXT("position_m")))+Canon(Get(Item,TEXT("force_on_dynamic_n")));
     if(!Require(Last.IsEmpty()||!OrdinalLess(Order,Last),TEXT("PHYSICS_INVALID")))return false;Last=Order;
    }
-   if(K!=TEXT("contacts")){if(!Require(!Seen.Contains(IdentityValue),TEXT("ID")))return false;Seen.Add(IdentityValue);}
-   if(K==TEXT("bindings")||K==TEXT("bodies"))if(!Require(IdentityValue==(Index==0?TEXT("body-dynamic"):TEXT("body-support")),TEXT("PHYSICS_INVALID")))return false;++Index;
+   if(!SameText(K,TEXT("contacts"))){if(!Require(!Seen.Contains(IdentityValue),TEXT("ID")))return false;Seen.Add(IdentityValue);}
+   if(SameText(K,TEXT("bindings"))||SameText(K,TEXT("bodies")))if(!Require(SameText(IdentityValue,(Index==0?TEXT("body-dynamic"):TEXT("body-support"))),TEXT("PHYSICS_INVALID")))return false;++Index;
   }
-  return Require((K!=TEXT("bindings")&&K!=TEXT("bodies"))||Index==2,TEXT("PHYSICS_INVALID"));
+  return Require((!SameText(K,TEXT("bindings"))&&!SameText(K,TEXT("bodies")))||Index==2,TEXT("PHYSICS_INVALID"));
  }
  V ExpectedRefs(const V& R)
  {
-  FString K=Kind(R);V Shape=Make(FValue::Object);V Base=Get(Get(Schema,TEXT("refs")),*K);if(!Base)return {};
-  if(K==TEXT("route")){V Ids=Get(Body(R),TEXT("place_ids"));if(!Is(Ids,FValue::Array))return {};for(int32 I=0;I<Ids->A.Num();++I){V S=Make(FValue::String);S->S=TEXT("place");Shape->O.Add(FString::Printf(TEXT("p%d"),I),S);}return Shape;}
-  for(const auto& P:Base->O){FString Key=P.Key;Key.RemoveFromEnd(TEXT("?"));if(K==TEXT("manifest")&&Num(Get(Body(R),TEXT("revision")))==0&&Key!=TEXT("state"))continue;if(K==TEXT("event")&&Key==TEXT("prior_event")&&!Get(Refs(R),TEXT("prior_event")))continue;Shape->O.Add(Key,P.Value);}return Shape;
+  FString K=Kind(R);V Shape=Make(FValue::Object);V Base=Get(Get(Schema,TEXT("refs")),K);if(!Base)return {};
+  if(SameText(K,TEXT("route"))){V Ids=Get(Body(R),TEXT("place_ids"));if(!Is(Ids,FValue::Array))return {};for(int32 I=0;I<Ids->A.Num();++I){V S=Make(FValue::String);S->S=TEXT("place");Shape->O.Add(FString::Printf(TEXT("p%d"),I),S);}return Shape;}
+  for(const auto& P:Base->O){FString Key=P.Key;Key.RemoveFromEnd(TEXT("?"),ESearchCase::CaseSensitive);if(SameText(K,TEXT("manifest"))&&Num(Get(Body(R),TEXT("revision")))==0&&!SameText(Key,TEXT("state")))continue;if(SameText(K,TEXT("event"))&&SameText(Key,TEXT("prior_event"))&&!Get(Refs(R),TEXT("prior_event")))continue;Shape->O.Add(Key,P.Value);}return Shape;
  }
  bool Record(const V& R)
  {
-  if(!Tree(R)||!Keys(R,TEXT("domain,version,world_id,kind,id,body,refs"))||!Require(Str(Get(R,TEXT("domain")))==TEXT("edgeworld.universe.authority")&&Str(Get(R,TEXT("version")))==TEXT("0.2"),TEXT("DOMAIN"))||!Identity(Get(R,TEXT("world_id")))||!Identity(Get(R,TEXT("id"))))return false;
-  FString K=Kind(R);V Shape=Get(Get(Schema,TEXT("body")),*K);if(!Require(!!Shape,TEXT("SCHEMA"))||!Exact(Body(R),Shape))return false;
-  for(const auto& P:Shape->O)if(!Field(Get(Body(R),*P.Key),Str(P.Value)))return false;
+  if(!Tree(R)||!Keys(R,TEXT("domain,version,world_id,kind,id,body,refs"))||!Require(SameText(Str(Get(R,TEXT("domain"))),TEXT("edgeworld.universe.authority"))&&SameText(Str(Get(R,TEXT("version"))),TEXT("0.2")),TEXT("DOMAIN"))||!Identity(Get(R,TEXT("world_id")))||!Identity(Get(R,TEXT("id"))))return false;
+  FString K=Kind(R);V Shape=Get(Get(Schema,TEXT("body")),K);if(!Require(!!Shape,TEXT("SCHEMA"))||!Exact(Body(R),Shape))return false;
+  for(const auto& P:Shape->O)if(!Field(Get(Body(R),P.Key),Str(P.Value)))return false;
   if(!Exact(Refs(R),ExpectedRefs(R)))return false;for(const auto& P:Refs(R)->O)if(!Hash(P.Value))return false;
-  return Require(Canon(R).Len()<=Num(Get(Get(Schema,TEXT("kind_bytes")),*K)),TEXT("LIMIT"));
+  return Require(Canon(R).Len()<=Num(Get(Get(Schema,TEXT("kind_bytes")),K)),TEXT("LIMIT"));
  }
- V Target(const V& R,const TCHAR* Key){const V* P=Records.Find(Str(Get(Refs(R),Key)));if(!P){Require(false,TEXT("PROOF"));return {};}return *P;}
- bool SameRef(const V& A,const TCHAR* AK,const V& B,const TCHAR* BK){return Eq(Get(Refs(A),AK),Get(Refs(B),BK));}
+ V Target(const V& R,const FString& Key){const V* P=Records.Find(Str(Get(Refs(R),Key)));if(!P){Require(false,TEXT("PROOF"));return {};}return *P;}
+ bool SameRef(const V& A,const FString& AK,const V& B,const FString& BK){return Eq(Get(Refs(A),AK),Get(Refs(B),BK));}
  bool Static(const V& R,const FEdgeWorldUniverseContext& C);
  bool Transition(const V& M);
  bool Verify(const V& Env,const FEdgeWorldUniverseExpectation& E,FEdgeWorldUniverseObservation& Out);
 };
 bool FValidator::Static(const V& R,const FEdgeWorldUniverseContext& C)
 {
- V B=Body(R);FString K=Kind(R);auto T=[&](const TCHAR* Key){return Target(R,Key);};
- if(Get(B,TEXT("artifact_class"))&&!Require(Str(Get(B,TEXT("artifact_class")))==C.ArtifactClass,TEXT("PROFILE")))return false;
- if(K==TEXT("existence"))return Require(Eq(Get(R,TEXT("id")),Get(B,TEXT("existence_id"))),TEXT("ID"));
- if(K==TEXT("unit_transform")){double D;return Require(F64(Get(B,TEXT("scale")),D)&&D==100,TEXT("PHYSICS_INVALID"));}
- if(K==TEXT("provider_build"))return Require(Sha(Canon(R),true)==C.ExpectedBuild&&(C.ArtifactClass!=TEXT("genesis-runtime")||!Is(Get(B,TEXT("adapter_source_sha256")),FValue::Null)),TEXT("BUILD"));
- if(K==TEXT("resolved_options"))
+ V B=Body(R);FString K=Kind(R);auto T=[&](const FString& Key){return Target(R,Key);};
+ if(Get(B,TEXT("artifact_class"))&&!Require(SameText(Str(Get(B,TEXT("artifact_class"))),C.ArtifactClass),TEXT("PROFILE")))return false;
+ if(SameText(K,TEXT("existence")))return Require(Eq(Get(R,TEXT("id")),Get(B,TEXT("existence_id"))),TEXT("ID"));
+ if(SameText(K,TEXT("unit_transform"))){double D;return Require(F64(Get(B,TEXT("scale")),D)&&D==100,TEXT("PHYSICS_INVALID"));}
+ if(SameText(K,TEXT("provider_build")))return Require(SameText(Sha(Canon(R),true),C.ExpectedBuild)&&(!SameText(C.ArtifactClass,TEXT("genesis-runtime"))||!Is(Get(B,TEXT("adapter_source_sha256")),FValue::Null)),TEXT("BUILD"));
+ if(SameText(K,TEXT("resolved_options")))
  {
-  bool Runtime=C.ArtifactClass==TEXT("genesis-runtime");if(!Require(Sha(Canon(R),true)==C.ExpectedOptions&&Str(Get(Refs(R),TEXT("build")))==C.ExpectedBuild&&Str(Get(B,TEXT("resolution")))==(Runtime?TEXT("runtime-exported"):TEXT("static-declared")),TEXT("BUILD")))return false;
+  bool Runtime=SameText(C.ArtifactClass,TEXT("genesis-runtime"));if(!Require(SameText(Sha(Canon(R),true),C.ExpectedOptions)&&SameText(Str(Get(Refs(R),TEXT("build"))),C.ExpectedBuild)&&SameText(Str(Get(B,TEXT("resolution"))),(Runtime?TEXT("runtime-exported"):TEXT("static-declared"))),TEXT("BUILD")))return false;
   if(!Runtime&&!Require(Get(B,TEXT("exports"))->O.IsEmpty(),TEXT("BUILD")))return false;
   if(Runtime){V Ex=Get(B,TEXT("exports"));if(!Keys(Ex,TEXT("sim_options,rigid_options,dynamic_morph,support_morph,rigid_material")))return false;for(const auto& P:Ex->O)if(!Require(Is(P.Value,FValue::Object)&&P.Value->O.Num()>0,TEXT("BUILD")))return false;}return true;
  }
- if(K==TEXT("physics_config"))return Require(Str(Get(Refs(R),TEXT("build")))==C.ExpectedBuild&&Str(Get(Refs(R),TEXT("options")))==C.ExpectedOptions&&SameRef(T(TEXT("options")),TEXT("build"),R,TEXT("build"))&&Str(Get(Body(T(TEXT("options"))),TEXT("parameter_hash")))==Sha(Canon(Get(B,TEXT("config")))),TEXT("BUILD"));
- if(K==TEXT("physics_binding"))
+ if(SameText(K,TEXT("physics_config")))return Require(SameText(Str(Get(Refs(R),TEXT("build"))),C.ExpectedBuild)&&SameText(Str(Get(Refs(R),TEXT("options"))),C.ExpectedOptions)&&SameRef(T(TEXT("options")),TEXT("build"),R,TEXT("build"))&&SameText(Str(Get(Body(T(TEXT("options"))),TEXT("parameter_hash"))),Sha(Canon(Get(B,TEXT("config"))))),TEXT("BUILD"));
+ if(SameText(K,TEXT("physics_binding")))
  {
   V Entities=Get(Get(Body(T(TEXT("config"))),TEXT("config")),TEXT("entities"));V Bindings=Get(B,TEXT("bindings"));if(!Require(Is(Entities,FValue::Array)&&Entities->A.Num()==2,TEXT("PHYSICS_INVALID")))return false;
   for(int32 I=0;I<2;++I){V Entry=Bindings->A[I],Entity=Entities->A[I];for(const TCHAR* Key:{TEXT("physical_id"),TEXT("existence_id"),TEXT("genesis_name")})if(!Require(Eq(Get(Entry,Key),Get(Entity,Key)),TEXT("PHYSICS_INVALID")))return false;
-   if(!Require(Num(Get(Entry,TEXT("config_entity_index")))==I&&Str(Get(Entry,TEXT("role")))==(I==0?TEXT("dynamic"):TEXT("support")),TEXT("PHYSICS_INVALID")))return false;
-   V Exists=Body(T(I==0?TEXT("dynamic_exists"):TEXT("support_exists")));if(!Require(Eq(Get(Exists,TEXT("existence_id")),Get(Entry,TEXT("existence_id")))&&Str(Get(Exists,TEXT("category")))==TEXT("physical"),TEXT("REFERENCE")))return false;
+   if(!Require(Num(Get(Entry,TEXT("config_entity_index")))==I&&SameText(Str(Get(Entry,TEXT("role"))),(I==0?TEXT("dynamic"):TEXT("support"))),TEXT("PHYSICS_INVALID")))return false;
+   V Exists=Body(T(I==0?TEXT("dynamic_exists"):TEXT("support_exists")));if(!Require(Eq(Get(Exists,TEXT("existence_id")),Get(Entry,TEXT("existence_id")))&&SameText(Str(Get(Exists,TEXT("category"))),TEXT("physical")),TEXT("REFERENCE")))return false;
   }return true;
  }
- if(K==TEXT("physics_sample")||K==TEXT("checkpoint_descriptor")||K==TEXT("physics_snapshot"))
+ if(SameText(K,TEXT("physics_sample"))||SameText(K,TEXT("checkpoint_descriptor"))||SameText(K,TEXT("physics_snapshot")))
  {
   if(!Require(SameRef(T(TEXT("binding")),TEXT("config"),R,TEXT("config")),TEXT("PHYSICS_INVALID")))return false;
-  if(K==TEXT("checkpoint_descriptor"))
+  if(SameText(K,TEXT("checkpoint_descriptor")))
   {
-   bool Syn=C.ArtifactClass==TEXT("synthetic-contract-only");return Require(Str(Get(B,TEXT("format")))==(Syn?TEXT("synthetic-static-bytes"):TEXT("genesis-gstraj"))&&Str(Get(B,TEXT("media_type")))==(Syn?TEXT("application/x-edgeworld-static-vector"):TEXT("application/x-genesis-gstraj;version=1.4.3"))&&SameRef(R,TEXT("build"),T(TEXT("config")),TEXT("build")),TEXT("PROFILE"));
+   bool Syn=SameText(C.ArtifactClass,TEXT("synthetic-contract-only"));return Require(SameText(Str(Get(B,TEXT("format"))),(Syn?TEXT("synthetic-static-bytes"):TEXT("genesis-gstraj")))&&SameText(Str(Get(B,TEXT("media_type"))),(Syn?TEXT("application/x-edgeworld-static-vector"):TEXT("application/x-genesis-gstraj;version=1.4.3")))&&SameRef(R,TEXT("build"),T(TEXT("config")),TEXT("build")),TEXT("PROFILE"));
   }
-  if(K==TEXT("physics_snapshot")){for(const TCHAR* Name:{TEXT("sample"),TEXT("checkpoint")})if(!Require(SameRef(T(Name),TEXT("config"),R,TEXT("config"))&&SameRef(T(Name),TEXT("binding"),R,TEXT("binding")),TEXT("PHYSICS_INVALID")))return false;return Require((Str(Get(B,TEXT("case_id")))==TEXT("initial"))==(Num(Get(B,TEXT("physical_step_count")))==0),TEXT("PHYSICS_INVALID"));}
+  if(SameText(K,TEXT("physics_snapshot"))){for(const TCHAR* Name:{TEXT("sample"),TEXT("checkpoint")})if(!Require(SameRef(T(Name),TEXT("config"),R,TEXT("config"))&&SameRef(T(Name),TEXT("binding"),R,TEXT("binding")),TEXT("PHYSICS_INVALID")))return false;return Require((SameText(Str(Get(B,TEXT("case_id"))),TEXT("initial")))==(Num(Get(B,TEXT("physical_step_count")))==0),TEXT("PHYSICS_INVALID"));}
   return true;
  }
- if(K==TEXT("place"))return Require(Str(Get(Body(T(TEXT("existence"))),TEXT("category")))==TEXT("place"),TEXT("REFERENCE"));
- if(K==TEXT("route")){V Ids=Get(B,TEXT("place_ids"));for(int32 I=0;I<Ids->A.Num();++I)if(!Require(Eq(Get(Body(T(*FString::Printf(TEXT("p%d"),I))),TEXT("place_id")),Ids->A[I]),TEXT("GEOGRAPHY")))return false;return true;}
- if(K==TEXT("watercourse"))return Require(Str(Get(Body(T(TEXT("upstream"))),TEXT("place_kind")))==TEXT("forest")&&Str(Get(Body(T(TEXT("marsh"))),TEXT("place_kind")))==TEXT("river_marsh")&&Str(Get(Body(T(TEXT("outlet"))),TEXT("place_kind")))==TEXT("ocean"),TEXT("GEOGRAPHY"));
- if(K==TEXT("asset_manifest"))
+ if(SameText(K,TEXT("place")))return Require(SameText(Str(Get(Body(T(TEXT("existence"))),TEXT("category"))),TEXT("place")),TEXT("REFERENCE"));
+ if(SameText(K,TEXT("route"))){V Ids=Get(B,TEXT("place_ids"));for(int32 I=0;I<Ids->A.Num();++I)if(!Require(Eq(Get(Body(T(FString::Printf(TEXT("p%d"),I))),TEXT("place_id")),Ids->A[I]),TEXT("GEOGRAPHY")))return false;return true;}
+ if(SameText(K,TEXT("watercourse")))return Require(SameText(Str(Get(Body(T(TEXT("upstream"))),TEXT("place_kind"))),TEXT("forest"))&&SameText(Str(Get(Body(T(TEXT("marsh"))),TEXT("place_kind"))),TEXT("river_marsh"))&&SameText(Str(Get(Body(T(TEXT("outlet"))),TEXT("place_kind"))),TEXT("ocean")),TEXT("GEOGRAPHY"));
+ if(SameText(K,TEXT("asset_manifest")))
  {
-  V EntriesValue=Get(B,TEXT("entries"));TMap<FString,V> Assets;for(const V& A:EntriesValue->A)Assets.Add(Str(Get(A,TEXT("asset_id"))),A);
-  TSet<FString> Active,Done;TFunction<bool(const FString&)> Visit=[&](const FString& Name){if(!Require(Assets.Contains(Name)&&!Active.Contains(Name),TEXT("ASSET")))return false;if(Done.Contains(Name))return true;Active.Add(Name);for(const V& D:Get(Assets[Name],TEXT("dependencies"))->A)if(!Visit(D->S))return false;Active.Remove(Name);Done.Add(Name);return true;};
+  V EntriesValue=Get(B,TEXT("entries"));TextMap<V> Assets;for(const V& A:EntriesValue->A)Assets.Add(Str(Get(A,TEXT("asset_id"))),A);
+  TextSet Active,Done;TFunction<bool(const FString&)> Visit=[&](const FString& Name){if(!Require(Assets.Contains(Name)&&!Active.Contains(Name),TEXT("ASSET")))return false;if(Done.Contains(Name))return true;Active.Add(Name);for(const V& D:Get(Assets[Name],TEXT("dependencies"))->A)if(!Visit(D->S))return false;Active.Remove(Name);Done.Add(Name);return true;};
   for(const auto& A:Assets)if(!Visit(A.Key))return false;
-  return Require(Str(Get(B,TEXT("dependency_status")))==(C.ArtifactClass==TEXT("synthetic-contract-only")?TEXT("declared-static"):TEXT("runtime-resolved")),TEXT("ASSET"));
+  return Require(SameText(Str(Get(B,TEXT("dependency_status"))),(SameText(C.ArtifactClass,TEXT("synthetic-contract-only"))?TEXT("declared-static"):TEXT("runtime-resolved"))),TEXT("ASSET"));
  }
- if(K==TEXT("projection"))
+ if(SameText(K,TEXT("projection")))
  {
-  TSet<FString> Assets;for(const V& A:Get(Body(T(TEXT("assets"))),TEXT("entries"))->A)Assets.Add(Str(Get(A,TEXT("asset_id"))));
+  TextSet Assets;for(const V& A:Get(Body(T(TEXT("assets"))),TEXT("entries"))->A)Assets.Add(Str(Get(A,TEXT("asset_id"))));
   for(const V& D:Get(B,TEXT("decorations"))->A)if(!Require(Assets.Contains(Str(Get(D,TEXT("asset_id")))),TEXT("ASSET")))return false;return true;
  }
- if(K==TEXT("world_manifest"))
+ if(SameText(K,TEXT("world_manifest")))
  {
-  if(!Require(Str(Get(Body(T(TEXT("world_existence"))),TEXT("category")))==TEXT("world"),TEXT("GEOGRAPHY")))return false;
-  TSet<FString> Places,Exists;for(const TCHAR* Key:{TEXT("world_existence"),TEXT("dynamic_existence"),TEXT("support_existence")})Exists.Add(Str(Get(Body(T(Key)),TEXT("existence_id"))));
+  if(!Require(SameText(Str(Get(Body(T(TEXT("world_existence"))),TEXT("category"))),TEXT("world")),TEXT("GEOGRAPHY")))return false;
+  TextSet Places,Exists;for(const TCHAR* Key:{TEXT("world_existence"),TEXT("dynamic_existence"),TEXT("support_existence")})Exists.Add(Str(Get(Body(T(Key)),TEXT("existence_id"))));
   V Bounds=Get(B,TEXT("extent_cm"));auto InBounds=[&](const V& Points){for(const V& P:Points->A)if(!Require(Num(P->A[0])>=Num(Bounds->A[0])&&Num(P->A[0])<=Num(Bounds->A[2])&&Num(P->A[1])>=Num(Bounds->A[1])&&Num(P->A[1])<=Num(Bounds->A[3]),TEXT("GEOGRAPHY")))return false;return true;};
   for(const TCHAR* Name:{TEXT("city"),TEXT("wildland"),TEXT("plain"),TEXT("forest"),TEXT("river_marsh"),TEXT("ocean")})
   {
-   V P=T(Name);if(!Require(Str(Get(Body(P),TEXT("place_kind")))==Name,TEXT("GEOGRAPHY")))return false;
+   V P=T(Name);if(!Require(SameText(Str(Get(Body(P),TEXT("place_kind"))),Name),TEXT("GEOGRAPHY")))return false;
    Places.Add(Str(Get(Body(P),TEXT("place_id"))));Exists.Add(Str(Get(Body(Target(P,TEXT("existence"))),TEXT("existence_id"))));if(!InBounds(Get(Body(P),TEXT("footprint_cm"))))return false;
   }
   if(!Require(Places.Num()==6&&Exists.Num()==9,TEXT("ID")))return false;
@@ -351,13 +417,13 @@ bool FValidator::Static(const V& R,const FEdgeWorldUniverseContext& C)
   if(!Require(Points<=4096,TEXT("LIMIT")))return false;
   for(const V& D:Get(Body(T(TEXT("projection"))),TEXT("decorations"))->A)if(!Require(Places.Contains(Str(Get(D,TEXT("place_id")))),TEXT("GEOGRAPHY")))return false;return true;
  }
- if(K==TEXT("state"))
+ if(SameText(K,TEXT("state")))
  {
   V World=T(TEXT("world")),Binding=Target(T(TEXT("snapshot")),TEXT("binding"));return Require(SameRef(Binding,TEXT("dynamic_exists"),World,TEXT("dynamic_existence"))&&SameRef(Binding,TEXT("support_exists"),World,TEXT("support_existence")),TEXT("REFERENCE"));
  }
- if(K==TEXT("intent"))
+ if(SameText(K,TEXT("intent")))
  {
-  bool Retain=Str(Get(B,TEXT("action")))==TEXT("retain_snapshot");return Require(Retain?(Num(Get(B,TEXT("tick_delta")))==0&&Is(Get(B,TEXT("case_id")),FValue::Null)&&Num(Get(B,TEXT("budget")))==0):(Num(Get(B,TEXT("tick_delta")))==1&&(Str(Get(B,TEXT("case_id")))==TEXT("weak")||Str(Get(B,TEXT("case_id")))==TEXT("strong"))),TEXT("TRANSITION"));
+  bool Retain=SameText(Str(Get(B,TEXT("action"))),TEXT("retain_snapshot"));return Require(Retain?(Num(Get(B,TEXT("tick_delta")))==0&&Is(Get(B,TEXT("case_id")),FValue::Null)&&Num(Get(B,TEXT("budget")))==0):(Num(Get(B,TEXT("tick_delta")))==1&&(SameText(Str(Get(B,TEXT("case_id"))),TEXT("weak"))||SameText(Str(Get(B,TEXT("case_id"))),TEXT("strong")))),TEXT("TRANSITION"));
  }
  return true;
 }
@@ -365,7 +431,7 @@ bool FValidator::Transition(const V& M)
 {
  V S=Target(M,TEXT("state")),B=Body(M),SB=Body(S),Snap=Target(S,TEXT("snapshot"));
  if(!Require(Eq(Get(B,TEXT("tick")),Get(SB,TEXT("tick")))&&Eq(Get(B,TEXT("revision")),Get(SB,TEXT("revision")))&&Eq(Get(B,TEXT("watermark")),Get(SB,TEXT("revision"))),TEXT("WATERMARK")))return false;
- if(Num(Get(B,TEXT("revision")))==0)return Require(Num(Get(B,TEXT("tick")))==0&&Is(Get(SB,TEXT("development_mm")),FValue::Null)&&Num(Get(SB,TEXT("random_cursor")))==0&&Num(Get(SB,TEXT("budget")))==8&&Str(Get(Body(Snap),TEXT("case_id")))==TEXT("initial")&&Num(Get(Body(Snap),TEXT("physical_step_count")))==0,TEXT("HEAD"));
+ if(Num(Get(B,TEXT("revision")))==0)return Require(Num(Get(B,TEXT("tick")))==0&&Is(Get(SB,TEXT("development_mm")),FValue::Null)&&Num(Get(SB,TEXT("random_cursor")))==0&&Num(Get(SB,TEXT("budget")))==8&&SameText(Str(Get(Body(Snap),TEXT("case_id"))),TEXT("initial"))&&Num(Get(Body(Snap),TEXT("physical_step_count")))==0,TEXT("HEAD"));
  V Prior=Target(M,TEXT("prior_manifest")),Previous=Target(Prior,TEXT("state")),PB=Body(Previous),Event=Target(M,TEXT("event")),Index=Target(M,TEXT("index")),Result=Target(Index,TEXT("result")),Admission=Target(Event,TEXT("admission")),Command=Target(Admission,TEXT("command")),Candidate=Target(Admission,TEXT("candidate")),Intent=Target(Command,TEXT("intent")),IB=Body(Intent),Approval=Target(Command,TEXT("approval")),Proposal=Target(Command,TEXT("proposal")),CB=Body(Candidate),Before=Target(Previous,TEXT("snapshot"));
  if(!Error.IsEmpty())return false;
  if(!Require(Num(Get(B,TEXT("revision")))==Num(Get(Body(Prior),TEXT("revision")))+1&&SameRef(S,TEXT("world"),Previous,TEXT("world"))&&SameRef(Event,TEXT("state"),M,TEXT("state"))&&SameRef(Result,TEXT("state"),M,TEXT("state"))&&SameRef(Result,TEXT("event"),M,TEXT("event")),TEXT("HEAD")))return false;
@@ -373,13 +439,13 @@ bool FValidator::Transition(const V& M)
  if(!Require((!PriorEvent&&!EventPrior)||Eq(PriorEvent,EventPrior),TEXT("HEAD")))return false;
  if(!Require(SameRef(Candidate,TEXT("prior_state"),Prior,TEXT("state"))&&SameRef(Candidate,TEXT("command"),Admission,TEXT("command"))&&SameRef(Result,TEXT("command"),Admission,TEXT("command"))&&SameRef(Candidate,TEXT("snapshot"),S,TEXT("snapshot"))&&SameRef(Result,TEXT("checkpoint"),S,TEXT("snapshot")),TEXT("REFERENCE")))return false;
  FString Principal=Str(Get(IB,TEXT("principal")));
- if(!Require(SameRef(Approval,TEXT("proposal"),Command,TEXT("proposal"))&&SameRef(Approval,TEXT("intent"),Command,TEXT("intent"))&&Str(Get(Body(Proposal),TEXT("principal")))==Principal&&Str(Get(Body(Approval),TEXT("principal")))==Principal&&Str(Get(Body(Admission),TEXT("principal")))==Principal,TEXT("AUTHORIZATION")))return false;
+ if(!Require(SameRef(Approval,TEXT("proposal"),Command,TEXT("proposal"))&&SameRef(Approval,TEXT("intent"),Command,TEXT("intent"))&&SameText(Str(Get(Body(Proposal),TEXT("principal"))),Principal)&&SameText(Str(Get(Body(Approval),TEXT("principal"))),Principal)&&SameText(Str(Get(Body(Admission),TEXT("principal"))),Principal),TEXT("AUTHORIZATION")))return false;
  if(!Require(Num(Get(IB,TEXT("expected_revision")))==Num(Get(PB,TEXT("revision")))&&Eq(Get(IB,TEXT("expected_revision")),Get(Body(Admission),TEXT("evaluated_revision")))&&Eq(Get(IB,TEXT("random_cursor")),Get(PB,TEXT("random_cursor")))&&Num(Get(IB,TEXT("expected_revision")))<=Num(Get(Body(Approval),TEXT("expires_revision"))),TEXT("AUTHORIZATION")))return false;
  if(!Require(Eq(Get(CB,TEXT("revision")),Get(SB,TEXT("revision")))&&Eq(Get(CB,TEXT("tick")),Get(SB,TEXT("tick")))&&Eq(Get(CB,TEXT("influence_mm")),Get(SB,TEXT("development_mm"))),TEXT("TRANSITION")))return false;
  for(const TCHAR* Key:{TEXT("config"),TEXT("binding")})if(!Require(SameRef(Intent,Key,Snap,Key)&&SameRef(Before,Key,Snap,Key),TEXT("PHYSICS_INVALID")))return false;
- if(Str(Get(IB,TEXT("action")))==TEXT("retain_snapshot"))
+ if(SameText(Str(Get(IB,TEXT("action"))),TEXT("retain_snapshot")))
  {
-  if(!Require(Num(Get(IB,TEXT("tick_delta")))==0&&Is(Get(IB,TEXT("case_id")),FValue::Null)&&Num(Get(IB,TEXT("budget")))==0&&Str(Get(CB,TEXT("adapter_kind")))==TEXT("checkpoint_reuse")&&SameRef(Previous,TEXT("snapshot"),S,TEXT("snapshot")),TEXT("TRANSITION")))return false;
+  if(!Require(Num(Get(IB,TEXT("tick_delta")))==0&&Is(Get(IB,TEXT("case_id")),FValue::Null)&&Num(Get(IB,TEXT("budget")))==0&&SameText(Str(Get(CB,TEXT("adapter_kind"))),TEXT("checkpoint_reuse"))&&SameRef(Previous,TEXT("snapshot"),S,TEXT("snapshot")),TEXT("TRANSITION")))return false;
   for(const TCHAR* Key:{TEXT("tick"),TEXT("development_mm"),TEXT("budget"),TEXT("random_cursor")})if(!Require(Eq(Get(SB,Key),Get(PB,Key)),TEXT("TRANSITION")))return false;
  }
  else
@@ -388,7 +454,7 @@ bool FValidator::Transition(const V& M)
   V OldBodies=Get(Body(OldSample),TEXT("bodies")),NewBodies=Get(Body(NewSample),TEXT("bodies"));
   if(!Require(Is(OldBodies,FValue::Array)&&Is(NewBodies,FValue::Array)&&OldBodies->A.Num()==2&&NewBodies->A.Num()==2,TEXT("PHYSICS_INVALID")))return false;
   F64(Get(OldBodies->A[0],TEXT("position_m"))->A[2],Dummy,&OldBits);F64(Get(NewBodies->A[0],TEXT("position_m"))->A[2],Dummy,&NewBits);int64 D=0;
-  if(!Require(Influence(OldBits,NewBits,D)&&Num(Get(SB,TEXT("development_mm")))==D&&Num(Get(IB,TEXT("tick_delta")))==1&&(Str(Get(IB,TEXT("case_id")))==TEXT("weak")||Str(Get(IB,TEXT("case_id")))==TEXT("strong"))&&Str(Get(CB,TEXT("adapter_kind")))==TEXT("genesis")&&Num(Get(SB,TEXT("tick")))==Num(Get(PB,TEXT("tick")))+1&&Eq(Get(Body(Snap),TEXT("case_id")),Get(IB,TEXT("case_id")))&&Num(Get(Body(Snap),TEXT("physical_step_count")))==Num(Get(Body(Before),TEXT("physical_step_count")))+8&&Num(Get(SB,TEXT("budget")))==Num(Get(PB,TEXT("budget")))-Num(Get(IB,TEXT("budget")))&&Num(Get(SB,TEXT("random_cursor")))==Num(Get(PB,TEXT("random_cursor")))+1,TEXT("TRANSITION")))return false;
+  if(!Require(Influence(OldBits,NewBits,D)&&Num(Get(SB,TEXT("development_mm")))==D&&Num(Get(IB,TEXT("tick_delta")))==1&&(SameText(Str(Get(IB,TEXT("case_id"))),TEXT("weak"))||SameText(Str(Get(IB,TEXT("case_id"))),TEXT("strong")))&&SameText(Str(Get(CB,TEXT("adapter_kind"))),TEXT("genesis"))&&Num(Get(SB,TEXT("tick")))==Num(Get(PB,TEXT("tick")))+1&&Eq(Get(Body(Snap),TEXT("case_id")),Get(IB,TEXT("case_id")))&&Num(Get(Body(Snap),TEXT("physical_step_count")))==Num(Get(Body(Before),TEXT("physical_step_count")))+8&&Num(Get(SB,TEXT("budget")))==Num(Get(PB,TEXT("budget")))-Num(Get(IB,TEXT("budget")))&&Num(Get(SB,TEXT("random_cursor")))==Num(Get(PB,TEXT("random_cursor")))+1,TEXT("TRANSITION")))return false;
  }
  V RB=Body(Result);if(!Require(Eq(Get(RB,TEXT("command_id")),Get(IB,TEXT("command_id")))&&Eq(Get(RB,TEXT("tick")),Get(SB,TEXT("tick")))&&Eq(Get(RB,TEXT("revision")),Get(SB,TEXT("revision")))&&Eq(Get(RB,TEXT("watermark")),Get(SB,TEXT("revision"))),TEXT("WATERMARK")))return false;
  return Require(Eq(Get(Body(Index),TEXT("command_id")),Get(IB,TEXT("command_id")))&&Eq(Get(Body(Index),TEXT("fingerprint")),Get(Refs(Result),TEXT("command"))),TEXT("COMMAND_CONFLICT"));
@@ -398,60 +464,60 @@ static TArray<FEdgeWorldUniverseBody> Bodies(const V& Sample)
 {
  TArray<FEdgeWorldUniverseBody> Result;for(const V& X:Get(Body(Sample),TEXT("bodies"))->A){FEdgeWorldUniverseBody B;B.PhysicalId=Str(Get(X,TEXT("physical_id")));B.PositionM=Vector(Get(X,TEXT("position_m")));B.LinearVelocityMS=Vector(Get(X,TEXT("linear_velocity_m_s")));B.AngularVelocityRadS=Vector(Get(X,TEXT("angular_velocity_rad_s")));V Q=Get(X,TEXT("quaternion_wxyz"));double D[4]={};for(int32 I=0;I<4;++I)F64(Q->A[I],D[I]);B.QuaternionWXYZ=FVector4d(D[0],D[1],D[2],D[3]);F64(Get(X,TEXT("mass_kg")),B.MassKg);Result.Add(B);}return Result;
 }
-static bool SameContext(const FEdgeWorldUniverseContext& A,const FEdgeWorldUniverseContext& B){return A.WorldId==B.WorldId&&A.AuthorityRoot==B.AuthorityRoot&&A.TrustAlgorithm==B.TrustAlgorithm&&A.TrustAnchor==B.TrustAnchor&&A.ArtifactClass==B.ArtifactClass&&A.ExpectedBuild==B.ExpectedBuild&&A.ExpectedOptions==B.ExpectedOptions;}
-static bool CanonicalRoot(const FString& Root){if(!Root.StartsWith(TEXT("/"))||Root.StartsWith(TEXT("//"))||(Root.Len()>1&&Root.EndsWith(TEXT("/")))||Root.Contains(TEXT("//")))return false;TArray<FString> P;Root.ParseIntoArray(P,TEXT("/"));for(TCHAR C:Root)if(C==0)return false;return !P.Contains(TEXT("."))&&!P.Contains(TEXT(".."));}
+static bool SameContext(const FEdgeWorldUniverseContext& A,const FEdgeWorldUniverseContext& B){return SameText(A.WorldId,B.WorldId)&&SameText(A.AuthorityRoot,B.AuthorityRoot)&&SameText(A.TrustAlgorithm,B.TrustAlgorithm)&&SameText(A.TrustAnchor,B.TrustAnchor)&&SameText(A.ArtifactClass,B.ArtifactClass)&&SameText(A.ExpectedBuild,B.ExpectedBuild)&&SameText(A.ExpectedOptions,B.ExpectedOptions);}
+static bool CanonicalRoot(const FString& Root){if(!StartsText(Root,TEXT("/"))||StartsText(Root,TEXT("//"))||(Root.Len()>1&&EndsText(Root,TEXT("/")))||HasSubText(Root,TEXT("//")))return false;TArray<FString> P=SplitUnits(Root,TCHAR('/'));for(TCHAR C:Root)if(C==0)return false;return !HasText(P,TEXT("."))&&!HasText(P,TEXT(".."));}
 bool FValidator::Verify(const V& Env,const FEdgeWorldUniverseExpectation& E,FEdgeWorldUniverseObservation& Out)
 {
  const auto& C=E.Context;const auto& H=E.TrustedHead;
- if(!Require(CanonicalRoot(C.AuthorityRoot)&&C.AuthorityRoot==H.Context.AuthorityRoot,TEXT("ROOT_MISMATCH"))||!Require(SameContext(C,H.Context),TEXT("AUTHORIZATION")))return false;
- if(!Require(Id(C.WorldId)&&Id(E.RequestId)&&LowerHex(C.TrustAnchor,64)&&LowerHex(C.ExpectedBuild,64)&&LowerHex(C.ExpectedOptions,64)&&LowerHex(H.Head,64)&&C.TrustAlgorithm==TEXT("local-hmac-sha256.v0.2")&&H.Domain==TEXT("edgeworld.universe.authority")&&H.Version==TEXT("0.2")&&H.Profile==TEXT("composite-rigid-support.v0.2")&&(H.StorageState==TEXT("ready")||H.StorageState==TEXT("unconfirmed_readonly"))&&C.ArtifactClass==(E.bFixtureOnly?TEXT("synthetic-contract-only"):TEXT("genesis-runtime")),TEXT("PROFILE")))return false;
+ if(!Require(CanonicalRoot(C.AuthorityRoot)&&SameText(C.AuthorityRoot,H.Context.AuthorityRoot),TEXT("ROOT_MISMATCH"))||!Require(SameContext(C,H.Context),TEXT("AUTHORIZATION")))return false;
+ if(!Require(Id(C.WorldId)&&Id(E.RequestId)&&LowerHex(C.TrustAnchor,64)&&LowerHex(C.ExpectedBuild,64)&&LowerHex(C.ExpectedOptions,64)&&LowerHex(H.Head,64)&&SameText(C.TrustAlgorithm,TEXT("local-hmac-sha256.v0.2"))&&SameText(H.Domain,TEXT("edgeworld.universe.authority"))&&SameText(H.Version,TEXT("0.2"))&&SameText(H.Profile,TEXT("composite-rigid-support.v0.2"))&&(SameText(H.StorageState,TEXT("ready"))||SameText(H.StorageState,TEXT("unconfirmed_readonly")))&&SameText(C.ArtifactClass,(E.bFixtureOnly?TEXT("synthetic-contract-only"):TEXT("genesis-runtime"))),TEXT("PROFILE")))return false;
  if(!Require(E.Tick>=0&&E.Tick<=MaxInt&&E.Revision>=0&&E.Revision<=MaxInt&&E.Watermark==E.Revision,TEXT("WATERMARK")))return false;
- if(!Keys(Env,TEXT("protocol_version,request_id,ok,result"))||!Require(Num(Get(Env,TEXT("protocol_version")))==1&&Is(Get(Env,TEXT("ok")),FValue::Bool)&&Get(Env,TEXT("ok"))->B,TEXT("SCHEMA"))||!Require(Str(Get(Env,TEXT("request_id")))==E.RequestId,TEXT("PROOF")))return false;
- V R=Get(Env,TEXT("result"));if(!Keys(R,TEXT("domain,version,world_id,operation,payload"))||!Require(Str(Get(R,TEXT("domain")))==H.Domain&&Str(Get(R,TEXT("version")))==H.Version,TEXT("DOMAIN"))||!Require(Str(Get(R,TEXT("world_id")))==C.WorldId&&Str(Get(R,TEXT("operation")))==TEXT("observe"),TEXT("WORLD")))return false;
- V P=Get(R,TEXT("payload"));if(!Keys(P,TEXT("manifest,state,event,watermark,storage_state,artifact_class,head,membership,records,opaque_refs"))||!Require(Str(Get(P,TEXT("storage_state")))==H.StorageState&&Str(Get(P,TEXT("artifact_class")))==C.ArtifactClass&&Str(Get(P,TEXT("head")))==H.Head,TEXT("PROOF"))||!Require(Num(Get(P,TEXT("watermark")))==E.Watermark,TEXT("WATERMARK")))return false;
+ if(!Keys(Env,TEXT("protocol_version,request_id,ok,result"))||!Require(Num(Get(Env,TEXT("protocol_version")))==1&&Is(Get(Env,TEXT("ok")),FValue::Bool)&&Get(Env,TEXT("ok"))->B,TEXT("SCHEMA"))||!Require(SameText(Str(Get(Env,TEXT("request_id"))),E.RequestId),TEXT("PROOF")))return false;
+ V R=Get(Env,TEXT("result"));if(!Keys(R,TEXT("domain,version,world_id,operation,payload"))||!Require(SameText(Str(Get(R,TEXT("domain"))),H.Domain)&&SameText(Str(Get(R,TEXT("version"))),H.Version),TEXT("DOMAIN"))||!Require(SameText(Str(Get(R,TEXT("world_id"))),C.WorldId)&&SameText(Str(Get(R,TEXT("operation"))),TEXT("observe")),TEXT("WORLD")))return false;
+ V P=Get(R,TEXT("payload"));if(!Keys(P,TEXT("manifest,state,event,watermark,storage_state,artifact_class,head,membership,records,opaque_refs"))||!Require(SameText(Str(Get(P,TEXT("storage_state"))),H.StorageState)&&SameText(Str(Get(P,TEXT("artifact_class"))),C.ArtifactClass)&&SameText(Str(Get(P,TEXT("head"))),H.Head),TEXT("PROOF"))||!Require(Num(Get(P,TEXT("watermark")))==E.Watermark,TEXT("WATERMARK")))return false;
  V Ms=Get(P,TEXT("membership")),Aux=Get(P,TEXT("records")),Opaque=Get(P,TEXT("opaque_refs")),M=Get(P,TEXT("manifest")),S=Get(P,TEXT("state")),Event=Get(P,TEXT("event"));
  if(!Require(Is(Ms,FValue::Array)&&Ms->A.Num()>=1&&Ms->A.Num()<=64&&Is(Aux,FValue::Array)&&Aux->A.Num()<=96&&Is(Opaque,FValue::Array)&&Opaque->A.Num()<=256,TEXT("PROOF_LIMIT")))return false;
  TArray<V> All=Ms->A;All.Append(Aux->A);All.Add(M);All.Add(S);if(!Is(Event,FValue::Null))All.Add(Event);
- TMap<FString,FString> Identities;TMap<FString,int32> Counts;
+ TextMap<FString> Identities;TextMap<int32> Counts;
  for(const V& X:All)
  {
-  if(!Record(X)||!Require(Str(Get(X,TEXT("world_id")))==C.WorldId,TEXT("WORLD")))return false;
+  if(!Record(X)||!Require(SameText(Str(Get(X,TEXT("world_id"))),C.WorldId),TEXT("WORLD")))return false;
   FString D=Sha(Canon(X),true),IdentityKey=Kind(X)+TEXT(":")+Str(Get(X,TEXT("id")));if(!Require(!D.IsEmpty(),TEXT("HASH")))return false;
-  if(!Require(!Identities.Contains(IdentityKey)||Identities[IdentityKey]==D,TEXT("ID")))return false;Identities.Add(IdentityKey,D);Records.Add(D,X);Counts.FindOrAdd(Kind(X))++;
+  if(!Require(!Identities.Contains(IdentityKey)||SameText(Identities[IdentityKey],D),TEXT("ID")))return false;Identities.Add(IdentityKey,D);Records.Add(D,X);Counts.FindOrAdd(Kind(X))++;
  }
  for(const auto& Pair:Records)
  {
-  V ER=ExpectedRefs(Pair.Value);for(const auto& Ref:Refs(Pair.Value)->O){const V* T=Records.Find(Ref.Value->S);if(T&&!Require(Kind(*T)==Str(Get(ER,*Ref.Key)),TEXT("PROOF")))return false;}
+  V ER=ExpectedRefs(Pair.Value);for(const auto& Ref:Refs(Pair.Value)->O){const V* T=Records.Find(Ref.Value->S);if(T&&!Require(SameText(Kind(*T),Str(Get(ER,Ref.Key))),TEXT("PROOF")))return false;}
  }
- for(const auto& Cnt:Counts)if(!Require(Cnt.Value<=Num(Get(Get(Schema,TEXT("proof_kind_max")),*Cnt.Key)),TEXT("PROOF_LIMIT")))return false;
- FString Selected=Sha(Canon(M),true);TSet<FString> Explicit;Explicit.Add(Selected);Explicit.Add(Sha(Canon(S),true));if(!Is(Event,FValue::Null))Explicit.Add(Sha(Canon(Event),true));
- for(const V& X:Ms->A){FString D=Sha(Canon(X),true);if(!Require(Kind(X)==TEXT("manifest")&&!Membership.Contains(D),TEXT("PROOF")))return false;Membership.Add(D);Explicit.Add(D);}
- TSet<FString> AuxSet;for(const V& X:Aux->A){FString D=Sha(Canon(X),true);if(!Require(!AuxSet.Contains(D)&&!Explicit.Contains(D),TEXT("PROOF")))return false;AuxSet.Add(D);}
- if(!Require(Sha(Canon(Ms->A[0]),true)==H.Head&&Sha(Canon(Ms->A.Last()),true)==Selected,TEXT("PROOF")))return false;
- for(int32 I=0;I<Ms->A.Num();++I){V A=Ms->A[I];if(!Require(Eq(Get(Body(A),TEXT("watermark")),Get(Body(A),TEXT("revision"))),TEXT("WATERMARK")))return false;if(I+1==Ms->A.Num())break;V B=Ms->A[I+1];int64 Delta=Num(Get(Body(A),TEXT("tick")))-Num(Get(Body(B),TEXT("tick")));if(!Require(Str(Get(Refs(A),TEXT("prior_manifest")))==Sha(Canon(B),true)&&Num(Get(Body(A),TEXT("revision")))==Num(Get(Body(B),TEXT("revision")))+1&&(Delta==0||Delta==1),TEXT("PROOF")))return false;}
- if(!Require(Kind(M)==TEXT("manifest")&&Kind(S)==TEXT("state")&&Num(Get(Body(M),TEXT("tick")))==E.Tick&&Num(Get(Body(M),TEXT("revision")))==E.Revision&&Num(Get(Body(M),TEXT("watermark")))==E.Watermark&&Str(Get(Refs(M),TEXT("state")))==Sha(Canon(S),true),TEXT("WATERMARK")))return false;
- if(!Require((E.Revision==0&&Is(Event,FValue::Null))||(E.Revision>0&&Kind(Event)==TEXT("event")&&Str(Get(Refs(M),TEXT("event")))==Sha(Canon(Event),true)),TEXT("PROOF")))return false;
- FString Previous=Str(Get(Refs(M),TEXT("prior_manifest")));TSet<FString> Active,Done;
+ for(const auto& Cnt:Counts)if(!Require(Cnt.Value<=Num(Get(Get(Schema,TEXT("proof_kind_max")),Cnt.Key)),TEXT("PROOF_LIMIT")))return false;
+ FString Selected=Sha(Canon(M),true);TextSet Explicit;Explicit.Add(Selected);Explicit.Add(Sha(Canon(S),true));if(!Is(Event,FValue::Null))Explicit.Add(Sha(Canon(Event),true));
+ for(const V& X:Ms->A){FString D=Sha(Canon(X),true);if(!Require(SameText(Kind(X),TEXT("manifest"))&&!Membership.Contains(D),TEXT("PROOF")))return false;Membership.Add(D);Explicit.Add(D);}
+ TextSet AuxSet;for(const V& X:Aux->A){FString D=Sha(Canon(X),true);if(!Require(!AuxSet.Contains(D)&&!Explicit.Contains(D),TEXT("PROOF")))return false;AuxSet.Add(D);}
+ if(!Require(SameText(Sha(Canon(Ms->A[0]),true),H.Head)&&SameText(Sha(Canon(Ms->A.Last()),true),Selected),TEXT("PROOF")))return false;
+ for(int32 I=0;I<Ms->A.Num();++I){V A=Ms->A[I];if(!Require(Eq(Get(Body(A),TEXT("watermark")),Get(Body(A),TEXT("revision"))),TEXT("WATERMARK")))return false;if(I+1==Ms->A.Num())break;V B=Ms->A[I+1];int64 Delta=Num(Get(Body(A),TEXT("tick")))-Num(Get(Body(B),TEXT("tick")));if(!Require(SameText(Str(Get(Refs(A),TEXT("prior_manifest"))),Sha(Canon(B),true))&&Num(Get(Body(A),TEXT("revision")))==Num(Get(Body(B),TEXT("revision")))+1&&(Delta==0||Delta==1),TEXT("PROOF")))return false;}
+ if(!Require(SameText(Kind(M),TEXT("manifest"))&&SameText(Kind(S),TEXT("state"))&&Num(Get(Body(M),TEXT("tick")))==E.Tick&&Num(Get(Body(M),TEXT("revision")))==E.Revision&&Num(Get(Body(M),TEXT("watermark")))==E.Watermark&&SameText(Str(Get(Refs(M),TEXT("state"))),Sha(Canon(S),true)),TEXT("WATERMARK")))return false;
+ if(!Require((E.Revision==0&&Is(Event,FValue::Null))||(E.Revision>0&&SameText(Kind(Event),TEXT("event"))&&SameText(Str(Get(Refs(M),TEXT("event"))),Sha(Canon(Event),true))),TEXT("PROOF")))return false;
+ FString Previous=Str(Get(Refs(M),TEXT("prior_manifest")));TextSet Active,Done;
  TFunction<bool(const FString&,bool)> Expand=[&](const FString& D,bool Prev)
  {
   FString Memo=D+(Prev?TEXT(":p"):TEXT(":n"));if(!Require(Records.Contains(D)&&!Active.Contains(Memo),TEXT("PROOF")))return false;if(Done.Contains(Memo))return true;Active.Add(Memo);Needed.Add(D);V X=Records[D];
-  for(const auto& Ref:Refs(X)->O){if(Kind(X)==TEXT("manifest")&&(Ref.Key==TEXT("prior_manifest")||(Prev&&Ref.Key!=TEXT("state"))))continue;if(Kind(X)==TEXT("event")&&Ref.Key==TEXT("prior_event"))continue;if(!Expand(Ref.Value->S,false))return false;}
+  for(const auto& Ref:Refs(X)->O){if(SameText(Kind(X),TEXT("manifest"))&&(SameText(Ref.Key,TEXT("prior_manifest"))||(Prev&&!SameText(Ref.Key,TEXT("state")))))continue;if(SameText(Kind(X),TEXT("event"))&&SameText(Ref.Key,TEXT("prior_event")))continue;if(!Expand(Ref.Value->S,false))return false;}
   Active.Remove(Memo);Done.Add(Memo);return true;
  };
  if(!Expand(Selected,false)||(!Previous.IsEmpty()&&!Expand(Previous,true)))return false;
  for(const auto& X:Records)if(!Require(Needed.Contains(X.Key)||Membership.Contains(X.Key),TEXT("PROOF")))return false;
- TSet<FString> Omitted;
+ TextSet Omitted;
  for(const auto& X:Records)
  {
   for(const auto& Ref:Refs(X.Value)->O)if(!Records.Contains(Ref.Value->S))
   {
-   bool Allowed=(Kind(X.Value)==TEXT("event")&&Ref.Key==TEXT("prior_event"))||(Kind(X.Value)==TEXT("manifest")&&X.Key!=Selected&&Ref.Key!=TEXT("state"))||(Kind(X.Value)==TEXT("manifest")&&Membership.Contains(X.Key)&&X.Key!=Selected&&X.Key!=Previous);
+   bool Allowed=(SameText(Kind(X.Value),TEXT("event"))&&SameText(Ref.Key,TEXT("prior_event")))||(SameText(Kind(X.Value),TEXT("manifest"))&&!SameText(X.Key,Selected)&&!SameText(Ref.Key,TEXT("state")))||(SameText(Kind(X.Value),TEXT("manifest"))&&Membership.Contains(X.Key)&&!SameText(X.Key,Selected)&&!SameText(X.Key,Previous));
    if(!Require(Allowed,TEXT("PROOF")))return false;Omitted.Add(Ref.Value->S);
   }
  }
- TArray<FString> Sorted=Omitted.Array();Sorted.Sort();if(!Require(Sorted.Num()==Opaque->A.Num(),TEXT("PROOF")))return false;for(int32 I=0;I<Sorted.Num();++I)if(!Require(Str(Opaque->A[I])==Sorted[I],TEXT("PROOF")))return false;
+ TArray<FString> Sorted=Omitted.Array();Sorted.Sort(OrdinalLess);if(!Require(Sorted.Num()==Opaque->A.Num(),TEXT("PROOF")))return false;for(int32 I=0;I<Sorted.Num();++I)if(!Require(SameText(Str(Opaque->A[I]),Sorted[I]),TEXT("PROOF")))return false;
  // Membership-only ancestors are not renderable dependencies. Never validate them by expanding opaque history.
- for(const FString& D:Needed){V X=Records[D];if(Kind(X)==TEXT("event")||Kind(X)==TEXT("candidate")||Kind(X)==TEXT("command")||Kind(X)==TEXT("approval")||Kind(X)==TEXT("admission")||Kind(X)==TEXT("result")||Kind(X)==TEXT("index")||Kind(X)==TEXT("manifest"))continue;if(!Static(X,C))return false;}
+ for(const FString& D:Needed){V X=Records[D];if(SameText(Kind(X),TEXT("event"))||SameText(Kind(X),TEXT("candidate"))||SameText(Kind(X),TEXT("command"))||SameText(Kind(X),TEXT("approval"))||SameText(Kind(X),TEXT("admission"))||SameText(Kind(X),TEXT("result"))||SameText(Kind(X),TEXT("index"))||SameText(Kind(X),TEXT("manifest")))continue;if(!Static(X,C))return false;}
  if(!Transition(M)||!Error.IsEmpty())return false;
  Out.WorldId=C.WorldId;Out.Manifest=Selected;Out.State=Sha(Canon(S),true);Out.Event=Is(Event,FValue::Null)?FString():Sha(Canon(Event),true);Out.StorageState=H.StorageState;Out.ArtifactClass=C.ArtifactClass;Out.Tick=E.Tick;Out.Revision=E.Revision;Out.Watermark=E.Watermark;Out.Budget=Num(Get(Body(S),TEXT("budget")));Out.RandomCursor=Num(Get(Body(S),TEXT("random_cursor")));if(Is(Get(Body(S),TEXT("development_mm")),FValue::Int))Out.DevelopmentMm=Num(Get(Body(S),TEXT("development_mm")));
  V Snapshot=Target(S,TEXT("snapshot")),Sample=Target(Snapshot,TEXT("sample")),World=Target(S,TEXT("world")),Projection=Target(World,TEXT("projection")),Transform=Target(Projection,TEXT("transform"));
@@ -466,7 +532,7 @@ bool FValidator::Verify(const V& Env,const FEdgeWorldUniverseExpectation& E,FEdg
  Out.PhysicalStepCount=Num(Get(Body(Snapshot),TEXT("physical_step_count")));Out.Bodies=Bodies(Sample);Out.OriginCm=Vector(Get(Body(Transform),TEXT("origin_cm")));F64(Get(Body(Transform),TEXT("scale")),Out.Scale);F64(Get(Body(Projection),TEXT("development_cm_per_mm")),Out.DevelopmentCmPerMm);
  for(const V& Contact:Get(Body(Sample),TEXT("contacts"))->A){FEdgeWorldUniverseContact D;D.PositionM=Vector(Get(Contact,TEXT("position_m")));D.ForceOnDynamicN=Vector(Get(Contact,TEXT("force_on_dynamic_n")));Out.Contacts.Add(D);}
  if(!Previous.IsEmpty()){V PS=Target(Records[Previous],TEXT("state"));Out.PriorBodies=Bodies(Target(Target(PS,TEXT("snapshot")),TEXT("sample")));}
- Sorted=Needed.Array();Sorted.Sort();for(const FString& D:Sorted){V X=Records[D];FEdgeWorldUniverseRecord ROut;ROut.Digest=D;ROut.Kind=Kind(X);ROut.Id=Str(Get(X,TEXT("id")));ROut.CanonicalJson=Canon(X);Out.SelectedRecords.Add(ROut);}return Error.IsEmpty();
+ Sorted=Needed.Array();Sorted.Sort(OrdinalLess);for(const FString& D:Sorted){V X=Records[D];FEdgeWorldUniverseRecord ROut;ROut.Digest=D;ROut.Kind=Kind(X);ROut.Id=Str(Get(X,TEXT("id")));ROut.CanonicalJson=Canon(X);Out.SelectedRecords.Add(ROut);}return Error.IsEmpty();
 }
 } // namespace EdgeUniverse
 

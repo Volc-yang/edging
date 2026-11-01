@@ -85,6 +85,100 @@ bool FEdgeWorldUniverseObservationTest::RunTest(const FString& Parameters)
  TArray<FString> Bad={Wire+TEXT("{}"),Wire+TEXT("\r\n"),TEXT("\n")+Wire,Wire.Replace(TEXT("\"protocol_version\":1"),TEXT("\"protocol_version\":true")),Wire.Replace(TEXT("\"protocol_version\":1"),TEXT("\"protocol_version\":1.0")),Wire.Replace(TEXT("\"ok\":true"),TEXT("\"ok\":true,\"\\u006fk\":true")),Wire.Replace(TEXT("\"request_id\":"),TEXT("\"extra\":0,\"request_id\":"))};
  for(const FString& B:Bad)TestFalse(TEXT("strict wire boundary"),FEdgeWorldUniverseObservationParser::Verify(Bytes(B),E,Out,Error));
  TArray<uint8> InvalidUtf8=Bytes(Wire);InvalidUtf8.Insert(0xc0,0);TestFalse(TEXT("invalid UTF8 not replaced"),FEdgeWorldUniverseObservationParser::Verify(InvalidUtf8,E,Out,Error));
+
+ // I9S: protocol equality is case-sensitive and counted; FString defaults are unsuitable.
+ int32 StrictTextCases = 0;
+ auto RejectWire = [&](const TCHAR* Label, const FString& Input)
+ {
+  TestFalse(Label, FEdgeWorldUniverseObservationParser::Verify(Bytes(Input), E, Out, Error));
+  TestTrue(TEXT("strict text failure clears DTO"), Out.SelectedRecords.IsEmpty());
+  ++StrictTextCases;
+ };
+ auto Changed = [&](const TCHAR* From, const TCHAR* To)
+ {
+  return Wire.Replace(From, To, ESearchCase::CaseSensitive);
+ };
+ RejectWire(TEXT("operation case is exact"), Changed(TEXT("\"operation\":\"observe\""), TEXT("\"operation\":\"OBSERVE\"")));
+ RejectWire(TEXT("domain case is exact"), Changed(TEXT("edgeworld.universe.authority"), TEXT("EDGEWORLD.universe.authority")));
+ RejectWire(TEXT("request ID case is exact"), Changed(TEXT("\"request_id\":\"observe-0\""), TEXT("\"request_id\":\"OBSERVE-0\"")));
+ RejectWire(TEXT("world case is exact"), Changed(TEXT("composite-demo"), TEXT("COMPOSITE-demo")));
+ RejectWire(TEXT("schema key case is exact"), Changed(TEXT("\"ok\":true"), TEXT("\"OK\":true")));
+ RejectWire(TEXT("distinct case keys are extra schema keys"), Changed(TEXT("\"ok\":true"), TEXT("\"ok\":true,\"OK\":true")));
+ RejectWire(TEXT("NUL inside operation preserved"), Changed(TEXT("\"operation\":\"observe\""), TEXT("\"operation\":\"ob\\u0000serve\"")));
+ RejectWire(TEXT("NUL operation suffix cannot alias prefix"), Changed(TEXT("\"operation\":\"observe\""), TEXT("\"operation\":\"observe\\u0000suffix\"")));
+ RejectWire(TEXT("NUL key cannot alias decoded schema key"), Changed(TEXT("\"ok\":true"), TEXT("\"o\\u0000k\":true")));
+ RejectWire(TEXT("NUL request suffix cannot alias prefix"), Changed(TEXT("\"request_id\":\"observe-0\""), TEXT("\"request_id\":\"observe-0\\u0000suffix\"")));
+ auto WrongRoot = E; WrongRoot.TrustedHead.Context.AuthorityRoot = C.AuthorityRoot.Replace(TEXT("edgeworld"), TEXT("EDGEWORLD"), ESearchCase::CaseSensitive);
+ TestFalse(TEXT("trusted root spelling is case-sensitive"), FEdgeWorldUniverseObservationParser::Verify(Bytes(Wire), WrongRoot, Out, Error)); ++StrictTextCases;
+ auto WrongTrust = E; WrongTrust.TrustedHead.Context.TrustAlgorithm = TEXT("LOCAL-hmac-sha256.v0.2");
+ TestFalse(TEXT("trust context spelling is case-sensitive"), FEdgeWorldUniverseObservationParser::Verify(Bytes(Wire), WrongTrust, Out, Error)); ++StrictTextCases;
+ auto WrongStorage = E; WrongStorage.TrustedHead.StorageState = TEXT("READY");
+ TestFalse(TEXT("trusted storage enum case is exact"), FEdgeWorldUniverseObservationParser::Verify(Bytes(Wire), WrongStorage, Out, Error)); ++StrictTextCases;
+ auto NulRoot = E;
+ auto& RootChars = NulRoot.Context.AuthorityRoot.GetCharArray(); RootChars.Pop(); RootChars.Add(0); RootChars.Append(TEXT("suffix"), 6); RootChars.Add(0);
+ NulRoot.TrustedHead.Context.AuthorityRoot = NulRoot.Context.AuthorityRoot;
+ TestFalse(TEXT("counted embedded NUL root rejected"), FEdgeWorldUniverseObservationParser::Verify(Bytes(Wire), NulRoot, Out, Error)); ++StrictTextCases;
+
+ // Generic object keys may differ in case or contain NUL; only exact decoded duplicates collide.
+ auto OptionsRecord = [](const FString& Declarations)
+ {
+  return TEXT("{\"body\":{\"artifact_class\":\"synthetic-contract-only\",\"declarations\":") + Declarations
+   + TEXT(",\"exports\":{},\"normalizer\":\"public-model-dump.v0.2\",\"parameter_hash\":\"") + FString::ChrN(64, TEXT('a'))
+   + TEXT("\",\"resolution\":\"static-declared\"},\"domain\":\"edgeworld.universe.authority\",\"id\":\"options-text\",\"kind\":\"resolved_options\",\"refs\":{\"build\":\"")
+   + FString::ChrN(64, TEXT('b')) + TEXT("\"},\"version\":\"0.2\",\"world_id\":\"composite-demo\"}");
+ };
+ auto CheckObject = [&](const TCHAR* Label, const FString& Input, const FString& ExpectedObject)
+ {
+  FString Canon, Digest, CodecError;
+  TestTrue(Label, FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(OptionsRecord(Input)), Canon, Digest, CodecError));
+  TestTrue(TEXT("canonical object bytes exact including case/NUL/scalar key order"), Bytes(Canon) == Bytes(OptionsRecord(ExpectedObject)));
+  ++StrictTextCases;
+ };
+ CheckObject(TEXT("case-distinct generic keys accepted"), TEXT("{\"a\":2,\"A\":1}"), TEXT("{\"A\":1,\"a\":2}"));
+ CheckObject(TEXT("NUL suffix generic keys remain distinct"), TEXT("{\"a\\u0000y\":3,\"a\":1,\"a\\u0000x\":2}"), TEXT("{\"a\":1,\"a\\u0000x\":2,\"a\\u0000y\":3}"));
+ CheckObject(TEXT("NUL value preserves both suffix and byte identity"), TEXT("{\"x\":\"a\\u0000b\"}"), TEXT("{\"x\":\"a\\u0000b\"}"));
+ CheckObject(TEXT("scalar ordinal U+E000 before U+10000"), TEXT("{\"\\ud800\\udc00\":2,\"\\ue000\":1}"), TEXT("{\"\\ue000\":1,\"\\ud800\\udc00\":2}"));
+ CheckObject(TEXT("raw UTF8 nonBMP/scalar keys accepted and ordered"), TEXT("{\"\U00010000\":2,\"\uE000\":1}"), TEXT("{\"\\ue000\":1,\"\\ud800\\udc00\":2}"));
+ FString Canon, Digest, CodecError;
+ TestFalse(TEXT("escape-equivalent duplicate keys rejected"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(OptionsRecord(TEXT("{\"a\":1,\"\\u0061\":2}"))), Canon, Digest, CodecError)); ++StrictTextCases;
+ TestFalse(TEXT("NUL-preserving escape-equivalent duplicate keys rejected"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(OptionsRecord(TEXT("{\"a\\u0000x\":1,\"\\u0061\\u0000x\":2}"))), Canon, Digest, CodecError)); ++StrictTextCases;
+ auto ProposalRecord = [](const FString& Output)
+ {
+  return TEXT("{\"body\":{\"output\":\"") + Output + TEXT("\",\"principal\":\"fixture-principal\"},\"domain\":\"edgeworld.universe.authority\",\"id\":\"proposal-text\",\"kind\":\"proposal\",\"refs\":{},\"version\":\"0.2\",\"world_id\":\"composite-demo\"}");
+ };
+ FString NonBmp;
+ for (int32 I = 0; I < 600; ++I) NonBmp += TEXT("\\ud800\\udc00");
+ TestTrue(TEXT("600 nonBMP scalars accepted despite 1200 UTF16 units"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ProposalRecord(NonBmp)), Canon, Digest, CodecError)); ++StrictTextCases;
+ for (int32 I = 600; I < 1024; ++I) NonBmp += TEXT("\\ud800\\udc00");
+ TestTrue(TEXT("1024 nonBMP scalars exactly 4096 UTF8 bytes accepted"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ProposalRecord(NonBmp)), Canon, Digest, CodecError)); ++StrictTextCases;
+ TestFalse(TEXT("1025 ASCII scalars hit output cap independently of UTF8 cap"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ProposalRecord(FString::ChrN(1025, TEXT('a')))), Canon, Digest, CodecError)); ++StrictTextCases;
+ TestFalse(TEXT("1025 nonBMP scalars hit UTF8 byte cap"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ProposalRecord(NonBmp + TEXT("\\ud800\\udc00"))), Canon, Digest, CodecError)); ++StrictTextCases;
+ // The frozen config's canonical equality must preserve case too.
+ for (const auto& X : Gold->AsArray())
+ {
+  J G = X->AsObject();
+  if (G->GetStringField(TEXT("id")).Equals(TEXT("existence-world"), ESearchCase::CaseSensitive))
+  {
+   FString Hex = G->GetStringField(TEXT("canonical_hex")); TArray<uint8> Raw; Raw.SetNum(Hex.Len() / 2); HexToBytes(Hex, Raw.GetData()); Raw.Add(0);
+   FString ExistenceText = UTF8_TO_TCHAR(reinterpret_cast<const ANSICHAR*>(Raw.GetData()));
+   ExistenceText.ReplaceInline(TEXT("\"category\":\"world\""), TEXT("\"category\":\"WORLD\""), ESearchCase::CaseSensitive);
+   TestFalse(TEXT("schema enum values cannot fold case"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ExistenceText), Canon, Digest, CodecError)); ++StrictTextCases;
+  }
+  if (G->GetStringField(TEXT("kind")).Equals(TEXT("physics_config"), ESearchCase::CaseSensitive))
+  {
+   FString Hex = G->GetStringField(TEXT("canonical_hex")); TArray<uint8> Raw; Raw.SetNum(Hex.Len() / 2); HexToBytes(Hex, Raw.GetData());
+   FString ConfigText;
+   // Add an explicit terminator before conversion; Raw itself is an exact counted frozen vector.
+   Raw.Add(0); ConfigText = UTF8_TO_TCHAR(reinterpret_cast<const ANSICHAR*>(Raw.GetData()));
+   ConfigText.ReplaceInline(TEXT("\"backend\":\"metal\""), TEXT("\"backend\":\"METAL\""), ESearchCase::CaseSensitive);
+   TestFalse(TEXT("config canonical equality cannot fold case"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(ConfigText), Canon, Digest, CodecError)); ++StrictTextCases;
+  }
+ }
+ FString KindSuffix = ProposalRecord(TEXT("valid output"));
+ KindSuffix.ReplaceInline(TEXT("\"kind\":\"proposal\""), TEXT("\"kind\":\"proposal\\u0000suffix\""), ESearchCase::CaseSensitive);
+ TestFalse(TEXT("kind lookup preserves NUL suffix and rejects unknown kind"), FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(KindSuffix), Canon, Digest, CodecError)); ++StrictTextCases;
+ TestEqual(TEXT("all new strict text cases executed"), StrictTextCases, 28);
+ AddInfo(FString::Printf(TEXT("I9S strict_text_cases=%d"), StrictTextCases));
  AddInfo(FString::Printf(TEXT("I9 golden=%d proof=%d applicable_negative=%d writer_only_excluded=%d exact_F=%d"),GoldCount,ProofCount,NegativeCount,ExcludedCount,int32(UE_ARRAY_COUNT(Cases))));
  TestEqual(TEXT("all frozen goldens"),GoldCount,67);TestEqual(TEXT("all selected proof fixtures"),ProofCount,5);TestEqual(TEXT("applicable fixed parse/proof negatives"),NegativeCount,27);TestEqual(TEXT("writer-only archive/blob/key negatives explicitly excluded"),ExcludedCount,30);
  return true;
