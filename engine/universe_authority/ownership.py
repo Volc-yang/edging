@@ -1,7 +1,7 @@
 """Explicit local authority registration and stable, lifetime fd ownership.
 
-Importing this module performs no filesystem or process operations. This is the
-local-posix-sync-v0.1 profile, not an inter-machine lock or power-loss guarantee.
+Importing this module performs no filesystem or process operations. These are
+explicit local POSIX profiles, not inter-machine locks or power-loss guarantees.
 """
 from __future__ import annotations
 
@@ -13,11 +13,11 @@ from pathlib import Path
 import re
 import stat
 
-from .codec import ContractError, canonical, decode
+from .codec import ContractError, DeploymentContext, canonical, decode
 
 _DOMAIN = 'edgeworld.universe.authority'
-_VERSION = '0.1'
 _PROFILE = 'local-posix-sync-v0.1'
+_BLOB_PROFILE = 'local-posix-blob-sync-v0.2'
 _LOCK = '.authority.lock'
 _IDENTITY = 'identity.json'
 _HEAD = 'HEAD.json'
@@ -73,16 +73,52 @@ def _sync_directory(descriptor: int) -> None:
         _error('SYNC_UNSUPPORTED', 'directory synchronization failed', exc)
 
 
-def _expected(root: Path, world_id: str, info: os.stat_result) -> bytes:
+def _registration_context(root: Path, world_id: str, domain_version: str,
+                          profile: str, context: DeploymentContext | None) -> None:
+    # Validate the explicit deployment before opening or creating any directory.
+    if (type(domain_version) is not str or type(profile) is not str
+            or (domain_version, profile) not in {
+                ('0.1', _PROFILE), ('0.2', _BLOB_PROFILE)}):
+        _error('PROFILE', 'unsupported ownership version/profile pair')
+    if domain_version == '0.1':
+        if context is not None:
+            _error('PROFILE', 'v0.1 ownership does not accept deployment context')
+        return
+    if type(context) is not DeploymentContext:
+        _error('ROOT_MISMATCH', 'v0.2 requires an explicit deployment context')
+    if (context.world_id != world_id or context.domain_version != domain_version
+            or context.storage_profile != profile
+            or context.archive_profile != 'composite-rigid-support.v0.2'
+            or context.trust_algorithm != 'local-hmac-sha256.v0.2'):
+        _error('ROOT_MISMATCH', 'deployment context pins do not match ownership')
+    if (type(context.authority_root) is not str
+            or not root.is_absolute() or str(root) != context.authority_root
+            or str(root.resolve(strict=False)) != context.authority_root):
+        _error('ROOT_MISMATCH', 'v0.2 root must use its unique canonical spelling')
+
+
+def _expected(root: Path, world_id: str, info: os.stat_result,
+              domain_version: str, profile: str,
+              context: DeploymentContext | None) -> bytes:
     device, inode = str(info.st_dev), str(info.st_ino)
     if any(re.fullmatch(r'0|[1-9][0-9]{0,19}', value) is None
            for value in (device, inode)):
         _error('ROOT_MISMATCH', 'root identity cannot be encoded by this profile')
-    return canonical({
-        'domain': _DOMAIN, 'version': _VERSION, 'world_id': world_id,
-        'profile': _PROFILE, 'root_canonical': str(root),
+    identity = {
+        'domain': _DOMAIN, 'version': domain_version, 'world_id': world_id,
+        'profile': profile, 'root_canonical': str(root),
         'root_device': device, 'root_inode': inode,
-    })
+    }
+    if context is not None:
+        identity.update({
+            'trust_algorithm': context.trust_algorithm,
+            'trust_anchor': context.trust_anchor,
+            'expected_build': context.expected_build,
+            'expected_options': context.expected_options,
+            'artifact_class': context.artifact_class,
+            'archive_profile': context.archive_profile,
+        })
+    return canonical(identity)
 
 
 def _validate_identity(root_fd: int, expected: bytes) -> tuple[int, int]:
@@ -133,6 +169,8 @@ class Lease:
     world_id: str
     owner_pid: int
     profile: str
+    domain_version: str
+    context: DeploymentContext | None
     initializing: bool
     _root_fd: int = field(repr=False)
     _lock_fd: int = field(repr=False)
@@ -151,6 +189,8 @@ class Lease:
         if os.getpid() != self.owner_pid:
             _error('LOCKED', 'fork-inherited lease cannot authorize this process')
         try:
+            _registration_context(self.root, self.world_id, self.domain_version,
+                                  self.profile, self.context)
             if self.root.resolve(strict=True) != self.root:
                 _error('ROOT_MISMATCH', 'registered canonical path changed')
             root_info = os.stat(self.root, follow_symlinks=False)
@@ -201,12 +241,16 @@ class Lease:
         return False
 
 
-def acquire(root: Path, world_id: str, *, initialize: bool = False) -> Lease:
+def acquire(root: Path, world_id: str, *, initialize: bool = False,
+            domain_version: str = "0.1", profile: str = "local-posix-sync-v0.1",
+            context: DeploymentContext | None = None) -> Lease:
     """Acquire nonblocking exclusive ownership; reads never implicitly initialize.
 
     Missing registration in read mode creates nothing. Explicit initialization
     may create one root directory (its parent must exist), a stable empty lock,
     and canonical identity only. Existing HEAD requires recovery, not initialize.
+    v0.2 additionally requires an owner-injected deployment context and exact
+    canonical root spelling. Ownership never opens or provisions a trust key.
     """
     if not isinstance(root, Path) or type(initialize) is not bool:
         _error('SCHEMA', 'root must be Path and initialize must be bool')
@@ -215,6 +259,7 @@ def acquire(root: Path, world_id: str, *, initialize: bool = False) -> Lease:
     root_fd = None
     lock_fd = None
     try:
+        _registration_context(root, world_id, domain_version, profile, context)
         resolved = root.resolve(strict=False)
         created_root = False
         if initialize:
@@ -230,7 +275,7 @@ def acquire(root: Path, world_id: str, *, initialize: bool = False) -> Lease:
         info = os.fstat(root_fd)
         if not stat.S_ISDIR(info.st_mode):
             _error('ROOT_MISMATCH', 'authority root is not a directory')
-        expected = _expected(resolved, world_id, info)
+        expected = _expected(resolved, world_id, info, domain_version, profile, context)
         entries = set(os.listdir(root_fd))
         if _IDENTITY not in entries:
             if _HEAD in entries:
@@ -283,7 +328,8 @@ def acquire(root: Path, world_id: str, *, initialize: bool = False) -> Lease:
         lease = object.__new__(Lease)
         for name, value in {
             'root': resolved, 'world_id': world_id, 'owner_pid': os.getpid(),
-            'profile': _PROFILE, 'initializing': initialize,
+            'profile': profile, 'domain_version': domain_version,
+            'context': context, 'initializing': initialize,
             '_root_fd': root_fd, '_lock_fd': lock_fd,
             '_root_identity': _inode(info), '_lock_identity': _inode(lock_info),
             '_identity_inode': identity_inode, '_identity_bytes': expected,

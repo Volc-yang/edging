@@ -1,4 +1,5 @@
 """Finite local ownership checks; no world solve, Genesis, GPU or UE imports."""
+from dataclasses import replace
 import errno
 import json
 import os
@@ -10,7 +11,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from engine.universe_authority.codec import ContractError
+from engine.universe_authority.codec import ContractError, DeploymentContext
 from engine.universe_authority.ownership import acquire
 
 _REPOSITORY = Path(__file__).resolve().parents[1]
@@ -111,6 +112,8 @@ class OwnershipTests(unittest.TestCase):
         self.assertTrue(lease.initializing)
         self.assertEqual(lease.world_id, _WORLD)
         self.assertEqual(lease.profile, 'local-posix-sync-v0.1')
+        self.assertEqual(lease.domain_version, '0.1')
+        self.assertIsNone(lease.context)
         self.assertFalse((self.root / 'HEAD.json').exists())
         self.assertEqual((self.root / '.authority.lock').read_bytes(), b'')
         with self.assertRaises(AttributeError):
@@ -365,6 +368,225 @@ class OwnershipTests(unittest.TestCase):
         self.expect_code('SCHEMA', acquire, self.root, _WORLD, initialize=1)
         self.expect_code('ID', acquire, self.root, 'BAD ID')
         self.expect_code('ID', acquire, self.root, True)
+
+
+class OwnershipV02Tests(unittest.TestCase):
+    setUp = OwnershipTests.setUp
+    expect_code = OwnershipTests.expect_code
+    files = OwnershipTests.files
+
+    def context(self, **changes):
+        values = dict(world_id=_WORLD, authority_root=str(self.root.resolve()),
+                      trust_anchor='a' * 64, expected_build='b' * 64,
+                      expected_options='c' * 64)
+        values.update(changes)
+        return DeploymentContext(**values)
+
+    def acquire(self, *, root=None, context=None, initialize=False):
+        return acquire(root or self.root, _WORLD, initialize=initialize,
+                       domain_version='0.2', profile='local-posix-blob-sync-v0.2',
+                       context=context if context is not None else self.context())
+
+    def initialized(self):
+        lease = self.acquire(initialize=True)
+        self.addCleanup(lease.close)
+        return lease
+
+    def test_exact_registration_and_frozen_public_lease(self):
+        context = self.context()
+        with self.acquire(context=context, initialize=True) as lease:
+            info = self.root.stat()
+            expected = dict(
+                domain='edgeworld.universe.authority', version='0.2',
+                world_id=_WORLD, profile='local-posix-blob-sync-v0.2',
+                root_canonical=str(self.root), root_device=str(info.st_dev),
+                root_inode=str(info.st_ino), trust_algorithm=context.trust_algorithm,
+                trust_anchor=context.trust_anchor, expected_build=context.expected_build,
+                expected_options=context.expected_options, artifact_class=context.artifact_class,
+                archive_profile=context.archive_profile)
+            self.assertEqual((self.root / 'identity.json').read_bytes(),
+                             json.dumps(expected, sort_keys=True, ensure_ascii=True,
+                                        separators=(',', ':')).encode('ascii'))
+            self.assertEqual(lease.domain_version, '0.2')
+            self.assertIs(lease.context, context)
+            with self.assertRaises(AttributeError):
+                lease.domain_version = '0.1'
+            with self.assertRaises(AttributeError):
+                lease.context = None
+            self.assertEqual(set(p.name for p in self.root.iterdir()),
+                             {'.authority.lock', 'identity.json'})
+        before = self.files()
+        with self.acquire(context=context) as reopened:
+            reopened.check()
+        self.assertEqual(self.files(), before)
+
+    def test_missing_read_does_not_create_and_context_required(self):
+        before = self.files()
+        self.expect_code('UNINITIALIZED', self.acquire)
+        self.expect_code('ROOT_MISMATCH', acquire, self.root, _WORLD,
+                         initialize=True, domain_version='0.2',
+                         profile='local-posix-blob-sync-v0.2')
+        self.expect_code('ROOT_MISMATCH', acquire, self.root, _WORLD,
+                         initialize=True, domain_version='0.2',
+                         profile='local-posix-blob-sync-v0.2', context={})
+        self.assertEqual(self.files(), before)
+
+    def test_version_profile_whitelist_and_old_context_rejection(self):
+        before = self.files()
+        for version, profile in [('0.2', 'local-posix-sync-v0.1'),
+                                 ('0.1', 'local-posix-blob-sync-v0.2'),
+                                 ('0.3', 'local-posix-blob-sync-v0.2'),
+                                 (True, 'local-posix-sync-v0.1'), ('0.1', None)]:
+            self.expect_code('PROFILE', acquire, self.root, _WORLD,
+                             initialize=True, domain_version=version, profile=profile)
+        self.expect_code('PROFILE', acquire, self.root, _WORLD,
+                         initialize=True, context=self.context())
+        self.assertEqual(self.files(), before)
+
+    def test_wrong_world_or_root_rejected_before_creation(self):
+        before = self.files()
+        self.expect_code('ROOT_MISMATCH', self.acquire, initialize=True,
+                         context=self.context(world_id='another-world'))
+        self.expect_code('ROOT_MISMATCH', self.acquire, initialize=True,
+                         context=self.context(authority_root=str(self.base / 'other')))
+        self.assertEqual(self.files(), before)
+
+    def test_alias_rejected_both_busy_and_released(self):
+        lease = self.initialized()
+        alias = self.base / 'alias'
+        alias.symlink_to(self.root, target_is_directory=True)
+        before = self.files()
+        self.expect_code('ROOT_MISMATCH', self.acquire, root=alias)
+        self.expect_code('ROOT_MISMATCH', self.acquire, root=alias,
+                         context=self.context(authority_root=str(alias)))
+        lease.close()
+        self.expect_code('ROOT_MISMATCH', self.acquire, root=alias)
+        self.assertEqual(self.files(), before)
+        with self.acquire() as reopened:
+            reopened.check()
+
+    def test_independent_v02_process_lock_and_read_nonmutation(self):
+        lease = self.initialized()
+        script = """
+import json, sys
+from pathlib import Path
+from engine.universe_authority.codec import ContractError, DeploymentContext
+from engine.universe_authority.ownership import acquire
+root = Path(sys.argv[1])
+context = DeploymentContext(world_id='ownership-fixture', authority_root=str(root),
+    trust_anchor='a'*64, expected_build='b'*64, expected_options='c'*64)
+try:
+    with acquire(root, 'ownership-fixture', domain_version='0.2',
+                 profile='local-posix-blob-sync-v0.2', context=context) as lease:
+        lease.check()
+    print('ACQUIRED')
+except ContractError as exc:
+    print(exc.code)
+"""
+        before = self.files()
+        for expected in ('LOCKED', 'ACQUIRED'):
+            result = subprocess.run([sys.executable, '-c', script, str(self.root)],
+                                    cwd=_REPOSITORY, capture_output=True, text=True,
+                                    check=True, timeout=10)
+            self.assertEqual(result.stdout.strip(), expected)
+            self.assertEqual(result.stderr, '')
+            lease.close()
+        self.assertEqual(self.files(), before)
+
+    @unittest.skipUnless(hasattr(os, 'fork'), 'requires POSIX fork')
+    def test_v02_fork_child_cannot_authorize_or_release_parent(self):
+        lease = self.initialized()
+        read_fd, write_fd = os.pipe()
+        pid = os.fork()
+        if pid == 0:
+            os.close(read_fd)
+            try:
+                try:
+                    lease.check()
+                    code = 'UNEXPECTED_SUCCESS'
+                except ContractError as exc:
+                    code = exc.code
+                lease.close()
+                os.write(write_fd, code.encode('ascii'))
+                os.close(write_fd)
+                os._exit(0)
+            except BaseException:
+                os._exit(2)
+        os.close(write_fd)
+        try:
+            code = os.read(read_fd, 128).decode('ascii')
+        finally:
+            os.close(read_fd)
+        _, status = os.waitpid(pid, 0)
+        self.assertEqual(os.waitstatus_to_exitcode(status), 0)
+        self.assertEqual(code, 'LOCKED')
+        lease.check()
+        self.expect_code('LOCKED', self.acquire)
+
+    def test_copied_registration_cannot_reregister(self):
+        lease = self.initialized()
+        lease.close()
+        other = self.base / 'copy'
+        other.mkdir()
+        for name in ('.authority.lock', 'identity.json'):
+            (other / name).write_bytes((self.root / name).read_bytes())
+        before = self.files()
+        for initialize in (False, True):
+            self.expect_code('ROOT_MISMATCH', self.acquire, root=other,
+                             context=self.context(authority_root=str(other)),
+                             initialize=initialize)
+        self.assertEqual(self.files(), before)
+
+    def test_pin_changes_do_not_repair_registration(self):
+        lease = self.initialized()
+        lease.close()
+        before = self.files()
+        original = self.context()
+        for field, value in [('trust_anchor', 'd' * 64),
+                             ('expected_build', 'd' * 64),
+                             ('expected_options', 'd' * 64),
+                             ('artifact_class', 'synthetic-contract-only')]:
+            for initialize in (False, True):
+                self.expect_code('ROOT_MISMATCH', self.acquire,
+                                 context=replace(original, **{field: value}),
+                                 initialize=initialize)
+        self.assertEqual(self.files(), before)
+
+    def test_registration_extra_key_and_wrong_algorithm_rejected(self):
+        lease = self.initialized()
+        lease.close()
+        path = self.root / 'identity.json'
+        original = json.loads(path.read_bytes())
+        for changed in [dict(original, key_dir='/not-allowed'),
+                        dict(original, trust_algorithm='other')]:
+            path.write_text(json.dumps(changed, sort_keys=True, separators=(',', ':')))
+            before = self.files()
+            self.expect_code('ROOT_MISMATCH', self.acquire)
+            self.assertEqual(self.files(), before)
+
+    def test_versions_do_not_upgrade_or_downgrade_registered_root(self):
+        old = acquire(self.root, _WORLD, initialize=True)
+        old.close()
+        before = self.files()
+        self.expect_code('ROOT_MISMATCH', self.acquire, initialize=True)
+        self.expect_code('ROOT_MISMATCH', self.acquire)
+        self.assertEqual(self.files(), before)
+        # An independent v0.2 root cannot be opened via the old public call.
+        self.root = self.base / 'v2'
+        self.initialized().close()
+        before = self.files()
+        self.expect_code('ROOT_MISMATCH', acquire, self.root, _WORLD)
+        self.assertEqual(self.files(), before)
+
+    def test_lock_lifetime_replacement_and_read_nonmutation(self):
+        lease = self.initialized()
+        before = self.files()
+        self.expect_code('LOCKED', self.acquire)
+        lease.check()
+        self.assertEqual(self.files(), before)
+        (self.root / '.authority.lock').rename(self.root / 'old-lock')
+        (self.root / '.authority.lock').write_bytes(b'')
+        self.expect_code('ROOT_MISMATCH', lease.check)
 
 
 if __name__ == '__main__':
