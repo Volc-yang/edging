@@ -318,7 +318,10 @@ public:
     if(!Keys(Item,TEXT("physical_id,position_m,quaternion_wxyz,linear_velocity_m_s,angular_velocity_rad_s,mass_kg"))||!Identity(Get(Item,TEXT("physical_id"))))return false;
     if(!Vec(Get(Item,TEXT("position_m")),3,10)||!Vec(Get(Item,TEXT("quaternion_wxyz")),4,1.001)||!Vec(Get(Item,TEXT("linear_velocity_m_s")),3,100)||!Vec(Get(Item,TEXT("angular_velocity_rad_s")),3,100))return false;
     double Norm=0,Mass;for(const V& C:Get(Item,TEXT("quaternion_wxyz"))->A){double D;F64(C,D);Norm+=D*D;}
-    if(!Require(FMath::Abs(Norm-1)<=1e-4&&F64(Get(Item,TEXT("mass_kg")),Mass)&&Mass>0,TEXT("PHYSICS_INVALID")))return false;IdentityValue=Str(Get(Item,TEXT("physical_id")));
+    IdentityValue=Str(Get(Item,TEXT("physical_id")));
+    // Frozen fixed-support identity admits either zero sign; preserve original bits.
+    const bool bSupport=SameText(IdentityValue,TEXT("body-support"));
+    if(!Require((bSupport||SameText(IdentityValue,TEXT("body-dynamic")))&&FMath::Abs(Norm-1)<=1e-4&&F64(Get(Item,TEXT("mass_kg")),Mass)&&(bSupport?Mass>=0:Mass>0),TEXT("PHYSICS_INVALID")))return false;
    }
    else
    {
