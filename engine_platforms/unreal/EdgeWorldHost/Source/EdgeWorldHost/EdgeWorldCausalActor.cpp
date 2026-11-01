@@ -39,6 +39,8 @@ void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& 
 			UStaticMeshComponent* Mesh = Proxy->GetStaticMeshComponent();
 			Mesh->SetMobility(EComponentMobility::Movable);
 			Mesh->SetStaticMesh(Sphere);
+			Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Mesh->SetGenerateOverlapEvents(false);
 			Mesh->SetMaterial(0, BaseMaterial);
 			Proxy->SetActorScale3D(FVector(0.40));
 			if (UMaterialInstanceDynamic* Material = Mesh->CreateAndSetMaterialInstanceDynamic(0))
@@ -57,6 +59,8 @@ void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& 
 			UStaticMeshComponent* Mesh = Proxy->GetStaticMeshComponent();
 			Mesh->SetMobility(EComponentMobility::Movable);
 			Mesh->SetStaticMesh(Cylinder);
+			Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Mesh->SetGenerateOverlapEvents(false);
 			Mesh->SetMaterial(0, BaseMaterial);
 			Proxy->SetActorScale3D(FVector(0.065, 0.065, Delta.Size() / 100.0));
 			if (UMaterialInstanceDynamic* Material = Mesh->CreateAndSetMaterialInstanceDynamic(0))

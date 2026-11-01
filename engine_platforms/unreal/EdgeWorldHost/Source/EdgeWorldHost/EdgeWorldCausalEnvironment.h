@@ -20,7 +20,8 @@ public:
 private:
 	void AddShape(UStaticMesh* Mesh, UMaterialInterface* BaseMaterial,
 		const TCHAR* Name, const FVector& Location, const FVector& Scale,
-		const FLinearColor& Color, const FRotator& Rotation = FRotator::ZeroRotator);
+		const FLinearColor& Color, bool bSolid = false,
+		const FRotator& Rotation = FRotator::ZeroRotator);
 	UPROPERTY()
 	TArray<TObjectPtr<UStaticMeshComponent>> Shapes;
 	UPROPERTY()
