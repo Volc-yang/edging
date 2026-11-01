@@ -13,13 +13,22 @@ class UniverseProcessFaultTests(unittest.TestCase):
 
     def test_existing_output_is_rejected_without_modifying_original_evidence(self):
         with tempfile.TemporaryDirectory(prefix='universe-i6-preserve-') as temporary:
-            output = Path(temporary)
+            base = Path(temporary)
+            output = base / 'existing'
+            output.mkdir()
             sentinel = output / 'raw-index.json'
             sentinel.write_bytes(b'original evidence')
-            with self.assertRaises(FileExistsError):
-                run_suite(output)
-            self.assertEqual(list(output.iterdir()), [sentinel])
-            self.assertEqual(sentinel.read_bytes(), b'original evidence')
+            alias = base / 'alias'
+            alias.symlink_to(output, target_is_directory=True)
+            for candidate in (output, alias):
+                with self.subTest(output=candidate):
+                    with self.assertRaises(FileExistsError):
+                        run_suite(candidate)
+                    self.assertEqual(set(base.iterdir()), {output, alias})
+                    self.assertEqual(list(output.iterdir()), [sentinel])
+                    self.assertEqual(sentinel.read_bytes(), b'original evidence')
+                    self.assertTrue(alias.is_symlink())
+                    self.assertEqual(os.readlink(alias), str(output))
 
     @unittest.skipUnless(os.name == 'posix', 'local POSIX profile requires signals/flock')
     def test_real_process_fault_matrix(self):
