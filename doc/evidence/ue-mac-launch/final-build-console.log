@@ -1,0 +1,50 @@
+[launcher] UE 5.8.3 CL 58210709
+[launcher] project=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject
+[launcher] evidence=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher/run-Xpj8lafA
+[launcher] build_started target=EdgeWorldHostEditor platform=Mac configuration=Development
+Setting up bundled DotNet SDK
+/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll EdgeWorldHostEditor Mac Development -Project=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject -WaitMutex
+Log file: /Users/yangacan/Library/Application Support/Epic/UnrealBuildTool/Log.txt
+Determining max actions to execute in parallel (14 physical cores, 14 logical cores)
+  Executing up to 14 processes, one per physical core
+UbaServer - Listening on 0.0.0.0:1345
+Invalidating makefile for EdgeWorldHostEditor (ispc deleted)
+Compiling with Mac SDK 27.2, minimum Target OS version 14.00
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismTerrain.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosWorldActor.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldCausalEnvironment.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldCausalActor.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldCausalGameMode.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldGeneratedWorldGameMode.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldHost.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/EdgeWorldCausalHud.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/Module.EdgeWorldHost.gen.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/PerModuleInline.gen.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldCausalObservation.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldCausalObservationTest.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldJsonlClient.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldObservationActor.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldRuntimeModule.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosObservationGameMode.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosObservationProtocolTest.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/EdgeWorldWorkerProtocolTest.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldRuntime/Module.EdgeWorldRuntime.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosGameMode.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismEcology.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismEcologyTest.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismLook.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismGameMode.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosRealismTerrainTest.cpp.d!
+CppDependencyCache - There is no partition covering path to /Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Intermediate/Build/Mac/arm64/UnrealEditor/Development/EdgeWorldHost/ChaosValidationControl.cpp.d!
+Target is up to date
+Using Unreal Build Accelerator local executor to run 0 action(s)
+Total time in Unreal Build Accelerator local executor: 0.16 seconds
+Output binary: /Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor
+
+Result: Succeeded
+Total execution time: 2.97 seconds
+Trace written to file /Users/yangacan/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 3.1kb
+[launcher] build_exit_code=0
+[launcher] build_succeeded; non-Mac SDK warnings do not override Build.sh exit code 0
+[launcher] build_only_complete; runtime_not_tested
