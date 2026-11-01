@@ -1,6 +1,6 @@
 # U 架构设计：首批执行登记
 
-状态：2026-11-01，v0.1，进行中。父方案为 [U 设计树](universe_architecture_design_plan.md)，用户已批准执行下一步；本批范围为 U1/U5 的独立设计交付、审查与集成，不是 U1–U9 全轮关闭或产品实现。
+状态：2026-11-01，v0.2，首批设计交付完成；U 总轮继续。父方案为 [U 设计树](universe_architecture_design_plan.md)，用户已批准执行下一步；本批范围为 U1/U5 的独立设计交付、审查与集成，不是 U1–U9 全轮关闭或产品实现。
 
 ## 固定输入与任务所有权
 
@@ -8,8 +8,8 @@
 
 | 卡 | owner | worktree / branch | 独占交付 | 工作 / PR / 门 / 清理 |
 | --- | --- | --- | --- | --- |
-| U1 世界身份与因果状态 | `/root/shutdown_next_plan` | `.worktrees/u1-universe-identity` / `codex/u1-universe-identity` | `doc/design/universe-identity.md` | 进行中 / 未建 / planned / 活跃保留 |
-| U5 丰富混沌初态 | `/root/visitor_path_plan` | `.worktrees/u5-universe-origin` / `codex/u5-universe-origin` | `doc/design/universe-origin.md` | 进行中 / 未建 / planned / 活跃保留 |
+| U1 世界身份与因果状态 | `/root/shutdown_next_plan` | `.worktrees/u1-universe-identity` / `codex/u1-universe-identity` | `doc/design/universe-identity.md` | 完成 / #67 merged `da84aba` / 设计 pass / 干净且源提交已集成后移除 |
+| U5 丰富混沌初态 | `/root/visitor_path_plan` | `.worktrees/u5-universe-origin` / `codex/u5-universe-origin` | `doc/design/universe-origin.md` | 完成 / #68 merged `89254ab` / 设计 pass / 干净且源提交已集成后移除 |
 
 worktree 路径均相对上述真实仓库。已核对空闲分支、目标不存在和忽略规则，再从共同基线建立；用 Git CLI 是为遵循仓库固定 `.worktrees/<task>` 路径，应用 managed 创建工具没有指定父目录参数。
 
@@ -27,4 +27,8 @@ worktree 路径均相对上述真实仓库。已核对空闲分支、目标不�
 
 Owner 必须回报状态、准确 commit、PR、实际检查、限制及下一步；不得自行 merge。主统筹审查后逐卡接受设计或定向返工，分别登记集成 commit 和门状态。仅当任务 worktree 干净、源提交已合并且证据/报告已保留时移除，不强制删除。
 
-本批结束更新 backlog、方案树和本登记并 commit/push。U1/U5 设计被接受后，U2/U3/U6/U7 可按接口依赖进入后续设计派发；产品实现仍须其独立方案和门。H6C 从 `f674483` 独占 UE/GPU 独立验收，不受本批文档变更影响；其未交付时整个 V-HOME 仍进行中。
+本批结束更新 backlog、方案树和本登记并 commit/push。U1/U5 设计被接受后，U2/U3/U6/U7 可按接口依赖进入后续设计派发；产品实现仍须其独立方案和门。H6C 从 `f674483` 的独立运行不受本批文档影响；现 PR #69 / `0344827` 已合入，有限访客门接受，GPU 释放；V-HOME 产品总门仍开放。
+
+## 本批结果
+
+独立审查与集成 Check 见[报告](design/universe-u1-u5-integration-review.md)。U1 最终 `a7fed69`、U5 最终 `ec8bf6e` 各自 CI 通过、独立 PR 已合并，统筹复核旧 fixture 摘要、文档范围/链接及新候选图内部一致性；仅设计门 pass，新运行门 planned。两个本批任务 worktree 已移除，分支保留。下一 ready 为 U2/U3/U6/U7（尚未派发）；本批没有并行扩展产品实现。

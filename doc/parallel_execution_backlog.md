@@ -2,15 +2,15 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## U 总计划设计检查点（进行中）
+## U 总计划设计首批（已交付，U 总轮继续）
 
-以 `f674483` 为固定输入，已合成两位只读规划 agent 的方案，形成[下一阶段架构设计树](universe_architecture_design_plan.md) v0.1；同步总图 v0.3，纠正将历史 G1/GQ/F0–F2 规划误作尚未开始的描述。U1 世界身份/因果、U5 丰富混沌初态已从 `5a5fe11` 分别在独立 worktree/分支派发设计写卡；owner、路径、门与收尾规则见[首批执行登记](universe_design_execution_register.md)。U2–U9 按依赖解锁，尚未派发。基础单元建模为可追溯世界存在属于设计建议，不限定方块、不批准灵域分化或最终演化规律。方案树经非作者只读复核，并检查九卡路径唯一、依赖一致、DAG 无环与链接有效；尚不代表叶卡验收。设计本身不占 GPU；H6C 在独立 worktree 从 `f674483` 运行，仍未完成，不因本次文档提交关闭 V-HOME。
+[架构树](universe_architecture_design_plan.md) v0.1 的 U1/U5 已从 `5a5fe11` 在独立 worktree 交付、经非作者设计复审与最终 CI 后集成：U1 source `a7fed69` / PR #67 / merge `da84aba`；U5 source `ec8bf6e` / PR #68 / merge `89254ab`。独立设计门 pass，新世界运行门 planned；准确检查、返工和跨卡身份边界见[审查](design/universe-u1-u5-integration-review.md)，任务/清理见[登记](universe_design_execution_register.md)。两卡干净 worktree 已清理、分支保留，主工作区用户改动未触碰。下一 ready 设计为 U2 Genesis、U3 AI 权限、U6 进入重访、U7 UE 投影；尚未派发，按可用并发槽发布。正式世界法则、灵域记录出现时刻、具体地理与产品阈值仍开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：H6B 已审查集成，发布 H6C 独立验收。**PR #66 / `a2ae0f1` 通过CI与[最终审查](evidence/home-visitor-character/independent-review.md)，417/417哈希匹配。接受有限可步行实现，真实鼠标物理动作已独立复核，局限和旧reporter干扰保留。原干净任务worktree已清理，source/binary/分支及原始证据保留。H6C按[卡](evidence/home-visitor-acceptance-plan.md)从本次准确统筹提交新建独立worktree，只写harness/报告，不改产品；源码/配置身份不变时可复用已独立审查的人工鼠标case，其余路线另开真实独立运行。旧测试Outer错误已修正，报告器自身退出SIGSEGV及当前清理另见[诊断](evidence/reporter-fixture-popup.md)，该辅助程序缺陷仍开放；不声称全局可靠性根治。
+**当前结果与资源：H6C 有限独立访客门已接受并集成，V-HOME 总门仍开放。**H6B PR #66 / `a2ae0f1` 的实现经 H6C @`f674483` 两次真实独立运行，source `4ae3148` / PR #69 / merge `0344827`，最终 CI 通过；[报告](evidence/home-visitor-independent-acceptance/report.md)和[统筹复核](evidence/home-visitor-independent-acceptance/coordination-review.md)记录安全出生、连续移动、真实墙栏阻挡/脱离、阈值恢复、Tab 保位、两模式 Space 0→1→2、逐项历史只读及同目录重访。35 个完整只读 pair、两推进 pair，455/455 原始哈希经非采证 reviewer 复算；人工鼠标复用 H6B 独立复核原件，非本卡新跑。两 UE/launcher 正常退出 0，未见本轮 reporter；构建/GPU 已释放。旧测试 Outer 错误及 reporter 自身 SIGSEGV 继续见[诊断](evidence/reporter-fixture-popup.md)，不判已根治。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
@@ -25,11 +25,11 @@ UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路
 | HQ | [600 帧试采](evidence/gq-metal-sample/c3-report.md) #49 / `db20383` | GPUTime 598 个正值，p95 5.3435 ms，仅信号导出；旧计时不适用于临时执行模式，正式性能门 inconclusive |
 | H2/H3 | [场景](evidence/home-causal-scene/report.md) #51 / `785b3ea`；[HUD](evidence/home-visitor-hud/report.md) #52 / `cb10df7` | 构建、Metal 独立检查及定向 NullRHI 通过，仍为 BasicShapes 技术代理 |
 | H4/H5 | [组合运行](evidence/home-integration/report.md) #54 / `58362f4`；[独立复核](evidence/home-independent-review/report.md) #55 / `0c77e3d` | tick 0/1/2、Genesis 探针、HUD、只读、恢复有限通过；真人体验、UE 原始传输 JSONL 和正式视觉门未过 |
-| H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合未验 |
+| H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合现由 H6C 有限接受 |
 
-以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。下一活跃任务为 H6C，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 已获恢复放行。
+以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。H6C 有限任务完成；V-HOME 整体未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 已获恢复放行。
 
-**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。独立访客组合验收、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
+**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。独立访客组合门已有限接受；G0 写实参考/性能阈值与 H5 完整真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 

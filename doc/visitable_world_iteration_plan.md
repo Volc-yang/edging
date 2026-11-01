@@ -36,8 +36,12 @@ V-HOME
 | H-LIGHT-01 / PR #64 已集成，有限光照门通过 / 呈现 owner | [运行时光照卡](evidence/home-runtime-lighting-plan.md)；H1f 释放 GPU 后实测 | 仅动态 DirectionalLight Mobility 与采证 | 交互清单与未构建数、前后 Metal 图、权威只读和恢复；不判崩溃修复或写实通过 |
 | H6A / PR #56 已集成、步行组合待验 / UE 环境 owner | H2 环境已有地面/墙/栏杆但全部禁用碰撞；与 H1b 并行，固定几何和权威接口 | `EdgeWorldCausalEnvironment.{h,cpp}`、必要时 `EdgeWorldCausalActor.{h,cpp}`；地面/墙/栏杆本地碰撞，因果代理保持无碰撞 | UE 构建、NullRHI 射线/胶囊 sweep、Metal 视图和权威 manifest 只读对照；若阻挡错误，仅返工环境 |
 | H6B / PR #66 已集成，有限实现接受 / UE 访客 owner | [恢复实施卡](evidence/home-visitor-implementation-plan.md)；使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
-| H6C / 独立验收已放行 / 非实现集成 owner | [独立验收卡](evidence/home-visitor-acceptance-plan.md)；准确集成提交与隔离 `-UserDir`，固定进入路线 | 原始 Metal 录像/图、权威快照、重启和退出报告 | 能进入、走近结构、显式推进、回看、退出重访；保留可靠性/G0 开放门，不以一次演示代替产品验收 |
+| H6C / PR #69 已集成、有限访客门接受 / 非实现集成 owner | [独立验收卡](evidence/home-visitor-acceptance-plan.md)；准确集成提交与隔离 `-UserDir`，固定进入路线 | 原始 Metal 录像/图、权威快照、重启和退出报告 | 能进入、走近结构、显式推进、回看、退出重访；保留可靠性/G0 开放门，不以一次演示代替产品验收 |
 
 **Check：**根节点以 H4 的同版本集成运行和 H5 独立试用为准，子任务的 PR/构建不能代替。最低技术检查为真实 Metal 可见、键盘可用、显式推进且 Genesis 候选进入因果发展、历史/相机纯读、重启恢复、无未处理退出崩溃。视觉质量、性能和正式世界规律待 G0 数值/参考批准后另判。
 
 **Act：**H1/HQ 可先行，不阻塞 H0 的方案整理。H2/H3 的共同视觉语言和文件所有权先由统筹审查，再派实现。失败保留原始证据，只重开对应子节点。迭代结束把准确提交、PR、门状态、未决项及下一轮入口压缩回 `parallel_execution_backlog.md`。
+
+### H6C 当前裁决（2026-11-01）
+
+source `4ae3148` / merge `0344827`，有限独立访客组合门接受，详见[统筹复核](evidence/home-visitor-independent-acceptance/coordination-review.md)。35 组只读、两次显式推进、455 原始哈希及两进程退出 0；人工鼠标为获准复用的独立审查原件。GPU 已释放。上表的历史待验描述保留原版本身份，后续组合结论以本段为准；正式写实/性能、完整真人体验和原默认退出可靠性等门仍开放，V-HOME 整体未接受。

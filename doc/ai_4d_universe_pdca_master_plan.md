@@ -66,4 +66,4 @@ F0 与 F1 可并行；F2 依赖两者。主任务审查 F0/F1 的独立 PR 后�
 
 ## 当前产品设计入口（2026-11-01）
 
-F0/F1/F2 已交付并集成，不再限制后续轮次只做过程框架。当前产品设计按[集成总图](edgeworld_integrated_development_plan.md)及[U 架构设计树](universe_architecture_design_plan.md)执行；此处固定基线保留历史身份。U1–U9 沿用本文递归 PDCA 与独立审查纪律，H6C 访客验收仍是单独进行中的运行分支。
+F0/F1/F2 已交付并集成，不再限制后续轮次只做过程框架。当前产品设计按[集成总图](edgeworld_integrated_development_plan.md)及[U 架构设计树](universe_architecture_design_plan.md)执行；此处固定基线保留历史身份。U1–U9 沿用本文递归 PDCA 与独立审查纪律，H6C 访客独立运行已通过有限技术门并集成（PR #69），完整产品门继续开放；详见最新 backlog。
