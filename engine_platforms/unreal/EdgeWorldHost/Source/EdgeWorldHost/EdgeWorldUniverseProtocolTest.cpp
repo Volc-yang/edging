@@ -171,7 +171,7 @@ bool FUniverseLiveReadOnlyTest::RunTest(const FString& Parameters)
  struct FSelection{const TCHAR* Name;int64 Tick,Revision;};
  for(const FSelection& Selection:{FSelection{TEXT("current"),2,4},FSelection{TEXT("history-r1"),0,1},FSelection{TEXT("genesis"),0,0}})
  {
-  const FString Id=TEXT("live-observe-")+Selection.Name;
+  const FString Id=FString(TEXT("live-observe-"))+Selection.Name;
   const FString Payload=TEXT("{")+Base+FString::Printf(TEXT(",\"tick\":%lld,\"revision\":%lld,\"watermark\":%lld}"),(long long)Selection.Tick,(long long)Selection.Revision,(long long)Selection.Revision);
   FEdgeWorldResponse R;if(!Exchange(TEXT("observe"),Id,Payload,R)){Transport->Shutdown();return false;}
   FEdgeWorldUniverseExpectation E;E.Context=Pins.Context;E.TrustedHead=Initial.Head;E.RequestId=Id;E.Tick=Selection.Tick;E.Revision=Selection.Revision;E.Watermark=Selection.Revision;
