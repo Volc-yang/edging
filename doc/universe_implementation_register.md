@@ -161,3 +161,11 @@ I12A-RUNNER sourcea1170a4首8mock全pass（0.124s/raw1256B）；u9四项review�
 I12B预检补充：已批准真实B/O完整record含旧world_id，root/u9接受仅新world顶层元数据/O.buildref与digest重绑，body canonical保持一致，资产/audit同world重绑；原输入原件保留。u9独立复算accepted实际Gen264py/19critical/37native+METADATA及adapter15f5b96…abb192，均与当前安装一致；真实initialize仍_measure strict比较。
 
 发现runner对真实venv Python symlink路径一律拒绝，故新增独立I12C-PYTHON叶：u7，`.worktrees/i12c-python-pin` / `codex/i12c-python-pin` / basef854281，仅runner及I12C证据目录。root/u9已审最小专用exact interpreter chain/targetSHA/同venv cfg与site身份pin；无pin保留旧拒绝、通用safe_path不变、原lexicalexe不替换、不造wrapper或改venv。stdlib120s/raw16MiB，first+一次定因targeted，无GS/UE。root实际启动清除PYTHONHOME/PYTHONPATH。两session runtime_files仅pin不可变安装文件，Host/plugin由每session实际build后二进制SHA另审，不能prepin将覆盖输出后换卡绕过。正式R12未派。
+
+## I12B已具备实际启动条件（等待第二次解锁）
+
+I12B-PREP PR101 final0d69fd9 / merge04c7693447f93c31253d4c313f7527aeb96f30e2，finalCI run41361753959/job125013393773成功（399tests/skip1）；root21公共原件/121948B与u9部署/source/typed配置独立复核通过，index43463c45…cb51a8a。I12C PR102 final2b92df5 / merge01b16d1ee940e8554a636a98e5e4718c4d65ae0e，source0c2e743首18定向+实际解释器链只读采集全过0.276s，无targeted；root10raw/11652B与u9独立源码审通过，index66ed82e9cbe24bcdefb3b150c74340daaf8198a760f18f56cc11a845ac989d2e；finalCI run41361811910/job125013569644成功。
+
+实际product tasktree已ff到01b16d1，6精确输出allowlist保留。root已独占创建 `I12B-20261102-world/deployment/r12-root-approved-attempt1.json`，SHA72eb12762dc5ac04091bf3eeddfac5a3f0120c9a65dd48f8e3234669146bd3b8，完整initialize validate_run通过，未Popen。新world edgeworld-i12b-20261102；两slot800/400总1200s、2GiB，卡时效2h；source/四输入/owner/pins/完整Python链/不可变runtimefiles均固定，Host/plugin真实build后另取SHA。原candidate不改，authority/scratch仍absent。dispatchmetadata在持久prep/root-dispatch.json。
+
+预检期间Mac再次自动锁屏，root freshCUA明确确认并已async请求再次解锁，不绕过锁。已启动临时 `/usr/bin/caffeinate -di -t 1800`（tool session68267）仅防后续idle display/sleep，不解锁、不改持久设置；结束时应关闭精确task进程或等有限时长到期。u9最终卡只读审、I12 owner后采证准备并行。用户解锁后root可直接启动固定card initialize supervisor，所有UI/截图仅CUA，运行期间productHEAD不改；不存在实际UE/Genesis/I12门通过。旧authority/主工作区/网站路由均未动。
