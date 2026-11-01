@@ -20,8 +20,8 @@
 
 **当前方案与owner：**[执行依赖细化](design/universe-runtime-execution-refinement.md)已由root接受，允许固定接口的CPU构造并行，真实门不变。
 
-- I8（u2，`.worktrees/i8-universe-genesis`）：真实build与初版5组options采集成功，但首Scene构建后的完整options比较失败、0step停止。唯一零步诊断证实6字段由库在build中解析（含max_contacts请求32→实际5）；全部原件保留。正最小修正bootstrap为public零步Scene.build后完整导出，保持config字节与严格全字段比较，旧B/O/context失效不得重用；新source/audit后再授GPU。G-P1尚未通过。
-- I10A（u9，`.worktrees/i10-universe-worker`）：CPU实现单root worker/六区初态/owner-config/public-pins，独占4组路径；B-C≤120s/raw64MiB，synthetic测试，不启动Genesis。I10B真实路径等I8/G-P1与新B/O。
+- I8已接受PR95 / merge51b95de：source9270349的post-build B/O与两臂/恢复/真实exit及root292raw+逐步FractionD核对通过，G-P1有限pass；首默认解析失败及全部原件保留。[I8/I10A复核](design/universe-i8-i10a-coordination-review.md)。
+- I10A已接受PR96 / mergedcfd3bc：15CPU tests/finalCI/root完整source/raw审查；同进程恢复限制如实保留。I10B下一卡验证真实CLI/propose/进程重访，尚未通过。
 - I11A（u7，`.worktrees/i11-universe-host`）：新Host/严格raw transport/control parser/launcher与mock检查，独占13源码路径+I11证据；CPU≤120s/raw16MiB，UE构建窗口待root资源卡。legacy默认不改。I11B真实入口等I10B。
 - I12：非相关实现owner，等G-P1/I10B/I11B与R-12，执行真实UE↔worker↔Genesis、逐动作只读map、历史/重启/原图/实际退出。未派发，未通过。
 
