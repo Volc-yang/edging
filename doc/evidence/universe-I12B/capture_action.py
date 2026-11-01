@@ -44,7 +44,8 @@ def capture(*, run, action, phase, ue_pid, project, log, authority, scratch, tra
             remaining -= len(block); h.update(block)
         after, current = os.fstat(stream.fileno()), log.lstat()
         require((before.st_dev, before.st_ino) == (after.st_dev, after.st_ino) ==
-                (current.st_dev, current.st_ino) and after.st_size >= count, 'log replaced/truncated during capture')
+                (current.st_dev, current.st_ino) and after.st_size >= count and current.st_size >= count,
+                'log replaced/truncated during capture')
     # Quiescence is explicit: a racing commit cannot masquerade as one snapshot.
     for role, root in (('authority', authority), ('scratch', scratch)):
         root = safe_path(root)

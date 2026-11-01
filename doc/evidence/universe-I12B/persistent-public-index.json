@@ -1,0 +1,116 @@
+{
+  "files": [
+    {
+      "bytes": 14608,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/approved-origin/asset_audit.json",
+      "sha256": "0e4879cdb640296a96c0fcae2dd7baa9712dc51ce0205815030d7a0bad032052"
+    },
+    {
+      "bytes": 4230,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/approved-origin/assets.json",
+      "sha256": "c44b1ef6c49ef87bcfbe554405cde63819437be0ee27d30a307b80a15032d6da"
+    },
+    {
+      "bytes": 3378,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/approved-origin/build.json",
+      "sha256": "dfda3b69f5c5eb47e2c0de1f6b0586d5dd056b3da90943d3fd05abce9afc7382"
+    },
+    {
+      "bytes": 4366,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/approved-origin/options.json",
+      "sha256": "f37a4a144ea49eb773ec4886b01d217a461905f191441977e2fc1b8a825e2d6d"
+    },
+    {
+      "bytes": 14620,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/asset_audit.json",
+      "sha256": "ad28660681a36b30961761405a314b3798b5f0d97f04c98a577f5418757aefda"
+    },
+    {
+      "bytes": 4236,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/assets.json",
+      "sha256": "59e16ae27fd618311e2d01604fb58f609a9b2d10bf329146c77f858396191f25"
+    },
+    {
+      "bytes": 3383,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/build.json",
+      "sha256": "f213895b32a7c875af36e36e1e29389e71e5b8b7867909c5551afe577dec304c"
+    },
+    {
+      "bytes": 4371,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/options.json",
+      "sha256": "37a215157636f54c7db8eeac86c54dac3e3d97d2453c035180a003e4fb2521e7"
+    },
+    {
+      "bytes": 634,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/public-pins.json",
+      "sha256": "ae9a22be4e905e1c5387cfc4a725e9b3f3b9d5be90d213a0dfc0412efe7e2555"
+    },
+    {
+      "bytes": 14637,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/deployment/r12-candidate.json",
+      "sha256": "5255cb1ea6c0c38f904ad2dc144ced8bb014de3ba38aa68761bafe60f610d968"
+    },
+    {
+      "bytes": 30443,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/installed-current.json",
+      "sha256": "d1d0ce454115e336ca0118f76abcb4f996cd603edf884353ccc89250589c78eb"
+    },
+    {
+      "bytes": 1044,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/metadata-rebind-proof.json",
+      "sha256": "5b0c10252cdf66e6f92d03428466fd9f2698bc0a8dc438c4a73407b2ee6b149b"
+    },
+    {
+      "bytes": 9556,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/native-current.json",
+      "sha256": "713dceea45af7174c02b46108b58c359b7d2474dbb982499f116691cdccaa8a4"
+    },
+    {
+      "bytes": 3042,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/output-mapping-provenance.json",
+      "sha256": "b8f9e50caa3a4311b96b3d8f685dcf1f714f9ef8eb0caf4a7f2a395225898caa"
+    },
+    {
+      "bytes": 0,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/pins-existing.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 635,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/pins-existing.stdout",
+      "sha256": "0910c13229242a5f1e560de5addfbcdad15eb98081411e13d261ebc07aa5e8c6"
+    },
+    {
+      "bytes": 0,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/pins-initialize.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 635,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/pins-initialize.stdout",
+      "sha256": "0910c13229242a5f1e560de5addfbcdad15eb98081411e13d261ebc07aa5e8c6"
+    },
+    {
+      "bytes": 1082,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/preparation-summary.json",
+      "sha256": "44488f933082df21ecad7e89456b12e09ebc975ade314066f1bc903a5a3a117f"
+    },
+    {
+      "bytes": 1102,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/private-metadata-only.json",
+      "sha256": "9e0e55da91090ac3eb433a315d5be82d9f848230127a51541f729736b468ab99"
+    },
+    {
+      "bytes": 5946,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/source-installation-identity.json",
+      "sha256": "7dd2c1c587fa6a1f2ee068b400935e70700fd347f54df950e19968c614d99f42"
+    }
+  ],
+  "format": "universe-i12b-preparation-public-index.v1",
+  "helper_source": "61b9a853f1ee29b7c63bbbd3e0bd7faee7c705b5",
+  "indexed_public_bytes": 121948,
+  "private_contents_excluded": true,
+  "private_metadata_receipt": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/prep/private-metadata-only.json",
+  "runtime_authorized": false,
+  "world_id": "edgeworld-i12b-20261102"
+}
