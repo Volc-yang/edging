@@ -1,0 +1,64 @@
+[launcher] UE 5.8.3 CL 58210709
+[launcher] project=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject
+[launcher] evidence=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher/run-SL0EeHM6
+[launcher] build_started target=EdgeWorldHostEditor platform=Mac configuration=Development
+Setting up bundled DotNet SDK
+/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll EdgeWorldHostEditor Mac Development -Project=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject -WaitMutex
+Log file: /Users/yangacan/Library/Application Support/Epic/UnrealBuildTool/Log.txt
+Determining max actions to execute in parallel (14 physical cores, 14 logical cores)
+  Executing up to 14 processes, one per physical core
+Creating makefile for EdgeWorldHostEditor (no existing makefile)
+UbaServer - Listening on 0.0.0.0:1345
+Compiling with Mac SDK 27.2, minimum Target OS version 14.00
+UHT compiled-in object format Default
+Building EdgeWorldHostEditor...
+===== Toolchain Information =====
+Using Clang compiler 21.1.6 (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++)
+  Apple clang version 21.0.0 (clang-2100.4.1.1) Target: arm64-apple-darwin25.6.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+Using Clang archiver (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool)
+  Apple clang version 21.0.0 (clang-2100.4.1.1) Target: arm64-apple-darwin25.6.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+[Adaptive Build] Excluded from EdgeWorldRuntime unity file: EdgeWorldObservationActor.cpp, EdgeWorldJsonlClient.cpp, EdgeWorldRuntimeModule.cpp, EdgeWorldCausalObservation.cpp, EdgeWorldWorkerProtocolTest.cpp, EdgeWorldCausalObservationTest.cpp
+=================================
+Using Unreal Build Accelerator local executor to run 30 action(s)
+  CPU 14 physical cores, 14 logical cores
+  Memory 48 GB physical, 40.46 GB/48 GB committed
+  UBA Storage capacity 40 GB
+[1/30] Compile [Apple] SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h
+[2/30] Compile [Apple] EdgeWorldRuntimeModule.cpp
+[3/30] Compile [Apple] Module.EdgeWorldRuntime.cpp
+[4/30] Compile [Apple] ChaosRealismEcologyTest.cpp
+[5/30] Compile [Apple] EdgeWorldObservationActor.cpp
+[6/30] Compile [Apple] EdgeWorldCausalObservationTest.cpp
+[7/30] Compile [Apple] ChaosRealismLook.cpp
+[8/30] Compile [Apple] EdgeWorldCausalObservation.cpp
+[9/30] Compile [Apple] ChaosGameMode.cpp
+[10/30] Compile [Apple] ChaosObservationProtocolTest.cpp
+[11/30] Compile [Apple] ChaosRealismEcology.cpp
+[12/30] Compile [Apple] ChaosRealismGameMode.cpp
+[13/30] Compile [Apple] ChaosObservationGameMode.cpp
+[14/30] Compile [Apple] EdgeWorldWorkerProtocolTest.cpp
+[15/30] Compile [Apple] EdgeWorldJsonlClient.cpp
+[16/30] Link [Apple] libUnrealEditor-EdgeWorldRuntime-0001.dylib
+[17/30] Compile [Apple] ChaosRealismTerrainTest.cpp
+[18/30] Compile [Apple] EdgeWorldCausalActor.cpp
+[19/30] Compile [Apple] EdgeWorldHost.cpp
+[20/30] Compile [Apple] ChaosRealismTerrain.cpp
+[21/30] Compile [Apple] EdgeWorldCausalHud.cpp
+[22/30] Compile [Apple] Module.EdgeWorldHost.gen.cpp
+[23/30] Compile [Apple] ChaosValidationControl.cpp
+[24/30] Compile [Apple] PerModuleInline.gen.cpp
+[25/30] Compile [Apple] EdgeWorldCausalEnvironment.cpp
+[26/30] Compile [Apple] ChaosWorldActor.cpp
+[27/30] Compile [Apple] EdgeWorldGeneratedWorldGameMode.cpp
+[28/30] Compile [Apple] EdgeWorldCausalGameMode.cpp
+[29/30] Link [Apple] libUnrealEditor-EdgeWorldHost-0001.dylib
+[30/30] WriteMetadata EdgeWorldHostEditor.target [NoUba]
+
+Total time in Unreal Build Accelerator local executor: 25.43 seconds
+Output binary: /Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor
+
+Result: Succeeded
+Total execution time: 32.59 seconds
+Trace written to file /Users/yangacan/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 11.6kb
+scripts/launch_edgeworld_ue_mac.sh: line 70: build_rc: unbound variable
