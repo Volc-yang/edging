@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 抽象 Seed→Tree × Genesis 设计迭代（进行中）
+
+用户确定下一版采用 Seed→Tree 且 Genesis 物理为必需路径，并进一步明确 seed/tree 是**抽象初态与因果发展结构**，不是植物实体。G0 范围与 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)已据此修订；旧植物 Seed→Tree v0.1 仅为技术参考。S1 [单权威接口提案](seed_tree_genesis_interface_proposal.md)、S2 [UE 抽象呈现提案](seed_tree_genesis_ue_proposal.md)、S3 [独立验收提案](seed_tree_genesis_acceptance_proposal.md)的初稿 PR #36–#38 及语义修订 PR #39–#41 均已通过 CI/统筹审查，集成至本轮分支 `d607a6b`。这些是设计提案，没有新组合 worker、UE 场景或运行验收。统筹已合成 [S4 技术纵切实验契约](seed_tree_genesis_slice_contract.md)，经两次独立只读审查修正后，仅放行 G2-SCHEMA-FIXTURE：以中性 Genesis 探针和可复算 `influence_mm` 验证物理候选影响抽象发展节点；刺激不是世界法则。准确 wire/fixture 未冻结前不启动组合 worker 或 UE 实现。S0 产品拓扑/物理语义和视觉/性能阈值仍开放。
+
 ## G1 接口复核与 GQ 采样可行性（进行中）
 
 补充：G1 [负例进程矩阵](pdca_g1_negative_probe_report.md)提交 `c56937b`，PR #34/集成 `72d4608`，树与混沌各 8/8 项返回预期错误码，拒绝请求前后持久状态文件哈希相同。首次混沌探针误配 world ID 的启动错误保留原始记录，随后在新状态目录重跑；统筹复算五份原始文件 SHA256 与报告一致。该任务 worktree 已确认干净、提交包含于集成分支后移除。**有限技术结论：**两类 worker 的成功路径、幂等、恢复观察和所列拒绝路径有进程证据；G1 产品接口冻结、UE 结果身份拒绝、Genesis、AI 和 GQ 帧时间仍开放。
