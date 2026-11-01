@@ -13,6 +13,7 @@
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "InputCoreTypes.h"
+#include "Framework/Application/SlateApplication.h"
 #if PLATFORM_MAC
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -160,6 +161,8 @@ void AEdgeWorldUniverseController::SetupInputComponent()
 void AEdgeWorldUniverseController::PlayerTick(float Delta)
 {
  Super::PlayerTick(Delta);auto* M=Mode();if(!M||!IsLocalController())return;
+ if(FSlateApplication::IsInitialized()&&!FSlateApplication::Get().IsActive()){M->FocusLost();return;}
+ if(M->FocusNeedsRelease()){if(!IsInputKeyDown(EKeys::SpaceBar))M->ResumeReleased();return;}
  if(!IsInputKeyDown(EKeys::SpaceBar))M->SpaceReleased();
  FVector Move(float(IsInputKeyDown(EKeys::W))-float(IsInputKeyDown(EKeys::S)),float(IsInputKeyDown(EKeys::D))-float(IsInputKeyDown(EKeys::A)),float(IsInputKeyDown(EKeys::E))-float(IsInputKeyDown(EKeys::Q)));
  FRotator Turn((float(IsInputKeyDown(EKeys::Up))-float(IsInputKeyDown(EKeys::Down)))*60*Delta,(float(IsInputKeyDown(EKeys::Right))-float(IsInputKeyDown(EKeys::Left)))*60*Delta,0);M->MoveCamera(Move*500*Delta,Turn);

@@ -16,7 +16,7 @@ struct FUniverseRequestToken { uint64 Epoch=0, Serial=0, Generation=0; };
 struct FEdgeWorldUniverseSession
 {
  uint64 Epoch=1, Serial=0, Generation=0;
- bool bBusy=false, bUnknown=false, bHistory=false, bHasObservation=false, bAssetsValidated=false, bSpaceHeld=false;
+ bool bBusy=false, bUnknown=false, bHistory=false, bHasObservation=false, bAssetsValidated=false, bSpaceHeld=false, bFocusNeedsRelease=false;
  EUniverseClientPhase Phase=EUniverseClientPhase::Stopped;
  FEdgeWorldUniverseHeadBinding Head;
  int64 HeadTick=0, HeadRevision=0;
@@ -29,9 +29,11 @@ struct FEdgeWorldUniverseSession
   if(ProcessGeneration==0||(T.Generation!=0&&T.Generation!=ProcessGeneration))return false;
   Generation=ProcessGeneration;bBusy=false;return true;
  }
- bool CanWrite() const { return !bBusy&&!bUnknown&&!bHistory&&bHasObservation&&bAssetsValidated&&Phase==EUniverseClientPhase::Latest&&Head.StorageState==TEXT("ready")&&Observation.Manifest==Head.Head; }
- bool SpacePressed(){if(bSpaceHeld)return false;bSpaceHeld=true;return CanWrite();}
+ bool CanWrite() const { return !bFocusNeedsRelease&&!bBusy&&!bUnknown&&!bHistory&&bHasObservation&&bAssetsValidated&&Phase==EUniverseClientPhase::Latest&&Head.StorageState==TEXT("ready")&&Observation.Manifest==Head.Head; }
+ bool SpacePressed(){if(bFocusNeedsRelease||bSpaceHeld)return false;bSpaceHeld=true;return CanWrite();}
  void SpaceReleased(){bSpaceHeld=false;}
+ void FocusLost(){bFocusNeedsRelease=true;bSpaceHeld=true;}
+ void ResumeReleased(){bFocusNeedsRelease=false;bSpaceHeld=false;}
  void Invalidate(){++Epoch;++Serial;Generation=0;bBusy=false;bHasObservation=false;bAssetsValidated=false;bSpaceHeld=true;Phase=EUniverseClientPhase::Stopped;}
  void ClearPending(){PendingPrepare.Reset();Proposal.Reset();Intent.Reset();ApprovalId.Reset();CommandRecordId.Reset();CommandRecords.Reset();CommandDigest.Reset();bUnknown=false;}
  void ClassifyView(){Phase=bUnknown?EUniverseClientPhase::Unknown:Head.StorageState!=TEXT("ready")?EUniverseClientPhase::ReadOnly:bHistory?EUniverseClientPhase::History:EUniverseClientPhase::Latest;}
@@ -49,6 +51,9 @@ public:
  void SelectCase(const FString& Case);
  void SpacePressed();
  void SpaceReleased(){Session.SpaceReleased();}
+ void FocusLost(){Session.FocusLost();}
+ bool FocusNeedsRelease()const{return Session.bFocusNeedsRelease;}
+ void ResumeReleased(){Session.ResumeReleased();}
  void Retain();
  void Previous();
  void Latest();
