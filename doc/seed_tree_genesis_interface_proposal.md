@@ -1,74 +1,84 @@
-# S1：Seed→Tree × Genesis 共享接口提案
+# S1：抽象 Seed→Tree × Genesis 共享接口提案
 
-状态：2026-11-01，v0.1 **设计提案**；输入 `8a069fa` 和用户决定的 Seed→Tree + Genesis 必需范围。父节点 V-STG/S1。本文不批准植物生长、重力系数、落地判定或最终物理容差。
+状态：2026-11-01，v0.2 **设计提案**；输入 `ac5ec2f` 和用户修正：seed/tree 是抽象初态与因果发展结构，并非植物实体。父节点 V-STG/S1。Genesis 物理为本版必需路径；具体物理对象、法则和发展映射未批准。
 
-## 1. 现有代码边界
+## 1. 旧实现可复用的技术边界
 
-| 现有能力 | 核对结果 | 对新纵切的影响 |
+| 来源 | 已实现事实 | 本版复用与禁止推断 |
 | --- | --- | --- |
-| `engine/edgeworld_worker/tree_worker.py` | `Worker` 单写 `tree_world.json`；状态、事件、命令索引在同一 manifest；`advance` 需要环境并只向前一 tick；没有 Genesis 调用 | 可复用树状态转移与观察语义，不能把此 worker 原样称为含物理的权威世界 |
-| `engine/edgeworld_worker/worker.py` | `GenesisAdapter` 使用 Genesis 1.4.3 公共 API、Metal、单 Sphere；checkpoint 是内容寻址 blob，`world.json` 的原子替换为提交点；失败时尝试恢复已提交 checkpoint | 可借用适配器/事务模式，现有 `body-1`、重力 phase、单位和场景参数仅为旧单刚体实验，不自动成为“种子物理” |
-| 两个 worker | JSONL v1 envelope 相近，却有不同 `schema_version`、状态文件、ID、领域结果和错误码 | 并行启动两个 worker 将产生两个 revision/head，无法证明同一权威因果链 |
-| UE `EdgeWorldJsonlClient.cpp` | 通用 Exchange 核对 request ID/protocol v1；树专用 parser 另核对 world/tick/revision/watermark 和版本 | 新组合观察须使用新的领域 parser 或扩展树 parser；不能假设通用客户端验证全部物理字段 |
+| `engine/edgeworld_worker/tree_worker.py` | 单写 `tree_world.json`，记录 revision/tick、事件链、命令去重和历史精确观察；不调用 Genesis | 可借事务、历史与 JSONL 机制；其 `seed/seedling/mature`、健康、生物量、水分和植物形体均是旧实验语义，**不进入新契约** |
+| `engine/edgeworld_worker/worker.py` | `GenesisAdapter` 使用 Genesis 1.4.3 公共 API、Metal、单 Sphere；checkpoint 为内容寻址 blob，manifest 原子替换是提交点 | 可借候选步进、checkpoint 与恢复模式；旧 `body-1`、Sphere、phase 重力及参数不定义本版物理对象/法则 |
+| 两个 worker | 共享 JSONL v1 envelope，但拥有不同 manifest/schema、head 和领域结果 | 同时运行两进程不构成同一权威世界；须有单一提交边界 |
+| UE `EdgeWorldJsonlClient.cpp` | 通用 Exchange 校验 request ID/protocol；旧植物观察 parser 校验精确 world/tick/revision/watermark | 新抽象观察须新领域 parser；旧植物渲染组件只能作为渲染技术参考 |
 
-## 2. 推荐的最小组合边界（待 S4 冻结）
+## 2. 唯一权威与抽象状态模型
 
-建立**一个新的组合 worker**，保留旧 `tree_worker.py` 和 `worker.py` 的 v1 文件/协议/证据不变。它是一个 `world_id`、一个单写者、一个 revision/tick、一个 manifest 和一个命令索引。Genesis 适配器在该进程内只产生候选物理结果，不拥有另一套 world manifest。树演化仍调用已版本化的实验转移函数；两个候选结果组成同一个提交记录。
+推荐新增一个**组合权威 worker**，保留两套旧 worker、存档和探针不变。一个 `world_id` 对应一个单写者、一个逻辑 tick/revision、一个 manifest、一个事件链和一个 command 去重表。Genesis 只计算候选物理结果，不直接写权威状态；UE 只发送显式命令和读取已提交观察。
 
-推荐最小物理对象是与 `seed_id` 一一关联的**种子代理刚体**，不是树体碰撞或植物动力学。Genesis 的候选位置/速度进入权威记录，UE 只从已提交的观察样本投影该代理。是否把位置变成树根锚点、让落地条件影响萌发或选择其他物理对象，属于 S0 产品/技术语义裁决；在裁决前仅能做接口和实验探针，不能把任一机制写成已批准世界法则。若本版本需要 Genesis 对树生长产生因果作用，S4 必须另写明确输入字段、单位、阈值与失败条件。
-
-### 稳定 ID、单位与版本建议
-
-| 字段/身份 | 建议 | 待裁决或兼容边界 |
-| --- | --- | --- |
-| `world_id`、`seed_id`、`tree_id` | 沿用树契约；`tree_id` 萌发前为 null | 旧 `body-1` 不等于 `seed_id`；新物理 `body_id` 建议由 `seed_id` 派生并在 manifest 中固定映射 |
-| `logical_tick`、`state_revision` | 同一成功命令各增加 1；所有树/物理状态和事件对应同一 `(tick, revision)` | 失败/重试不增加；不能有独立 Genesis tick 对外暴露 |
-| 物理时长与坐标 | `dt` 秒、`physical_steps` 正整数；Genesis 候选位置用米、速度用米/秒的**实验提案**；映射 UE 世界坐标时显式版本化比例和轴变换 | 实际 Genesis API 值/单位与 UE 投影转换需实测和 S4 批准，不能直接把旧 Sphere 参数称为真实种子尺寸 |
-| 配置身份 | `schema_version=seed-tree-genesis.v1`（建议标识）、Genesis 1.4.3/backend/设备、dt/steps、规则版本、seed、投影版本分别记录 | JSONL envelope v1 可沿用；旧 manifest 不能原地升级或静默加载，迁移另立卡 |
-| 物理样本 | `body_id`、position、velocity、物理输入/配置摘要、checkpoint SHA256 | 非有限值/形状错误拒绝提交；误差与跨运行对照规则待 S0/GQ 冻结 |
-
-## 3. tick 内顺序与提交事务
+新状态 schema 的候选分层如下，字段名在 S4 冻结：
 
 ```text
-UE 显式 advance(command_id, expected_revision, target_tick, environment)
-  → 组合 worker 验证 world/ID/revision/tick/环境并查去重
-  → 读取已提交树状态与 Genesis checkpoint
-  → 复制或可恢复的 Genesis 候选场景，按固定配置 step
-  → 校验候选物理结果；以已批准输入生成候选树状态
-  → 生成单条组合事件（两类前态/后态摘要、版本、原因、checkpoint hash）
-  → 持久化不可变 Genesis checkpoint blob
-  → 原子替换单一组合 manifest（唯一提交点）
-  → 返回同一 revision 的状态/事件摘要；UE 再 observe
+WorldHead {world_id, schema_version, tick, revision, rule_version,
+           genesis_config_hash, state_hash, event_head_hash, checkpoint_hash}
+SeedState {seed_id, seed_payload_schema, seed_payload_hash, ...已批准初态字段}
+DevelopmentStructure {root_id, node_ids, causal_edges, structure_version,
+                      ...已批准发展态字段}
+PhysicsCandidate {object_ids, physical_input_hash, output_hash,
+                  checkpoint_hash, genesis_version/config_hash}
+TransitionEvent {tick, command_id, previous_state_hash, seed_input_hash,
+                 physics_candidate_hash, development_result_hash,
+                 rule_version, reason_ids, previous_event_hash, event_hash}
 ```
 
-**失败规则：**验证、Genesis step、非有限值、树规则或 checkpoint 写入失败时，manifest 不变，恢复已提交 Genesis checkpoint 后才接受下一命令。若 manifest 替换已开始而持久结果无法确认，返回 `commit_status_uncertain`、停止写入，重启后从磁盘 manifest 判定；不能直接重放一条可能已提交的命令。恢复时校验 checkpoint 内容哈希、树状态重演/事件链、组合 manifest 与 checkpoint 的物理摘要，且配置/版本一致。只有完整组合记录可被 `observe` 返回。未被 manifest 引用的 blob 可之后安全清理，不视为提交。
+`SeedState` 是可标识的初始信息/状态，不是物体“种子”；`DevelopmentStructure` 是由因果影响形成的可观察结构，不预设枝、叶或生命阶段。`causal_edges` 是否严格构成树、允许分叉/合流的规则、节点增删和物理候选怎样影响转移，都须 S0/S4 明确。为避免 Genesis 成为无因果作用的旁路，**每次声称物理参与的发展转移必须在事件中引用实际物理候选摘要，且转移输入包含该候选**；它影响结果的具体函数和可观测差异须在批准的规则版本与反事实检查中定义。仅把物理 hash 与发展结果并排存储，不足以证明因果作用。
 
-**关键实现风险：**旧 Genesis adapter 在 `advance()` 中会改变进程内 scene；组合 worker 须用候选副本或在任何未提交路径重新加载已提交 checkpoint，不能让失败后的内存物理状态成为下次候选的前态。旧树 worker 的存档校验依赖精确 schema，不能直接把物理字段塞进旧 manifest 而保留旧版本号。
+### ID、单位和版本
 
-## 4. 版本化 wire 接口草案
+- `seed_id` 标识抽象初态；`root_id`、结构节点 ID 和因果边 ID 使用稳定、版本化推导或事件分配。Genesis 的 `physical_object_id` 是另一身份域，是否与某个抽象节点关联需显式映射；不能沿用旧 `body-1` 假装它就是 seed。
+- 物理输入/输出保留 Genesis 原始单位、坐标系和设备/求解配置身份；到 UE 投影的比例、轴向和视觉单位另作版本化映射。米、秒、步长、容差等实际数值由 S0/S4/物理 owner 确定，不能从旧 Sphere 复制。
+- 建议独立 `schema_version=abstract-seed-tree-genesis.v1`；JSONL envelope v1 可以沿用。旧植物 `tree_world.json` 与旧刚体 `world.json` 不原地升级；若需导入，另立显式迁移卡，记录来源版本与哈希。
 
-保留 JSONL v1 的 `protocol_version/request_id/operation/world_id` 和 `ok/result` 或 `ok:false/error`。新领域结果加 `domain_schema_version`，不要求旧 worker 理解它；UE 必须在应用样本前核对世界、tick、revision、水位、规则/投影版本、物理样本身份与状态摘要。`request_id` 只关联本次往返，`command_id` 才标识幂等推进。
+## 3. 单 tick 候选、提交与恢复
+
+```text
+显式 advance(command_id, expected_revision, target_tick, external_inputs)
+  → 验证 world、命令去重、revision、tick、输入 schema/版本
+  → 读取已提交抽象状态与 Genesis checkpoint
+  → Genesis 从已提交前态计算候选物理结果 P（具体对象/法则待批准）
+  → 发展规则 F(previous_abstract_state, P, other_approved_inputs, rule_version)
+       产生候选结构、原因及对 P 的引用（F 的语义待批准）
+  → 校验 P、结构约束和事件因果引用
+  → 保存不可变 Genesis checkpoint blob
+  → 原子替换一个包含抽象状态、物理引用、事件、去重表的 manifest
+  → 返回同一个 tick/revision 的组合 head；Observe 只读这个已提交版本
+```
+
+验证、Genesis、规则或 checkpoint 写入失败时 manifest 不变；进程内 Genesis 场景须恢复到已提交 checkpoint 后才能处理下一命令。若 manifest 替换已开始而持久结果不确定，返回 `commit_status_uncertain` 并停止写，重启核对磁盘后再应答/重试。恢复时检查 checkpoint 内容哈希、Genesis 配置、抽象状态与事件链，以及同一组合 revision 的物理候选引用。未被 manifest 引用的 blob 不是提交。
+
+旧 Genesis adapter 的 `advance()` 会改变内存 scene，故组合实现必须用候选副本或在每条未提交路径重载已提交 checkpoint。旧植物 worker 的精确 schema 校验不能直接承载抽象字段而不变更版本。
+
+## 4. Wire 草案与可执行检查边界
+
+保留 JSONL v1 的 `protocol_version/request_id/operation/world_id`，命令保留 `command_id/expected_revision/target_tick`。新增领域输入的具体字段由 S4 冻结；以下只固定**形状**，不伪造物理法则：
 
 ```json
-{"protocol_version":1,"request_id":"stg-a1","operation":"advance","world_id":"stg-demo","command_id":"tick-1","expected_revision":0,"target_tick":1,"environment":{"phase":"shaoyang","moisture":0.8,"light":0.7}}
+{"protocol_version":1,"request_id":"stg-a1","operation":"advance","world_id":"stg-demo","command_id":"tick-1","expected_revision":0,"target_tick":1,"external_inputs":{"schema_version":"<approved-input-v>","payload":"<approved-fixed-fixture>"}}
 ```
 
-候选 `observe` 请求沿用树的精确 `view_spec`，但 `rules` 增加组合领域版本/物理投影版本；响应同时给 `tree_sample` 和 `physics_sample`、相同 `source_revision/watermark`、`state_hash/event_hash` 及 `checkpoint_sha256`。字段名和哈希覆盖范围由 S4 固定；现有树 UE parser **不接受**此草案作为既有 schema。错误码尽量保留现有 `revision_conflict`、`command_id_conflict`、`history_missing`、`watermark_mismatch`，组合新增的 Genesis 故障与 checkpoint 损坏需在负例卡冻结，不静默归为成功。
+`observe` 须绑定准确 tick/watermark、结构观察范围和投影版本；响应包含 `world_id/logical_tick/source_revision/watermark`、抽象状态样本、因果结构样本、物理候选摘要与 `state_hash/event_hash`。UE 在更新画面前核对上述身份和版本。`request_id` 是往返相关 ID，`command_id` 是持久幂等 ID。完整请求/响应字段、错误码和物理候选—发展结果映射须在 S4 冻结后才能生成真正可执行 fixture。
 
-## 5. 最小 fixture 与检查矩阵
+| 后续检查 | 判定与原始证据 |
+| --- | --- |
+| 正常推进 | 固定已批准 seed 状态、物理配置和因果规则；0→1→N 的每步都有单一组合 revision、物理候选引用、结构变化原因；保存完整 JSONL、manifest、checkpoint、配置和哈希 |
+| 因果区分 | 固定其他输入，按批准的反事实方案改变一个物理候选输入；预先定义应改变/不改变的结构输出，不用事后解释替代规则；若无可区分效果，不能声称 Genesis 驱动了发展 |
+| 拒绝/幂等 | 同 ID 同输入返回同 result；同 ID 异输入、过期 revision、未知版本、缺历史、非法物理候选和规则失败不得产生新 head；记录错误码和前后持久哈希 |
+| 恢复/只读 | 从同一 checkpoint 和 manifest 重启续算，和不中断轨迹按已冻结容差对照；历史观察、UE 相机/帧率/暂停/显隐不改变 head |
 
-| 序列 | 固定输入与可判定结果 | 证据 |
-| --- | --- | --- |
-| 正常 0→1→5 | 新独立 state dir、固定 seed/环境序列、Genesis 版本/backend/dt/steps；每次 `status→observe→advance→observe`，tick 0/1/5 精确 watermark | 原始 JSONL、Genesis 配置、单 manifest、checkpoint SHA、树/物理/组合 state hash、事件链、UE 样本身份 |
-| 幂等/拒绝 | 同 `command_id` 同 payload 返回原 result；同 ID 改环境、旧 revision、跳 tick、错误 world/规则/水位、Genesis 注入失败均无新提交 | 每项前后 manifest/checkpoint 引用和 event head；错误码与退出状态 |
-| 恢复/历史 | tick 1 后关闭进程、从同一 manifest/checkpoint 重启续算至 tick 5；与不中断固定轨迹对照，历史 tick 0/1/5 查询不改 head | 两个独立 run 的完整状态/事件摘要、checkpoint 内容哈希、请求响应及时间窗 |
-| UE 只读 | UE 相机、帧率、暂停、显隐、重复观察前后无权威摘要变化；只有显式 `advance` 改变 | UE Metal 画面/日志及各操作前后组合 manifest/head 哈希 |
+这些是**设计中的 Check**，本 S1 未运行抽象组合 worker、Genesis 或 UE。旧植物和单体刚体的证据仅证明各自实验版本。
 
-上表是**未来检查设计**，本 S1 没有运行 Genesis、UE 或组合 worker。旧树/刚体两套 worker 的现有通过证据只能作为基线对照，不能作为组合门通过。
+## 5. PDCA 与 S4 放行
 
-## 6. PDCA 与拓扑
-
-- **Plan：**依据 S0 已选 Seed→Tree + Genesis 必需，先界定写者和状态事务，再裁决物理对象/因果接点、单位、schema、错误和恢复；S1 与 S2/S3 可并行提出设计。
-- **Do：**本文件只给接口提案。新组合 worker 的实现路径、UE parser/Actor 和测试目录由 S4 分配，禁止两个 agent 同时改共享协议。
-- **Check：**独立 reviewer 对照三份现有代码/两份旧契约，核对没有双写、物理孤立提交或隐式 tick；审核固定输入能区分正常/拒绝/恢复。实际组合进程探针属于 G3。当前结果：设计待审，运行证据 `planned`。
-- **Act：**若 S0 决定物理不作用于树形/生长，记录该限制，仍须有同一权威事件/呈现来源；若要求作用，先批准明确因果字段再扩展。Genesis checkpoint 无法满足原子边界时先调整适配/持久化，不修改 UE 源码。S4 冻结后才能派 G2a/G2b/G2c 实现。
+- **Plan：**先固定唯一写者与组合事务，再由 S0 裁决抽象 seed/发展结构、Genesis 物理候选及其因果映射；S1 与 S2/S3 设计可并行。
+- **Do：**本文是接口提案；组合 worker、UE parser 与测试写路径须由 S4 分配。无 UE 引擎源码修改。
+- **Check：**独立 reviewer 对照旧实现和用户语义修正，检查无植物/刚体身份偷换、无双写或孤立物理结果，且未来 fixture 能区分因果作用。当前为设计待审，运行门 `planned`。
+- **Act：**S0/S4 未批准物理对象、输入字段、发展规则和可观察结果时，只可调查/探针，不放行依赖语义的实现。若 Genesis 候选无法纳入同一提交，先修适配或事务设计，不降低单写者门。
