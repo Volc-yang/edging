@@ -80,6 +80,25 @@ assert "HighPrecisionMouseMode Enabled" in diagnostic
 assert not re.search(r"Key: Mouse[XY]", diagnostic)
 assert "LogPlayerInput                            Log" in diagnostic
 summary = {"readonly_pairs": readonly, "explicit_space_pairs": advances, "continuous_hold_samples": holds, "restoration_all_files_equal": True, "tool_mouse_axes": 0, "manual_mouse": "pending", "recovery_close": "pending"}
+if "--final" in sys.argv[3:]:
+    mouse = load(recovery / "manual-mouse-result-attempt1.json")
+    assert mouse["samePosition"] and mouse["allAuthorityFilesUnchanged"]
+    assert abs(mouse["pitchDelta"]) > 1 or abs(mouse["yawDelta"]) > 1
+    assert (recovery / "manual-mouse-before-attempt2/image.png").read_bytes() != (recovery / "manual-mouse-after-image-attempt1/image.png").read_bytes()
+    for run in (primary, recovery):
+        status = (run / "launcher-archive/status.log").read_text()
+        assert "build_exit_code=0" in status and "ue_exit_code=0" in status
+        log = (run / "launcher-archive/ue.log").read_text()
+        assert "LogExit: Exiting" in log
+        assert "preflush=1 threaded_rendering=1" in log and "owner_unchanged=1" in log
+        assert not any(token in log for token in ("Error:", "Ensure condition failed", "Assertion failed"))
+    closed = load(recovery / "close-attempt1/after.json")
+    assert closed["files"] == load(recovery / "restored-tick2-attempt1/authority.json")["files"]
+    for relative, expected_hash in closed["files"].items():
+        actual = root / "live-user-attempt1/Saved/EdgeWorldCausal/stg-demo" / relative
+        assert hashlib.sha256(actual.read_bytes()).hexdigest() == expected_hash
+    summary["manual_mouse"] = mouse
+    summary["recovery_close"] = load(recovery / "close-attempt1/result.json")
 output = root / sys.argv[2]
 with output.open("x") as stream:
     json.dump(summary, stream, indent=2)
