@@ -43,4 +43,4 @@ Act：每卡记录完成/部分/阻塞、检查与未决项；PR 审查并集成
 
 ## 本批最终评价
 
-[独立审查与集成记录](design/universe-batch2-integration-review.md)逐卡区分 owner 自检、非作者局部复核、统筹集成与未来运行门。四份文档只作为版本化设计输入接受；全部任务 worktree 已清理、分支保留，产品/主工作区未改。下一 ready 为 U4（依赖 U1/U2/U3），尚未派发；U8/U9 继续等待，不提前称 U 总轮或 V-HOME 关闭。
+[独立审查与集成记录](design/universe-batch2-integration-review.md)逐卡区分 owner 自检、非作者局部复核、统筹集成与未来运行门。四份文档只作为版本化设计输入接受；全部任务 worktree 已清理、分支保留，产品/主工作区未改。当时下一 ready 为 U4（依赖 U1/U2/U3）；后续已完成，见[U4 登记](universe_u4_execution_register.md)。当前 U8 ready、U9 等待，不提前称 U 总轮或 V-HOME 关闭。

@@ -1,6 +1,6 @@
 # U4 事务、调度与恢复：执行登记
 
-状态：2026-11-01，v0.1，进行中。parent=U，依赖 U1/U2/U3 已接受设计；依据[架构树](universe_architecture_design_plan.md)与[第二批审查](design/universe-batch2-integration-review.md)，用户授权继续执行下一步。
+状态：2026-11-01，v0.2，本卡设计交付完成；U 总轮继续。parent=U，依赖 U1/U2/U3 已接受设计；依据[架构树](universe_architecture_design_plan.md)与[第二批审查](design/universe-batch2-integration-review.md)，用户授权继续执行下一步。
 
 ## 任务卡
 
@@ -15,6 +15,6 @@
 
 ## 状态与收尾
 
-工作：进行中；PR：未建；owner/独立设计/集成门：planned；新运行门：planned；worktree：活跃保留。完成后回报准确 SHA/PR、实际检查、限制与 clean 状态。审查和 CI 通过后按 exact head 合并，确认干净且 source 为集成祖先才移除 worktree，保留分支/报告；更新 backlog 与本登记并 commit/push。
+工作：完成；PR [#74](https://github.com/Volc-yang/edging/pull/74) merged；初稿 `b3d3740`，最终 `28122b7cbfdb14a16c2c3a75887445cae75b9c59`，merge `09ef8cb034cd4b5ef8339705647dc81ac386cd69`。owner、非作者审查和局部集成设计门 pass，新运行门 planned。恢复耐久性阻断经 D_recovery 修订关闭，实际检查及限制见[审查](design/universe-u4-integration-review.md)。最终 CI verify SUCCESS；确认干净和祖先后已移除本卡 worktree，分支/报告保留。
 
-U8/U9 尚未派发。现有 V-HOME 有限访客结果与原默认退出可靠性、写实/性能等开放门不因本卡文档改变。
+U8 依赖满足、ready，尚未派发；U9 等待 U8。现有 V-HOME 有限访客结果与原默认退出可靠性、写实/性能等开放门不因本卡文档改变。
