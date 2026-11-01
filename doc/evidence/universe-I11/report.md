@@ -1,6 +1,6 @@
 # I11A Universe host construction
 
-Status: implementation prepared; CPU and compile checks pending.
+Status: CPU and control/parser checks passed; raw transport acceptance pending.
 Base `761a967`; this report is not a G-P1/G-B1/I12 acceptance.
 
 ## Plan / scope
@@ -107,3 +107,68 @@ CPU15.991s, source/fixture hashes unchanged per attempt. Raw directories:
 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11-20261102-host-cpu-attempt{1,2}`.
 I11R adds a separately authorized CPU card<=120s/raw32MiB/one targeted retry;
 checks pending. No UE build/window has yet run; final source is still uncompiled.
+
+## Bounded check results and current acceptance split
+
+I11R CPU at `7738638cf48ca325bbfaef22dd3b9150d579c8f0` passed shell syntax and
+all15 launcher tests, real exits0/15.769s, no I11R CPU retry. Inputs were stable.
+The prior I11A sole targeted retry and original /var canonical-path failure are
+retained independently; no old failure was overwritten or called a pass.
+
+Root then granted UE5.8.3 NoUBA plus one compact actual-app NullRHI selector:
+`Automation RunTests edgeWorld.UniverseHost+edgeWorld.UniverseObservation.StrictV02; Quit`.
+The '+' splitting was verified in installed AutomationCommandline.cpp:135;
+this avoids AssetAudit and does not create a Metal/Genesis scene.
+
+- Source7738638 first build PID30423: exit6/46.189s, no editor launch. Two
+  construction defects were found: calling ToSharedRef on an existing TSharedRef
+  and a missing parenthesis in the request builder. All new Host files compiled.
+- Independent i6 review also found cached prepare result lacked exact watermark
+  semantics. A shared ResultRecord guard now checks watermark=revision and
+  tick<=revision in prepare/advance, retaining valid old-result/current-HEAD
+  separation. Added positive/negative control cases passed subsequently.
+- Root's I10 integration review required the explicit one-shot initialization
+  guard to accept NOT_READY as well as UNINITIALIZED for an owner-registered
+  empty root. Readonly/existing mode still never auto-initializes; worker owns
+  permissions and existingHEAD refusal. Pure gate tests passed subsequently.
+- Corrected source `d145f2f`: unique authorized targeted build PID31281
+  exit0/11.383s. Actual UnrealEditor.app process PID31403 initialized and ran:
+  `UniverseHost.Protocol` Success; `UniverseObservation.StrictV02` Success;
+  `UniverseHost.TransportRaw` Fail. Real app exit3/25.072s. Total original UE
+  window224.343s including first attempt/wait, <300s. Source/fixtures and
+  pre/post actual binary SHA were unchanged during the targeted checks.
+- TransportRaw's synthetic harness used relative ProjectSavedDir-derived paths.
+  The production absolute/private trace-path guard rejected all four cases
+  before child launch or request transmission (trace_limit_or_unsafe). No claim
+  of raw pipe/trace acceptance can be made from this attempt. Exclusive sentinel
+  files were preserved, but that alone does not establish transport acceptance.
+- Source `24f0637` only changes harness root to ConvertRelativePathToFull; no
+  product changes. This latest test source has not yet been compiled or run.
+  The unique UE targeted allowance is consumed; no unauthorized third run occurs.
+
+Exact immutable raw directories and raw-index SHA256:
+
+| Directory under /Volumes/DevSSD/Unreal/Projects/EdgeWorld/ | SHA256 |
+| --- | --- |
+| I11-20261102-host-cpu-attempt1 | 790dedfaf82698b5608cc059dbb4dec4dfdc875fbd8f5a2a2823fcd2ca1fa48d |
+| I11-20261102-host-cpu-attempt2 | b4520bf692e74cbe9cda40cb20001aa3ee9c9177623307b57b4f848c7e618b2b |
+| I11R-20261102-host-cpu-attempt1 | e1c97a2d3c18c4582c7e0dd6c2909245f79615b1bb17ac1c697228022d75a869 |
+| I11-20261102-host-ue-attempt1 | b88bd023ea16875d6b0a7787aeb06effdf73972b6d5cdca04193206cb31c54ae |
+| I11-20261102-host-ue-attempt2 | 386584e2a4b1dc9b795c3d3c68566f967e83fdde66e833d405d61b8092123a03 |
+
+UE aggregate raw<2MiB; generated outputs have separate output-links provenance
+and produced binary manifests. Five DevSSD output links and generated DefaultInput.ini
+remain untracked and excluded from commits. Raw originals include commands/env,
+source/fixture/binary SHA, true PIDs/exits, engine/stdout/stderr logs, report and
+isolated synthetic test files. No unrelated process was killed. Both actual build
+and app processes ended; no third attempt or real world/physics scene ran.
+
+## Open acceptance and next task boundary
+
+I11A is partial pending explicitly scoped TransportRaw recheck and root review/CI.
+I11B must additionally record actual worker lifecycle: existing StopProcess closes
+pipes/handles without an explicit return-code record or bounded tail drain. PID
+absence is not evidence of worker exit0. Root reserved a separate Universe-only
+EOF/tail/GetProcReturnCode/exit-trace change and resource card; it is not folded
+into this already-consumed check window. Legacy remains outside that change.
+No fake/synthetic data can pass I10B/G-B1/I12 real combination acceptance.
