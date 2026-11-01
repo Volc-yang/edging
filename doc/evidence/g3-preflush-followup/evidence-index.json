@@ -1,0 +1,133 @@
+{
+  "exclusions": [
+    "sha256-index.json",
+    "evidence-index.json",
+    "__pycache__",
+    ".cache",
+    "DerivedDataCache"
+  ],
+  "index": {
+    "path": "sha256-index.json",
+    "sha256": "fe9cf5353bf93ca6a6652aa03f6615858180f1cdb116479577f8f7a34a74dfa6"
+  },
+  "indexed_bytes": 34735572,
+  "indexed_file_count": 369,
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-H1f-20261101/raw",
+  "samples": {
+    "A1": {
+      "artifacts": {
+        "events.jsonl": "55e6196c2c3740f137a9f45aef52e1c6e73813cf22d89b67505242c615a76bea",
+        "first-observed.json": "e0273fd3e2acb8b11d2c17055b3d9d748db85e500f3919858399f3faf79767de",
+        "first-observed.png": "fbb6049a1814fd7402ad426ebb98658242c4ebcb17dbd1f58ad7d0b9dad93ea2",
+        "postclose.json": "997a681e1c7e2bb05bb12f27e8b5279b4bf6744d76f28e646f52daf902c79066",
+        "preclose.json": "7d4fee0eb6711c74821f38e8d33122cd3568d5986be39e4ed81f5238be3d3c76",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "b33ffd15b5fa8219b297a585a17366c932dea4169b05937113739b703b127554"
+      },
+      "authority_files": {
+        "abstract_world.json": "83f421fb314b99b839013715fab530c01cb503ab42e23309607f627aba878c18",
+        "checkpoints/17d971e19cb9052a9ab148175ff3714c8e75f4b496163c153e5c584141fb9055.gstraj": "17d971e19cb9052a9ab148175ff3714c8e75f4b496163c153e5c584141fb9055",
+        "checkpoints/1acc31eaa5a555ea9655004c4f71bb7d554684bddb49ff555471f1f7f7346bfb.gstraj": "1acc31eaa5a555ea9655004c4f71bb7d554684bddb49ff555471f1f7f7346bfb",
+        "checkpoints/532df3a6b4a54fb35795a9321e162a529c68f82c8bad0992337569aed6811c23.gstraj": "532df3a6b4a54fb35795a9321e162a529c68f82c8bad0992337569aed6811c23"
+      },
+      "exit": 0,
+      "pid": 37713
+    },
+    "A2": {
+      "artifacts": {
+        "events.jsonl": "5e471e6383b1d452b9d0e23ae0d3b222ef01962dc76c28631539b194de2eb1ce",
+        "first-observed.json": "bbd1380706f66a7238309cbf2b71a494cc964a8d10860424065bdc2c211bfd0b",
+        "first-observed.png": "87f816c5d51d1da65dbe1296f33838d9c37f435211506a9192efdc751d42c488",
+        "postclose.json": "8c7c7345a4530d8a6297d0b5f0f9d861928de04adbd37bc6823b00863a60b5d2",
+        "preclose.json": "c5340f670e6329ac5df96ade1e80894e67e877154d1fecb418bc593c0ff25402",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "2f72a7ba04e619518071d23e193e147fce89a56fc2f621c0f8b6ebd97c2d862c"
+      },
+      "authority_files": {
+        "abstract_world.json": "21dc055a1caddbb92a0d40bf254d03f584cd792de6d2ca0edb2f95d9ff56e0ba",
+        "checkpoints/3209c65718a8df24e04b9aae635a8e83a92759a868e732feba5abd59a1b2d285.gstraj": "3209c65718a8df24e04b9aae635a8e83a92759a868e732feba5abd59a1b2d285",
+        "checkpoints/8189383db7a32505c1de14ec01acef287e95f3430652e554bfd253656aaa80ac.gstraj": "8189383db7a32505c1de14ec01acef287e95f3430652e554bfd253656aaa80ac",
+        "checkpoints/d34acbd3f47b1c202a9334420ece350ee402d035fe136928368650fec5d7d82a.gstraj": "d34acbd3f47b1c202a9334420ece350ee402d035fe136928368650fec5d7d82a"
+      },
+      "exit": 0,
+      "pid": 38614
+    },
+    "B1": {
+      "artifacts": {
+        "events.jsonl": "72fc350296129a5958f1ca079999b98e7cd313260e58b15d05b5d569ef4c69a4",
+        "first-observed.json": "7df66fce907b91e98cd909b695c918ccbfd0a22ff0c0400731d06a7b616642b9",
+        "first-observed.png": "913b33e5fdc7d8476ac68d9d914b07774646fa1d6d1ee327e8c2bcff16462c5c",
+        "postclose.json": "429384c39f4cc5799308d3418f801b4ebe04ba931cef244efdcea0266cd4db5d",
+        "preclose.json": "9dbe1fe10bd38967503753caf2384f593b3f210fcf87a8c23dc011e9ce62734a",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "3331e19b946e9bce9fbd8263378ae81ceca1c6052b597a101c687d0b30014c22"
+      },
+      "authority_files": {
+        "abstract_world.json": "c3cac18f67743e1d35a3fde402e761530a3cc9a2ea98ded5b16ce9b82f3820a5",
+        "checkpoints/0799ae509e65744456ec11941ba201947b97dab3101a9b0da3cdd8b0bda042af.gstraj": "0799ae509e65744456ec11941ba201947b97dab3101a9b0da3cdd8b0bda042af",
+        "checkpoints/47abd0f7bf236c1faa384d72c96fc41f51ba4086693661852b6ffcf92475ad59.gstraj": "47abd0f7bf236c1faa384d72c96fc41f51ba4086693661852b6ffcf92475ad59",
+        "checkpoints/c88c1677a182807b608b7f36fcd5a23012d988242e9e58d143d849ac1dce0294.gstraj": "c88c1677a182807b608b7f36fcd5a23012d988242e9e58d143d849ac1dce0294"
+      },
+      "exit": 0,
+      "pid": 38181
+    },
+    "B2": {
+      "artifacts": {
+        "events.jsonl": "015250f586f600ab5ad2a7ab4bfb06d39edb9bc577964169c6ace6ec13b604b6",
+        "first-observed.json": "ea975b0b437e48a116189df0b6075016f7117cf7bd877a2cbee9f1afd483bc5e",
+        "first-observed.png": "62378bc9f547fdcd78420e7c933645ea81f1a1e0af9a9d59373f10045eecf3da",
+        "postclose.json": "fceead82a5e1ff4069b1b7f78b33ebc1d416e1bb7fd8785f4223d7b7686933ac",
+        "preclose.json": "8481412fb70c9838a12674d192741a7e465ad3fa31a8bbfa20b9d5667c2dbe59",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "f09ab3f30fe5c17e405a59d1e4161815423a97893bbc69ca6800176421b95a98"
+      },
+      "authority_files": {
+        "abstract_world.json": "29dd96d0aeea2c088908cd07776fbd441f62d7527784e2275891d8416bb1d742",
+        "checkpoints/020f297f5b8aeec1886e847a1efd46c5fca0b85802ff131e737de371cc175132.gstraj": "020f297f5b8aeec1886e847a1efd46c5fca0b85802ff131e737de371cc175132",
+        "checkpoints/111e225442374973e85dbc6bd45e30e84f29362ecc5a2a7d01d679dcc00fcce3.gstraj": "111e225442374973e85dbc6bd45e30e84f29362ecc5a2a7d01d679dcc00fcce3",
+        "checkpoints/4e08969cda51d6229022c2c0543d74eb46dec68666f97933e959129b927aa83f.gstraj": "4e08969cda51d6229022c2c0543d74eb46dec68666f97933e959129b927aa83f"
+      },
+      "exit": 0,
+      "pid": 39118
+    },
+    "B3": {
+      "artifacts": {
+        "events.jsonl": "40fa3c83fb6c0e100edb99631d18922bf10287f283ed1bd61566317eae84fb0e",
+        "first-observed.json": "ccb470468c232ce76cc5e644c812b9893e397f907edcebe0bdd7fe11802e9819",
+        "first-observed.png": "b943c669c7e04c7eb410d85f0b34e5b2e34c69dfc3f6af4061ccd9082144e13b",
+        "postclose.json": "02326ca14f8bf881f78a924acfb229eb06447e01e2bb4a1d05e4b9cc7a63926d",
+        "preclose.json": "c66502767b43b03907c39f54a5608ecd22dd6fbf014fb67e74cee98d85220b5d",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "22c02dbcb6253dcfef6817b0985fb729cea5181ec9f16ed6126befa6ea9148d1"
+      },
+      "authority_files": {
+        "abstract_world.json": "cab64e64b01a0ae8cf98b09fdc62f3566d90fca2dd76cbba27d09878015b3a5e",
+        "checkpoints/4747e79a79e6ce69c75f76b767398283e057943ec15d1aa030e66c1ea346591b.gstraj": "4747e79a79e6ce69c75f76b767398283e057943ec15d1aa030e66c1ea346591b",
+        "checkpoints/a91a53abc4fefd7e3d88d7a34a493ebe89ecd871f251509359b31500fe33a11a.gstraj": "a91a53abc4fefd7e3d88d7a34a493ebe89ecd871f251509359b31500fe33a11a",
+        "checkpoints/b4c0d56d1aaffcd5fe561ea16a6ad19f8575eeba77d09121fc4ed2d4d92329b1.gstraj": "b4c0d56d1aaffcd5fe561ea16a6ad19f8575eeba77d09121fc4ed2d4d92329b1"
+      },
+      "exit": 0,
+      "pid": 39585
+    },
+    "B4": {
+      "artifacts": {
+        "events.jsonl": "a395fe10d1dced47677807df2c53e40ff12ed471b63dcb6bf926fd060724315c",
+        "first-observed.json": "87da401bb91f2b249e33c69ae724a30b47bb543e14d37dca6b04496b9c5ca083",
+        "first-observed.png": "a059bf914bf332871945b87b57a923ee4f2429e8388c0fb3a24dab8a1f58d387",
+        "postclose.json": "867ad34b62c055f2be0ddb6cb94d63ca6a5ed6c7ffe06d90701749074311de7d",
+        "preclose.json": "d173286014a484448fa82db4c1871e61bbfb0292283b4c1b00f6aa1c2c42408b",
+        "ue.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "ue.log": "9245ccf77c39b76945be1239f9703f78ff28be896cdd551f8075f4533ac9a50a"
+      },
+      "authority_files": {
+        "abstract_world.json": "29dd96d0aeea2c088908cd07776fbd441f62d7527784e2275891d8416bb1d742",
+        "checkpoints/020f297f5b8aeec1886e847a1efd46c5fca0b85802ff131e737de371cc175132.gstraj": "020f297f5b8aeec1886e847a1efd46c5fca0b85802ff131e737de371cc175132",
+        "checkpoints/111e225442374973e85dbc6bd45e30e84f29362ecc5a2a7d01d679dcc00fcce3.gstraj": "111e225442374973e85dbc6bd45e30e84f29362ecc5a2a7d01d679dcc00fcce3",
+        "checkpoints/4e08969cda51d6229022c2c0543d74eb46dec68666f97933e959129b927aa83f.gstraj": "4e08969cda51d6229022c2c0543d74eb46dec68666f97933e959129b927aa83f"
+      },
+      "exit": 0,
+      "pid": 40395
+    }
+  },
+  "summary_sha256": "9d6761f9ab4eabb4edc8229bf4794cda470c483a33b82dc1c8bebbf5fe0a2de0"
+}
