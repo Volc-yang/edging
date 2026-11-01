@@ -1,0 +1,7 @@
+{
+  "sha256": {
+    "scripts/verify_universe_slice_evidence.py": "a7c7b06acf8b288a25f147466e73aa91d1b0d014e0777c5a4251e87d31ddf1eb",
+    "scripts/run_universe_slice_acceptance.py": "eb2a4f93b750a6b9e175280c590bf1857f7b71a24d09e16b26fc4aa21f704756",
+    "doc/evidence/universe-I12/selfcheck.py": "d49766b49aa367e9efb7f6a198263de96a853fda2b03b9edff178fd5a40ce977"
+  }
+}

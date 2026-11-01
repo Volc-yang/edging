@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py",
+    "EvidenceTools.test_exclusive_output_symlink_and_private_metadata",
+    "EvidenceTools.test_synthetic_archive_refs_and_development"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.06832870794460177,
+  "synthetic_only": true
+}

@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 0.060622042044997215,
+  "synthetic_only": true
+}
