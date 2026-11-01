@@ -6,7 +6,9 @@
 
 用户最新优先级：先解决 UE 打开/运行报错，H6B/H6C 暂停。启动链拆分为模块/工具链、真实 UE 进程身份、运行时视口退出三层：Mac 的 Win64/Linux SDK 提示不是阻塞证据；各 worktree 需先构建自己的 UE 模块。预构建[启动入口](ue_mac_launch.md) PR #58/集成 `507b9c2`，初次真实 `--launch` 暴露外层 launcher PID 提前退出却遗留实际 App 的误报；[PID 修复与真实启动报告](evidence/ue-mac-launch-app-pid/report.md) PR #60/集成 `81bcd79` 已改为直接运行 App 内二进制，准确 PID、引擎初始化、GameMode、有效 tick0、⌘Q exit0 和无残留进程均经一次实测。两个启动任务 worktree 已清理。启动入口改善了 Missing Modules/误报体验，不解决视口断言。
 
-H1d [完整 Genesis 临时模式报告](evidence/g3-live-safe-render/report.md) PR #61/集成 `3a38109`，CI 通过：启动脚本新增显式 `--no-render-thread`，默认模式不变。两次独立 UE/Worker 会话在同一隔离 UserDir 中完成 tick 0/1/2、12 项逐项历史/相机只读检查、重启恢复、窗口关闭；UE 与启动器退出码均为 0，120/120 份原始证据哈希复算匹配，无遗留进程。这只支持有限临时使用，未测性能，默认线程视口断言仍 `fail/open`，光照未构建警告另行处理。用户未保存此前弹窗截图；今后每次运行按[Mac 启动入口](ue_mac_launch.md)记录构建结果、真实 App PID、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码，不推断未留证的弹窗内容。下一张[默认线程归因卡](evidence/g3-live-safe-render/default-thread-next-card.md)从发布版项目扩展点检查视口释放前的渲染同步；H6B/H6C 继续暂停。
+H1d [完整 Genesis 临时模式报告](evidence/g3-live-safe-render/report.md) PR #61/集成 `3a38109`，CI 通过：启动脚本新增显式 `--no-render-thread`，默认模式不变。两次独立 UE/Worker 会话在同一隔离 UserDir 中完成 tick 0/1/2、12 项逐项历史/相机只读检查、重启恢复、窗口关闭；UE 与启动器退出码均为 0，120/120 份原始证据哈希复算匹配，无遗留进程。这只支持有限临时使用，未测性能，默认线程视口断言仍 `fail/open`，光照未构建警告另行处理。用户未保存此前弹窗截图；今后每次运行按[Mac 启动入口](ue_mac_launch.md)记录构建结果、真实 App PID、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码，不推断未留证的弹窗内容。H1d 干净任务 worktree 已移除，分支与 DevSSD 原始证据保留。H1e [默认线程归因卡](evidence/g3-live-safe-render/default-thread-next-card.md)已由统筹审定为诊断实施卡，派发给现有“edgeWorld · 退出可靠性诊断”子对话，从 `006a302` 新建独立 worktree/PR，检查发布版项目扩展点中视口释放前的渲染同步；该候选尚未验证。H6B/H6C 继续暂停。
+
+用户随后提供 Crash Reporter 截图，确认为 `SceneViewport.cpp:196 IsInGameThread()`。现场进程核对发现三个残留 reporter 对应 H1c A1/A2/B2 的 UE PID 18962/22076/22535，日志关窗断言为本地 11:58/12:07/12:11；当时无 UE/Worker 在运行，不能据此称 H1d 新失败。残留 reporter 已关闭，原始 crash 目录保留且未向 Epic 发送。后续测试需核对并清理本次 reporter，避免残留窗口混淆运行状态。
 
 [H1c 相机目标差分](evidence/g3-viewtarget-differential/report.md) PR #59/集成 `c22e126`：A（保留 SetViewTarget）2/2 次断言；B（跳过）1 次正常、1 次同样断言，因此该调用不是必要条件。`-norenderthread` 单次无 worker/无因果 Actor 的限时运行正常退出，当时仅作为 H1d 的前置探针。92/92 原始证据哈希复算匹配，诊断开关已撤回、worktree 已清理。可靠性门继续 `fail/open`，UE 引擎源码未修改。
 
