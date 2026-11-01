@@ -59,6 +59,82 @@ bool FEdgeWorldUniverseObservationTest::RunTest(const FString& Parameters)
   else{++ExcludedCount;continue;} // Archive MAC/raw/key checks belong to writer recovery, not selective UE verification.
   TestFalse(*Name,Valid);TestTrue(*(Name+TEXT(" classified")),!Error.IsEmpty());++NegativeCount;
  }
+ // E7: independent mass boundary inputs; frozen goldens are never rewritten.
+ FString SampleText;
+ for(const auto& X:Gold->AsArray())if(X->AsObject()->GetStringField(TEXT("id"))==TEXT("sample-0"))
+ {
+  FString Hex=X->AsObject()->GetStringField(TEXT("canonical_hex"));TArray<uint8> Raw;Raw.SetNum(Hex.Len()/2);HexToBytes(Hex,Raw.GetData());Raw.Add(0);SampleText=UTF8_TO_TCHAR(reinterpret_cast<const char*>(Raw.GetData()));
+ }
+ if(!TestFalse(TEXT("E7 sample exists"),SampleText.IsEmpty()))return false;
+ auto ParseObject=[](const FString& Text){J Result;FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Result);return Result;};
+ auto Json=[](const J& Object){FString Text;FJsonSerializer::Serialize(Object.ToSharedRef(),TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));return Text;};
+ auto MassRecord=[&](int32 Index,const FString& Bits)
+ {
+  J Sample=ParseObject(SampleText),Mass=MakeShared<FJsonObject>();Mass->SetStringField(TEXT("$f64"),Bits);
+  Sample->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bodies"))[Index]->AsObject()->SetObjectField(TEXT("mass_kg"),Mass);return Sample;
+ };
+ auto CheckMassRecord=[&](const TCHAR* Label,const J& Record,bool Expected)
+ {
+  FString Canon,Digest,Error;bool Valid=FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(Json(Record)),Canon,Digest,Error);
+  TestEqual(Label,Valid,Expected);return Canon;
+ };
+ for(int32 Index=0;Index<2;++Index)
+ {
+  for(const TCHAR* Bits:{TEXT("0000000000000001"),TEXT("3ff0000000000000"),TEXT("7fefffffffffffff")})CheckMassRecord(TEXT("E7 finite positive mass"),MassRecord(Index,Bits),true);
+  for(const TCHAR* Bits:{TEXT("0000000000000000"),TEXT("8000000000000000")})
+  {
+   FString Canon=CheckMassRecord(TEXT("E7 zero only for fixed support"),MassRecord(Index,Bits),Index==1);
+   if(Index==1)TestTrue(TEXT("E7 zero bits retained"),Canon.Contains(Bits,ESearchCase::CaseSensitive));
+  }
+  for(const TCHAR* Bits:{TEXT("8000000000000001"),TEXT("bff0000000000000"),TEXT("ffefffffffffffff"),TEXT("7ff0000000000000"),TEXT("fff0000000000000"),TEXT("7ff8000000000001"),TEXT("7ff0000000000001"),TEXT("3FF0000000000000"),TEXT("0")})CheckMassRecord(TEXT("E7 negative/nonfinite/invalid mass"),MassRecord(Index,Bits),false);
+  J Unknown=MassRecord(Index,TEXT("0000000000000000"));Unknown->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bodies"))[Index]->AsObject()->SetStringField(TEXT("physical_id"),TEXT("body-unknown"));CheckMassRecord(TEXT("E7 unknown body cannot admit zero"),Unknown,false);
+  for(const TSharedPtr<FJsonValue>& Value:TArray<TSharedPtr<FJsonValue>>{MakeShared<FJsonValueNull>(),MakeShared<FJsonValueBoolean>(true),MakeShared<FJsonValueNumber>(0),MakeShared<FJsonValueString>(TEXT("0"))})
+  {
+   J Bad=MassRecord(Index,TEXT("0000000000000000"));Bad->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bodies"))[Index]->AsObject()->SetField(TEXT("mass_kg"),Value);CheckMassRecord(TEXT("E7 typed f64 required"),Bad,false);
+  }
+ }
+ for(int32 Variant=0;Variant<5;++Variant)
+ {
+  J Bad=MassRecord(1,TEXT("0000000000000000"));TArray<TSharedPtr<FJsonValue>> Bodies=Bad->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bodies"));
+  if(Variant==0)Bodies[0]->AsObject()->SetStringField(TEXT("physical_id"),TEXT("body-support"));
+  if(Variant==1)Bodies.Swap(0,1);
+  if(Variant==2)Bodies.Pop();
+  if(Variant==3)Bodies.Add(Bodies[1]);
+  if(Variant==4)Bodies[0]->AsObject()->SetBoolField(TEXT("fixed"),true);
+  Bad->GetObjectField(TEXT("body"))->SetArrayField(TEXT("bodies"),Bodies);CheckMassRecord(TEXT("E7 exact body identities/order/fields"),Bad,false);
+ }
+ // Rebuild a complete genesis proof with independent C++ canonical-record hashes.
+ // No stale hashes, receipts, runtime labels or rewritten frozen expectations.
+ for(const TCHAR* Bits:{TEXT("0000000000000000"),TEXT("8000000000000000")})for(bool bForgeBinding:{false,true})
+ {
+  J Wire=ParseObject(Proof->AsArray()[0]->AsObject()->GetStringField(TEXT("raw")));
+  J Payload=Wire->GetObjectField(TEXT("result"))->GetObjectField(TEXT("payload"));
+  TArray<TSharedPtr<FJsonValue>> Ordered=Payload->GetArrayField(TEXT("records"));
+  Ordered.Add(MakeShared<FJsonValueObject>(Payload->GetObjectField(TEXT("state"))));Ordered.Add(MakeShared<FJsonValueObject>(Payload->GetObjectField(TEXT("manifest"))));
+  TMap<FString,FString> Rehashed;
+  for(const auto& Value:Ordered)
+  {
+   J R=Value->AsObject();FString Canon,OldHash,NewHash,Error;
+   if(!TestTrue(TEXT("E7 original record hash"),FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(Json(R)),Canon,OldHash,Error)))return false;
+   if(R->GetStringField(TEXT("kind"))==TEXT("physics_sample"))
+   {
+    J Mass=MakeShared<FJsonObject>();Mass->SetStringField(TEXT("$f64"),Bits);R->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bodies"))[1]->AsObject()->SetObjectField(TEXT("mass_kg"),Mass);
+   }
+   if(bForgeBinding&&R->GetStringField(TEXT("kind"))==TEXT("physics_binding"))R->GetObjectField(TEXT("body"))->GetArrayField(TEXT("bindings"))[1]->AsObject()->SetStringField(TEXT("role"),TEXT("dynamic"));
+   J Refs=R->GetObjectField(TEXT("refs"));for(auto& Edge:Refs->Values)
+   {
+    const FString* Target=Rehashed.Find(Edge.Value->AsString());if(!TestTrue(TEXT("E7 topological reference remapped"),Target!=nullptr))return false;Edge.Value=MakeShared<FJsonValueString>(*Target);
+   }
+   if(!TestTrue(TEXT("E7 derived record hash"),FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(Json(R)),Canon,NewHash,Error)))return false;Rehashed.Add(OldHash,NewHash);
+  }
+  J Manifest=Payload->GetObjectField(TEXT("manifest"));FString Canon,Head,Error;
+  FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(Json(Manifest)),Canon,Head,Error);
+  Payload->SetStringField(TEXT("head"),Head);Payload->SetArrayField(TEXT("membership"),{MakeShared<FJsonValueObject>(Manifest)});Payload->SetArrayField(TEXT("opaque_refs"),{});
+  auto E7=Expectation(Proof->AsArray()[0]->AsObject()->GetObjectField(TEXT("expected")),C);E7.TrustedHead.Head=Head;FEdgeWorldUniverseObservation Out;
+  TestEqual(TEXT("E7 complete support-zero proof and forged-binding rejection"),FEdgeWorldUniverseObservationParser::Verify(Bytes(Json(Wire)),E7,Out,Error),!bForgeBinding);
+  if(bForgeBinding)TestTrue(TEXT("E7 rejected proof clears DTO"),Out.SelectedRecords.IsEmpty());
+  else TestEqual(TEXT("E7 zero observed unchanged"),Out.Bodies[1].MassKg,0.0);
+ }
  // Independent boundary vectors: exact ties, cancellation, subnormals, signed zero.
  struct FCase{uint64 Before,After;int64 Expected;};
  const FCase Cases[]={

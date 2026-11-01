@@ -801,8 +801,12 @@ class _CompositeValidation:
                                            ("linear_velocity_m_s", 3, 100), ("angular_velocity_rad_s", 3, 100)):
                     require(type(item[key]) is list and len(item[key]) == length, "PHYSICS_INVALID")
                     require(all(abs(scalar(x)) <= bound for x in item[key]), "PHYSICS_INVALID")
-                require(abs(sum(scalar(x)**2 for x in item["quaternion_wxyz"]) - 1) <= 1e-4
-                        and scalar(item["mass_kg"]) > 0, "PHYSICS_INVALID")
+                mass = scalar(item["mass_kg"])
+                # Only the frozen fixed-support identity admits signed zero.
+                require(item["physical_id"] in ("body-dynamic", "body-support")
+                        and abs(sum(scalar(x)**2 for x in item["quaternion_wxyz"]) - 1) <= 1e-4
+                        and (mass >= 0 if item["physical_id"] == "body-support" else mass > 0),
+                        "PHYSICS_INVALID")
             elif kind == "contacts":
                 exact(item, {"pair", "position_m", "force_on_dynamic_n"})
                 require(item["pair"] == ["body-dynamic", "body-support"], "PHYSICS_INVALID")
