@@ -4,9 +4,13 @@
 
 #include "HAL/Event.h"
 #include "HAL/PlatformProcess.h"
+#include "Engine/Engine.h"
+#include "Engine/GameInstance.h"
+#include "Framework/Application/SlateApplication.h"
 #include "Misc/AutomationTest.h"
 #include "RenderingThread.h"
 #include "Templates/Atomic.h"
+#include "UObject/StrongObjectPtr.h"
 
 namespace
 {
@@ -64,6 +68,40 @@ bool FEdgeWorldViewportPreflushLifetimeTest::RunTest(const FString& Parameters)
 	FPlatformProcess::ReturnSynchEventToPool(Started);
 	FPlatformProcess::ReturnSynchEventToPool(Release);
 	return bStarted;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEdgeWorldViewportDelegateLifecycleTest,
+	"edgeWorld.ViewportPreflush.DelegateRegistrationReinitAndDestroy",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FEdgeWorldViewportDelegateLifecycleTest::RunTest(const FString& Parameters)
+{
+	if (!FSlateApplication::IsInitialized())
+	{
+		AddError(TEXT("The delegate lifecycle test requires initialized Slate."));
+		return false;
+	}
+	TStrongObjectPtr<UEdgeWorldDiagnosticViewportClient> Client(NewObject<UEdgeWorldDiagnosticViewportClient>(GEngine));
+	TStrongObjectPtr<UGameInstance> GameInstance(NewObject<UGameInstance>(GEngine));
+	FWorldContext WorldContext;
+	WorldContext.WorldType = EWorldType::Game;
+	auto& Notification = FSlateApplication::Get().OnWindowBeingDestroyed();
+	TestFalse(TEXT("New client has no window binding"), Notification.IsBoundToObject(Client.Get()));
+	Client->Init(WorldContext, GameInstance.Get(), false);
+	const FDelegateHandle FirstHandle = Client->WindowDestroyHandle;
+	TestTrue(TEXT("First Init registers a handle"), FirstHandle.IsValid());
+	TestTrue(TEXT("First Init binds the client"), Notification.IsBoundToObject(Client.Get()));
+	Client->Init(WorldContext, GameInstance.Get(), false);
+	const FDelegateHandle SecondHandle = Client->WindowDestroyHandle;
+	TestTrue(TEXT("Repeated Init registers a new handle"), SecondHandle.IsValid() && SecondHandle != FirstHandle);
+	Notification.Remove(SecondHandle);
+	TestFalse(TEXT("Removing the new handle leaves no previous Init binding"), Notification.IsBoundToObject(Client.Get()));
+	Client->Init(WorldContext, GameInstance.Get(), false);
+	TestTrue(TEXT("Init after an already removed handle binds once"), Notification.IsBoundToObject(Client.Get()));
+	Client->ConditionalBeginDestroy();
+	TestFalse(TEXT("BeginDestroy removes the window binding"), Notification.IsBoundToObject(Client.Get()));
+	TestFalse(TEXT("BeginDestroy invalidates the stored handle"), Client->WindowDestroyHandle.IsValid());
+	return true;
 }
 
 #endif

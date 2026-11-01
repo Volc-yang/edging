@@ -15,6 +15,7 @@ void EdgeWorldPreflushViewportRenderWork(bool bEnabled)
 void UEdgeWorldDiagnosticViewportClient::Init(FWorldContext& WorldContext,
 	UGameInstance* OwningGameInstance, bool bCreateNewAudioDevice)
 {
+	UnregisterWindowDestroyDelegate();
 	Super::Init(WorldContext, OwningGameInstance, bCreateNewAudioDevice);
 	bPreflushEnabled = FParse::Param(FCommandLine::Get(), TEXT("EWDiagPreflushViewport"));
 	if (FSlateApplication::IsInitialized())
@@ -53,10 +54,15 @@ void UEdgeWorldDiagnosticViewportClient::OnWindowBeingDestroyed(const SWindow& W
 	}
 }
 
-void UEdgeWorldDiagnosticViewportClient::BeginDestroy()
+void UEdgeWorldDiagnosticViewportClient::UnregisterWindowDestroyDelegate()
 {
 	if (WindowDestroyHandle.IsValid() && FSlateApplication::IsInitialized())
 		FSlateApplication::Get().OnWindowBeingDestroyed().Remove(WindowDestroyHandle);
 	WindowDestroyHandle.Reset();
+}
+
+void UEdgeWorldDiagnosticViewportClient::BeginDestroy()
+{
+	UnregisterWindowDestroyDelegate();
 	Super::BeginDestroy();
 }

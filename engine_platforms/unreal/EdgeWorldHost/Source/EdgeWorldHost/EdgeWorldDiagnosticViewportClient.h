@@ -18,6 +18,8 @@ public:
 	virtual void BeginDestroy() override;
 
 private:
+	friend class FEdgeWorldViewportDelegateLifecycleTest;
+	void UnregisterWindowDestroyDelegate();
 	void OnWindowBeingDestroyed(const SWindow& Window);
 	FDelegateHandle WindowDestroyHandle;
 	bool bPreflushEnabled = false;
