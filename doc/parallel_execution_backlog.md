@@ -2,13 +2,15 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 抽象 Seed→Tree × Genesis 实现与 G3 集成（进行中）
+## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
-G2-AUTHORITY 新组合权威 worker 提交 `562b902`、恢复校验修复 `5603808`，PR #45/集成 `40bd7e8`；9 项定向测试和真实 Genesis Metal 两相探针通过。UE 按绝对脚本路径启动的导入问题另由 `495ccf7` 修复，PR #47/集成 `b70faa7`，10 项测试通过。G2-UE 抽象因果图、严格解析与键盘输入提交 `5ec7472`，审查修复 `2660fa9`、`0cfddd7`、`6a98b14`，PR #46/集成 `87732d3`；UE 5.8.3 Editor build、NullRHI 严格身份测试和 CI 通过。两任务均经非 owner 代码复审，干净 worktree 已移除。当前准确集成提交 `87732d3` 已派 G3 独立 worktree：真实 UE↔组合 worker↔Genesis、Metal 三时刻画面、重启和逐项只读门仍待执行。G0 产品规律及视觉/性能阈值继续开放。
+G3 [真实集成证据](evidence/stg-g3/integration-report.md)提交 `5c2190b`，PR #48/集成 `cd0283a`，CI 通过。原始证据保存在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-lxKhO5/`，索引 SHA256 为 `e6e912a3…0333b2a`。真实 Metal UE↔worker↔Genesis 的 tick 0/1/2、两相物理差异、重复命令幂等、历史/相机只读及重启恢复通过有限探针。点击窗口关闭按钮曾触发 `SceneViewport.cpp:196` 断言，第二次通过 ⌘Q 正常退出；**G3 部分完成，V-STG 总门未通过**。UE/Worker 已退出。下一步独立复现并定位关窗退出路径，再补 UE 原始传输身份记录、缺失的只读动作矩阵与 GQ CPU/GPU 采样。G0 产品规律、写实视觉及性能阈值继续开放。
+
+G2-AUTHORITY 新组合权威 worker 提交 `562b902`、恢复校验修复 `5603808`，PR #45/集成 `40bd7e8`；9 项定向测试和真实 Genesis Metal 两相探针通过。UE 按绝对脚本路径启动的导入问题另由 `495ccf7` 修复，PR #47/集成 `b70faa7`，10 项测试通过。G2-UE 抽象因果图、严格解析与键盘输入提交 `5ec7472`，审查修复 `2660fa9`、`0cfddd7`、`6a98b14`，PR #46/集成 `87732d3`；UE 5.8.3 Editor build、NullRHI 严格身份测试和 CI 通过。两任务均经非 owner 代码复审，干净 worktree 已移除。G3 已在其上完成有限运行验证，状态见本节。
 
 ## 抽象 Seed→Tree × Genesis 设计迭代（进行中）
 
-用户确定下一版采用 Seed→Tree 且 Genesis 物理为必需路径，并进一步明确 seed/tree 是**抽象初态与因果发展结构**，不是植物实体。G0 范围与 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)已据此修订；旧植物 Seed→Tree v0.1 仅为技术参考。S1 [单权威接口提案](seed_tree_genesis_interface_proposal.md)、S2 [UE 抽象呈现提案](seed_tree_genesis_ue_proposal.md)、S3 [独立验收提案](seed_tree_genesis_acceptance_proposal.md)的初稿 PR #36–#38 及语义修订 PR #39–#41 均已通过 CI/统筹审查，集成至本轮分支 `d607a6b`。这些是设计提案，没有新组合 worker、UE 场景或运行验收。统筹已合成 [S4 技术纵切实验契约](seed_tree_genesis_slice_contract.md)，经两次独立只读审查修正后，仅放行 G2-SCHEMA-FIXTURE：以中性 Genesis 探针和可复算 `influence_mm` 验证物理候选影响抽象发展节点；刺激不是世界法则。[G2 schema/fixture](fixtures/abstract_seed_genesis_v1.md) 经 PR #42 集成，消除初态哈希歧义；[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md) PR #43 在四个隔离 Metal 进程中重复得 `shaoyang=-7`、`taiyang=-35`，满足预声明差异，统筹复算原始哈希且独立 reviewer 接受有限技术门。新 [G2 实现卡](seed_tree_genesis_pdca_plan.md)据此放行组合权威 worker 与 UE 抽象投影并行开发；两者尚无代码或集成运行证据。S0 产品拓扑/物理语义和视觉/性能阈值仍开放。
+用户确定下一版采用 Seed→Tree 且 Genesis 物理为必需路径，并进一步明确 seed/tree 是**抽象初态与因果发展结构**，不是植物实体。G0 范围与 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)已据此修订；旧植物 Seed→Tree v0.1 仅为技术参考。S1 [单权威接口提案](seed_tree_genesis_interface_proposal.md)、S2 [UE 抽象呈现提案](seed_tree_genesis_ue_proposal.md)、S3 [独立验收提案](seed_tree_genesis_acceptance_proposal.md)的初稿 PR #36–#38 及语义修订 PR #39–#41 均已通过 CI/统筹审查，集成至本轮分支 `d607a6b`。这些是设计提案，没有新组合 worker、UE 场景或运行验收。统筹已合成 [S4 技术纵切实验契约](seed_tree_genesis_slice_contract.md)，经两次独立只读审查修正后，仅放行 G2-SCHEMA-FIXTURE：以中性 Genesis 探针和可复算 `influence_mm` 验证物理候选影响抽象发展节点；刺激不是世界法则。[G2 schema/fixture](fixtures/abstract_seed_genesis_v1.md) 经 PR #42 集成，消除初态哈希歧义；[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md) PR #43 在四个隔离 Metal 进程中重复得 `shaoyang=-7`、`taiyang=-35`，满足预声明差异，统筹复算原始哈希且独立 reviewer 接受有限技术门。新 [G2 实现卡](seed_tree_genesis_pdca_plan.md)据此放行组合权威 worker 与 UE 抽象投影并行开发；其后续实现和 G3 有限集成证据见上节。S0 产品拓扑/物理语义和视觉/性能阈值仍开放。
 
 ## G1 接口复核与 GQ 采样可行性（进行中）
 
