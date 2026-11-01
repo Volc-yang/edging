@@ -29,6 +29,10 @@ V-HOME
 | H4 / PR #54 已集成、有限技术门通过 / 独立集成 owner | 在准确集成提交运行同一个世界；先验证进程，再验证画面 | 集成报告和原始索引 | UE↔worker↔Genesis、三时刻、只读、恢复、退出逐项判定；任何缺门不宣称 V-HOME 通过 |
 | H5 / PR #55 已集成、证据复核部分完成 / 非实现 reviewer 与访客 | 复核证据并现场体验一遍；载具登陆另轮设计 | 独立验收记录 | 访客可重复进入/移动/回看；记录阻碍与下一轮 Act，不以主人自测代替独立验收 |
 | H1b / PR #57 已集成、可靠性仍 fail/open / 独立诊断 owner | H1a 只把故障缩至因果场景附近；相同发布版、地图、状态隔离和关闭协议，对比完整 GameMode 与仅禁用因果 Actor | `doc/evidence/g3-component-differential/`；诊断开关仅在任务 worktree 暂时使用，不作为产品代码合并 | 每组 2 次、各 180 秒被动窗口，日志/退出码/进程树/点击时序；不把未复现判可靠性通过，只有归因充分才提出插件修复 |
+| H1c/H1d / PR #59/#61 已集成 / 可靠性诊断 | 相机目标不是必要触发条件；显式无渲染线程临时路径完成两次完整链路 | 诊断报告及启动器显式选项 | 默认线程仍 fail/open；临时路径性能未测 |
+| H1e / PR #62 已集成，独立审查接受有限诊断 / 可靠性诊断 | 公开窗口通知中于 owner 释放前显式同步，默认关闭 | 诊断 viewport client 与生命周期探针 | A 1/0、B 0/0，B1 reporter 干扰；396 份证据匹配，不判根治 |
+| H1f / 进行中 / 可见退出可靠性子对话 | [干净复测卡](evidence/g3-viewport-preflush-followup-plan.md)，基线 `12f7fb7` | 重复 Init 幂等注册与解绑、独立新 binary/PR | reporter-free A/B/A/B、两个 B 边界样本；任一 B 失败拒绝候选，默认可靠性门保持开放 |
+| H-LIGHT-01 / 方案接受、GPU 排队 / 呈现 owner | [运行时光照卡](evidence/home-runtime-lighting-plan.md)；H1f 释放 GPU 后实测 | 仅动态 DirectionalLight Mobility 与采证 | 交互清单与未构建数、前后 Metal 图、权威只读和恢复；不判崩溃修复或写实通过 |
 | H6A / PR #56 已集成、步行组合待验 / UE 环境 owner | H2 环境已有地面/墙/栏杆但全部禁用碰撞；与 H1b 并行，固定几何和权威接口 | `EdgeWorldCausalEnvironment.{h,cpp}`、必要时 `EdgeWorldCausalActor.{h,cpp}`；地面/墙/栏杆本地碰撞，因果代理保持无碰撞 | UE 构建、NullRHI 射线/胶囊 sweep、Metal 视图和权威 manifest 只读对照；若阻挡错误，仅返工环境 |
 | H6B / 用户要求暂停，待 UE 报错修复 / UE 访客 owner | 使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
 | H6C / 待 H6B / 非实现集成 owner | 准确集成提交与隔离 `-UserDir`，固定进入路线 | 原始 Metal 录像/图、权威快照、重启和退出报告 | 能进入、走近结构、显式推进、回看、退出重访；保留可靠性/G0 开放门，不以一次演示代替产品验收 |
