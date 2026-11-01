@@ -4,9 +4,9 @@
 
 ## V-HOME 可访问世界纵切（进行中）
 
-用户优先级：先处理 UE 打开/运行报错，H6B/H6C 暂停。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
+UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：**H1g 已从初始 `c820933` 更新到准确基线 `d1dac43`，准备提交 rebase 后为 `40d40c6`。真实标准脚本已完成主运行 tick0/1/2、光照零计数、窗口关闭和同目录恢复，UE/启动器均两次退出 0，owner 同步日志齐全、资源释放；最终运行门仍等待 PR/原始证据审查。H6B [恢复实施卡](evidence/home-visitor-implementation-plan.md) 已按既有只读方案更新，只有 H1g 审查集成后才派发，当前不创建访客实现 worktree。采用已验证的显式同步开发入口继续；默认线程原始路径与产品可靠性保持开放。
+**下一动作与资源：**H1g [报告](evidence/g3-preflush-launch/report.md) PR #65 / `52c4c9a` 已经 CI 与[统筹审查](evidence/g3-preflush-launch/independent-review.md)集成，资源空闲。恢复可见“edgeWorld · 可步行访客路径”执行 H6B [实施卡](evidence/home-visitor-implementation-plan.md)，从本次准确统筹提交新建独立 worktree/branch；所有导航只读，Space 唯一显式 Advance，运行使用标准显式同步入口。H6C 依赖 H6B 经审查集成，再由非实现 owner 做组合验收。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
@@ -17,14 +17,15 @@
 | H1e | [同步候选](evidence/g3-viewport-preflush/report.md) #62 / `b89c5f3`；[独立审查](evidence/g3-viewport-preflush/independent-review.md) | 默认关闭，A 退出 1/0、B 0/0；B1 reporter 干扰保留；40 项只读、396/396 原始哈希匹配。仅有限诊断实现 |
 | H1f | [幂等修复与干净复测](evidence/g3-preflush-followup/report.md) #63 / `e6c9d96`；[独立审查](evidence/g3-preflush-followup/independent-review.md) | 修正后自动化 2/2；A/B/A/B 和两 B 边界样本退出均 0，19 组只读、同目录恢复、369/369 哈希通过。首次夹具 ensure 与 B3 工具限制保留；接受有限显式项目旁路，默认关闭。A 也全正常，不推断失败率改善或根治 |
 | H-LIGHT-01 | [报告](evidence/home-runtime-lighting/report.md) #64 / `69cd400`；[统筹审查](evidence/home-runtime-lighting/independent-review.md) | DirectionalLight 明确 Movable；基线 16、修复 tick0/2/恢复均 0。四会话退出 0，最终接受 12 组只读、193/193 哈希；2 组损坏记录和污染启动排除。前后采用同一无渲染线程模式，不扩大默认线程可靠性 |
+| H1g | [标准入口组合报告](evidence/g3-preflush-launch/report.md) #65 / `52c4c9a`；[统筹审查](evidence/g3-preflush-launch/independent-review.md) | 8 项 mock，两次真实脚本构建/退出 0，默认线程+显式同步、光照零计数、6 组只读与恢复通过，179/179 哈希匹配；接受有限开发入口。Buffer 原件与无损解码保留，不判根治 |
 | HQ | [600 帧试采](evidence/gq-metal-sample/c3-report.md) #49 / `db20383` | GPUTime 598 个正值，p95 5.3435 ms，仅信号导出；旧计时不适用于临时执行模式，正式性能门 inconclusive |
 | H2/H3 | [场景](evidence/home-causal-scene/report.md) #51 / `785b3ea`；[HUD](evidence/home-visitor-hud/report.md) #52 / `cb10df7` | 构建、Metal 独立检查及定向 NullRHI 通过，仍为 BasicShapes 技术代理 |
 | H4/H5 | [组合运行](evidence/home-integration/report.md) #54 / `58362f4`；[独立复核](evidence/home-independent-review/report.md) #55 / `0c77e3d` | tick 0/1/2、Genesis 探针、HUD、只读、恢复有限通过；真人体验、UE 原始传输 JSONL 和正式视觉门未过 |
 | H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合未验 |
 
-以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。活跃任务为 H1g，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 保持暂停。
+以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。下一活跃任务为 H6B，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 已获恢复放行。
 
-**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。H1g 真实启动器组合接线、步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
+**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
