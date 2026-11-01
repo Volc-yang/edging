@@ -4,7 +4,7 @@
 
 ## U 总计划设计（两批已交付，U 总轮继续）
 
-[架构树](universe_architecture_design_plan.md) v0.1 的 U1/U5 已从 `5a5fe11` 在独立 worktree 交付、经非作者设计复审与最终 CI 后集成：U1 source `a7fed69` / PR #67 / merge `da84aba`；U5 source `ec8bf6e` / PR #68 / merge `89254ab`。独立设计门 pass，新世界运行门 planned；准确检查、返工和跨卡身份边界见[审查](design/universe-u1-u5-integration-review.md)，任务/清理见[登记](universe_design_execution_register.md)。两卡干净 worktree 已清理、分支保留，主工作区用户改动未触碰。第二批从 `6f3c142` 交付并完成独立 PR/CI/局部集成审查：U2 `b78b3ab` / #70 / merge `88d3427`，U3 `9f2fe7e` / #72 / `fc1f80f`，U6 `95903b2` / #73 / `c4c5f7e`，U7 `38f8e02` / #71 / `622c2d9`。四卡设计门 pass，新运行门 planned；[第二批登记](universe_design_batch2_register.md)与[审查](design/universe-batch2-integration-review.md)保留具体输入/检查/限制，四个干净 worktree 已清理、分支保留。**下一 ready：U4 事务/调度/恢复设计**，尚未派发；U8/U9 按依赖等待。正式世界法则、灵域记录出现时刻、具体地理与产品阈值仍开放。
+[架构树](universe_architecture_design_plan.md) v0.1 的 U1/U5 已从 `5a5fe11` 在独立 worktree 交付、经非作者设计复审与最终 CI 后集成：U1 source `a7fed69` / PR #67 / merge `da84aba`；U5 source `ec8bf6e` / PR #68 / merge `89254ab`。独立设计门 pass，新世界运行门 planned；准确检查、返工和跨卡身份边界见[审查](design/universe-u1-u5-integration-review.md)，任务/清理见[登记](universe_design_execution_register.md)。两卡干净 worktree 已清理、分支保留，主工作区用户改动未触碰。第二批从 `6f3c142` 交付并完成独立 PR/CI/局部集成审查：U2 `b78b3ab` / #70 / merge `88d3427`，U3 `9f2fe7e` / #72 / `fc1f80f`，U6 `95903b2` / #73 / `c4c5f7e`，U7 `38f8e02` / #71 / `622c2d9`。四卡设计门 pass，新运行门 planned；[第二批登记](universe_design_batch2_register.md)与[审查](design/universe-batch2-integration-review.md)保留具体输入/检查/限制，四个干净 worktree 已清理、分支保留。**当前执行：U4 事务/调度/恢复设计**，已从 `3b5044d` 在独立 worktree 派发，另设非作者只读审查；见[执行登记](universe_u4_execution_register.md)。U8/U9 按依赖等待。正式世界法则、灵域记录出现时刻、具体地理与产品阈值仍开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 

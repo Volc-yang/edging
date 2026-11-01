@@ -49,7 +49,7 @@ AI 只产提案，Genesis 只产候选；都不直接替换世界 head。UE 本�
 
 ## 设计叶卡与拓扑
 
-所有卡 version=v0.1、parent=U；固定公共输入为 `f674483` 的总图、G0 决策记录、S4 契约及 backlog。依赖交付须绑定接受后的 commit/version。下列 owner 是角色，发布时绑定具体 agent；U1/U5 已按用户批准从 `5a5fe11` 发布并经独立 PR 集成、设计门接受，具体 owner/worktree/门状态见[执行登记](universe_design_execution_register.md)。U2/U3/U6/U7 已从 `6f3c142` 交付并审查集成，详见[第二批登记](universe_design_batch2_register.md)与[局部集成审查](design/universe-batch2-integration-review.md)；U4 ready，U8/U9 等待，均尚未派发。
+所有卡 version=v0.1、parent=U；固定公共输入为 `f674483` 的总图、G0 决策记录、S4 契约及 backlog。依赖交付须绑定接受后的 commit/version。下列 owner 是角色，发布时绑定具体 agent；U1/U5 已按用户批准从 `5a5fe11` 发布并经独立 PR 集成、设计门接受，具体 owner/worktree/门状态见[执行登记](universe_design_execution_register.md)。U2/U3/U6/U7 已从 `6f3c142` 交付并审查集成，详见[第二批登记](universe_design_batch2_register.md)与[局部集成审查](design/universe-batch2-integration-review.md)；U4 已从 `3b5044d` 派发，见[登记](universe_u4_execution_register.md)；U8/U9 等待、尚未派发。
 
 | ID / owner / depends_on / 独占交付路径 | Plan 与 Do | Check：设计检查与未来运行判据 | Act |
 | --- | --- | --- | --- |
