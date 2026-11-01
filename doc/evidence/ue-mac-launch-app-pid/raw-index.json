@@ -1,0 +1,37 @@
+[
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/build.log",
+    "bytes": 1211,
+    "sha256": "4c252d68e8a3663b4382741aff02e87ab39a381a958a8f92d1cfbf90fa5b9a55"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/command.txt",
+    "bytes": 625,
+    "sha256": "767c2a4560526966c31dbe51b720a287a450eb41c90905eb123d69d65d5f52d9"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/console.log",
+    "bytes": 2817,
+    "sha256": "c595b028974d71b8c4463ba55f3a5182dd946c4273f3e6c3b133a393a93ea2df"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/launch-console.log",
+    "bytes": 2511,
+    "sha256": "7c1650918c4a6a84b17ef73a0188795e436c59cc5c9452ebaf1ce1ad006ae145"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/prebuild-console.log",
+    "bytes": 4496,
+    "sha256": "6bc84d3d0e2f70c1dc2166e86c931e27081f1b27c8e5e1c01e5fdd5f9c8e6838"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/status.log",
+    "bytes": 1268,
+    "sha256": "0fd8c9a0341750c7976835c2366ff2acf20025a94c52e78ffeb2960e107c1427"
+  },
+  {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/LauncherAppPID-20261101/ue.log",
+    "bytes": 189456,
+    "sha256": "31550e6508b11e2cf79321c763fe071ec4309ced2c1200826b866eab7994007d"
+  }
+]
