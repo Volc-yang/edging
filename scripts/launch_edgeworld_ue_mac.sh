@@ -4,8 +4,11 @@ set -euo pipefail
 
 usage() {
     cat <<'HELP'
-Usage: scripts/launch_edgeworld_ue_mac.sh [--build-only | --launch] [--user-dir ABS_PATH]
+Usage: scripts/launch_edgeworld_ue_mac.sh [--build-only | --launch] [--user-dir ABS_PATH] [--no-render-thread]
 Defaults to --build-only (no UE/Metal process). --launch waits for UE to exit.
+--no-render-thread passes UE's -norenderthread as an experimental viewport-crash
+workaround. It is not a root-cause fix; CPU/GPU performance is unmeasured and may
+degrade. Omit it to retain UE's default rendering mode. Earlier GQ timings do not apply.
 Environment: UE5_ROOT (default /Users/Shared/Epic Games/UE_5.8),
 EDGEWORLD_CAUSAL_PYTHON (absolute Genesis-enabled Python, required by --launch).
 The project and causal worker always come from this script's worktree.
@@ -16,10 +19,12 @@ HELP
 fail() { echo "[launcher] error: $*" >&2; exit 64; }
 mode=build-only
 user_dir=
+no_render_thread=0
 while (($#)); do
     case "$1" in
         --build-only) mode=build-only; shift ;;
         --launch) mode=launch; shift ;;
+        --no-render-thread) no_render_thread=1; shift ;;
         --user-dir) (($# >= 2)) || fail '--user-dir needs an absolute path'; user_dir=$2; shift 2 ;;
         --help|-h) usage; exit 0 ;;
         *) fail "unknown argument: $1" ;;
@@ -87,6 +92,12 @@ status "worker=$EDGEWORLD_CAUSAL_WORKER"
 ue_log="$run_dir/ue.log"
 args=("$project" '/Engine/Maps/Entry?game=/Script/EdgeWorldHost.EdgeWorldCausalGameMode'
     -game -log -windowed -ResX=960 -ResY=600 "-UserDir=$user_dir" "-abslog=$ue_log")
+if ((no_render_thread)); then
+    args+=(-norenderthread)
+    status 'render_mode=no_render_thread; experimental_workaround_not_root_fix; performance_unmeasured_may_degrade; previous_GQ_timings_not_applicable'
+else
+    status 'render_mode=engine_default; intermittent_viewport_reliability_not_established'
+fi
 printf '%q ' "$editor" "${args[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
 "$editor" "${args[@]}" > "$run_dir/console.log" 2>&1 &
