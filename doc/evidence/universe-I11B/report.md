@@ -54,3 +54,42 @@ No source/golden/provider/worker edits; no current I10B authority changes. After
 root review/actual G-B1 evidence/final CI, open/update this task's independent PR
 to integration; do not self-merge/cleanup. Real Metal/user-visible combined I12
 acceptance remains separate and must run only on its approved integrated tree.
+
+## First actual window / retained failure
+
+CPU metadata preflight at source3ea2d07 passed: actual owning module's pure
+--print-public-pins PID36378 exit0, exactly653B+LF matching independent pins;
+outer authority90/scratch6 maps unchanged. This deliberately metadata-only CLI
+never reads inputs, so its success is not proof that deployment input paths exist.
+
+First source3ea2d07 NoUBA build PID36713 exit6/46.270s, no editor/worker. One
+C++ request-ID construction error (literal pointer + selection pointer) was fixed
+by explicit FString prefix in ordinary sourceac9e430. The original build failure
+is preserved. Unique same-window targeted build PID37284 passed exit0/6.902s.
+Actual app PID37387 initialized and ran only LiveReadOnly, but failed and exited3
+in26.601s. Entire180s window167.738s; no third attempt is authorized or executed.
+
+The real worker PID37513 exited1 normally/reaped/trace_complete=true with
+operational_failure=true before any response. Original stderr identifies
+FileNotFoundError in load_inputs/secure_read: approved existing owner inputs still
+refer to a removed I10B worktree's `doc/evidence/universe-I10/approved-asset-inputs`.
+UE did not open private config or read key bytes. Its first status request is
+preserved, but no sample proof, asset match or actual camera geometry acceptance
+was obtained. No initializer/fake fallback was attempted. Root must rebind an
+identical-hash durable input bundle via owner-controlled metadata and issue a new
+window. The test does not silently accept this boot failure.
+
+Authority90/scratch6 complete before/after maps, source/binaries and owner metadata
+SHA remained unchanged; actual app and worker ended. A future trusted-wrapper
+preflight will check all pinned input paths/plain SHA before build; it will not
+move that private-metadata capability into UE/publicpins or alter pure export.
+
+Immutable raw directories under /Volumes/DevSSD/Unreal/Projects/EdgeWorld/:
+
+| Directory | originals | raw-index SHA256 |
+| --- | ---: | --- |
+| I11B-20261102-cpu-attempt1 | 9 | 9af21fda05fb3ee5be021882adbbb865a146e358a5f39de80f58c8ec58dee571 |
+| I11B-20261102-live-attempt1 | 18 | ae5fb57b25c5f8e8cfeefd738740277c2d276abf5d99e3cad6c73c5308b4d75d |
+| I11B-20261102-live-attempt2 | 39 | afdd0e409972c75fc3de5b07456604d77695c0afa340c4945ed27fb23d8921a9 |
+
+No actual G-B1 pass, screenshot/Metal gate or combined I12 pass is claimed.
