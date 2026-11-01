@@ -1,4 +1,10 @@
 #include "EdgeWorldJsonlClient.h"
+#if PLATFORM_MAC
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#endif
 
 #include "EdgeWorldObservationActor.h"
 
@@ -27,6 +33,7 @@ void FEdgeWorldUnavailableTransport::SendJsonLine(FEdgeWorldRequest Request, FEd
 FEdgeWorldProcessTransport::FEdgeWorldProcessTransport(FEdgeWorldWorkerLaunchConfig InConfig)
 	: Config(MoveTemp(InConfig))
 {
+ if(!Config.TraceDirectory.IsEmpty()&&!Config.TraceBudget)Config.TraceBudget=MakeShared<FEdgeWorldTraceBudget,ESPMode::ThreadSafe>();
 }
 
 FEdgeWorldProcessTransport::~FEdgeWorldProcessTransport()
@@ -146,29 +153,68 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 	return true;
 }
 
+bool FEdgeWorldProcessTransport::TraceFileExclusive(const FString& Path,TArrayView<const uint8> Bytes)
+{
+#if PLATFORM_MAC
+ FTCHARToUTF8 U(*Path);int Fd=open(U.Get(),O_WRONLY|O_CREAT|O_EXCL|O_NOFOLLOW,0600);if(Fd<0)return false;
+ bool OK=true;int64 Done=0;while(Done<Bytes.Num()){ssize_t N=write(Fd,Bytes.GetData()+Done,Bytes.Num()-Done);if(N<0&&errno==EINTR)continue;if(N<=0){OK=false;break;}Done+=N;}if(fsync(Fd))OK=false;if(close(Fd))OK=false;return OK;
+#else
+ return false;
+#endif
+}
+bool FEdgeWorldProcessTransport::TraceReserve(int64 Bytes)
+{
+ if(Config.TraceDirectory.IsEmpty())return true;
+#if PLATFORM_MAC
+ FTCHARToUTF8 P(*Config.TraceDirectory);struct stat D;if(FPaths::IsRelative(Config.TraceDirectory)||lstat(P.Get(),&D)||!S_ISDIR(D.st_mode)||D.st_uid!=getuid()||(D.st_mode&0777)!=0700||!Config.TraceBudget)return false;
+ FScopeLock Lock(&Config.TraceBudget->Mutex);return Config.TraceBudget->Bytes+Bytes<=64LL*1024*1024;
+#else
+ return false;
+#endif
+}
+bool FEdgeWorldProcessTransport::TraceRaw(const FString& Direction,TArrayView<const uint8> Bytes,const FEdgeWorldRequest& Request,int32 Written)
+{
+ if(Config.TraceDirectory.IsEmpty())return true;
+ if(!TraceReserve(Bytes.Num()+4096))return false;
+ FScopeLock Lock(&Config.TraceBudget->Mutex);
+ FString Stem=FString::Printf(TEXT("%s-%08llu"),*TracePrefix,(unsigned long long)++TraceSerial);
+ auto M=MakeShared<FJsonObject>();M->SetStringField(TEXT("direction"),Direction);M->SetStringField(TEXT("utc"),FDateTime::UtcNow().ToIso8601());M->SetNumberField(TEXT("monotonic_seconds"),FPlatformTime::Seconds());M->SetStringField(TEXT("serial"),LexToString(TraceSerial));M->SetStringField(TEXT("request_serial"),LexToString(RequestSerial));M->SetStringField(TEXT("generation"),LexToString(Generation));M->SetNumberField(TEXT("worker_pid"),WorkerPid);M->SetNumberField(TEXT("host_pid"),FPlatformProcess::GetCurrentProcessId());M->SetStringField(TEXT("request_id"),Request.RequestId);M->SetStringField(TEXT("operation"),Request.Operation);M->SetStringField(TEXT("raw_file"),Stem+TEXT(".bin"));M->SetNumberField(TEXT("byte_count"),Bytes.Num());M->SetNumberField(TEXT("written_bytes"),Written);
+ FString Text;FJsonSerializer::Serialize(M.ToSharedRef(),TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));FTCHARToUTF8 U(*Text);int64 Cost=Bytes.Num()+U.Length();if(Config.TraceBudget->Bytes+Cost>64LL*1024*1024)return false;
+ // Reserve before I/O so partial trace failures cannot free/reuse budget or overwrite originals.
+ Config.TraceBudget->Bytes+=Cost;
+ return TraceFileExclusive(Config.TraceDirectory/(Stem+TEXT(".bin")),Bytes)&&TraceFileExclusive(Config.TraceDirectory/(Stem+TEXT(".json")),MakeArrayView(reinterpret_cast<const uint8*>(U.Get()),U.Length()));
+}
+
 FEdgeWorldResponse FEdgeWorldProcessTransport::ExchangeUniverse(const FEdgeWorldRequest& Request)
 {
  FScopeLock Lock(&RequestMutex);
  FEdgeWorldResponse Response; Response.RequestId = Request.RequestId;
  FString Error;
+ if(!TraceReserve(4*1024*1024)){Response.ErrorCode=TEXT("trace_limit_or_unsafe");return Response;}
  if (!EnsureStarted(Error)) { Response.ErrorCode=TEXT("worker_start_failed"); Response.ErrorMessage=Error; return Response; }
- Response.ProcessGeneration=Generation; Response.WorkerPid=WorkerPid;
+ Response.ProcessGeneration=Generation; Response.WorkerPid=WorkerPid; ++RequestSerial;
  // A new owned channel must first establish a status binding. Never replay a write on lazy restart.
  if (bNeedsUniverseStatus && Request.Operation != TEXT("status"))
  { Response.ErrorCode=TEXT("worker_generation_changed"); return Response; }
  FTCHARToUTF8 Input(*Request.JsonLine);
  if (Input.Length()>1048577) { Response.ErrorCode=TEXT("LIMIT"); return Response; }
+ if(!TraceRaw(TEXT("request"),MakeArrayView(reinterpret_cast<const uint8*>(Input.Get()),Input.Length()),Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
  int32 Written=0;
  if (!FPlatformProcess::WritePipe(StdinWritePipe,reinterpret_cast<const uint8*>(Input.Get()),Input.Length(),&Written) || Written!=Input.Length())
- { Response.ErrorCode=TEXT("worker_write_failed"); StopProcess(true); return Response; }
+ { TraceRaw(TEXT("write-result"),{},Request,Written);Response.ErrorCode=TEXT("worker_write_failed"); StopProcess(true); return Response; }
+ if(!TraceRaw(TEXT("write-result"),{},Request,Written)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
  const double Deadline=FPlatformTime::Seconds()+Config.RequestTimeoutSeconds;
  int32 DiagnosticBytes=0;
  while (FPlatformTime::Seconds()<Deadline)
  {
-  TArray<uint8> Chunk; FPlatformProcess::ReadPipeToArray(StdoutReadPipe,Chunk); PendingRaw.Append(Chunk);
+  // Mac's public byte read is <=32768B. Stop before reading if the trace cannot preserve that chunk.
+  if(!TraceReserve(2*32768+8192)){Response.ErrorCode=TEXT("trace_limit_or_unsafe");StopProcess(true);return Response;}
+  TArray<uint8> Chunk; FPlatformProcess::ReadPipeToArray(StdoutReadPipe,Chunk);
+  if(!Chunk.IsEmpty()&&!TraceRaw(TEXT("stdout-chunk"),Chunk,Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}PendingRaw.Append(Chunk);
   if (StderrReadPipe)
   {
-   TArray<uint8> Diagnostic;FPlatformProcess::ReadPipeToArray(StderrReadPipe,Diagnostic);DiagnosticBytes+=Diagnostic.Num();
+   TArray<uint8> Diagnostic;FPlatformProcess::ReadPipeToArray(StderrReadPipe,Diagnostic);
+   if(!Diagnostic.IsEmpty()&&!TraceRaw(TEXT("stderr-chunk"),Diagnostic,Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}DiagnosticBytes+=Diagnostic.Num();
    // Do not print untrusted/private diagnostics into the UI log.
    if(DiagnosticBytes>65536){Response.ErrorCode=TEXT("worker_stderr_limit");StopProcess(true);return Response;}
   }
@@ -179,6 +225,7 @@ FEdgeWorldResponse FEdgeWorldProcessTransport::ExchangeUniverse(const FEdgeWorld
   {
    // One in-flight request: extra unsolicited stdout is a channel violation.
    if(PendingRaw.Num()!=LF+1){Response.ErrorCode=TEXT("unsolicited_worker_response");StopProcess(true);return Response;}
+   if(!TraceRaw(TEXT("response-complete"),{},Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
    Response.RawJsonl=MoveTemp(PendingRaw);PendingRaw.Reset();Response.bSuccess=true; if(Request.Operation==TEXT("status"))bNeedsUniverseStatus=false; return Response;
   }
   if(!FPlatformProcess::IsProcRunning(ProcessHandle))

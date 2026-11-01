@@ -34,12 +34,28 @@ bool AEdgeWorldUniverseActor::ApplyVerified(const FEdgeWorldUniverseObservation&
  TArray<TObjectPtr<AActor>> New;
  auto Spawn=[&](UStaticMesh* Mesh,const FVector& P,const FQuat& Q,const FVector& Scale)
  {
-  auto* A=W->SpawnActor<AStaticMeshActor>(P,Q.Rotator());if(!A)return false;auto* C=A->GetStaticMeshComponent();C->SetMobility(EComponentMobility::Movable);C->SetStaticMesh(Mesh);C->SetMaterial(0,Material);C->SetCollisionEnabled(ECollisionEnabled::NoCollision);C->SetGenerateOverlapEvents(false);C->SetSimulatePhysics(false);A->SetActorScale3D(Scale);New.Add(A);return true;
+  auto* A=W->SpawnActor<AStaticMeshActor>(P,Q.Rotator());if(!A)return false;auto* C=A->GetStaticMeshComponent();C->SetMobility(EComponentMobility::Movable);C->SetStaticMesh(Mesh);C->SetMaterial(0,Material);C->SetCollisionEnabled(ECollisionEnabled::NoCollision);C->SetGenerateOverlapEvents(false);C->SetSimulatePhysics(false);A->SetActorScale3D(Scale);A->SetActorHiddenInGame(!bProjectionVisible);New.Add(A);return true;
  };
  bool OK=Spawn(Sphere,Position(O,O.Bodies[0].PositionM),Quaternion(O.Bodies[0].QuaternionWXYZ),DynamicScale*(O.Scale/100.))&&Spawn(Cube,Position(O,O.Bodies[1].PositionM),Quaternion(O.Bodies[1].QuaternionWXYZ),SupportScale*(O.Scale/100.));
  for(const auto& D:O.Decorations)OK=OK&&Spawn(Meshes[D.AssetId],FVector(D.PositionCm[0],D.PositionCm[1],D.PositionCm[2]),FQuat::Identity,FVector(D.ScaleMilli[0],D.ScaleMilli[1],D.ScaleMilli[2])/1000.);
+ int32 Derived=0;
+ auto Segment=[&](const FVector& A,const FVector& B,float Width)
+ {
+  FVector Delta=B-A;if(Delta.SizeSquared()<1e-10)return true;
+  if(++Derived>4096)return false;
+  return Spawn(Cube,(A+B)*.5,FQuat::FindBetweenNormals(FVector::ForwardVector,Delta.GetSafeNormal()),FVector(Delta.Size()/100.,Width/100.,Width/100.));
+ };
+ // Pure technical boundaries; only the already-approved Cube/Material are used.
+ for(const auto& Place:O.Places)for(int32 I=1;I<Place.FootprintCm.Num();++I)
+ {const auto& A=Place.FootprintCm[I-1];const auto& B=Place.FootprintCm[I];OK=OK&&Segment(FVector(A.X,A.Y,Place.ElevationCm),FVector(B.X,B.Y,Place.ElevationCm),6.f);}
+ for(const auto& Route:O.Routes)for(int32 I=1;I<Route.PolylineCm.Num();++I)
+ {const auto& A=Route.PolylineCm[I-1];const auto& B=Route.PolylineCm[I];OK=OK&&Segment(FVector(A.X,A.Y,10),FVector(B.X,B.Y,10),8.f);}
+ for(int32 I=1;I<O.WatercourseCm.Num();++I)
+ {const auto& A=O.WatercourseCm[I-1];const auto& B=O.WatercourseCm[I];OK=OK&&Segment(FVector(A.X,A.Y,15),FVector(B.X,B.Y,15),10.f);}
  if(!OK){for(AActor* A:New)if(A)A->Destroy();Error=TEXT("proxy allocation failed");return false;}
- for(AActor* A:Proxies)if(IsValid(A))A->Destroy();Proxies=MoveTemp(New);
+ for(AActor* A:Proxies)if(IsValid(A))A->Destroy();Proxies=MoveTemp(New);DerivedInstances=Derived;
  // Abstract development is displayed separately by the HUD.
  return true;
 }
+
+void AEdgeWorldUniverseActor::SetProjectionVisible(bool Visible){bProjectionVisible=Visible;for(AActor* A:Proxies)if(IsValid(A))A->SetActorHiddenInGame(!Visible);}

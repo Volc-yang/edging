@@ -72,3 +72,38 @@ to independent I12. No author display run is part of this task.
 Root reviews exact source/CPU evidence, then releases the compile/NullRHI window.
 After PR review/CI/merge, root coordinates I11B/I12 and task cleanup. No self-merge
 or worktree cleanup; generated outputs/evidence remain outside source commits.
+
+## I11R capture-interface refinement (root accepted)
+
+Added passive Universe-only trace under launcher-created0700 exclusive run path.
+Request bytes, stdout chunks (including partial/malformed), separate raw stderr
+chunks and write-result/completion metadata use exclusive0600 files. Metadata
+pins UTC/monotonic time, owned PID, transport generation, event/request serial,
+operation/request ID and raw byte count. No wire is rewritten or resent by trace.
+A shared64MiB run budget survives reconnect; new requests reserve4MiB headroom,
+and each pair of32768B reads reserves enough room before consuming bytes. Cap,
+unsafe paths or write failures stop the channel; possible submitted commands
+retain unknown status/exact closure. Partial trace artifacts are never overwritten.
+
+Last committed closure/digest is retained independently of pending actions.
+Owner-console `UniverseRetryLastCommitted` sends that same closure via the normal
+current/history/ready/unknown/busy gate. `UniverseObserveExact(tick,revision,watermark)`
+selects an exact proof; `UniverseRetain/UniverseAdvance` use existing action gates;
+`UniverseProjectionVisible(bool)` and `UniverseCamera(yaw,pitch)` are view-only.
+There is no automatic command clock, signer or runtime fake switch.
+
+Places/routes/watercourse now produce bounded thin Cube/BasicShapeMaterial proxies
+using only the audited content graph. Derived proxy count is recorded separately
+from authoritative decoration D; old actors are replaced, not accumulated. No debug
+material/LineBatch is introduced. New-mode movable directional light has no IES
+or light-function content. These are technical geography, not realistic water.
+
+CPU first source89dd303: shell syntax exit0, 13/14 launcher tests passed; sole
+failure was mock /var vs /private/var path equality on macOS, while launch/pins
+succeeded. Sourceadc6fd3 corrected that assertion via resolve(), also added explicit
+focus-return gate. Unique targeted test passed, then previously unrun8 composite
+record tests and independent67-golden/57-negative/5-proof oracle passed. Combined
+CPU15.991s, source/fixture hashes unchanged per attempt. Raw directories:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11-20261102-host-cpu-attempt{1,2}`.
+I11R adds a separately authorized CPU card<=120s/raw32MiB/one targeted retry;
+checks pending. No UE build/window has yet run; final source is still uncompiled.

@@ -11,6 +11,7 @@
 #include "Serialization/JsonSerializer.h"
 #if PLATFORM_MAC
 #include <CommonCrypto/CommonDigest.h>
+#include <sys/stat.h>
 #endif
 #if WITH_DEV_AUTOMATION_TESTS
 namespace
@@ -53,6 +54,7 @@ bool FUniverseProtocolTest::RunTest(const FString& Parameters)
  FEdgeWorldUniverseSession S;S.Head.Head=TEXT("verified-head");S.Head.StorageState=TEXT("ready");S.Observation.Manifest=S.Head.Head;S.bHasObservation=true;S.bAssetsValidated=true;S.Phase=EUniverseClientPhase::Latest;
  TestTrue(TEXT("ready can write"),S.CanWrite());TestTrue(TEXT("first edge accepted"),S.SpacePressed());TestFalse(TEXT("held input no second action"),S.SpacePressed());S.SpaceReleased();TestTrue(TEXT("new edge"),S.SpacePressed());
  S.FocusLost();S.SpaceReleased();TestFalse(TEXT("focus recovery held key cannot advance"),S.SpacePressed());TestFalse(TEXT("focus recovery blocks retain too"),S.CanWrite());S.ResumeReleased();TestTrue(TEXT("actual release rearms focus"),S.CanWrite());
+ S.LastCommandRecords=TEXT("committed exact closure");S.LastCommandDigest=FString::ChrN(64,'d');TestTrue(TEXT("committed retry uses normal write gate"),S.CanRetryLast());S.HeadTick=5;S.HeadRevision=7;TestTrue(TEXT("exact same tick different revision selection"),S.CanSelectExact(5,6,6));TestFalse(TEXT("watermark mismatch"),S.CanSelectExact(5,6,7));TestFalse(TEXT("future selection rejected"),S.CanSelectExact(6,7,7));S.bHistory=true;TestFalse(TEXT("history cannot retry committed write"),S.CanRetryLast());S.bHistory=false;S.ClearPending();TestEqual(TEXT("successful closure retained after pending cleared"),S.LastCommandRecords,FString(TEXT("committed exact closure")));
  S.bHistory=true;S.SpaceReleased();TestFalse(TEXT("history Space rejected"),S.SpacePressed());S.bHistory=false;S.bUnknown=true;TestFalse(TEXT("unknown blocks writes"),S.CanWrite());S.bUnknown=false;S.Head.StorageState=TEXT("unconfirmed_readonly");TestFalse(TEXT("unconfirmed blocks writes"),S.CanWrite());S.Head.StorageState=TEXT("ready");
  auto T=S.Begin(EUniverseClientPhase::AwaitStatus);TestFalse(TEXT("busy blocks writes"),S.CanWrite());auto Old=T;--Old.Epoch;TestFalse(TEXT("late epoch cannot clear busy"),S.Accept(Old,1));TestTrue(TEXT("still busy"),S.bBusy);TestTrue(TEXT("fresh bootstrap generation"),S.Accept(T,1));
  T=S.Begin(EUniverseClientPhase::Advancing);TestFalse(TEXT("new process cannot complete old write"),S.Accept(T,2));S.CommandRecords=TEXT("exact immutable synthetic closure");S.CommandDigest=FString::ChrN(64,'a');S.bUnknown=true;S.Invalidate();TestEqual(TEXT("unknown cached closure survives epoch"),S.CommandRecords,FString(TEXT("exact immutable synthetic closure")));TestTrue(TEXT("unknown remains explicit"),S.bUnknown);TestFalse(TEXT("old callback invalidated"),S.Accept(T,1));
@@ -84,18 +86,29 @@ bool FUniverseTransportTest::RunTest(const FString& Parameters)
  const FString Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_TEST_PYTHON"));if(!TestTrue(TEXT("explicit test Python"),!Python.IsEmpty()&&FPaths::FileExists(Python)))return false;
  FString Root=FPaths::Combine(FPaths::ProjectSavedDir(),TEXT("UniverseTransportSynthetic"),FGuid::NewGuid().ToString(EGuidFormats::Digits));FString Package=Root/TEXT("engine/universe_authority");IFileManager::Get().MakeDirectory(*Package,true);
  FFileHelper::SaveStringToFile(TEXT(""),*(Root/TEXT("engine/__init__.py")));FFileHelper::SaveStringToFile(TEXT(""),*(Package/TEXT("__init__.py")));
- FString Script=TEXT("import sys,pathlib\nassert sys.argv[1]=='--owner-config' and len(sys.argv)==3\nmode=pathlib.Path(sys.argv[2]).read_text()\nfor line in sys.stdin.buffer:\n if mode=='crlf':sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\r\\n')\n elif mode=='utf8':sys.stdout.buffer.write(b'\\xc0\\n')\n elif mode=='limit':sys.stdout.buffer.write(b'x'*1048578)\n else:sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\n')\n sys.stdout.buffer.flush()\n");
+ FString Script=TEXT("import sys,pathlib\nassert sys.argv[1]=='--owner-config' and len(sys.argv)==3\nmode=pathlib.Path(sys.argv[2]).read_text()\nfor line in sys.stdin.buffer:\n sys.stderr.buffer.write(b'synthetic stderr\\x00\\xff\\n');sys.stderr.buffer.flush()\n if mode=='crlf':sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\r\\n')\n elif mode=='utf8':sys.stdout.buffer.write(b'\\xc0\\n')\n elif mode=='limit':sys.stdout.buffer.write(b'x'*1048578)\n else:sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\n')\n sys.stdout.buffer.flush()\n");
  FString Worker=Package/TEXT("worker.py");FFileHelper::SaveStringToFile(Script,*Worker,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
  for(const TCHAR* Mode:{TEXT("crlf"),TEXT("utf8"),TEXT("limit"),TEXT("valid")})
  {
   FString Owner=Root/TEXT("test-owned-mode");FFileHelper::SaveStringToFile(Mode,*Owner,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
   FEdgeWorldWorkerLaunchConfig Config;Config.LaunchMode=EEdgeWorldWorkerLaunchMode::Universe;Config.PythonExecutable=Python;Config.WorkerScript=Worker;Config.OwnerConfigPath=Owner;Config.RequestTimeoutSeconds=3.;
+  FString Trace=Root/(FString(TEXT("trace-"))+Mode);IFileManager::Get().MakeDirectory(*Trace,true);
+#if PLATFORM_MAC
+  FTCHARToUTF8 TracePath(*Trace);chmod(TracePath.Get(),0700);
+#endif
+  Config.TraceDirectory=Trace;
+  FString Existing=Trace/TEXT("exclusive-sentinel.bin");auto Original=UB(TEXT("original synthetic raw"));TestTrue(TEXT("exclusive first raw"),FEdgeWorldProcessTransport::TraceFileExclusive(Existing,Original));TestFalse(TEXT("existing trace file never overwritten"),FEdgeWorldProcessTransport::TraceFileExclusive(Existing,UB(TEXT("replacement"))));TArray<uint8> Preserved;FFileHelper::LoadFileToArray(Preserved,*Existing);TestTrue(TEXT("existing raw unchanged"),Preserved==Original);
   auto Transport=MakeShared<FEdgeWorldProcessTransport,ESPMode::ThreadSafe>(Config);
   struct FDone{FCriticalSection Lock;bool Ready=false;FEdgeWorldResponse Response;};auto Done=MakeShared<FDone,ESPMode::ThreadSafe>();
   Transport->SendJsonLine({TEXT("u-synthetic"),TEXT("status"),TEXT("{}\n")},[Done](FEdgeWorldResponse&& R){FScopeLock L(&Done->Lock);Done->Response=MoveTemp(R);Done->Ready=true;});
   const double End=FPlatformTime::Seconds()+5.;bool Ready=false;while(FPlatformTime::Seconds()<End){{FScopeLock L(&Done->Lock);Ready=Done->Ready;}if(Ready)break;FPlatformProcess::Sleep(.005f);}
   TestTrue(TEXT("raw transport completed"),Ready);if(Ready){FScopeLock L(&Done->Lock);const auto& R=Done->Response;TestTrue(TEXT("owned process identity"),R.ProcessGeneration==1&&R.WorkerPid>0);if(FString(Mode)==TEXT("limit"))TestEqual(TEXT("bounded noLF stream"),R.ErrorCode,FString(TEXT("LIMIT")));else if(FString(Mode)==TEXT("utf8"))TestTrue(TEXT("invalid UTF8 not replaced"),R.RawJsonl.Num()==2&&R.RawJsonl[0]==0xc0);else if(FString(Mode)==TEXT("crlf"))TestTrue(TEXT("CRLF not trimmed"),R.RawJsonl.Num()>2&&R.RawJsonl[R.RawJsonl.Num()-2]=='\r');else TestTrue(TEXT("LF preserved"),!R.RawJsonl.IsEmpty()&&R.RawJsonl.Last()=='\n');}
   Transport->Shutdown();
+  TArray<FString> Metadata;IFileManager::Get().FindFiles(Metadata,*(Trace/TEXT("*.json")),true,false);Metadata.Sort();TArray<uint8> Stdout,Stderr;int32 Requests=0;
+  for(const FString& Name:Metadata){FString Text;FFileHelper::LoadFileToString(Text,*(Trace/Name));auto M=Object(Text);TArray<uint8> Bytes;FFileHelper::LoadFileToArray(Bytes,*(Trace/M->GetStringField(TEXT("raw_file"))));FString Direction=M->GetStringField(TEXT("direction"));if(Direction==TEXT("stdout-chunk"))Stdout.Append(Bytes);if(Direction==TEXT("stderr-chunk"))Stderr.Append(Bytes);if(Direction==TEXT("request")){++Requests;TestTrue(TEXT("request original bytes"),Bytes==UB(TEXT("{}\n")));}TestTrue(TEXT("trace process generation"),M->GetStringField(TEXT("generation"))==TEXT("1"));}
+  TestEqual(TEXT("one request, passive recorder"),Requests,1);TArray<uint8> ExpectedStderr=UB(TEXT("synthetic stderr"));ExpectedStderr.Add(0);ExpectedStderr.Add(0xff);ExpectedStderr.Add('\n');TestTrue(TEXT("stderr original bytes preserved separately"),Stderr==ExpectedStderr);
+  if(Ready&&FString(Mode)!=TEXT("limit")){FScopeLock L(&Done->Lock);TestTrue(TEXT("response raw chunks exact"),Stdout==Done->Response.RawJsonl);}
+
  }
  return true;
 }

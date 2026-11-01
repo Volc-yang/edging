@@ -46,12 +46,19 @@ public:
 	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override;
 };
 
+struct EDGEWORLDRUNTIME_API FEdgeWorldTraceBudget
+{
+ FCriticalSection Mutex;
+ int64 Bytes=0;
+};
 enum class EEdgeWorldWorkerLaunchMode { Legacy, Universe };
 /** Launch configuration for the single-world Python worker process. */
 struct EDGEWORLDRUNTIME_API FEdgeWorldWorkerLaunchConfig
 {
  EEdgeWorldWorkerLaunchMode LaunchMode = EEdgeWorldWorkerLaunchMode::Legacy;
  FString OwnerConfigPath;
+ FString TraceDirectory; // Optional owner-created private run directory; legacy ignores it.
+ TSharedPtr<FEdgeWorldTraceBudget,ESPMode::ThreadSafe> TraceBudget;
 	FString PythonExecutable;
 	FString WorkerScript;
 	FString StateDirectory;
@@ -79,11 +86,15 @@ public:
 
 	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override;
 	void Shutdown();
+ // Exclusive raw artifact creation; false preserves any existing file unchanged.
+ static bool TraceFileExclusive(const FString& Path,TArrayView<const uint8> Bytes);
 
 private:
 	bool EnsureStarted(FString& OutError);
 	FEdgeWorldResponse Exchange(const FEdgeWorldRequest& Request);
  FEdgeWorldResponse ExchangeUniverse(const FEdgeWorldRequest& Request);
+ bool TraceRaw(const FString& Direction,TArrayView<const uint8> Bytes,const FEdgeWorldRequest& Request,int32 Written=-1);
+ bool TraceReserve(int64 Bytes);
 	void StopProcess(bool bTerminate);
 
 	FEdgeWorldWorkerLaunchConfig Config;
@@ -98,6 +109,8 @@ private:
  uint64 Generation = 0;
  uint32 WorkerPid = 0;
  bool bNeedsUniverseStatus = true;
+ FString TracePrefix=FGuid::NewGuid().ToString(EGuidFormats::Digits);
+ uint64 TraceSerial=0, RequestSerial=0;
 };
 
 /** Small request builder for the prototype operations; it does not own state. */

@@ -7,6 +7,8 @@
 #include "Camera/CameraActor.h"
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/DirectionalLight.h"
+#include "Components/DirectionalLightComponent.h"
 #include "HAL/PlatformMisc.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -41,6 +43,7 @@ AEdgeWorldUniverseGameMode::~AEdgeWorldUniverseGameMode()=default;
 void AEdgeWorldUniverseGameMode::StartPlay()
 {
  Super::StartPlay();if(!Configure()){Reject(TEXT("trusted public launch pins unavailable"),false);return;}
+ if(auto* Light=GetWorld()->SpawnActor<ADirectionalLight>(FVector(0,0,500),FRotator(-45,-35,0))){Light->GetLightComponent()->SetMobility(EComponentMobility::Movable);Light->GetLightComponent()->SetIntensity(10.f);}
  Projection=GetWorld()->SpawnActor<AEdgeWorldUniverseActor>();Camera=GetWorld()->SpawnActor<ACameraActor>(FVector(700,-900,650),FRotator(-25,45,0));
  if(APlayerController* C=GetWorld()->GetFirstPlayerController()){C->SetViewTarget(Camera);C->SetInputMode(FInputModeGameOnly());}
  OpenTransport();RefreshHead();UE_LOG(LogTemp,Display,TEXT("Universe world: 1 weak; 2 strong; Space physical; R retain; [ prior; H latest; UniverseRefresh/UniverseRetry explicit."));
@@ -50,12 +53,13 @@ bool AEdgeWorldUniverseGameMode::Configure()
 {
  Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PYTHON"));Worker=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_WORKER"));OwnerConfig=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_OWNER_CONFIG"));
  FString PinsPath=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS")),Hash=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS_SHA256"));TArray<uint8> Raw;FString Error;
+ TraceDirectory=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_TRACE"));TraceBudget=MakeShared<FEdgeWorldTraceBudget,ESPMode::ThreadSafe>();
  bExplicitInitialize=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_INITIALIZE"))==TEXT("1");
  return !FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadPins(PinsPath,Raw)&&FEdgeWorldUniverseControlParser::PublicPins(Raw,Hash,Pins,Error);
 }
 void AEdgeWorldUniverseGameMode::OpenTransport()
 {
- FEdgeWorldWorkerLaunchConfig C;C.LaunchMode=EEdgeWorldWorkerLaunchMode::Universe;C.PythonExecutable=Python;C.WorkerScript=Worker;C.OwnerConfigPath=OwnerConfig;C.WorldId=Pins.Context.WorldId;C.RequestTimeoutSeconds=60.;Transport=MakeShared<FEdgeWorldProcessTransport,ESPMode::ThreadSafe>(MoveTemp(C));
+ FEdgeWorldWorkerLaunchConfig C;C.LaunchMode=EEdgeWorldWorkerLaunchMode::Universe;C.PythonExecutable=Python;C.WorkerScript=Worker;C.OwnerConfigPath=OwnerConfig;C.TraceDirectory=TraceDirectory;C.TraceBudget=TraceBudget;C.WorldId=Pins.Context.WorldId;C.RequestTimeoutSeconds=60.;Transport=MakeShared<FEdgeWorldProcessTransport,ESPMode::ThreadSafe>(MoveTemp(C));
 }
 FString AEdgeWorldUniverseGameMode::BasePayload()const{return TEXT("\"domain\":\"edgeworld.universe.authority\",\"version\":\"0.2\",\"world_id\":")+Quote(Pins.Context.WorldId);}
 FEdgeWorldUniverseControlExpectation AEdgeWorldUniverseGameMode::Expectation(const FString& Op,const FString& Id)const
@@ -71,7 +75,7 @@ void AEdgeWorldUniverseGameMode::SendControl(const FString& Op,const FString& Pa
 void AEdgeWorldUniverseGameMode::RefreshHead(){SendControl(TEXT("status"),TEXT("{")+BasePayload()+TEXT("}"),EUniverseClientPhase::AwaitStatus);}
 void AEdgeWorldUniverseGameMode::ChannelFailed(const FString& Error)
 {
- bool Unknown=!Session.PendingPrepare.IsEmpty();Session.Invalidate();if(Transport)Transport->Shutdown();Transport.Reset();Reject(Error,Unknown);
+ bool Unknown=!Session.PendingPrepare.IsEmpty()||!Session.CommandRecords.IsEmpty();Session.Invalidate();if(Transport)Transport->Shutdown();Transport.Reset();Reject(Error,Unknown);
 }
 void AEdgeWorldUniverseGameMode::Reject(const FString& Error,bool Unknown)
 {
@@ -97,10 +101,10 @@ void AEdgeWorldUniverseGameMode::OnControl(const FString& Op,const FUniverseRequ
  if(Op==TEXT("prepare"))
  {
   Session.CommandRecords=C.CommandRecordsJson;Session.CommandDigest=C.CommandDigest;
-  if(!C.CommittedResultJson.IsEmpty()){Session.ClearPending();RefreshHead();return;}
+  if(!C.CommittedResultJson.IsEmpty()){Session.LastCommandRecords=Session.CommandRecords;Session.LastCommandDigest=Session.CommandDigest;Session.ClearPending();RefreshHead();return;}
   ExecutePrepared();return;
  }
- if(Op==TEXT("advance")||Op==TEXT("initialize")){Session.ClearPending();RefreshHead();}
+ if(Op==TEXT("advance")||Op==TEXT("initialize")){if(Op==TEXT("advance")){Session.LastCommandRecords=Session.CommandRecords;Session.LastCommandDigest=Session.CommandDigest;}Session.ClearPending();RefreshHead();}
 }
 void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
 {
@@ -115,6 +119,7 @@ void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
   if(!FEdgeWorldUniverseObservationParser::Verify(R.RawJsonl,E,O,Error)||!Weak->ValidateAssets(O,Error)){Weak->Reject(Error,false);return;}
   Weak->Session.Observation=O;Weak->Session.bHasObservation=true;Weak->Session.bAssetsValidated=true;Weak->Session.bHistory=O.Manifest!=Weak->Session.Head.Head;Weak->Session.ClassifyView();
   if(Weak->Projection&&!Weak->Projection->ApplyVerified(O,Error)){Weak->Session.bAssetsValidated=false;Weak->Reject(Error,false);return;}
+  if(Weak->Projection)Weak->Session.DerivedInstances=Weak->Projection->GetDerivedInstanceCount();
   Weak->Present();UE_LOG(LogTemp,Display,TEXT("Universe world %s observed tick %lld, revision %lld"),*O.WorldId,(long long)O.Tick,(long long)O.Revision);
  });});Present();
 }
@@ -136,8 +141,19 @@ void AEdgeWorldUniverseGameMode::ExecutePrepared()
 {
  FString P=TEXT("{")+BasePayload()+TEXT(",\"principal\":")+Quote(Pins.Principal)+TEXT(",\"command_records\":")+Session.CommandRecords+TEXT(",\"command_digest\":")+Quote(Session.CommandDigest)+TEXT("}");SendControl(TEXT("advance"),P,EUniverseClientPhase::Advancing);
 }
+void AEdgeWorldUniverseGameMode::Advance(){Prepare(TEXT("physics_step"));}
+void AEdgeWorldUniverseGameMode::RetryLastCommitted()
+{
+ if(!Session.CanRetryLast())return;
+ Session.CommandRecords=Session.LastCommandRecords;Session.CommandDigest=Session.LastCommandDigest;ExecutePrepared();
+}
+void AEdgeWorldUniverseGameMode::ObserveExact(int64 Tick,int64 Revision,int64 Watermark)
+{
+ if(!Session.CanSelectExact(Tick,Revision,Watermark))return;Observe(Tick,Revision);
+}
+void AEdgeWorldUniverseGameMode::ProjectionVisible(bool Visible){if(Projection)Projection->SetProjectionVisible(Visible);}
 void AEdgeWorldUniverseGameMode::SelectCase(const FString& C){if(C==TEXT("weak")||C==TEXT("strong"))Session.SelectedCase=C;Present();}
-void AEdgeWorldUniverseGameMode::SpacePressed(){if(Session.SpacePressed())Prepare(TEXT("physics_step"));}
+void AEdgeWorldUniverseGameMode::SpacePressed(){if(Session.SpacePressed())Advance();}
 void AEdgeWorldUniverseGameMode::Retain(){Prepare(TEXT("retain_snapshot"));}
 void AEdgeWorldUniverseGameMode::Previous(){if(!Session.bBusy&&Session.bHasObservation&&Session.Observation.PriorSelection.IsSet()){auto P=Session.Observation.PriorSelection.GetValue();Observe(P.X,P.Y);}}
 void AEdgeWorldUniverseGameMode::Latest(){if(!Session.bBusy&&!Session.Head.Head.IsEmpty())Observe(Session.HeadTick,Session.HeadRevision);}
@@ -154,6 +170,12 @@ AEdgeWorldUniverseGameMode* AEdgeWorldUniverseController::Mode()const{return Get
 void AEdgeWorldUniverseController::Weak(){if(auto* M=Mode())M->SelectCase(TEXT("weak"));}void AEdgeWorldUniverseController::Strong(){if(auto* M=Mode())M->SelectCase(TEXT("strong"));}
 void AEdgeWorldUniverseController::Advance(){if(auto* M=Mode())M->SpacePressed();}void AEdgeWorldUniverseController::Release(){if(auto* M=Mode())M->SpaceReleased();}void AEdgeWorldUniverseController::Retain(){if(auto* M=Mode())M->Retain();}
 void AEdgeWorldUniverseController::Previous(){if(auto* M=Mode())M->Previous();}void AEdgeWorldUniverseController::Latest(){if(auto* M=Mode())M->Latest();}void AEdgeWorldUniverseController::UniverseRetry(){if(auto* M=Mode())M->RetryExact();}void AEdgeWorldUniverseController::UniverseRefresh(){if(auto* M=Mode())M->Reconnect();}
+void AEdgeWorldUniverseController::UniverseRetryLastCommitted(){if(auto* M=Mode())M->RetryLastCommitted();}
+void AEdgeWorldUniverseController::UniverseObserveExact(int64 Tick,int64 Revision,int64 Watermark){if(auto* M=Mode())M->ObserveExact(Tick,Revision,Watermark);}
+void AEdgeWorldUniverseController::UniverseRetain(){if(auto* M=Mode())M->Retain();}
+void AEdgeWorldUniverseController::UniverseAdvance(){if(auto* M=Mode())M->Advance();}
+void AEdgeWorldUniverseController::UniverseProjectionVisible(bool Visible){if(auto* M=Mode())M->ProjectionVisible(Visible);}
+void AEdgeWorldUniverseController::UniverseCamera(float Yaw,float Pitch){if(FMath::IsFinite(Yaw)&&FMath::IsFinite(Pitch)&&FMath::Abs(Yaw)<=360&&FMath::Abs(Pitch)<=90)if(auto* M=Mode())M->MoveCamera(FVector::ZeroVector,FRotator(Pitch,Yaw,0));}
 void AEdgeWorldUniverseController::SetupInputComponent()
 {
  Super::SetupInputComponent();InputComponent->BindKey(EKeys::One,IE_Pressed,this,&AEdgeWorldUniverseController::Weak);InputComponent->BindKey(EKeys::Two,IE_Pressed,this,&AEdgeWorldUniverseController::Strong);InputComponent->BindKey(EKeys::SpaceBar,IE_Pressed,this,&AEdgeWorldUniverseController::Advance);InputComponent->BindKey(EKeys::SpaceBar,IE_Released,this,&AEdgeWorldUniverseController::Release);InputComponent->BindKey(EKeys::R,IE_Pressed,this,&AEdgeWorldUniverseController::Retain);InputComponent->BindKey(EKeys::LeftBracket,IE_Pressed,this,&AEdgeWorldUniverseController::Previous);InputComponent->BindKey(EKeys::H,IE_Pressed,this,&AEdgeWorldUniverseController::Latest);

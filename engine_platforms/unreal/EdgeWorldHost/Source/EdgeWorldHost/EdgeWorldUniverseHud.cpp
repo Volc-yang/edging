@@ -6,6 +6,7 @@ void AEdgeWorldUniverseHud::Present(const FEdgeWorldUniverseSession& S)
 {
  Watermarks=FString::Printf(TEXT("HEAD (%lld,%lld) | viewing (%lld,%lld) %s"),(long long)S.HeadTick,(long long)S.HeadRevision,(long long)S.Observation.Tick,(long long)S.Observation.Revision,S.bHistory?TEXT("history/read only"):TEXT("current"));
  Controls=FString::Printf(TEXT("case %s | %s | %s"),*S.SelectedCase,S.bBusy?TEXT("busy"):S.bUnknown?TEXT("unknown: UniverseRefresh then UniverseRetry"):S.CanWrite()?TEXT("ready"):TEXT("read only/rejected"),*S.Head.StorageState);
+ Controls+=FString::Printf(TEXT(" | derived technical proxies %d (separate from D)"),S.DerivedInstances);
  Value=S.Observation.DevelopmentMm.IsSet()?FString::Printf(TEXT("Abstract development: %lld mm (magnified proxy)"),(long long)S.Observation.DevelopmentMm.GetValue()):TEXT("Abstract development: initial");
 }
 void AEdgeWorldUniverseHud::DrawHUD()

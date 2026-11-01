@@ -140,6 +140,10 @@ assert path.stat().st_uid==os.getuid() and path.stat().st_nlink==1 and path.stat
 print(hashlib.sha256(canonical).hexdigest())
 PINS
     ) || fail 'Universe public pins validation failed; UE/build not started'
+    trace_dir="$run_dir/trace"
+    mkdir -m 700 "$trace_dir"
+    trace_dir=$(cd -- "$trace_dir" && pwd -P)
+    export EDGEWORLD_UNIVERSE_TRACE="$trace_dir"
     export EDGEWORLD_UNIVERSE_PINS="$viewer_dir/public-pins.json"
     export EDGEWORLD_UNIVERSE_PINS_SHA256="$pins_sha"
     status "universe_public_pins_sha256=$pins_sha; explicit_initialize=$universe_initialize; worker_permissions_decide"

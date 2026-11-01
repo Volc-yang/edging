@@ -9,6 +9,7 @@ class FEdgeWorldProcessTransport;
 class AEdgeWorldUniverseActor;
 class ACameraActor;
 struct FEdgeWorldResponse;
+struct FEdgeWorldTraceBudget;
 
 enum class EUniverseClientPhase { Stopped, AwaitStatus, AwaitObserve, Latest, History, Preparing, Advancing, Unknown, ReadOnly, Rejected };
 struct FUniverseRequestToken { uint64 Epoch=0, Serial=0, Generation=0; };
@@ -20,6 +21,8 @@ struct FEdgeWorldUniverseSession
  EUniverseClientPhase Phase=EUniverseClientPhase::Stopped;
  FEdgeWorldUniverseHeadBinding Head;
  int64 HeadTick=0, HeadRevision=0;
+ int32 DerivedInstances=0;
+ FString LastCommandRecords,LastCommandDigest;
  FString SelectedCase=TEXT("weak"), PendingPrepare, Proposal, Intent, ApprovalId, CommandRecordId, CommandRecords, CommandDigest;
  FEdgeWorldUniverseObservation Observation;
  FUniverseRequestToken Begin(EUniverseClientPhase P) { bBusy=true;Phase=P;return {Epoch,++Serial,Generation}; }
@@ -30,6 +33,8 @@ struct FEdgeWorldUniverseSession
   Generation=ProcessGeneration;bBusy=false;return true;
  }
  bool CanWrite() const { return !bFocusNeedsRelease&&!bBusy&&!bUnknown&&!bHistory&&bHasObservation&&bAssetsValidated&&Phase==EUniverseClientPhase::Latest&&Head.StorageState==TEXT("ready")&&Observation.Manifest==Head.Head; }
+ bool CanRetryLast()const{return CanWrite()&&!LastCommandRecords.IsEmpty()&&!LastCommandDigest.IsEmpty();}
+ bool CanSelectExact(int64 Tick,int64 Revision,int64 Watermark)const{return !bBusy&&!Head.Head.IsEmpty()&&Tick>=0&&Revision>=0&&Watermark==Revision&&Tick<=HeadTick&&Revision<=HeadRevision&&Revision<=9007199254740991LL;}
  bool SpacePressed(){if(bFocusNeedsRelease||bSpaceHeld)return false;bSpaceHeld=true;return CanWrite();}
  void SpaceReleased(){bSpaceHeld=false;}
  void FocusLost(){bFocusNeedsRelease=true;bSpaceHeld=true;}
@@ -55,6 +60,10 @@ public:
  bool FocusNeedsRelease()const{return Session.bFocusNeedsRelease;}
  void ResumeReleased(){Session.ResumeReleased();}
  void Retain();
+ void Advance();
+ void RetryLastCommitted();
+ void ObserveExact(int64 Tick,int64 Revision,int64 Watermark);
+ void ProjectionVisible(bool Visible);
  void Previous();
  void Latest();
  void Reconnect();
@@ -78,7 +87,8 @@ private:
  FString BasePayload()const;
  FEdgeWorldUniversePublicPins Pins;
  FEdgeWorldUniverseSession Session;
- FString Python,Worker,OwnerConfig;
+ FString Python,Worker,OwnerConfig,TraceDirectory;
+ TSharedPtr<FEdgeWorldTraceBudget,ESPMode::ThreadSafe> TraceBudget;
  bool bExplicitInitialize=false, bInitializeSent=false;
  TSharedPtr<FEdgeWorldProcessTransport,ESPMode::ThreadSafe> Transport;
  UPROPERTY() TObjectPtr<AEdgeWorldUniverseActor> Projection;
@@ -95,6 +105,12 @@ public:
  virtual void PlayerTick(float Delta)override;
  UFUNCTION(Exec) void UniverseRetry();
  UFUNCTION(Exec) void UniverseRefresh();
+ UFUNCTION(Exec) void UniverseRetryLastCommitted();
+ UFUNCTION(Exec) void UniverseObserveExact(int64 Tick,int64 Revision,int64 Watermark);
+ UFUNCTION(Exec) void UniverseRetain();
+ UFUNCTION(Exec) void UniverseAdvance();
+ UFUNCTION(Exec) void UniverseProjectionVisible(bool Visible=true);
+ UFUNCTION(Exec) void UniverseCamera(float Yaw=0,float Pitch=0);
 private:
  AEdgeWorldUniverseGameMode* Mode()const;
  void Weak();void Strong();void Advance();void Release();void Retain();void Previous();void Latest();

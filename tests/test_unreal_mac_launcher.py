@@ -192,6 +192,10 @@ pathlib.Path(log).write_text('Engine is initialized. Leaving FEngineLoop::Init()
         self.assertEqual(0o700,pins.parent.stat().st_mode&0o777)
         self.assertEqual(1,pins.stat().st_nlink)
         self.assertEqual(12,len(json.loads(raw)))
+        trace=Path(env['EDGEWORLD_UNIVERSE_TRACE'])
+        self.assertTrue(trace.is_dir())
+        self.assertEqual(0o700,trace.stat().st_mode&0o777)
+        self.assertEqual([],list(trace.iterdir()))
         import hashlib
         self.assertEqual(hashlib.sha256(raw).hexdigest(),env['EDGEWORLD_UNIVERSE_PINS_SHA256'])
         self.assertNotIn('PRIVATE CONFIG',result.stdout+result.stderr+raw.decode())
@@ -223,6 +227,17 @@ pathlib.Path(log).write_text('Engine is initialized. Leaving FEngineLoop::Init()
                 self.assertNotEqual(0,r.returncode)
                 self.assertFalse(self.build_started.exists())
                 self.assertFalse(self.arguments.exists())
+
+    def test_universe_trace_run_is_exclusive(self):
+        roots=[]
+        for unused in range(2):
+            result=self.launch('--launch','--universe','--owner-config',str(self.owner))
+            self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+            trace=Path(json.loads(self.child_environment.read_text())['EDGEWORLD_UNIVERSE_TRACE'])
+            roots.append(trace)
+            (trace/'preserved.bin').write_bytes(b'original raw\x00\xff')
+        self.assertNotEqual(roots[0],roots[1])
+        self.assertEqual(b'original raw\x00\xff',(roots[0]/'preserved.bin').read_bytes())
 
     def test_universe_build_only_does_not_export_or_launch(self):
         r=self.launch('--universe')
