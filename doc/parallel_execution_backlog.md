@@ -6,7 +6,7 @@
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：**H6B 已从准确 `489b97c` 创建 `.worktrees/home-visitor-character` / `codex/home-visitor-character`，正在实现与构建，独占构建/GPU。只读命令 `VisitorStatus` 和显式最长10秒 `VisitorTrace` 已协调；确切日志布局由 H6B 交付，导航不得调用 Advance。Mac 会话锁屏，统筹已请求解锁，先继续不依赖界面的工作，真实 UI 验收等待解锁。H6C [独立验收卡](evidence/home-visitor-acceptance-plan.md) 已审定，非实现 owner 仅完成只读规划，实施基线等待 H6B 审查集成，不并行改共享代码或运行 GPU。
+**下一动作与资源：**H6B 在 `.worktrees/home-visitor-character` / `codex/home-visitor-character` 从 `489b97c` 实施，草稿 PR #66（未集成）。[早期代码审查](evidence/home-visitor-code-review.md) 对 `b1d526e`/`7c137dd` 限定实现无阻塞；修正临时世界/本地玩家 Outer 后，两项定向 UE 日志分别成功，报告顶层计数差异及最终退出/身份记录待 owner 封存。Mac 会话仍锁屏，解锁请求 pending；只继续无 UI 工作，真实键盘/Metal/权威只读/恢复验收未过。只读 `VisitorStatus`/最长10秒 `VisitorTrace` 及[H6C 卡](evidence/home-visitor-acceptance-plan.md) 已协调，独立验收基线仍等待 H6B 审查集成，构建/GPU 不并发。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
