@@ -2,7 +2,7 @@
 
 状态：代码层限定实现无阻塞；不是最终 PR 或运行验收通过。
 审查者：非实现 owner `h1e_independent_review` 与统筹。
-输入：`b1d526e`、`7c137dd`，基线 `489b97c`；测试夹具后续修改尚待最终提交复核。
+输入：`b1d526e`、`7c137dd`，基线 `489b97c`；最终夹具/说明提交 `c3a00f8` 已由统筹复核，草稿 PR #66 CI 成功，仍未集成。
 
 CharacterMovement 接收连续输入；Tab 保持同一 Pawn，只切 ViewTarget、清理
 速度/输入和切换 MovementMode，未修改 pose。安全入口验证实际地面斜率与
@@ -18,11 +18,13 @@ IE_Pressed 绑定；导航、Status、Trace 不调用权威推进。采样初始
 统筹随后直接读取本地 `H6B-20261101/nullrhi-bchkcP9v/ue.log`：
 `OverviewRetainsPawnAndPosition` 与 `SupportMovementCollisionRecovery` 均有
 原生 Test Completed Success，未见 Error/ensure/assert；报告两项 state 也为
-Success，但顶层 succeeded=1，须在最终报告披露，不把顶层字段改写成 2。
-实际进程退出与源码/binary 身份仍以 owner 最终封存记录为准。
+Success；最终核对顶层 succeeded=1、succeededWithWarnings=1、failed=0，
+预期警告来自不配置 live worker 的总览夹具。实际进程退出为 0，源码/binary
+身份和最终部分索引 36/36 文件哈希复算匹配（索引 `8b3375db…7b96252`）。
 
 草稿 PR #66 的 CI 成功不能替代此 UE 检查，更不能替代真实键盘/Metal 运行。
 Mac 会话锁屏，统筹已请求用户解锁。连续键盘运动、真实墙栏接触、Tab、正常
 步行触发边缘、逐项权威文件哈希、显式 Space、恢复与退出门仍待 UI 采证。
-最终须纳入 observation.md，排除本任务自动生成的 DefaultInput.ini，并复核
-最新测试修改与证据；未合并，不移除该部分完成工作树。
+最终 `c3a00f8` 已纳入 observation.md，排除本任务自动生成配置，且通过
+差异审查与 CI。当前已完成所有不依赖界面的必需审查，剩余现场验收受 Mac
+锁屏阻塞。保留草稿与干净工作树，解锁后按准确源码/binary继续，不提前合并。
