@@ -6,5 +6,9 @@ public class EdgeWorldRuntime : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "Json", "JsonUtilities" });
+		if (Target.bBuildEditor)
+		{
+			PrivateDependencyModuleNames.Add("AssetRegistry");
+		}
 	}
 }
