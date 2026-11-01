@@ -1,0 +1,13 @@
+test_runner_byte_budget_failure_cleans_only_parent (__main__.RunnerPreparation.test_runner_byte_budget_failure_cleans_only_parent) ... ok
+test_runner_cleanup_revalidates_identity_before_signaling (__main__.RunnerPreparation.test_runner_cleanup_revalidates_identity_before_signaling) ... ok
+test_runner_default_and_authorization_refuse_before_popen (__main__.RunnerPreparation.test_runner_default_and_authorization_refuse_before_popen) ... ok
+test_runner_existing_output_refused_without_process (__main__.RunnerPreparation.test_runner_existing_output_refused_without_process) ... ok
+test_runner_mock_launcher_parent_wait_and_seal (__main__.RunnerPreparation.test_runner_mock_launcher_parent_wait_and_seal) ... ok
+test_runner_source_exact_untracked_allowlist_and_mapping_negative (__main__.RunnerPreparation.test_runner_source_exact_untracked_allowlist_and_mapping_negative) ... ok
+test_runner_time_budget_failure_uses_actual_wait (__main__.RunnerPreparation.test_runner_time_budget_failure_uses_actual_wait) ... ok
+test_runner_wrong_product_sha_refuses_before_launcher (__main__.RunnerPreparation.test_runner_wrong_product_sha_refuses_before_launcher) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.013s
+
+OK

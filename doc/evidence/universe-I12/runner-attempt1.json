@@ -1,0 +1,14 @@
+{
+  "card": "I12A-RUNNER",
+  "source_commit": "a1170a4e575eea98afdf285865a1e05a4d709884",
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py",
+    "RunnerPreparation"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.12424933398142457,
+  "raw_bytes": 1256,
+  "mock_only": true
+}

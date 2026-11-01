@@ -1,0 +1,33 @@
+test_exact_rounding_and_invalid_numbers (__main__.EvidenceTools.test_exact_rounding_and_invalid_numbers) ... ok
+test_exclusive_output_symlink_and_private_metadata (__main__.EvidenceTools.test_exclusive_output_symlink_and_private_metadata) ... FAIL
+test_literal_contract_goldens (__main__.EvidenceTools.test_literal_contract_goldens) ... ok
+test_missing_bundle_stays_inconclusive (__main__.EvidenceTools.test_missing_bundle_stays_inconclusive) ... ok
+test_synthetic_archive_refs_and_development (__main__.EvidenceTools.test_synthetic_archive_refs_and_development) ... ERROR
+test_trace_chunks_and_tampering (__main__.EvidenceTools.test_trace_chunks_and_tampering) ... ok
+
+======================================================================
+ERROR: test_synthetic_archive_refs_and_development (__main__.EvidenceTools.test_synthetic_archive_refs_and_development)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i12-universe-acceptance/doc/evidence/universe-I12/selfcheck.py", line 87, in test_synthetic_archive_refs_and_development
+    'domain': archive['domain'], 'version': '0.2', 'world_id': archive['world_id'],
+                                                               ~~~~~~~^^^^^^^^^^^^
+KeyError: 'world_id'
+
+======================================================================
+FAIL: test_exclusive_output_symlink_and_private_metadata (__main__.EvidenceTools.test_exclusive_output_symlink_and_private_metadata)
+----------------------------------------------------------------------
+verify_universe_slice_evidence.Invalid: symlink evidence path: /private/var/folders/_c/bds91mdx54d494v89mjkszd80000gn/T/tmpuebf4c97/link
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i12-universe-acceptance/doc/evidence/universe-I12/selfcheck.py", line 120, in test_exclusive_output_symlink_and_private_metadata
+    with self.assertRaisesRegex(oracle.Invalid, 'private material'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "private material" does not match "symlink evidence path: /private/var/folders/_c/bds91mdx54d494v89mjkszd80000gn/T/tmpuebf4c97/link"
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.014s
+
+FAILED (failures=1, errors=1)

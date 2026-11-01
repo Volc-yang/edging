@@ -1,0 +1,17 @@
+{
+  "card": "I12A-OFFLINE",
+  "source_commit": "4e892ffe20fc6efd672b9428411def21c4a8ab54",
+  "source_sha256": "4505f204e6058502e3d660a43b8603a3b84dd654e8dc914485e2210d10dcb938",
+  "argv": [
+    "python3",
+    "-B",
+    "scripts/verify_universe_slice_evidence.py",
+    "--authority",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-runtime-attempt2-topological-authority",
+    "--schema",
+    "doc/fixtures/universe_authority_v0_2/schema.json"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 0.0672128340229392,
+  "unchanged": true
+}

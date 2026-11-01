@@ -1,0 +1,8 @@
+{
+  "source_commit": "73bbd2eef2d8ad6185c7caffed5d597a0316a48f",
+  "sha256": {
+    "scripts/verify_universe_slice_evidence.py": "4505f204e6058502e3d660a43b8603a3b84dd654e8dc914485e2210d10dcb938",
+    "scripts/run_universe_slice_acceptance.py": "624f6fdc76214444128e4516e16ba0955baacce8a9fa2843502c710cab4a2a88",
+    "doc/evidence/universe-I12/selfcheck.py": "cb1478f98e7ef409e834c3360024cee7c0f749b0f2ca295120b30385c339ab96"
+  }
+}

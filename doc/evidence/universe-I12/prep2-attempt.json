@@ -1,0 +1,15 @@
+{
+  "card": "I12A-PREP2",
+  "source_commit": "73bbd2eef2d8ad6185c7caffed5d597a0316a48f",
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py",
+    "EvidenceTools.test_prep2_history_arity_and_post_action_marker",
+    "EvidenceTools.test_prep2_prefix_changed_truncated_or_replaced"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.057752416003495455,
+  "raw_bytes": 354,
+  "synthetic_only": true
+}
