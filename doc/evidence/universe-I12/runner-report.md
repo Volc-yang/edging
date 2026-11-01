@@ -94,5 +94,8 @@ not a valid physical world or actual launcher/GPU behavior.
 * Completion conservatively charges its own write/audit; if filesystem write/audit exceeds that
   bound, no successful completion is published. Resource pressure fails closed, no hidden retry.
 
-PR99 remains draft. Do not self-merge or treat CPU/partial offline/supervision as G-B2. Wait for
-independent source review, accurate integration/owner inputs and actual R12 dispatch.
+Independent u9 subsequently reviewed exact `b5a5851`, matched all three source SHA pins and
+targeted raw866B, and confirmed all four blockers closed. Root accepted only I12A tool preparation.
+PR99 may be ready for source review; no author self-merge or runtime grant follows. New-version
+CI must bind the final pushed head, never reuse old `c14d4cd` CI. Wait for accurate final product/
+owner inputs and actual R12 dispatch. CPU/partial offline/supervision never grants G-B2.
