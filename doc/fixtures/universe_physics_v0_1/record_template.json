@@ -1,0 +1,208 @@
+{
+  "body": {
+    "authority_version": "0.2",
+    "backend": "metal",
+    "cases": [
+      {
+        "case_id": "weak",
+        "gravity_m_s2": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "c000000000000000"
+          }
+        ]
+      },
+      {
+        "case_id": "strong",
+        "gravity_m_s2": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "c0239eb851eb851f"
+          }
+        ]
+      }
+    ],
+    "dt_s": {
+      "$f64": "3f847ae147ae147b"
+    },
+    "entities": [
+      {
+        "existence_id": "existence-dynamic",
+        "fixed": false,
+        "genesis_name": "i7-dynamic",
+        "morph": "sphere",
+        "physical_id": "body-dynamic",
+        "position_m": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "3ff0000000000000"
+          }
+        ],
+        "quaternion_wxyz": [
+          {
+            "$f64": "3ff0000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          }
+        ],
+        "radius_m": {
+          "$f64": "3fb999999999999a"
+        },
+        "size_m": null
+      },
+      {
+        "existence_id": "existence-support",
+        "fixed": true,
+        "genesis_name": "i7-support",
+        "morph": "box",
+        "physical_id": "body-support",
+        "position_m": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "bfb999999999999a"
+          }
+        ],
+        "quaternion_wxyz": [
+          {
+            "$f64": "3ff0000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          }
+        ],
+        "radius_m": null,
+        "size_m": [
+          {
+            "$f64": "4010000000000000"
+          },
+          {
+            "$f64": "4010000000000000"
+          },
+          {
+            "$f64": "3fc999999999999a"
+          }
+        ]
+      }
+    ],
+    "frame": "genesis-world-si-zup.v0.1",
+    "genesis_version": "1.4.3",
+    "horizon_advances": 32,
+    "init_gravity_m_s2": [
+      {
+        "$f64": "0000000000000000"
+      },
+      {
+        "$f64": "0000000000000000"
+      },
+      {
+        "$f64": "c000000000000000"
+      }
+    ],
+    "limits": {
+      "angular_velocity_abs_rad_s": {
+        "$f64": "4059000000000000"
+      },
+      "checkpoint_bytes_max": 8388608,
+      "contact_force_abs_n": {
+        "$f64": "412e848000000000"
+      },
+      "contacts_max": 32,
+      "fixed_pose_error_m": {
+        "$f64": "3eb0c6f7a0b5ed8d"
+      },
+      "ground_gap_max_m": {
+        "$f64": "3f847ae147ae147b"
+      },
+      "ground_gap_min_m": {
+        "$f64": "bf747ae147ae147b"
+      },
+      "influence_mm_abs_max": 1000,
+      "linear_velocity_abs_m_s": {
+        "$f64": "4059000000000000"
+      },
+      "position_abs_m": {
+        "$f64": "4024000000000000"
+      },
+      "quaternion_norm_sq_error": {
+        "$f64": "3f1a36e2eb1c432d"
+      },
+      "samples_per_candidate": 2,
+      "settled_vz_abs_m_s": {
+        "$f64": "3fa999999999999a"
+      }
+    },
+    "material": {
+      "friction": {
+        "$f64": "3fe0000000000000"
+      },
+      "gravity_compensation": {
+        "$f64": "0000000000000000"
+      },
+      "needs_coup": false,
+      "rho_kg_m3": {
+        "$f64": "408f400000000000"
+      }
+    },
+    "physics_profile": "genesis-rigid-support.v0.1",
+    "requires_grad": false,
+    "rigid_options": {
+      "constraint_timeconst_s": {
+        "$f64": "3f847ae147ae147b"
+      },
+      "enable_collision": true,
+      "enable_mujoco_compatibility": false,
+      "enable_rolling_friction": false,
+      "enable_self_collision": true,
+      "enable_torsional_friction": false,
+      "iterations": 25,
+      "ls_iterations": 50,
+      "max_collision_pairs": 16,
+      "max_contacts": 32,
+      "use_hibernation": false
+    },
+    "seed": 7,
+    "solver_precision": "32",
+    "steps_per_advance": 8,
+    "substeps": 1,
+    "viewer": false
+  },
+  "domain": "edgeworld.universe.authority",
+  "id": "physics-config-1",
+  "kind": "physics_config",
+  "refs": {},
+  "version": "0.2",
+  "world_id": "physics-demo"
+}
