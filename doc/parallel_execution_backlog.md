@@ -13,7 +13,7 @@
 | U4 事务/调度/恢复 | source `28122b7` / PR #74 / merge `09ef8cb`；[登记](universe_u4_execution_register.md)、[复核](design/universe-u4-integration-review.md)。D_recovery闭合完整性与耐久确认的区别 |
 | U8 规模/质量预算 | 基线 `fb93c29`，source `98890ba` / PR #75 / merge `06eb9ea`；[登记](universe_u8_execution_register.md)、[复核](design/universe-u8-integration-review.md)。H33/H23及只读H8/32/64、完整typed域/字节及时间/证据配额已做设计核算，所有新数值provisional |
 
-**下一 ready：U9 最终跨卡审查与实现任务树**（依赖 U4/U8），尚未派发；reviewer须未承担U1–U8交付。新锁/故障/耐久性、压力/性能/视觉门仍planned；世界规律、灵域出现时刻、载具权威性、具体地理、授权资产与目标阈值保持待决。U总轮尚未关闭，不将候选预算作为运行授权或已批准产品门。
+**当前执行：U9 最终跨卡审查与实现任务树**（依赖 U4/U8），已从 `4bb7452` 派发给未承担U1–U8交付的新reviewer；见[登记](universe_u9_execution_register.md)。新锁/故障/耐久性、压力/性能/视觉门仍planned；世界规律、灵域出现时刻、载具权威性、具体地理、授权资产与目标阈值保持待决。U总轮尚未关闭，不将候选预算作为运行授权或已批准产品门。
 
 ## V-HOME 可访问世界纵切（进行中）
 
