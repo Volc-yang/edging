@@ -28,7 +28,7 @@ class UnrealMacLauncherTest(unittest.TestCase):
         engine = self.root / "UE/Engine"
         build = engine / "Build/BatchFiles/Mac/Build.sh"
         build.parent.mkdir(parents=True)
-        build.write_text('#!/bin/bash\ntouch "$MOCK_BUILD_STARTED"\nexit "${MOCK_BUILD_EXIT:-0}"\n')
+        build.write_text('#!/bin/bash\nprintf "%s\\n" "$@" > "$MOCK_BUILD_ARGUMENTS"\ntouch "$MOCK_BUILD_STARTED"\nexit "${MOCK_BUILD_EXIT:-0}"\n')
         (engine / "Build/Build.version").write_text(json.dumps({
             "MajorVersion": 5, "MinorVersion": 8, "PatchVersion": 3, "Changelist": 58210709,
         }))
@@ -52,10 +52,12 @@ class UnrealMacLauncherTest(unittest.TestCase):
         uname.chmod(0o755)
         self.arguments = self.root / "editor-arguments.txt"
         self.build_started = self.root / "build-started"
+        self.build_arguments = self.root / "build-arguments.txt"
         self.environment = dict(os.environ, UE5_ROOT=str(engine.parent),
                                 EDGEWORLD_CAUSAL_PYTHON=sys.executable,
                                 MOCK_ARGUMENTS=str(self.arguments),
                                 MOCK_BUILD_STARTED=str(self.build_started),
+                                MOCK_BUILD_ARGUMENTS=str(self.build_arguments),
                                 PATH=str(commands) + os.pathsep + os.environ["PATH"])
 
     def launch(self, *arguments):
@@ -67,6 +69,7 @@ class UnrealMacLauncherTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertFalse(self.arguments.exists())
         self.assertIn("runtime_not_tested", result.stdout)
+        self.assertNotIn("-NoUBA", self.build_arguments.read_text().splitlines())
 
     def test_launch_keeps_engine_default(self):
         result = self.launch("--launch")
@@ -182,6 +185,7 @@ pathlib.Path(log).write_text('Engine is initialized. Leaving FEngineLoop::Init()
         self.assertEqual(0,result.returncode,result.stdout+result.stderr)
         args=self.arguments.read_text();env=json.loads(self.child_environment.read_text())
         self.assertIn('EdgeWorldUniverseGameMode',args)
+        self.assertEqual(1,self.build_arguments.read_text().splitlines().count('-NoUBA'))
         self.assertNotIn('EdgeWorldCausalGameMode',args)
         self.assertEqual('0',env['EDGEWORLD_UNIVERSE_INITIALIZE'])
         self.assertEqual(str((self.repository/'engine/universe_authority/worker.py').resolve()),env['EDGEWORLD_UNIVERSE_WORKER'])
@@ -244,6 +248,7 @@ pathlib.Path(log).write_text('Engine is initialized. Leaving FEngineLoop::Init()
         self.assertEqual(0,r.returncode,r.stdout+r.stderr)
         self.assertFalse(self.arguments.exists())
         self.assertFalse(self.child_environment.exists())
+        self.assertEqual(1,self.build_arguments.read_text().splitlines().count('-NoUBA'))
 
 
 if __name__ == "__main__":

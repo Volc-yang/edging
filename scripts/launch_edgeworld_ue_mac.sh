@@ -151,7 +151,9 @@ fi
 status 'build_started target=EdgeWorldHostEditor platform=Mac configuration=Development'
 # Capture Build.sh, not tee, as the authoritative exit status.
 set +e
-/bin/bash "$build" EdgeWorldHostEditor Mac Development "-Project=$project" -WaitMutex 2>&1 | tee "$run_dir/build.log"
+build_args=(EdgeWorldHostEditor Mac Development "-Project=$project" -WaitMutex)
+if ((universe)); then build_args+=(-NoUBA); fi
+/bin/bash "$build" "${build_args[@]}" 2>&1 | tee "$run_dir/build.log"
 build_rc=${PIPESTATUS[0]}
 set -e
 status "build_exit_code=$build_rc"
