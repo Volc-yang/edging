@@ -1,0 +1,12 @@
+# H4 combined live run plan
+
+Task: V-HOME/H4. Input commit `cb10df7b85bb46ed70ec0a026b13bbdd4eabb2eb`; branch `codex/home-integration`, clean at start. UE 5.8.3 installed Mac build and Genesis 1.4.3 from repository `.venv-genesis` are fixed inputs. H2 and H3 code are present together on this commit. This is a finite engineering scene, not a product-quality world.
+
+1. Reserve exclusive GPU after H1a. Build `EdgeWorldHostEditor Mac Development` from this worktree and retain full log/exit code.
+2. Launch the published `UnrealEditor` with this worktree's `.uproject`, `/Engine/Maps/Entry?game=/Script/EdgeWorldHost.EdgeWorldCausalGameMode`, `-game -log -windowed -ResX=960 -ResY=600` and `-UserDir=<run-specific directory>`. Set `EDGEWORLD_CAUSAL_PYTHON` and `EDGEWORLD_CAUSAL_WORKER` to absolute paths. UE `Paths.cpp` confirms `-UserDir=` controls `FPaths::ProjectUserDir()` and thus `ProjectSavedDir()`, isolating the worker's `Saved/EdgeWorldCausal/stg-demo` from shared user state.
+3. Confirm tick/revision 0/0 in the run-specific manifest, capture a raw viewport image. Focus game viewport; Space once, confirm manifest 1/1 and capture tick 1. Space once more, confirm 2/2 and capture tick 2. Screenshots must show combined observatory and HUD; independently inspect for the former default Pawn sphere.
+4. Save manifest SHA at tick 2; use 0/1/2, H/R and W; capture at least history 0 and camera view and compare manifest SHA. Do not infer that a screenshot alone proves authority read-only.
+5. Exit normally if possible; record exit code and worker process lifecycle. Relaunch the same worktree, same `-UserDir=` and same world; confirm tick/revision/head, capture restart image, compare persisted manifest SHA. Exit and check no orphan worker. If `SceneViewport.cpp:196` recurs, retain crash log/exit code and classify shutdown failure without hiding the positive visual evidence.
+6. SHA256-index original logs, screenshots, and state snapshots in DevSSD. Record actual observed results and unverified items in a report under this directory, commit only task-owned evidence, open one PR to `codex/plan-consolidation`.
+
+Checks: exact build provenance; Genesis-backed explicit advances; three legible temporal views; verified HUD head/view labels; authority manifest equality for sampled read-only actions; restart recovery; exit path. No G0 realism/performance threshold or independent H5 acceptance is asserted.
