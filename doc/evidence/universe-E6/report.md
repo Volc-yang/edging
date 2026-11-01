@@ -1,7 +1,7 @@
 # E6 result
 
-Status: partial; first formal Check failed only its offline comparison harness.
-G-S1.2 remains pending coordinator adjudication.
+Status: candidate complete after the sole targeted rerun. The first formal
+Check failure remains preserved; G-S1.2 awaits coordinator adjudication.
 
 Base `a4c86b382df01876a811af771df86af8a2fdb899`; first source
 `057fcc27a03c277fc776c72f14b0e27ef419806c`.
@@ -26,7 +26,8 @@ ignores **only HEAD.json inode** when comparing rewind; exact bytes/mode/device/
 nlink and all other map entries remain required, as do root/stable-lock inode
 identity and absence of live children. A genesis map is now explicitly saved.
 The target selector does not rerun the passed15 groups, eight kills or goldens.
-New source must be committed before that run. Targeted outcome is not yet run.
+Source was committed before that run; its outcome and source distinction are
+recorded below.
 
 All provider/raw data is synthetic `.static`, not Genesis/gstraj, UE rendering,
 power-loss proof or an OS sandbox. Offline fixture rewind is not a runtime
