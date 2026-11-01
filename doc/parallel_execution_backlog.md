@@ -4,7 +4,7 @@
 
 ## V-HOME 可访问世界纵切（有限技术链路通过；访客体验与可靠性开放）
 
-用户最新优先级：先解决 UE 打开/运行报错。H6B 可步行访客实现暂停，已通知可见子对话；当前先收 H1b 组件差分证据，并由“edgeWorld · 退出可靠性诊断”可见子对话继续定位和修复。启动时 worktree 缺模块的重建提示与运行中 `SceneViewport.cpp:196` 断言分开排查；不可将 Win64/Linux SDK 提示当作 Mac Metal 阻塞。
+用户最新优先级：先解决 UE 打开/运行报错。H6B 可步行访客实现暂停，已通知可见子对话。H1b 组件差分证据已集成；“edgeWorld · 退出可靠性诊断”可见子对话从 `6fbfd43` 建独立 `g3-viewtarget-differential` worktree，正在区分相机/SetViewTarget 等路径；“edgeWorld · UE5 稳定启动入口”可见子对话 `01a19541-38d6-7b92-a6f3-1ba9b911eee0` 独立处理预构建启动脚本。启动时 worktree 缺模块的重建提示与运行中 `SceneViewport.cpp:196` 断言分开排查；不可将 Win64/Linux SDK 提示当作 Mac Metal 阻塞。后续每次运行记录模块构建、Engine initialized、场景/Worker 就绪、首帧、异常时刻和退出码。
 
 用户授权按[总计划](edgeworld_integrated_development_plan.md)自主推进：让人可进入、观察抽象 Seed→Tree 因果演化并重访持久状态；Genesis 是必需路径，seed/tree 非植物。[PDCA 方案树](visitable_world_iteration_plan.md)的本轮集成分支为 `codex/plan-consolidation`，各任务从固定提交建独立 worktree。主工作区未提交改动未触碰。
 
