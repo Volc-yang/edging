@@ -187,13 +187,14 @@ bool FEdgeWorldCausalHeadGate::Accept(const FEdgeWorldCausalObservation& Sample)
 	LatestCheckpointHash = PendingCheckpointHash;
 	LatestStateHash = PendingStateHash;
 	LatestEventHash = PendingEventHash;
+	bHasValidatedHead = true;
 	bPending = false;
 	return true;
 }
 
 bool FEdgeWorldCausalHeadGate::CheckHistory(const FEdgeWorldCausalObservation& Sample) const
 {
-	return !LatestConfigHash.IsEmpty() && Sample.Tick <= LatestTick
+	return bHasValidatedHead && Sample.Tick <= LatestTick
 		&& Sample.GenesisConfigHash == LatestConfigHash
 		&& (Sample.Tick != LatestTick || (Sample.CheckpointHash == LatestCheckpointHash
 			&& Sample.StateHash == LatestStateHash && Sample.EventHash == LatestEventHash));

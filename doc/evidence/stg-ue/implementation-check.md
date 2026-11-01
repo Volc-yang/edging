@@ -14,6 +14,10 @@
 
 最终复核又将 Observe 的 `state_hash` 与 `event_hash` 绑定到待验证 head；当前最新切片的历史重读也核对这两个摘要。UE Editor 构建再次成功，NullRHI 测试含错误 state/event 摘要的拒绝用例并通过，进程退出码 0。原始日志 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/stg-g2-ue-nullrhi-final.log`，SHA256 `90103cc4ce4ee987675127f896e6dbcec03803e473f9561b8060bca6b4af3d64`。
 
+初始化复核：`CanAdvance()` 在第一次 Status→Observe 完整验证前为 false；Status 失败或观察拒绝不能借默认 tick 0 发出推进。定向测试新增这一回归条件。
+
+该修复的 UE 5.8.3 Editor 构建成功；NullRHI 定向测试成功、进程退出码 0。原始日志 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/stg-g2-ue-nullrhi-head-init.log`，SHA256 `a5bec50d80d67e2047c4a8b8a4f1743349670cd2af5494c44a66ffb104c33e97`。
+
 ## 开放门
 
 新 GameMode 由 `?game=/Script/EdgeWorldHost.EdgeWorldCausalGameMode` 选择；通过 `EDGEWORLD_CAUSAL_PYTHON` 与 `EDGEWORLD_CAUSAL_WORKER` 连接单一权威进程，状态目录在本项目 `Saved/EdgeWorldCausal/stg-demo`。此启动/连接路径尚未与组合 worker 实测。Metal 三时刻画面、输入焦点、权威只读哈希、错误响应时 Actor 保持、性能和产品视觉标准留给 G3/G4。当前 BasicShapes 节点/边是抽象因果图的技术代理，不是最终世界外观。

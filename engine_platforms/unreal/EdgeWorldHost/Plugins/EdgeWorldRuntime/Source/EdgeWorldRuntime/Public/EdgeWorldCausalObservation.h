@@ -38,6 +38,7 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldCausalHeadGate
 {
 	int64 LatestTick = 0;
 	int64 LatestRevision = 0;
+	bool bHasValidatedHead = false;
 	FString LatestConfigHash;
 	FString LatestCheckpointHash;
 	FString LatestStateHash;
@@ -54,7 +55,7 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldCausalHeadGate
 		const FString& StateHash, const FString& EventHash);
 	bool Accept(const FEdgeWorldCausalObservation& Sample);
 	bool CheckHistory(const FEdgeWorldCausalObservation& Sample) const;
-	bool CanAdvance() const { return !bPending; }
+	bool CanAdvance() const { return bHasValidatedHead && !bPending; }
 };
 
 /** Strict parser for the abstract-seed-genesis.v1 Observe result. */

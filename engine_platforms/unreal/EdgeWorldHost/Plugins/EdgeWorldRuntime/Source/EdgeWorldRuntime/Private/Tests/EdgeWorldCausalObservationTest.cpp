@@ -29,6 +29,7 @@ bool FEdgeWorldCausalObservationTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("one causal edge"), Sample.Edges.Num(), 1);
 	TestEqual(TEXT("derived influence"), Sample.Nodes.Last().InfluenceMm, int64(-7));
 	FEdgeWorldCausalHeadGate Gate;
+	TestFalse(TEXT("uninitialized head cannot advance"), Gate.CanAdvance());
 	Gate.Stage(1, 1, Sample.GenesisConfigHash, Sample.CheckpointHash, Sample.StateHash, Sample.EventHash);
 	FEdgeWorldCausalObservation Wrong = Sample;
 	Wrong.GenesisConfigHash = FString::ChrN(64, TEXT('b'));
