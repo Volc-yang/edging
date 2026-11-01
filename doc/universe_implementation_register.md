@@ -20,9 +20,9 @@
 | I5 recovery/observe | `/root/u9_architecture_review`；`.worktrees/i5-universe-recovery` / `codex/i5-universe-recovery` / `69daec3` | complete / PR #82 source `49f7b7a`，merge `09ed3bb` / 16tests+最终CI、root review/raw10/10及488/488 bytes pass / 干净worktree已清理、分支保留 |
 | I6 无GPU独立故障验收 | fresh `/root/i6_fault_acceptance`；`.worktrees/i6-universe-faults` / `codex/i6-universe-faults` / `607e550` | complete / PR #85 source `d8636d6`，merge `3e02376` / 20cases、85child、12真kill及CI/review，G-S1有限pass / 干净worktree已清理 |
 | I7 物理fixture/API契约 | `/root/u2_physics_design`；`.worktrees/i7-universe-physics-contract` / `codex/i7-universe-physics-contract` / `a9506eb` | complete / PR #80 source `e005c2c`，merge `fe2176a` / G-P0静态pass；G-C0.2未接受 / 干净worktree已清理、分支保留 |
-| I8 真实Genesis新适配 | 等I6/I7/G-S1/G-P0/R-8 | queued / 未建 / G-P1 planned / 未建worktree |
+| I8 真实Genesis新适配 | u2；`.worktrees/i8-universe-genesis` / `codex/i8-universe-genesis` / `13899a2` | in progress / 实现与stdlib静态已授，GPU等E7与R-8 / G-P1 planned |
 | I9 UE新域严格解析 | u9；原`.worktrees/i9-universe-ue-parser` / `codex/i9-universe-ue-parser` / `3e02376` | complete / PR #86 source `0a905cf`，merge `e47065a` / 最终Build与StrictV02 NullRHI真实exit0、finalCI/root review / 生成物归档后干净worktree已清理 |
-| I10 单root worker/初态 | 等I6/I8/G-S1/G-P1 | queued / 未建 / planned / 未建worktree |
+| I10 单root worker/初态 | u9只读规划；实施等I8/G-P1 | planning / 无写worktree / planned |
 | I11 Host/启动接线 | 等I9/I10/G-B0/R-B | queued / 未建 / G-B1 planned / 未建worktree |
 | I12 独立组合验收 | 非相关实现owner，待I10/I11/G-P1/G-B1/R-12 | queued / 未建 / G-B2 planned / 未建worktree |
 
@@ -34,6 +34,7 @@
 | E4 command/prepare/provider扩展 | u7；原`.worktrees/e4-universe-commands` / `codex/e4-universe-commands` / `1f95fac` | complete / PR #91 source `1fcae8b`，merge `a4c86b3` / 164tests、finalCI、独立review/root2321raw pass / 干净worktree已清理 |
 | E5 recovery/proof builder扩展 | u2；原`.worktrees/e5-universe-recovery` / `codex/e5-universe-recovery` / `1f95fac` | complete / PR #90 source `0db45fe`，merge `33c4fcb` / 155tests、finalCI、独立review/root13raw pass / 干净worktree已清理 |
 | E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | complete / PR #92 final `0ebd7b3`，merge `ba7568c` / 首15组+唯一segmented定向pass、89child/8kill全部回收，finalCI全suite成功、root原件/源码审查 / G-S1.2有限pass；干净worktree已清理 |
+| E7 fixed support质量语义修订 | u7；`.worktrees/e7-universe-support-mass` / `codex/e7-universe-support-mass` / `13899a2` | in progress / 原8路径独占；CPU与R-B已授 / 语义/runtime门待实际Check |
 | I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | complete / PR #93 final `572d4a4`，merge `cb39e0d` / Build/NullRHI exit0、9content/4native/0gap、root111raw+9actual文件及DAG核对、finalCI pass；6生成物核验归档后干净worktree已清理 |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
