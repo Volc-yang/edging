@@ -6,7 +6,8 @@ import re
 from types import MappingProxyType
 from typing import Protocol
 
-from .codec import ContractError, DOMAIN, VERSION, JSON, MAX_INTEGER, canonical, decode, digest
+from .codec import (ContractError, DeploymentContext, DOMAIN, VERSION, JSON,
+                    MAX_INTEGER, canonical, decode, digest)
 from .records import Record, validate_record
 
 _ID = re.compile(r'[a-z][a-z0-9._-]{0,63}\Z')
@@ -27,6 +28,7 @@ def _id(value) -> None:
 def _kind(record: Record, kind: str) -> None:
     validate_record(record)
     _require(record['kind'] == kind, 'SCHEMA')
+    _require(record['version'] == VERSION, 'DOMAIN')
 
 
 class TrustVerifier(Protocol):
@@ -34,6 +36,11 @@ class TrustVerifier(Protocol):
     def verify_approval(self, approval: Record, proposal: Record, intent: Record) -> None: ...
     def admit(self, command: Record, candidate: Record, *, current_revision: int,
               admission_id: str) -> Record: ...
+
+
+class CoordinatorTrust(TrustVerifier, Protocol):
+    """v0.2-only owner capability; never injected into Store or a provider."""
+    def assert_context(self, context: DeploymentContext) -> None: ...
 
 
 class FixtureTrust:

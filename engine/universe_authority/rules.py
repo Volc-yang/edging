@@ -21,6 +21,7 @@ def neutral_candidate(prior: Record, command: Record, intent: Record, *, candida
     for record, kind in ((prior, 'state'), (command, 'command'), (intent, 'intent')):
         validate_record(record)
         _require(record['kind'] == kind, 'SCHEMA')
+        _require(record['version'] == VERSION, 'DOMAIN')
     _require(prior['world_id'] == command['world_id'] == intent['world_id'], 'WORLD')
     _require(command['refs']['intent'] == digest(intent), 'REFERENCE')
     body, old = intent['body'], prior['body']
@@ -73,3 +74,36 @@ def validate_rule_dag(nodes: Mapping[str, Sequence[str]]) -> tuple[str, ...]:
                 heapq.heappush(ready, follower)
     _require(len(output) == len(graph), 'REFERENCE')
     return tuple(output)
+
+
+def retain_candidate(prior: Record, command: Record, intent: Record, *,
+                     candidate_id: str, records: Mapping[str, Record]) -> Record:
+    """An explicit zero-step revision, never an observation or a solver call."""
+    for record, kind in ((prior, 'state'), (command, 'command'), (intent, 'intent')):
+        validate_record(record)
+        _require(record['kind'] == kind, 'SCHEMA')
+        _require(record['version'] == '0.2', 'DOMAIN')
+    _require(prior['world_id'] == command['world_id'] == intent['world_id'], 'WORLD')
+    _require(command['refs']['intent'] == digest(intent), 'REFERENCE')
+    old, body = prior['body'], intent['body']
+    _require(body['expected_revision'] == old['revision'], 'HEAD')
+    _require(body['action'] == 'retain_snapshot' and body['tick_delta'] == 0
+             and body['case_id'] is None and body['budget'] == 0
+             and body['random_cursor'] == old['random_cursor'], 'TRANSITION')
+    _require(isinstance(records, Mapping) and prior['refs']['snapshot'] in records, 'REFERENCE')
+    snapshot = records[prior['refs']['snapshot']]
+    validate_record(snapshot)
+    _require(snapshot['kind'] == 'physics_snapshot' and snapshot['world_id'] == prior['world_id']
+             and snapshot['version'] == '0.2', 'REFERENCE')
+    _require(intent['refs'] == {'config': snapshot['refs']['config'], 'binding': snapshot['refs']['binding']},
+             'PHYSICS_INVALID')
+    _require(old['revision'] < MAX_INTEGER, 'INTEGER')
+    result = {'domain': DOMAIN, 'version': '0.2', 'world_id': prior['world_id'],
+              'kind': 'candidate', 'id': candidate_id,
+              'body': {'adapter_kind': 'checkpoint_reuse', 'influence_mm': old['development_mm'],
+                       'physics_profile': 'genesis-rigid-support.v0.1',
+                       'tick': old['tick'], 'revision': old['revision'] + 1},
+              'refs': {'command': digest(command), 'prior_state': digest(prior),
+                       'snapshot': prior['refs']['snapshot']}}
+    validate_record(result)
+    return result
