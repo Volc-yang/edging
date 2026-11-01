@@ -6,7 +6,7 @@
 
 用户优先级：先处理 UE 打开/运行报错，H6B/H6C 暂停。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：**H-LIGHT-01 独占构建/GPU，在 `.worktrees/home-runtime-lighting` / `codex/home-runtime-lighting`、基线 `e577ac2` 做真实前后对照。baseline2 已实测未构建对象 16、DirectionalLight 为 Stationary，原生交互列表指向全部 16 个环境组件；仍需 Movable 修复后的实际零计数、画面、只读与恢复。baseline1 因过早 UI 绑定产生额外 Editor 已排除并归档。H1g [显式启动器接线卡](evidence/viewport-preflush-launch-plan.md) 已从 `c820933` 发布给可见退出可靠性子对话：先准备脚本/定向测试，真实启动验证等待光照任务交接，禁止 GPU 并发。
+**下一动作与资源：**H-LIGHT-01 已审查集成，构建/GPU 空闲，交接 H1g。H1g [显式启动器接线卡](evidence/viewport-preflush-launch-plan.md) 的脚本/8 项定向 mock 已准备，统筹代码审查无阻塞；其 `.worktrees/g3-preflush-launch` / `codex/g3-preflush-launch` 初始基线为 `c820933`，真实运行前须更新到包含光照修复 `69cd400` 及本次上下文的准确提交，不以旧基线/mock 代替组合版本运行。使用标准脚本验证 live Genesis、默认渲染线程+显式同步、光照零计数/可见画面、只读、关窗和恢复；不并发 GPU。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
@@ -16,14 +16,15 @@
 | H1d | [无渲染线程临时路径](evidence/g3-live-safe-render/report.md) #61 / `3a38109` | 显式 `--no-render-thread`；两次完整 Genesis 会话/退出及恢复通过，12 项只读、120/120 原始哈希匹配；性能未测，默认模式不变 |
 | H1e | [同步候选](evidence/g3-viewport-preflush/report.md) #62 / `b89c5f3`；[独立审查](evidence/g3-viewport-preflush/independent-review.md) | 默认关闭，A 退出 1/0、B 0/0；B1 reporter 干扰保留；40 项只读、396/396 原始哈希匹配。仅有限诊断实现 |
 | H1f | [幂等修复与干净复测](evidence/g3-preflush-followup/report.md) #63 / `e6c9d96`；[独立审查](evidence/g3-preflush-followup/independent-review.md) | 修正后自动化 2/2；A/B/A/B 和两 B 边界样本退出均 0，19 组只读、同目录恢复、369/369 哈希通过。首次夹具 ensure 与 B3 工具限制保留；接受有限显式项目旁路，默认关闭。A 也全正常，不推断失败率改善或根治 |
+| H-LIGHT-01 | [报告](evidence/home-runtime-lighting/report.md) #64 / `69cd400`；[统筹审查](evidence/home-runtime-lighting/independent-review.md) | DirectionalLight 明确 Movable；基线 16、修复 tick0/2/恢复均 0。四会话退出 0，最终接受 12 组只读、193/193 哈希；2 组损坏记录和污染启动排除。前后采用同一无渲染线程模式，不扩大默认线程可靠性 |
 | HQ | [600 帧试采](evidence/gq-metal-sample/c3-report.md) #49 / `db20383` | GPUTime 598 个正值，p95 5.3435 ms，仅信号导出；旧计时不适用于临时执行模式，正式性能门 inconclusive |
 | H2/H3 | [场景](evidence/home-causal-scene/report.md) #51 / `785b3ea`；[HUD](evidence/home-visitor-hud/report.md) #52 / `cb10df7` | 构建、Metal 独立检查及定向 NullRHI 通过，仍为 BasicShapes 技术代理 |
 | H4/H5 | [组合运行](evidence/home-integration/report.md) #54 / `58362f4`；[独立复核](evidence/home-independent-review/report.md) #55 / `0c77e3d` | tick 0/1/2、Genesis 探针、HUD、只读、恢复有限通过；真人体验、UE 原始传输 JSONL 和正式视觉门未过 |
 | H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合未验 |
 
-以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。活跃任务为 H-LIGHT-01、H1g，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 保持暂停。
+以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。活跃任务为 H1g，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 保持暂停。
 
-**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。H1g 真实启动器接线、光照修复、步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
+**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。H1g 真实启动器组合接线、步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 

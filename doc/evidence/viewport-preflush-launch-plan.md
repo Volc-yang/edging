@@ -1,6 +1,6 @@
 # H1g：标准启动器的显式 viewport 同步选项
 
-状态：H1f PR #63 已审查集成 `e6c9d96`，统筹放行代码准备；真实验证等待光照任务释放 GPU。
+状态：H1f PR #63 已审查集成 `e6c9d96`，H-LIGHT-01 PR #64 已审查集成 `69cd400`；统筹放行更新基线后真实组合验证。
 父节点：V-HOME / UE 开发期退出旁路。准确基线由发布卡指定。
 
 ## Plan
@@ -21,10 +21,10 @@ H1f 独立代码审查接受幂等注册/解绑与修正后的真实 Init 夹具
 ## Check
 
 定向验证默认关闭、参数仅一次转发、两种选项冲突拒绝、构建失败不启动 UE。
-随后使用准确集成提交和真正标准脚本，在独立 UserDir 运行 live Genesis；
+随后使用包含光照修复的准确集成提交和真正标准脚本，在独立 UserDir 运行 live Genesis；
 核对构建、真实 App/Worker PID、初始化、有效观察、首图、显式推进、只读
 历史/相机、关窗、同目录恢复、真实退出码与精确清理。日志必须确认
-`threaded_rendering=1`、正确窗口/GameThread、非空 owner 及同步后 owner 不变。
+光照未构建计数为零、`threaded_rendering=1`、正确窗口/GameThread、非空 owner 及同步后 owner 不变。
 mock 测试不能替代此真实接线证据。GPU 与 H-LIGHT-01 串行，由统筹排程。
 
 ## Act
