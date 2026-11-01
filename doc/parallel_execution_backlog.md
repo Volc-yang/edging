@@ -6,7 +6,7 @@
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：**H1g [报告](evidence/g3-preflush-launch/report.md) PR #65 / `52c4c9a` 已经 CI 与[统筹审查](evidence/g3-preflush-launch/independent-review.md)集成，资源空闲。恢复可见“edgeWorld · 可步行访客路径”执行 H6B [实施卡](evidence/home-visitor-implementation-plan.md)，从本次准确统筹提交新建独立 worktree/branch；所有导航只读，Space 唯一显式 Advance，运行使用标准显式同步入口。H6C 依赖 H6B 经审查集成，再由非实现 owner 做组合验收。
+**下一动作与资源：**H6B 已从准确 `489b97c` 创建 `.worktrees/home-visitor-character` / `codex/home-visitor-character`，正在实现与构建，独占构建/GPU。只读命令 `VisitorStatus` 和显式最长10秒 `VisitorTrace` 已协调；确切日志布局由 H6B 交付，导航不得调用 Advance。Mac 会话锁屏，统筹已请求解锁，先继续不依赖界面的工作，真实 UI 验收等待解锁。H6C [独立验收卡](evidence/home-visitor-acceptance-plan.md) 已审定，非实现 owner 仅完成只读规划，实施基线等待 H6B 审查集成，不并行改共享代码或运行 GPU。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
