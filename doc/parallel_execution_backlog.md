@@ -4,6 +4,8 @@
 
 ## V-HOME 可访问世界纵切（有限技术链路通过；访客体验与可靠性开放）
 
+用户最新优先级：先解决 UE 打开/运行报错。H6B 可步行访客实现暂停，已通知可见子对话；当前先收 H1b 组件差分证据，并由“edgeWorld · 退出可靠性诊断”可见子对话继续定位和修复。启动时 worktree 缺模块的重建提示与运行中 `SceneViewport.cpp:196` 断言分开排查；不可将 Win64/Linux SDK 提示当作 Mac Metal 阻塞。
+
 用户授权按[总计划](edgeworld_integrated_development_plan.md)自主推进：让人可进入、观察抽象 Seed→Tree 因果演化并重访持久状态；Genesis 是必需路径，seed/tree 非植物。[PDCA 方案树](visitable_world_iteration_plan.md)的本轮集成分支为 `codex/plan-consolidation`，各任务从固定提交建独立 worktree。主工作区未提交改动未触碰。
 
 | 节点 | 已审查交付与准确集成 | 状态 / 证据门 |
@@ -14,7 +16,7 @@
 | H4 | [准确组合运行](evidence/home-integration/report.md) PR #54/`58362f4` | tick 0/1/2、Genesis 物理探针、HUD/场景、历史/相机只读、重启恢复通过有限检查；两次 ⌘Q 退出 0，不消除间歇性失败 |
 | H5 | [非实现 owner 独立复核](evidence/home-independent-review/report.md) PR #55/`0c77e3d` | 原始索引 19/19 哈希匹配；技术证据复核部分完成。真人访客体验、原始 UE 传输 JSONL 和正式视觉门仍开放 |
 
-以上 PR 均通过 CI，任务 worktree 在确认干净、提交已集成后移除。当前 H1b 组件差分诊断在 `.worktrees/g3-component-differential` / `codex/g3-component-differential` 进行；H6A 场景碰撞在 `.worktrees/home-walkable-environment` / `codex/home-walkable-environment` 并行进行，H6B 访客角色依赖两者收束，H6C 再做独立 Metal 访问/重访。GPU 测试串行。用户可见的后续子对话已创建：退出可靠性 `01a1952c-5012-76b2-9506-93ade84370b0`、可步行访客路径 `01a1952c-73e3-7e13-89c1-8986048ea657`；两者先只读准备，等 H1b/H6A 集成后再各建独立 worktree 实施，避免重复 GPU/共享文件写入。**V-HOME 未接受**：退出可靠性、真正可步行的访客路径、G0 写实参考与性能阈值、H5 真人体验仍未通过。下一轮入口是收齐 H1b/H6A 报告，审查集成后发布 H6B；UE5 发布版插件/适配优先，不修改引擎源码。
+以上 PR 均通过 CI，任务 worktree 在确认干净、提交已集成后移除。H1b [组件差分报告](evidence/g3-component-differential/report.md) PR #57/集成 `6fbfd43`、CI 通过：四次启动均完成并运行超过 180 秒；跳过因果 Actor 仍有一次同样断言，故 Actor/环境不是必要条件；可靠性门继续 `fail/open`。H6A [场景碰撞](evidence/home-walkable-environment/report.md) PR #56/集成 `f848c84`、CI 与 NullRHI 通过：地面支撑胶囊体、墙/栏杆阻挡，因果代理无碰撞。两个任务 worktree 均确认干净、提交已集成后移除。用户要求先解决 UE 报错，H6B/H6C 暂停；可见“退出可靠性诊断”子对话从 `6fbfd43` 接手下一轮 GameMode 组件差分与可归因修复。GPU 测试串行。用户可见的后续子对话已创建：退出可靠性 `01a1952c-5012-76b2-9506-93ade84370b0`、可步行访客路径 `01a1952c-73e3-7e13-89c1-8986048ea657`；两者先只读准备，等 H1b/H6A 集成后再各建独立 worktree 实施，避免重复 GPU/共享文件写入。**V-HOME 未接受**：退出可靠性、真正可步行的访客路径、G0 写实参考与性能阈值、H5 真人体验仍未通过。下一轮入口是收齐 H1b/H6A 报告，审查集成后发布 H6B；UE5 发布版插件/适配优先，不修改引擎源码。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 

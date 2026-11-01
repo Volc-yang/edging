@@ -28,9 +28,9 @@ V-HOME
 | H3 / PR #52 已集成、H4 待验 / UE UI owner | 在不改变权威结构的前提下解释当前时间、观察时间和因果边；消费已验证 HeadGate/Sample，采用 H2 固定空间布局 | `EdgeWorldCausalGameMode.{h,cpp}` 与新 `EdgeWorldCausalHud.{h,cpp}`；不改 Actor/环境/Runtime/worker | 截图能区分当前头、历史观察、显式推进和物理候选；错误/未验证身份不得显示为已提交 |
 | H4 / PR #54 已集成、有限技术门通过 / 独立集成 owner | 在准确集成提交运行同一个世界；先验证进程，再验证画面 | 集成报告和原始索引 | UE↔worker↔Genesis、三时刻、只读、恢复、退出逐项判定；任何缺门不宣称 V-HOME 通过 |
 | H5 / PR #55 已集成、证据复核部分完成 / 非实现 reviewer 与访客 | 复核证据并现场体验一遍；载具登陆另轮设计 | 独立验收记录 | 访客可重复进入/移动/回看；记录阻碍与下一轮 Act，不以主人自测代替独立验收 |
-| H1b / 组件差分进行中 / 独立诊断 owner | H1a 只把故障缩至因果场景附近；相同发布版、地图、状态隔离和关闭协议，对比完整 GameMode 与仅禁用因果 Actor | `doc/evidence/g3-component-differential/`；诊断开关仅在任务 worktree 暂时使用，不作为产品代码合并 | 每组 2 次、各 180 秒被动窗口，日志/退出码/进程树/点击时序；不把未复现判可靠性通过，只有归因充分才提出插件修复 |
-| H6A / 待派 / UE 环境 owner | H2 环境已有地面/墙/栏杆但全部禁用碰撞；与 H1b 并行，固定几何和权威接口 | `EdgeWorldCausalEnvironment.{h,cpp}`、必要时 `EdgeWorldCausalActor.{h,cpp}`；地面/墙/栏杆本地碰撞，因果代理保持无碰撞 | UE 构建、NullRHI 射线/胶囊 sweep、Metal 视图和权威 manifest 只读对照；若阻挡错误，仅返工环境 |
-| H6B / 待 H6A/H1b / UE 访客 owner | 使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
+| H1b / PR #57 已集成、可靠性仍 fail/open / 独立诊断 owner | H1a 只把故障缩至因果场景附近；相同发布版、地图、状态隔离和关闭协议，对比完整 GameMode 与仅禁用因果 Actor | `doc/evidence/g3-component-differential/`；诊断开关仅在任务 worktree 暂时使用，不作为产品代码合并 | 每组 2 次、各 180 秒被动窗口，日志/退出码/进程树/点击时序；不把未复现判可靠性通过，只有归因充分才提出插件修复 |
+| H6A / PR #56 已集成、步行组合待验 / UE 环境 owner | H2 环境已有地面/墙/栏杆但全部禁用碰撞；与 H1b 并行，固定几何和权威接口 | `EdgeWorldCausalEnvironment.{h,cpp}`、必要时 `EdgeWorldCausalActor.{h,cpp}`；地面/墙/栏杆本地碰撞，因果代理保持无碰撞 | UE 构建、NullRHI 射线/胶囊 sweep、Metal 视图和权威 manifest 只读对照；若阻挡错误，仅返工环境 |
+| H6B / 用户要求暂停，待 UE 报错修复 / UE 访客 owner | 使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
 | H6C / 待 H6B / 非实现集成 owner | 准确集成提交与隔离 `-UserDir`，固定进入路线 | 原始 Metal 录像/图、权威快照、重启和退出报告 | 能进入、走近结构、显式推进、回看、退出重访；保留可靠性/G0 开放门，不以一次演示代替产品验收 |
 
 **Check：**根节点以 H4 的同版本集成运行和 H5 独立试用为准，子任务的 PR/构建不能代替。最低技术检查为真实 Metal 可见、键盘可用、显式推进且 Genesis 候选进入因果发展、历史/相机纯读、重启恢复、无未处理退出崩溃。视觉质量、性能和正式世界规律待 G0 数值/参考批准后另判。
