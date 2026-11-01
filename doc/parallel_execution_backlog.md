@@ -4,7 +4,9 @@
 
 ## V-HOME 可访问世界纵切（有限技术链路通过；访客体验与可靠性开放）
 
-用户最新优先级：先解决 UE 打开/运行报错。H6B 可步行访客实现暂停，已通知可见子对话。H1b 组件差分证据已集成；“edgeWorld · 退出可靠性诊断”可见子对话从 `6fbfd43` 建独立 `g3-viewtarget-differential` worktree，正在区分相机/SetViewTarget 等路径；“edgeWorld · UE5 稳定启动入口”可见子对话 `01a19541-38d6-7b92-a6f3-1ba9b911eee0` 独立处理预构建启动脚本。启动时 worktree 缺模块的重建提示与运行中 `SceneViewport.cpp:196` 断言分开排查；不可将 Win64/Linux SDK 提示当作 Mac Metal 阻塞。后续每次运行记录模块构建、Engine initialized、场景/Worker 就绪、首帧、异常时刻和退出码。
+用户最新优先级：先解决 UE 打开/运行报错，H6B/H6C 暂停。启动链拆分为模块/工具链、真实 UE 进程身份、运行时视口退出三层：Mac 的 Win64/Linux SDK 提示不是阻塞证据；各 worktree 需先构建自己的 UE 模块。预构建[启动入口](ue_mac_launch.md) PR #58/集成 `507b9c2`，初次真实 `--launch` 暴露外层 launcher PID 提前退出却遗留实际 App 的误报；[PID 修复与真实启动报告](evidence/ue-mac-launch-app-pid/report.md) PR #60/集成 `81bcd79` 已改为直接运行 App 内二进制，准确 PID、引擎初始化、GameMode、有效 tick0、⌘Q exit0 和无残留进程均经一次实测。两个启动任务 worktree 已清理。启动入口改善了 Missing Modules/误报体验，不解决视口断言。
+
+[H1c 相机目标差分](evidence/g3-viewtarget-differential/report.md) PR #59/集成 `c22e126`：A（保留 SetViewTarget）2/2 次断言；B（跳过）1 次正常、1 次同样断言，因此该调用不是必要条件。`-norenderthread` 单次无 worker/无因果 Actor 的限时运行正常退出，尚非修复。92/92 原始证据哈希复算匹配，诊断开关已撤回、worktree 已清理。可见“退出可靠性诊断”子对话已从 `81bcd79` 接手完整 live Genesis 下的 `-norenderthread` 对照；每次记录模块构建、Engine initialized、GameMode/Worker/有效观察、首帧、异常时刻和退出码。可靠性门继续 `fail/open`，UE 引擎源码未修改。
 
 用户授权按[总计划](edgeworld_integrated_development_plan.md)自主推进：让人可进入、观察抽象 Seed→Tree 因果演化并重访持久状态；Genesis 是必需路径，seed/tree 非植物。[PDCA 方案树](visitable_world_iteration_plan.md)的本轮集成分支为 `codex/plan-consolidation`，各任务从固定提交建独立 worktree。主工作区未提交改动未触碰。
 
