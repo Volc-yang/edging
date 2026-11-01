@@ -131,8 +131,12 @@ def aggregate_bytes(output):
     # Stat only for private keys. No key content is read, copied or hashed.
     roots=[output]+[output.parent/(output.name+suffix) for suffix in ('-authority','-scratch','-owner','-keys')]
     files=[output.parent/(output.name+suffix) for suffix in ('.stdout','.stderr','.inner.stdout','.inner.stderr')]
-    total=sum(p.stat().st_size for root in roots for p in root.rglob('*') if p.is_file() and not p.is_symlink())
-    return total+sum(p.stat().st_size for p in files if p.exists())
+    total=0
+    for path in [p for root in roots for p in root.rglob('*')]+files:
+        try:info=path.lstat()
+        except FileNotFoundError:continue  # Store may atomically rename a temp file.
+        if stat.S_ISREG(info.st_mode):total+=info.st_size
+    return total
 
 
 def supervise_owned(child,output,*,soft_bytes,hard_bytes,seconds):
@@ -163,7 +167,17 @@ def supervised_runtime(output):
     argv=[sys.executable,str(Path(__file__).resolve()),'runtime-inner','--output',str(output)]
     with Path(str(output)+'.inner.stdout').open('xb') as stdout,Path(str(output)+'.inner.stderr').open('xb') as stderr:
         child=subprocess.Popen(argv,cwd=REPO,stdout=stdout,stderr=stderr,start_new_session=True)
-        outcome=supervise_owned(child,output,soft_bytes=224<<20,hard_bytes=256<<20,seconds=240)
+        try:
+            outcome=supervise_owned(child,output,soft_bytes=224<<20,hard_bytes=256<<20,seconds=240)
+        finally:
+            if child.poll() is None:
+                try:child.terminate()
+                except ProcessLookupError:pass
+                try:child.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    try:os.killpg(child.pid,signal.SIGKILL)
+                    except ProcessLookupError:pass
+                    child.wait(timeout=5)
     write(output/'supervisor.json',dict(outcome,argv=argv,soft_bytes=224<<20,hard_bytes=256<<20,outer_seconds=300))
     # The owned driver has reaped normal children; retain a process-group check.
     group=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
