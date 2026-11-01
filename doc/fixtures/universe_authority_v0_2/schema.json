@@ -1,0 +1,552 @@
+{
+  "archive_profile": "composite-rigid-support.v0.2",
+  "body": {
+    "admission": {
+      "auth_tag": "hash",
+      "evaluated_revision": "uint",
+      "principal": "id",
+      "receipt_id": "id"
+    },
+    "approval": {
+      "auth_tag": "hash",
+      "expires_revision": "uint",
+      "principal": "id",
+      "receipt_id": "id"
+    },
+    "asset_manifest": {
+      "dependency_status": "declared-static|runtime-resolved",
+      "entries": "assets"
+    },
+    "candidate": {
+      "adapter_kind": "genesis|checkpoint_reuse",
+      "influence_mm": "nullable_mm",
+      "physics_profile": "genesis-rigid-support.v0.1",
+      "revision": "uint",
+      "tick": "uint"
+    },
+    "checkpoint_descriptor": {
+      "artifact_class": "class",
+      "byte_count": "blob_size",
+      "format": "synthetic-static-bytes|genesis-gstraj",
+      "genesis_version": "1.4.3",
+      "media_type": "media",
+      "payload_sha256": "hash"
+    },
+    "command": {},
+    "event": {
+      "event_id": "id"
+    },
+    "existence": {
+      "category": "world|place|physical",
+      "existence_id": "id",
+      "spirit_record": "not_separately_assigned"
+    },
+    "index": {
+      "command_id": "id",
+      "fingerprint": "hash"
+    },
+    "intent": {
+      "action": "physics_step|retain_snapshot",
+      "budget": "uint",
+      "case_id": "nullable_case",
+      "command_id": "id",
+      "expected_revision": "uint",
+      "principal": "id",
+      "random_cursor": "uint",
+      "tick_delta": "delta"
+    },
+    "manifest": {
+      "revision": "uint",
+      "tick": "uint",
+      "watermark": "uint"
+    },
+    "physics_binding": {
+      "bindings": "bindings"
+    },
+    "physics_config": {
+      "config": "i7_config"
+    },
+    "physics_sample": {
+      "artifact_class": "class",
+      "bodies": "bodies",
+      "contacts": "contacts",
+      "frame_id": "genesis-world-si-zup.v0.1",
+      "solver_precision": "32"
+    },
+    "physics_snapshot": {
+      "case_id": "initial|weak|strong",
+      "physical_step_count": "steps"
+    },
+    "place": {
+      "elevation_cm": "sint",
+      "footprint_cm": "polygon",
+      "place_id": "id",
+      "place_kind": "city|wildland|plain|forest|river_marsh|ocean"
+    },
+    "projection": {
+      "decorations": "decorations",
+      "development_cm_per_mm": "f64",
+      "development_layout": "abstract-magnified",
+      "physical_layout": "versioned-transform",
+      "projection_version": "basicshapes-proxy.v0.2"
+    },
+    "proposal": {
+      "output": "output",
+      "principal": "id"
+    },
+    "provider_build": {
+      "adapter_source_sha256": "nullable_hash",
+      "artifact_class": "class",
+      "critical_sources": "sources",
+      "dependencies": "dependencies",
+      "distribution": "genesis-world",
+      "metadata_sha256": "hash",
+      "python_abi": "cpython-312",
+      "source_file_count": "uint",
+      "source_tree_sha256": "hash",
+      "version": "1.4.3"
+    },
+    "resolved_options": {
+      "artifact_class": "class",
+      "declarations": "json_object",
+      "exports": "json_object",
+      "normalizer": "public-model-dump.v0.2",
+      "parameter_hash": "hash",
+      "resolution": "static-declared|runtime-exported"
+    },
+    "result": {
+      "command_id": "id",
+      "revision": "uint",
+      "tick": "uint",
+      "watermark": "uint"
+    },
+    "route": {
+      "place_ids": "ids",
+      "polyline_cm": "polyline",
+      "route_id": "id"
+    },
+    "state": {
+      "budget": "uint",
+      "development_mm": "nullable_mm",
+      "random_cursor": "uint",
+      "revision": "uint",
+      "tick": "uint"
+    },
+    "unit_transform": {
+      "origin_cm": "vec3",
+      "scale": "f64",
+      "signs": "signs",
+      "source_frame": "genesis-world-si-zup.v0.1",
+      "target_frame": "ue-world-cm.v0.2",
+      "transform_version": "si-to-ue.v0.2"
+    },
+    "watercourse": {
+      "polyline_cm": "polyline",
+      "watercourse_id": "id"
+    },
+    "world_manifest": {
+      "artifact_class": "class",
+      "extent_cm": "extent",
+      "geography_version": "six-place-proxy.v0.2",
+      "physics_rule": "rigid-support-influence.v0.1",
+      "revision_rule": "technical-retain-snapshot.v0.2",
+      "world_seed": "uint"
+    }
+  },
+  "domain": "edgeworld.universe.authority",
+  "kind_bytes": {
+    "admission": 2048,
+    "approval": 2048,
+    "asset_manifest": 65536,
+    "candidate": 2048,
+    "checkpoint_descriptor": 2048,
+    "command": 2048,
+    "event": 2048,
+    "existence": 1024,
+    "index": 2048,
+    "intent": 2048,
+    "manifest": 2048,
+    "physics_binding": 4096,
+    "physics_config": 16384,
+    "physics_sample": 8192,
+    "physics_snapshot": 2048,
+    "place": 4096,
+    "projection": 16384,
+    "proposal": 16384,
+    "provider_build": 8192,
+    "resolved_options": 32768,
+    "result": 2048,
+    "route": 4096,
+    "state": 2048,
+    "unit_transform": 2048,
+    "watercourse": 4096,
+    "world_manifest": 4096
+  },
+  "limits": {
+    "archive_bytes": 16777216,
+    "asset_bytes": 2147483648,
+    "assets": 64,
+    "blob_bytes": 8388608,
+    "current_records": 288,
+    "decorations": 1000,
+    "geometry_points": 4096,
+    "opaque_refs": 256,
+    "proof_records": 96,
+    "record_array": 256,
+    "record_bytes": 65536,
+    "record_depth": 32,
+    "record_keys": 64,
+    "records": 2048,
+    "retained_blob_bytes": 536870912,
+    "retained_roots": 64,
+    "string_bytes": 4096,
+    "wire_bytes": 1048576
+  },
+  "physics_parameters": {
+    "authority_version": "0.2",
+    "backend": "metal",
+    "cases": [
+      {
+        "case_id": "weak",
+        "gravity_m_s2": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "c000000000000000"
+          }
+        ]
+      },
+      {
+        "case_id": "strong",
+        "gravity_m_s2": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "c0239eb851eb851f"
+          }
+        ]
+      }
+    ],
+    "dt_s": {
+      "$f64": "3f847ae147ae147b"
+    },
+    "entities": [
+      {
+        "existence_id": "existence-dynamic",
+        "fixed": false,
+        "genesis_name": "i7-dynamic",
+        "morph": "sphere",
+        "physical_id": "body-dynamic",
+        "position_m": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "3ff0000000000000"
+          }
+        ],
+        "quaternion_wxyz": [
+          {
+            "$f64": "3ff0000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          }
+        ],
+        "radius_m": {
+          "$f64": "3fb999999999999a"
+        },
+        "size_m": null
+      },
+      {
+        "existence_id": "existence-support",
+        "fixed": true,
+        "genesis_name": "i7-support",
+        "morph": "box",
+        "physical_id": "body-support",
+        "position_m": [
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "bfb999999999999a"
+          }
+        ],
+        "quaternion_wxyz": [
+          {
+            "$f64": "3ff0000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          },
+          {
+            "$f64": "0000000000000000"
+          }
+        ],
+        "radius_m": null,
+        "size_m": [
+          {
+            "$f64": "4010000000000000"
+          },
+          {
+            "$f64": "4010000000000000"
+          },
+          {
+            "$f64": "3fc999999999999a"
+          }
+        ]
+      }
+    ],
+    "frame": "genesis-world-si-zup.v0.1",
+    "genesis_version": "1.4.3",
+    "horizon_advances": 32,
+    "init_gravity_m_s2": [
+      {
+        "$f64": "0000000000000000"
+      },
+      {
+        "$f64": "0000000000000000"
+      },
+      {
+        "$f64": "c000000000000000"
+      }
+    ],
+    "limits": {
+      "angular_velocity_abs_rad_s": {
+        "$f64": "4059000000000000"
+      },
+      "checkpoint_bytes_max": 8388608,
+      "contact_force_abs_n": {
+        "$f64": "412e848000000000"
+      },
+      "contacts_max": 32,
+      "fixed_pose_error_m": {
+        "$f64": "3eb0c6f7a0b5ed8d"
+      },
+      "ground_gap_max_m": {
+        "$f64": "3f847ae147ae147b"
+      },
+      "ground_gap_min_m": {
+        "$f64": "bf747ae147ae147b"
+      },
+      "influence_mm_abs_max": 1000,
+      "linear_velocity_abs_m_s": {
+        "$f64": "4059000000000000"
+      },
+      "position_abs_m": {
+        "$f64": "4024000000000000"
+      },
+      "quaternion_norm_sq_error": {
+        "$f64": "3f1a36e2eb1c432d"
+      },
+      "samples_per_candidate": 2,
+      "settled_vz_abs_m_s": {
+        "$f64": "3fa999999999999a"
+      }
+    },
+    "material": {
+      "friction": {
+        "$f64": "3fe0000000000000"
+      },
+      "gravity_compensation": {
+        "$f64": "0000000000000000"
+      },
+      "needs_coup": false,
+      "rho_kg_m3": {
+        "$f64": "408f400000000000"
+      }
+    },
+    "physics_profile": "genesis-rigid-support.v0.1",
+    "requires_grad": false,
+    "rigid_options": {
+      "constraint_timeconst_s": {
+        "$f64": "3f847ae147ae147b"
+      },
+      "enable_collision": true,
+      "enable_mujoco_compatibility": false,
+      "enable_rolling_friction": false,
+      "enable_self_collision": true,
+      "enable_torsional_friction": false,
+      "iterations": 25,
+      "ls_iterations": 50,
+      "max_collision_pairs": 16,
+      "max_contacts": 32,
+      "use_hibernation": false
+    },
+    "seed": 7,
+    "solver_precision": "32",
+    "steps_per_advance": 8,
+    "substeps": 1,
+    "viewer": false
+  },
+  "proof_kind_max": {
+    "admission": 1,
+    "approval": 1,
+    "asset_manifest": 1,
+    "candidate": 1,
+    "checkpoint_descriptor": 2,
+    "command": 1,
+    "event": 1,
+    "existence": 9,
+    "index": 1,
+    "intent": 1,
+    "manifest": 66,
+    "physics_binding": 1,
+    "physics_config": 1,
+    "physics_sample": 2,
+    "physics_snapshot": 2,
+    "place": 6,
+    "projection": 1,
+    "proposal": 1,
+    "provider_build": 1,
+    "resolved_options": 1,
+    "result": 1,
+    "route": 2,
+    "state": 2,
+    "unit_transform": 1,
+    "watercourse": 1,
+    "world_manifest": 1
+  },
+  "proof_wrapper_reserve": 65536,
+  "record_prefix_hex": "65646765776f726c642e756e6976657273652e617574686f726974790076302e3200",
+  "refs": {
+    "admission": {
+      "candidate": "candidate",
+      "command": "command"
+    },
+    "approval": {
+      "intent": "intent",
+      "proposal": "proposal"
+    },
+    "asset_manifest": {},
+    "candidate": {
+      "command": "command",
+      "prior_state": "state",
+      "snapshot": "physics_snapshot"
+    },
+    "checkpoint_descriptor": {
+      "binding": "physics_binding",
+      "build": "provider_build",
+      "config": "physics_config"
+    },
+    "command": {
+      "approval": "approval",
+      "intent": "intent",
+      "proposal": "proposal"
+    },
+    "event": {
+      "admission": "admission",
+      "prior_event?": "event",
+      "state": "state"
+    },
+    "existence": {},
+    "index": {
+      "result": "result"
+    },
+    "intent": {
+      "binding": "physics_binding",
+      "config": "physics_config"
+    },
+    "manifest": {
+      "event?": "event",
+      "index?": "index",
+      "prior_manifest?": "manifest",
+      "state": "state"
+    },
+    "physics_binding": {
+      "config": "physics_config",
+      "dynamic_exists": "existence",
+      "support_exists": "existence"
+    },
+    "physics_config": {
+      "build": "provider_build",
+      "options": "resolved_options"
+    },
+    "physics_sample": {
+      "binding": "physics_binding",
+      "config": "physics_config"
+    },
+    "physics_snapshot": {
+      "binding": "physics_binding",
+      "checkpoint": "checkpoint_descriptor",
+      "config": "physics_config",
+      "sample": "physics_sample"
+    },
+    "place": {
+      "existence": "existence"
+    },
+    "projection": {
+      "assets": "asset_manifest",
+      "transform": "unit_transform"
+    },
+    "proposal": {},
+    "provider_build": {},
+    "resolved_options": {
+      "build": "provider_build"
+    },
+    "result": {
+      "checkpoint": "physics_snapshot",
+      "command": "command",
+      "event": "event",
+      "state": "state"
+    },
+    "route": {
+      "pN": "place"
+    },
+    "state": {
+      "snapshot": "physics_snapshot",
+      "world": "world_manifest"
+    },
+    "unit_transform": {},
+    "watercourse": {
+      "marsh": "place",
+      "outlet": "place",
+      "upstream": "place"
+    },
+    "world_manifest": {
+      "branch_route": "route",
+      "city": "place",
+      "dynamic_existence": "existence",
+      "forest": "place",
+      "main_route": "route",
+      "ocean": "place",
+      "plain": "place",
+      "projection": "projection",
+      "river_marsh": "place",
+      "support_existence": "existence",
+      "watercourse": "watercourse",
+      "wildland": "place",
+      "world_existence": "existence"
+    }
+  },
+  "trust": {
+    "algorithm": "local-hmac-sha256.v0.2",
+    "anchor_prefix_hex": "65646765776f726c642e756e6976657273652e74727573742d616e63686f720076302e3200",
+    "fixture_key_sha256": "630dcd2966c4336691125448bbb25b4ff412a49c732db2c8abc1b8581bd710dd",
+    "receipt_prefix_hex": "65646765776f726c642e756e6976657273652e726563656970740076302e3200"
+  },
+  "version": "0.2"
+}
