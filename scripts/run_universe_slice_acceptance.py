@@ -380,6 +380,24 @@ def validate_python_executable(card):
     return entry
 
 
+def _launcher_evidence_directory(raw, card):
+    """Bridge only the logged launcher run-dir through its already-attested Saved mapping.
+
+    validate_run/product_identity verify the exact allowed_untracked source prefix.
+    All other evidence paths continue to use unchanged safe_path directly.
+    """
+    require(type(raw) is str and Path(raw).is_absolute() and str(Path(raw)) == raw
+            and '..' not in Path(raw).parts, 'invalid logged launcher directory')
+    path = Path(raw)
+    root = safe_path(card['launcher_output_root'])
+    source_parent = safe_path(card['product_root']) / 'engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher'
+    require(path.parent in (source_parent, root), 'unknown launcher evidence prefix')
+    require(stat.S_ISDIR(path.lstat().st_mode), 'launcher evidence leaf is not a real directory')
+    resolved = safe_path(path.resolve(strict=True))
+    require(resolved.parent == root and resolved.is_dir(), 'launcher evidence mapping outside pinned root')
+    return resolved
+
+
 def validate_run(card_path, card_hash, accepted_source, session, execute):
     """No writes or runtime spawn. The card is honest local-owner authorization."""
     require(execute is True, 'run requires explicit --execute; no process launched')
@@ -659,7 +677,7 @@ def supervise(prepared):
                 require(len(launcher_text) <= 16 * 1024**2, 'launcher control-log cap')
                 found = re.search(r'\[launcher\] evidence=([^\r\n]+)', launcher_text)
                 if found:
-                    candidate = safe_path(found.group(1))
+                    candidate = _launcher_evidence_directory(found.group(1), card)
                     require(candidate.parent == Path(card['launcher_output_root']) and candidate.is_dir(),
                             'launcher reported unowned evidence directory')
                     require(launcher_dir is None or launcher_dir == candidate, 'launcher evidence identity changed')
@@ -719,7 +737,7 @@ def supervise(prepared):
     if launcher_dir is None:
         found = re.search(r'\[launcher\] evidence=([^\r\n]+)', launcher_text)
         if found:
-            candidate = safe_path(found.group(1))
+            candidate = _launcher_evidence_directory(found.group(1), card)
             if candidate.parent == Path(card['launcher_output_root']) and candidate.is_dir():
                 launcher_dir = candidate
             else:

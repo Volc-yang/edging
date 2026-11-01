@@ -131,5 +131,40 @@ class PythonPinTests(unittest.TestCase):
             driver.emit({'not': 'allowed'}, str(evidence))
 
 
+class LauncherEvidencePathTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(); self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.product = self.root / 'product'; self.storage = self.root / 'storage'
+        self.parent = self.product / 'engine_platforms/unreal/EdgeWorldHost'
+        self.parent.mkdir(parents=True); self.storage.mkdir()
+        (self.parent / 'Saved').symlink_to(self.storage)
+        self.launcher = self.storage / 'MacLauncher'; self.launcher.mkdir()
+        self.run = self.launcher / 'run-accepted'; self.run.mkdir()
+        self.card = {'product_root': str(self.product), 'launcher_output_root': str(self.launcher)}
+
+    def test_exact_attested_source_prefix_and_canonical_prefix(self):
+        logged = self.parent / 'Saved/MacLauncher/run-accepted'
+        self.assertEqual(self.run, driver._launcher_evidence_directory(str(logged), self.card))
+        self.assertEqual(self.run, driver._launcher_evidence_directory(str(self.run), self.card))
+        with self.assertRaises(driver.Invalid):
+            driver.safe_path(logged)  # this bridge does not alter the shared evidence rule
+
+    def test_unknown_prefix_rejected_even_if_same_resolved_target(self):
+        other = self.root / 'other'; other.symlink_to(self.storage)
+        with self.assertRaises(driver.Invalid):
+            driver._launcher_evidence_directory(str(other / 'MacLauncher/run-accepted'), self.card)
+
+    def test_leaf_symlink_or_redirected_mapping_rejected(self):
+        linked = self.launcher / 'run-link'; linked.symlink_to(self.run)
+        with self.assertRaises(driver.Invalid):
+            driver._launcher_evidence_directory(str(linked), self.card)
+        (self.parent / 'Saved').unlink()
+        foreign = self.root / 'foreign/MacLauncher/run-accepted'; foreign.mkdir(parents=True)
+        (self.parent / 'Saved').symlink_to(self.root / 'foreign')
+        with self.assertRaises(driver.Invalid):
+            driver._launcher_evidence_directory(str(self.parent / 'Saved/MacLauncher/run-accepted'), self.card)
+
+
 if __name__ == '__main__':
     unittest.main()

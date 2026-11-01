@@ -33,3 +33,17 @@ the actual card. Synthetic stdlib cases cover exact/original argv, missing/extra
 changed links, parent redirects, cycles, '..', target/cfg/site changes, ambient
 variables and unchanged evidence policy. Source ordinary commit precedes checks;
 CPU<=120s/raw16MiB, first plus at most one justified targeted retry. No GS/UE/CUA.
+
+## Logged launcher directory bridge (root-approved same leaf)
+
+PREP also exposed a separate exact-source alias: launcher logs its mktemp path
+through the approved product Saved symlink. Only the two logged run-dir parsing
+sites now use a narrow bridge. Raw parent must equal product's exact
+Saved/MacLauncher path or the card's canonical launcher_output_root. Leaf lstat
+must be a real directory, not a symlink; resolve followed by unchanged safe_path
+must yield a direct child of the canonical root. Source Saved mapping was already
+exactly attested by validate_run/product_identity allowed_untracked. Unknown
+prefixes, redirected roots or linked leaves are rejected. Launcher and generic
+safe_path remain unchanged. Synthetic tests exercise both accepted parents and
+rejection even when an unapproved prefix resolves to the same target. No check
+had executed before adding this root-reviewed refinement to the first batch.
