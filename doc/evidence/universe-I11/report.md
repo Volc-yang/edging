@@ -1,6 +1,6 @@
 # I11A Universe host construction
 
-Status: CPU and control/parser checks passed; raw transport acceptance pending.
+Status: scoped construction checks complete; root final review/CI pending.
 Base `761a967`; this report is not a G-P1/G-B1/I12 acceptance.
 
 ## Plan / scope
@@ -197,3 +197,57 @@ request/response/stderr bytes, separate EOF tails, one actual exit record,
 GetProcReturnCode availability/exit0, normal shutdown and true reaping. The
 oversize request case must remain an operational failure even if EOF exits0.
 R2 code/fixture CPU and actual C++ execution remain pending; no new UE run yet.
+
+## I11R2 actual acceptance evidence
+
+R2 ordinary source `3e8b0b8a2a0dd63ce4b5a9db6d8ff307d3363154`:
+
+- CPU first batch passed, real exits0/3.870s/raw1,064,274B, no targeted retry.
+  Four arms extracted verbatim from the C++ synthetic child literal compiled and
+  executed with exact response/EOF stdout/stderr bytes and real exit0. The targeted
+  launcher exclusive-run/previous-file-preservation case passed. This CPU check
+  validates fixtures/launcher, not native recorder behavior by itself.
+- Root issued a **new** independent180s UE card after R10 release; no old-window
+  reuse. NoUBA build PID33516 exit0/16.331s; actual app PID33755 executed only
+  `edgeWorld.UniverseHost.TransportRaw`, explicitly Completed Success and real
+  exit0/24.977s. Total41.472s (<180), raw2,006,361B (<128MiB), no targeted retry.
+  Source/fixture and pre/post actual binary SHA all unchanged. No real Genesis,
+  Metal or AssetAudit run. Earlier Protocol/StrictV02 successful originals retained
+  without redundant rerun; their parser/gate code remains unchanged.
+- Four owned synthetic children had GetProcReturnCode available/actual0,
+  normal EOF shutdown,42 original tail bytes each, trace_complete and reaped=true:
+  PIDs33881/33882/33883/33885. Exact request/response/stderr and EOF tails plus
+  existing-file non-overwrite assertions all passed. All four child PIDs, build
+  and app PIDs were absent in the recorded post-check process inventory.
+- PID33883 is deliberately the oversize/noLF arm: the operation remains failed
+  (`LIMIT`, operational_failure=true) despite normal EOF/actual exit0. Its explicit
+  lifecycle warning and raw failure are retained; the test passes by verifying
+  rejection/evidence, not by converting that operation to success. The other
+  three lifecycle records have operational_failure=false. Forced-kill and real
+  Genesis shutdown are not claimed exercised by these normal synthetic exits.
+
+R2 raw directories under `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/`:
+
+| Directory | raw-index SHA256 |
+| --- | --- |
+| I11R2-20261102-host-cpu-attempt1 (23 originals) | ce09f8dfa208069662b93b2e101205b6672dfe78b41819f00234bd72a17adb0d |
+| I11R2-20261102-host-ue-attempt1 (173 originals) | 0d0daa0bf48868f8e6c654ed2850487b253133816b58b4a208c7fce04d1e93d7 |
+
+UE raw includes the exact new synthetic directory independently copied after the
+run, per-chunk `.bin` and metadata, four worker-exit originals, lifecycle/PID
+summary, argv/env/true exits, build/app logs, automation report and source/binary
+hash maps. Test generated outputs remain on registered DevSSD links; originals
+are not overwritten. The remaining final commit is report-only, so checked code
+bytes remain identical to3e8b0b8. No further checks are necessary without a new
+change, failure or review finding.
+
+## Final disposition
+
+PR97 (draft pending root acceptance) targets `codex/plan-consolidation`:
+https://github.com/Volc-yang/edging/pull/97 . I11A implementation/scoped construction
+checks are complete; root independently reviews exact final head/raw/CI before
+ready/merge. The lifecycle gap above is resolved for native synthetic transport;
+actual I10B/G-B1/real shutdown/renderer and independent I12 remain open. No claim
+of a real UE↔Genesis world gate follows from this mock construction acceptance.
+No self-merge or cleanup. Five registered output symlinks and archived generated
+DefaultInput.ini remain untracked for root's eventual task-cleanup disposition.
