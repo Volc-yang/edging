@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：U 设计轮已收尾，下一步 I0
+## 当前入口：I 实现轮执行中（I0进行中）
 
 [架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
@@ -15,7 +15,7 @@
 
 U9已由未参与U1–U8交付的新reviewer完成：基线 `4bb7452`，source `72450e3` / PR #76 / merge `047b89f`；[执行登记](universe_u9_execution_register.md)、[统筹收尾](design/universe-u9-coordination-review.md)。[新实现树](design/universe-integration-review.md)13张叶卡/42路径独占，任务与契约/资源/结果门并集25节点54边无环，最终CI通过，干净worktree已清理、分支保留。
 
-**下一ready：I0 技术契约与可执行黄金fixture**，尚未派发；从届时准确统筹HEAD建独立worktree，按U9卡锁定 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。I0经非作者复算与G-C接受后才解锁I1/I2/I7，其后内核、锁/恢复、真实物理、UE及组合采证按独立前置执行。无需重做U规划。U设计轮义务已完成，产品总计划和V-HOME仍开放；新运行门planned，世界规律/灵域时刻/载具权威性/资产与目标阈值保持待决，候选预算不自动授权运行。
+**当前执行：I0 技术契约与可执行黄金fixture**，用户已同意并要求按任务树分配实现，从 `b3e1fd4` 建独立worktree；owner/进度/Goal工具限制/正式B-C额度见[I实现登记](universe_implementation_register.md)。按U9卡锁定 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。I0经非作者复算与G-C接受后才解锁I1/I2/I7，其后内核、锁/恢复、真实物理、UE及组合采证按独立前置执行。无需重做U规划。U设计轮义务已完成，产品总计划和V-HOME仍开放；新运行门planned，世界规律/灵域时刻/载具权威性/资产与目标阈值保持待决，候选预算不自动授权运行。
 
 ## V-HOME 可访问世界纵切（进行中）
 
