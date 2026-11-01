@@ -1,0 +1,61 @@
+{
+  "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-runtime-attempt1",
+  "retained_indexes_and_logs": {
+    "invocation.json": {
+      "bytes": 901,
+      "sha256": "a84e7a1fe6bd8ded9e87f61e5affc7031ddabf62430a0f528896e205cd3f48bc"
+    },
+    "outer-exit.json": {
+      "bytes": 492,
+      "sha256": "b9e0532d8f3812875066be51180552a298d8cd2125feec28b5298b97bfdc45fa"
+    },
+    "exit.json": {
+      "bytes": 93,
+      "sha256": "feff3c61acdfaf9adeaa39dea030b1a93b495321075f48a31a72c5aa55b62f1f"
+    },
+    "raw-index.json": {
+      "bytes": 11791,
+      "sha256": "739623da35019c2428a7d54fd09b93793fa91583663a96c178058a7dfa2a778e"
+    },
+    "complete-raw-index.json": {
+      "bytes": 41291,
+      "sha256": "7e94cd7fc978390748edf99ecd70fecdbe3d8c19d4c56a13cb5502065298dd03"
+    },
+    "final-raw-index.json": {
+      "bytes": 41291,
+      "sha256": "7e94cd7fc978390748edf99ecd70fecdbe3d8c19d4c56a13cb5502065298dd03"
+    },
+    "supervisor.json": {
+      "bytes": 553,
+      "sha256": "52c1a6de0c57ce345eea45a053bac86d31b2a0650c1bd0f1b2ec2c6d80ee9fd1"
+    },
+    "exception.txt": {
+      "bytes": 2309,
+      "sha256": "76e961ac9156fcdc200718b87900cf498b2f10e86452a27af4e7cfc0251df3ba"
+    },
+    "owned-processes.json": {
+      "bytes": 119,
+      "sha256": "a583b150dd6c1ec1d4f6008e2f727c1afdbeb173411d4e4857cff795e6dda873"
+    },
+    "owned-group-after.json": {
+      "bytes": 75,
+      "sha256": "6457b03cd41778b31f51941ee3f407c73d44dd9c11e306dc50bf6a78f50b9bac"
+    },
+    "pins-process.json": {
+      "bytes": 343,
+      "sha256": "f0db66e66de23aaa008a0ba948ee51a4595cc130dd88a0cb5a3c54de75b35f5f"
+    },
+    "worker-1-start.json": {
+      "bytes": 295,
+      "sha256": "65e09fe095e983a059f8de3c1e0233c0143b32fe64d82e6582b3a44d94fed44f"
+    },
+    "worker-1-exit.json": {
+      "bytes": 398,
+      "sha256": "c4eeb51a9b087ccab650379e2c9117bb8a66d81ed3f39c488725bc61622e1576"
+    },
+    "bootstrap-runtime-destroy.json": {
+      "bytes": 23,
+      "sha256": "c4febc29e159771e0b06374cef02b1d194a463e1c26a9f95624bd34d40a58fa1"
+    }
+  }
+}

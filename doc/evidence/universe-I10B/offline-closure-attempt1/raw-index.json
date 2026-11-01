@@ -1,0 +1,22 @@
+{
+  "checker.py": {
+    "bytes": 1775,
+    "sha256": "80776b58979c1fd0b399b72736f7d72d867b17e4bbf28c37c8eabe609053a92d"
+  },
+  "driver-source.py": {
+    "bytes": 32030,
+    "sha256": "54123aea9c59b9d1679605048ce83e2560a502cfbf480f79a4fc70c126b64cef"
+  },
+  "invocation.json": {
+    "bytes": 346,
+    "sha256": "19000c92bfac3626f767ea1e18de22b55854c5d631cf2d53ba360f2e8962c311"
+  },
+  "stderr.txt": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stdout.txt": {
+    "bytes": 880,
+    "sha256": "642ff6c3bc36eb6afffb3f3f84cf7827d7cb86a6641a77c4027153fbb9439548"
+  }
+}

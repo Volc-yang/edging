@@ -1,0 +1,25 @@
+{
+  "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-stdlib-attempt1",
+  "retained_indexes_and_logs": {
+    "invocation.json": {
+      "bytes": 892,
+      "sha256": "071932735ddf6d665646740d999f34634d9207444505f90a7637b1cc0ab934f7"
+    },
+    "outer-exit.json": {
+      "bytes": 411,
+      "sha256": "f259ed5f58ad1bedcce9d130716272202672ea406021b88ffb7b078b29b79987"
+    },
+    "exit.json": {
+      "bytes": 93,
+      "sha256": "4df7b0f7e1333a7675005833d4b52a6907b294bc6e1423c04b397be1fa2b9a99"
+    },
+    "raw-index.json": {
+      "bytes": 2752,
+      "sha256": "b97ad5e9402d2b0334c149b06f5dac946f123c969acdc85a5861cd53e49d838f"
+    },
+    "preflight.json": {
+      "bytes": 166,
+      "sha256": "c3f341b783892e7039729544cc6265047f5a72f04e263ad720398db549903cd8"
+    }
+  }
+}

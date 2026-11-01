@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Users/yangacan/edgeWorld/edge-world/.venv-genesis/bin/python3.12",
+    "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10b-universe-runtime/scripts/probe_universe_worker_v0_2.py",
+    "runtime",
+    "--output",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-runtime-attempt2-topological"
+  ],
+  "pid": 33147,
+  "exit_code": 0,
+  "reaped": true,
+  "forced": false,
+  "elapsed_seconds": 14.91610598564148,
+  "prior_elapsed_seconds": 15.626512289047241,
+  "source_commit": "c448340ca6623b6da02ef96586a6a97b14bef421"
+}
