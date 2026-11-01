@@ -7,6 +7,22 @@ not pass G-S1, G-P1 or any UE/Metal gate. UE released plugins/adapters remain th
 first integration choice. Seed→Tree means initial state→causal development.
 No biology, spirit lifecycle, geography law or autonomous clock is established.
 
+### Extension boundary (not implemented here)
+
+v0.1 is only the **neutral kernel fixture profile**. Its fake candidate is not a
+real Genesis checkpoint or an extensible production world state. I7 must specify
+real checkpoint/blob/config/binding types; I10's six-region initial manifest also
+needs explicit typed geography/existence/route/water references. These require
+versioned schemas/profile identifiers and reopening affected G-C/APIs before
+I8/I10/I9 integration; never add unknown keys or rename fake evidence in place.
+I1 strictly dispatches known version schemas and rejects unknown/mixed versions;
+I2 pins version/profile in root identity; I3/I5 validate a version-specific closure
+then store/restore opaque immutable canonical objects without solving physics;
+I4 uses an explicit version-specific candidate/trust provider, with no import-time
+Genesis initialization or dynamic untrusted plugin loading. This preserves the
+ownership/commit boundary without pretending current neutral fields support
+production checkpoints. No automatic legacy/new-profile migration is allowed.
+
 ## 1. Exact bytes and bounded values
 
 Domain is `edgeworld.universe.authority`, schema version is the **string** `0.1`.
@@ -144,17 +160,18 @@ The new worker's future CLI keeps `--state-dir --world-id --dt --physical-steps
 Request exact keys: `protocol_version,request_id,operation,payload`. request_id
 is an ID; operations: `initialize,status,observe,advance`. Payload exact keys:
 initialize=`{domain,version,world_id,test_profile}`; status=`{domain,version,
-world_id}`; observe adds `{tick,revision,watermark}`; advance adds `{command}`
-(the full validated command closure is resolved from immutable prepared records,
-not arbitrary filesystem paths). World/domain/version must match registered root.
+world_id}`; observe adds `{tick,revision,watermark}`; advance adds `{principal,command_records,command_digest}`. command_records is exactly
+the four full proposal/intent/approval/command records in topological order;
+command_digest must equal the last record digest. No arbitrary filesystem paths
+or request-supplied trust map is accepted. The authenticated local authority
+checks principal; a JSON principal string alone grants no permission. World/domain/version must match registered root.
 No operation named status/observe may create root, lockfile, Genesis, manifest,
 checkpoint, receipts, action budget, RNG state or advance tick/revision.
 
 Success exact envelope keys `protocol_version,request_id,ok,result` (`ok=true`);
 failure `protocol_version,request_id,ok,error` (`ok=false`), error exact keys
 `code,message,commit_status` with commit_status `not_attempted|unknown|confirmed`.
-`message` bounded string, not stack trace; result exact domain/version/world_id,
-operation and operation-specific payload. Initialize/advance payload is
+`message` bounded string, not stack trace; result has exact keys `domain,version,world_id,operation,payload`. Initialize/advance payload is
 `{manifest,result,commit_status}` (result null only genesis); status payload is
 `{head,tick,revision,watermark,storage_state}`; observe payload is
 `{manifest,state,event,watermark,storage_state}` (genesis event null). All refs are
@@ -198,22 +215,40 @@ No fork-inherited lease may authorize a second writer. Check lease PID and root
 identity at each mutation. Observers use worker's existing pinned snapshot, or
 acquire existing ownership to recover read-only without creating any file.
 
+`identity.json` is C(object) without newline, exact keys `domain,version,
+world_id,profile,root_canonical,root_device,root_inode`. Domain/version/world/profile
+are the pinned values above. root_canonical is absolute resolved path string
+(no trailing slash except filesystem root, no symlink components); root_device
+and root_inode are **decimal strings** matching `0|[1-9][0-9]{0,19}`, equal to
+`str(os.stat(root).st_dev)`/`str(os.stat(root).st_ino)`. Strings avoid unsafe JSON
+integer coercion of 64-bit inode values. These are durable registration fields,
+checked against current stat on every acquire/mutation. Lock fd dev/inode/PID
+are additional runtime lease pins, not mutable registration fields. Identity is
+created exclusively after acquiring the stable lock, fsynced, then root directory
+synced before HEAD initialization; partial/mismatched identity never overwrites.
+An absent identity with existing HEAD is corrupt, not permission to initialize.
+
 Layout: `identity.json`, `.authority.lock`, `objects/<digest>.json` (C(record)),
 `HEAD.json` (canonical `{domain,version,world_id,manifest:<digest>,
-profile:"local-posix-sync-v0.1"}`). Prepare temp files in the same root/filesystem;
+profile:"local-posix-sync-v0.1"}`). Prepare HEAD temp files in the same root/filesystem;
 objects immutable, no automatic orphan removal. Registration/profile/fsync
 capability is checked explicitly; unsupported directory synchronization stops
-writes rather than silently downgrading. No hardlinks/symlinks in internal paths;
-refuse escaping paths. This profile assumes a local POSIX filesystem and honest
+writes rather than silently downgrading. No hardlinks/symlinks in internal paths; open regular internal files with
+no-follow semantics and require link count 1; refuse escaping paths. This profile assumes a local POSIX filesystem and honest
 OS synchronization calls, not malicious concurrent root mutation.
 
 A is final immutable admission, not a durable visibility point. Commit order:
 
 1. Hold valid lease, ready, exact expected head; fully validate bundle/closure.
-2. Persist every missing object to exclusive temporary file, complete write,
-   flush userspace and `fsync(fd)`, publish by no-overwrite link/create, verify
-   existing object's exact bytes, `fsync(objects directory)`. No overwrite of
-   existing object. Failure before HEAD attempt reports IO_BEFORE_VISIBILITY;
+2. Persist every missing object directly at its final digest name using
+   `O_CREAT|O_EXCL|O_NOFOLLOW` (no link/rename publication), complete write, flush
+   userspace and `fsync(fd)`, then `fsync(objects directory)`. Existing names
+   are opened read-only and their full exact bytes verified; never overwrite.
+   Exclusive creation is atomic for the name, not the file contents: incomplete
+   objects after interruption remain unreferenced by HEAD. They are never
+   interpreted as committed or silently repaired/deleted; a later same-digest
+   collision with partial bytes is CORRUPT and stops that write. Only HEAD makes
+   complete synchronized objects visible as authority. Failure before HEAD attempt reports IO_BEFORE_VISIBILITY;
    orphan objects do not commit state. Event/result/index/manifest are objects.
 3. Write complete new HEAD temp, flush and `fsync(temp fd)`; named public hooks
    before/after each phase below. Verify prior pinned HEAD under same lease.
@@ -324,7 +359,8 @@ Lease's opaque internal ownership. Exceptions are not silently retried.
   otherwise `recovering`; `.close()->None` makes closed, does not close lease.
 - `initialize(genesis:Sequence[Record], head:str) -> CommitReceipt`:
   only explicit initializing lease and absent HEAD; exact revision0 closure,
-  same A-free write/V/D order. If HEAD exists, do not overwrite/reinitialize;
+  same A-free write/V/D order; identity.json must be fully written and
+  fsynced before preparing HEAD, with new directory entries synchronized. If HEAD exists, do not overwrite/reinitialize;
   require recovery. No double initialize. Its committed result is None.
 - `pin() -> PinnedRoot`: requires lease.check; reads/validates exact HEAD identity
   and pins bytes/digest once; no writes or implicit recovery. `PinnedRoot` fields
@@ -350,7 +386,9 @@ Lease's opaque internal ownership. Exceptions are not silently retried.
   one revision successor, matching A and command/result index. Full budget/cursor
   and result/root atomicity. Never accepts an authority object from fake adapter.
   Before V failure leaves ready old snapshot if intact; after V attempted failure
-  Store is unconfirmed_readonly (or corrupt), no subsequent commit until recovery.
+  Store invalidates its cached snapshot and enters recovering (or corrupt): no
+  reads claiming the old head and no subsequent commit until fresh recovery.
+  Only freshly pinned, fully validated recovery may expose unconfirmed_readonly.
 - `CommitReceipt` fields `manifest:str,result:Record|None,
   commit_status:str='confirmed'`; created only after D or D_recovery.
   Exceptions from W8 still propagate as unknown and fail-stop conservatively.
@@ -359,7 +397,8 @@ Lease's opaque internal ownership. Exceptions are not silently retried.
 
 - `TrustVerifier` protocol methods `authorize_read(principal:str,world_id:str)->None`,
   `verify_approval(approval:Record,proposal:Record,intent:Record)->None`,
-  `admit(command:Record,candidate:Record,*,current_revision:int)->Record`.
+  `admit(command:Record,candidate:Record,*,current_revision:int,
+  admission_id:str)->Record`.
   Fail AUTHORIZATION or external uncertainty NOT_READY; no world mutation.
   admit returns one admission record, never changes command fingerprint.
 - `FixtureTrust(receipts:Mapping[str,JSON])` implements that protocol for only
@@ -426,7 +465,12 @@ against fixed expected bytes/digests, never rewrites or blesses new expectations
 
 `python3 scripts/validate_universe_authority_fixtures.py` checks fixed records,
 closure, same-tick history and rejection codes. Initial actual local check:
-24 records, 3 retained roots, 26 negative vectors, PASS. Negative inputs include
+24 records, 3 retained roots, 26 negative vectors, PASS. Directed review added
+a rehashed duplicate EventId vector. Final directed check: **24 fixed records,
+3 roots, 27 negative vectors, PASS**; Python 3.10 grammar parse passed and all
+fixture SHA256 values before/after execution matched (read-only check). Checks
+completed locally in <1 second each within the assigned 120-second cap; no
+additional rerun performed. Exact final source is in the PR/coordinator record. Negative inputs include
 rehashed history truncation (not just a stale digest), duplicate decoded keys,
 unsafe/inexact integer, illegal finite encoding, wrong domain/version/watermark,
 command conflict, forged receipt/reference and approval cycle. The independently

@@ -117,6 +117,7 @@ def exact(obj, keys):
         fail('SCHEMA')
 
 def validate_record(record):
+    tree(record)
     exact(record, {'domain', 'version', 'world_id', 'kind', 'id', 'body', 'refs'})
     if record['domain'] != DOMAIN or record['version'] != VERSION:
         fail('DOMAIN')
@@ -190,7 +191,7 @@ def validate_archive(value, trusted_receipts):
         fail('REFERENCE')
     if value['head'] not in records or records[value['head']]['kind'] != 'manifest':
         fail('REFERENCE')
-    commands = {}; retained = set()
+    commands = {}; retained = set(); event_ids = set()
     def referenced(record, name):
         return records[record['refs'][name]]
     for d, r in records.items():
@@ -227,6 +228,9 @@ def validate_archive(value, trusted_receipts):
             if c['refs']['command'] != r['refs']['command'] or trusted_receipts.get(b['receipt_id']) != expected or b['principal'] != i['principal'] or b['evaluated_revision'] != i['expected_revision'] or b['evaluated_revision'] > approval['expires_revision']:
                 fail('AUTHORIZATION')
         if k == 'event':
+            if b['event_id'] in event_ids:
+                fail('ID')
+            event_ids.add(b['event_id'])
             state = referenced(r, 'state')['body']; a = referenced(r, 'admission'); c = referenced(a, 'candidate'); cb = c['body']
             prior = referenced(c, 'prior_state')['body']; intent = referenced(referenced(a, 'command'), 'intent')['body']
             if any(state[x] != cb[x] for x in ('tick', 'revision', 'value')) or state['budget'] != prior['budget'] - intent['budget'] or state['random_cursor'] != intent['random_cursor'] + 1 or intent['random_cursor'] != prior['random_cursor']:
@@ -322,7 +326,8 @@ def main():
             raise AssertionError((case['name'], 'unexpected success'))
     for query in ((0, 1, 1), (0, 2, 2)):
         observe(archive, *query, trusted_receipts=trusted_receipts)
-    print(f'PASS: {len(records)} fixed records; {len(retained)} retained roots; {len(container('negative.json'))} negative vectors; exact same-tick history')
+    negative_count = len(container('negative.json'))
+    print(f'PASS: {len(records)} fixed records; {len(retained)} retained roots; {negative_count} negative vectors; exact same-tick history')
 
 if __name__ == '__main__':
     main()
