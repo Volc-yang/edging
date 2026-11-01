@@ -251,3 +251,20 @@ actual I10B/G-B1/real shutdown/renderer and independent I12 remain open. No clai
 of a real UE↔Genesis world gate follows from this mock construction acceptance.
 No self-merge or cleanup. Five registered output symlinks and archived generated
 DefaultInput.ini remain untracked for root's eventual task-cleanup disposition.
+
+### Owner-launcher build parity correction
+
+Root final review found the real launcher still used legacy's bare WaitMutex
+build while the accepted native builds used NoUBA (prior I9 DevSSD/UBA failure
+was already retained). Source `95dc154` now adds exactly one `-NoUBA` only when
+`--universe` is selected; legacy argv is unchanged. Existing mock builder records
+argv, and assertions cover Universe launch/build-only versus default legacy.
+Root explicitly required only a small remaining-CPU check, no C++/UE rerun.
+Shell syntax and those three directed launcher cases passed exit0/3.580s; all
+input SHA stable. R2 CPU total7.450s, no failed R2 retry. Raw:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11R2-20261102-host-cpu-buildargs-check/`.
+Its raw-index SHA256 is recorded in the final task report. C++ code bytes and
+actual accepted binaries remain identical to checked3e8b0b8; the later change is
+launcher/test-only, followed by this report-only commit. The launcher now matches
+the accepted NoUBA executor choice, without claiming the I11B real combined
+entry has run on this independent branch.
