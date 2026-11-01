@@ -99,6 +99,53 @@ def preflight(output):
     write(output/'preflight.json',dict(ok=True,solver_imported=False,build=digest(build),artifact_class='genesis-runtime',runtime_gate=False))
 
 
+def reap_owned(child, timeout, *, close_stdin):
+    """Always reap this exact owned PID, even when pipe close or wait fails."""
+    outcome = dict(pid=child.pid,cleanup='normal',reaped=False)
+    primary = None
+    if close_stdin and child.stdin is not None:
+        try:child.stdin.close()
+        except Exception as exc:
+            primary = exc
+            outcome['stdin_close_exception'] = traceback.format_exc()
+    try:
+        code = child.wait(timeout=max(0.01,timeout))
+    except subprocess.TimeoutExpired as exc:
+        primary = primary or exc
+        outcome['wait_exception'] = traceback.format_exc()
+        outcome['cleanup'] = 'terminated-after-timeout'
+        try:child.terminate()
+        except ProcessLookupError:pass
+        try:code = child.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            outcome['cleanup'] = 'killed-after-timeout'
+            try:child.kill()
+            except ProcessLookupError:pass
+            code = child.wait(timeout=5)
+    outcome.update(exit_code=code,reaped=True,end_unix=time.time())
+    return outcome,primary
+
+
+def cleanup_check(output):
+    # Actual CPU child processes, no Genesis import/init, no keys or authority.
+    argv=[sys.executable,'-c','import time;time.sleep(30)']
+    child=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    outcome,error=reap_owned(child,0.03,close_stdin=False)
+    write(output/'pins-timeout-check.json',dict(outcome,argv=argv,error_type=type(error).__name__))
+    check(outcome['reaped'] and outcome['cleanup'] != 'normal' and isinstance(error,subprocess.TimeoutExpired),'pins timeout not reaped')
+    argv=[sys.executable,'-c','import time;time.sleep(0.05)']
+    child=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    child.stdin.close()
+    class BrokenPipe:
+        def close(self):raise BrokenPipeError('explicit synthetic stdin close failure')
+    child.stdin=BrokenPipe()
+    outcome,error=reap_owned(child,2,close_stdin=True)
+    write(output/'stdin-close-check.json',dict(outcome,argv=argv,error_type=type(error).__name__))
+    check(outcome['reaped'] and outcome['exit_code'] == 0 and isinstance(error,BrokenPipeError),'stdin close skipped reap')
+    check('genesis' not in sys.modules,'cleanup check imported solver')
+    write(output/'cleanup-check.json',dict(ok=True,solver_imported=False))
+
+
 class Probe:
     def __init__(self,output,start):
         self.output,self.start = output,start
@@ -112,6 +159,7 @@ class Probe:
         self.action = 0
         self.commands = []
         self.children = []
+        self.owned = []
 
     def budget(self):
         check(time.monotonic()-self.start < 240,'runtime budget exhausted')
@@ -158,8 +206,12 @@ class Probe:
         argv = [sys.executable,'-m','engine.universe_authority.worker','--owner-config',str(self.configs['initialize']),'--print-public-pins']
         with (self.output/'pins.stdout').open('xb') as out,(self.output/'pins.stderr').open('xb') as err:
             child = subprocess.Popen(argv,cwd=REPO,stdout=out,stderr=err)
-            code = child.wait(timeout=min(15,240-(time.monotonic()-self.start)))
-        write(self.output/'pins-process.json',dict(argv=argv,pid=child.pid,exit_code=code,reaped=True))
+            registration=dict(child=child,label='pins',reaped=False);self.owned.append(registration)
+            outcome,error=reap_owned(child,min(15,240-(time.monotonic()-self.start)),close_stdin=False)
+            registration['reaped']=outcome['reaped']
+        write(self.output/'pins-process.json',dict(outcome,argv=argv))
+        if error:raise error
+        code=outcome['exit_code']
         raw = (self.output/'pins.stdout').read_bytes()
         owner = load_owner_config(str(self.configs['initialize']))
         expected = public_pins(owner)
@@ -177,6 +229,7 @@ class Probe:
         self.stdout_file = (self.output/(label+'.stdout')).open('xb')
         self.child = subprocess.Popen(argv,cwd=REPO,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
             stderr=self.stderr_file,start_new_session=True,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+        self.owned.append(dict(child=self.child,label=label,reaped=False))
         row = dict(argv=argv,pid=self.child.pid,mode=mode,start_unix=time.time())
         self.children.append(row); write(self.output/(label+'-start.json'),row)
         if mode == 'initialize':
@@ -185,19 +238,25 @@ class Probe:
 
     def finish(self):
         if self.child is None:return
-        self.child.stdin.close()
-        try:
-            code = self.child.wait(timeout=max(1,min(20,240-(time.monotonic()-self.start))))
-        except subprocess.TimeoutExpired:
-            self.child.terminate()
-            try:code=self.child.wait(timeout=5)
-            except subprocess.TimeoutExpired:self.child.kill();code=self.child.wait(timeout=5)
-        tail = self.child.stdout.read()
+        child=self.child
+        outcome,error=reap_owned(child,max(1,min(20,240-(time.monotonic()-self.start))),close_stdin=True)
+        registration=next(row for row in self.owned if row['child'] is child)
+        registration['reaped']=outcome['reaped']
+        tail=child.stdout.read()
         self.stdout_file.write(tail);self.stdout_file.close();self.stderr_file.close()
-        row = dict(self.children[-1],exit_code=code,reaped=True,end_unix=time.time(),trailing_stdout_bytes=len(tail))
+        row=dict(self.children[-1],**outcome,trailing_stdout_bytes=len(tail))
         write(self.output/('worker-'+str(len(self.children))+'-exit.json'),row)
-        self.child.stdout.close(); self.child=None
-        check(code == 0 and not tail and not self.buffer,'worker exit/protocol tail')
+        child.stdout.close();self.child=None
+        if error:raise error
+        check(outcome['exit_code'] == 0 and not tail and not self.buffer,'worker exit/protocol tail')
+
+    def cleanup_remaining(self):
+        for registered in self.owned:
+            if not registered['reaped']:
+                outcome,error=reap_owned(registered['child'],1,close_stdin=True)
+                registered['reaped']=outcome['reaped']
+                write(self.output/(registered['label']+'-emergency-cleanup.json'),outcome)
+        write(self.output/'owned-processes.json',[dict(pid=row['child'].pid,label=row['label'],reaped=row['reaped'],exit_code=row['child'].returncode) for row in self.owned])
 
     def call(self,operation,*,expected_error=None,**payload):
         self.budget(); self.action += 1
@@ -325,7 +384,7 @@ class Probe:
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('operation',choices=('preflight','runtime'))
+    parser.add_argument('operation',choices=('preflight','cleanup-check','runtime'))
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     check(args.output.is_absolute() and args.output.resolve() == args.output,'canonical output required')
@@ -343,6 +402,7 @@ def main():
     try:
         source_inputs(args.output)
         if args.operation == 'preflight':preflight(args.output)
+        elif args.operation == 'cleanup-check':cleanup_check(args.output)
         else:
             build=identity(args.output)
             options=measure_runtime_options(physics_parameters(),approved_build=build,options_id='resolved-options')
@@ -355,10 +415,16 @@ def main():
         code=1
         with (args.output/'exception.txt').open('x') as stream:traceback.print_exc(file=stream)
     finally:
+        signal.alarm(0)
         if probe is not None and probe.child is not None:
             try:probe.finish()
             except Exception:
                 with (args.output/'cleanup-exception.txt').open('x') as stream:traceback.print_exc(file=stream)
+        if probe is not None:
+            try:probe.cleanup_remaining()
+            except Exception:
+                code=1
+                with (args.output/'owned-cleanup-exception.txt').open('x') as stream:traceback.print_exc(file=stream)
         write(args.output/'exit.json',dict(exit_code=code,pid=os.getpid(),elapsed_seconds=time.monotonic()-start,end_unix=time.time()))
         write(args.output/'raw-index.json',mapping(args.output))
         signal.alarm(0)
