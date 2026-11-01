@@ -29,7 +29,7 @@ bool FEdgeWorldCausalObservationTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("one causal edge"), Sample.Edges.Num(), 1);
 	TestEqual(TEXT("derived influence"), Sample.Nodes.Last().InfluenceMm, int64(-7));
 	FEdgeWorldCausalHeadGate Gate;
-	Gate.Stage(1, 1, Sample.GenesisConfigHash, Sample.CheckpointHash);
+	Gate.Stage(1, 1, Sample.GenesisConfigHash, Sample.CheckpointHash, Sample.StateHash, Sample.EventHash);
 	FEdgeWorldCausalObservation Wrong = Sample;
 	Wrong.GenesisConfigHash = FString::ChrN(64, TEXT('b'));
 	TestFalse(TEXT("wrong config does not publish head"), Gate.Accept(Wrong));
@@ -39,6 +39,12 @@ bool FEdgeWorldCausalObservationTest::RunTest(const FString& Parameters)
 	Wrong.CheckpointHash = FString::ChrN(64, TEXT('b'));
 	TestFalse(TEXT("wrong checkpoint does not publish head"), Gate.Accept(Wrong));
 	TestEqual(TEXT("validated revision remains zero"), Gate.LatestRevision, int64(0));
+	Wrong = Sample;
+	Wrong.StateHash = FString::ChrN(64, TEXT('b'));
+	TestFalse(TEXT("wrong state hash does not publish head"), Gate.Accept(Wrong));
+	Wrong = Sample;
+	Wrong.EventHash = FString::ChrN(64, TEXT('b'));
+	TestFalse(TEXT("wrong event head does not publish head"), Gate.Accept(Wrong));
 	TestTrue(TEXT("matching observation publishes head"), Gate.Accept(Sample));
 	TestEqual(TEXT("validated tick advances after observation"), Gate.LatestTick, int64(1));
 	TestTrue(TEXT("published head allows advance"), Gate.CanAdvance());

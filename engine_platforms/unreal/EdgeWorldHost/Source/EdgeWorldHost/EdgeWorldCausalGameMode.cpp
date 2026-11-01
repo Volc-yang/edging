@@ -45,20 +45,20 @@ namespace
 	}
 	bool Head(const FEdgeWorldResponse& Response, const FString& WorldId, bool bAdvance,
 		int64 ExpectedTick, int64 ExpectedRevision, int64& Tick, int64& Revision,
-		FString& OutConfigHash, FString& OutCheckpointHash)
+		FString& OutConfigHash, FString& OutCheckpointHash, FString& OutStateHash, FString& OutEventHash)
 	{
 		if (!Response.bSuccess) return false;
 		TSharedPtr<FJsonObject> Envelope;
 		if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Response.JsonLine), Envelope) || !Envelope.IsValid()) return false;
 		const TSharedPtr<FJsonObject>* Result = nullptr;
-		FString Name, Schema, Probe, Seed, StateHash, EventHash;
+		FString Name, Schema, Probe, Seed;
 		if (!Envelope->TryGetObjectField(TEXT("result"), Result) || !Result || !Result->IsValid()
 			|| !(*Result)->TryGetStringField(TEXT("world_id"), Name) || Name != WorldId
 			|| !(*Result)->TryGetStringField(TEXT("schema_version"), Schema) || Schema != TEXT("abstract-seed-genesis.v1")
 			|| !(*Result)->TryGetStringField(TEXT("seed_id"), Seed) || Seed != WorldId + TEXT(":seed:0")
 			|| !(*Result)->TryGetStringField(TEXT("physical_probe_id"), Probe) || Probe != WorldId + TEXT(":physical:0")
-			|| !HexHash(*Result, TEXT("head_state_hash"), StateHash)
-			|| !HexHash(*Result, TEXT("event_head_hash"), EventHash)
+			|| !HexHash(*Result, TEXT("head_state_hash"), OutStateHash)
+			|| !HexHash(*Result, TEXT("event_head_hash"), OutEventHash)
 			|| !HexHash(*Result, TEXT("checkpoint_sha256"), OutCheckpointHash)
 			|| !HexHash(*Result, TEXT("genesis_config_hash"), OutConfigHash)
 			|| !ExactInt(*Result, TEXT("logical_tick"), Tick) || !ExactInt(*Result, TEXT("state_revision"), Revision)) return false;
@@ -79,8 +79,8 @@ namespace
 				|| !(*Record)->TryGetStringField(TEXT("edge_id"), EdgeId) || EdgeId != WorldId + FString::Printf(TEXT(":edge:%lld"), static_cast<long long>(Tick))
 				|| !HexHash(*Record, TEXT("physics_candidate_hash"), CandidateHash)
 				|| !HexHash(*Record, TEXT("checkpoint_sha256"), RecordCheckpoint) || RecordCheckpoint != OutCheckpointHash
-				|| !HexHash(*Record, TEXT("state_hash"), RecordState) || RecordState != StateHash
-				|| !HexHash(*Record, TEXT("event_hash"), RecordEvent) || RecordEvent != EventHash) return false;
+				|| !HexHash(*Record, TEXT("state_hash"), RecordState) || RecordState != OutStateHash
+				|| !HexHash(*Record, TEXT("event_hash"), RecordEvent) || RecordEvent != OutEventHash) return false;
 		}
 		return Tick == Revision;
 	}
@@ -169,16 +169,16 @@ void AEdgeWorldCausalGameMode::OnHead(FEdgeWorldResponse&& Response, bool bAdvan
 {
 	bRequestInFlight = false;
 	int64 Tick = 0, NewRevision = 0;
-	FString ConfigHash, CheckpointHash;
+	FString ConfigHash, CheckpointHash, StateHash, EventHash;
 	if (!Head(Response, WorldId, bAdvance, ExpectedTick, ExpectedRevision,
-		Tick, NewRevision, ConfigHash, CheckpointHash)
+		Tick, NewRevision, ConfigHash, CheckpointHash, StateHash, EventHash)
 		|| (!bAdvance && Tick < HeadGate.LatestTick)
 		|| (!HeadGate.LatestConfigHash.IsEmpty() && ConfigHash != HeadGate.LatestConfigHash))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Causal head rejected: %s %s"), *Response.ErrorCode, *Response.ErrorMessage);
 		return;
 	}
-	HeadGate.Stage(Tick, NewRevision, ConfigHash, CheckpointHash);
+	HeadGate.Stage(Tick, NewRevision, ConfigHash, CheckpointHash, StateHash, EventHash);
 	ObserveAt(Tick);
 }
 

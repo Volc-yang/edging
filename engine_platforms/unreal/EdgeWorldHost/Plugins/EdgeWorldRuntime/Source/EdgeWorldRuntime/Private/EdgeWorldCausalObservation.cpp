@@ -163,24 +163,30 @@ bool EdgeWorldParseCausalObservation(const FEdgeWorldResponse& Response, const F
 	return true;
 }
 
-void FEdgeWorldCausalHeadGate::Stage(int64 Tick, int64 Revision, const FString& ConfigHash, const FString& CheckpointHash)
+void FEdgeWorldCausalHeadGate::Stage(int64 Tick, int64 Revision, const FString& ConfigHash,
+	const FString& CheckpointHash, const FString& StateHash, const FString& EventHash)
 {
 	bPending = true;
 	PendingTick = Tick;
 	PendingRevision = Revision;
 	PendingConfigHash = ConfigHash;
 	PendingCheckpointHash = CheckpointHash;
+	PendingStateHash = StateHash;
+	PendingEventHash = EventHash;
 }
 
 bool FEdgeWorldCausalHeadGate::Accept(const FEdgeWorldCausalObservation& Sample)
 {
 	if (!bPending || Sample.Tick != PendingTick || Sample.Revision != PendingRevision
-		|| Sample.GenesisConfigHash != PendingConfigHash || Sample.CheckpointHash != PendingCheckpointHash)
+		|| Sample.GenesisConfigHash != PendingConfigHash || Sample.CheckpointHash != PendingCheckpointHash
+		|| Sample.StateHash != PendingStateHash || Sample.EventHash != PendingEventHash)
 		return false;
 	LatestTick = PendingTick;
 	LatestRevision = PendingRevision;
 	LatestConfigHash = PendingConfigHash;
 	LatestCheckpointHash = PendingCheckpointHash;
+	LatestStateHash = PendingStateHash;
+	LatestEventHash = PendingEventHash;
 	bPending = false;
 	return true;
 }
@@ -189,5 +195,6 @@ bool FEdgeWorldCausalHeadGate::CheckHistory(const FEdgeWorldCausalObservation& S
 {
 	return !LatestConfigHash.IsEmpty() && Sample.Tick <= LatestTick
 		&& Sample.GenesisConfigHash == LatestConfigHash
-		&& (Sample.Tick != LatestTick || Sample.CheckpointHash == LatestCheckpointHash);
+		&& (Sample.Tick != LatestTick || (Sample.CheckpointHash == LatestCheckpointHash
+			&& Sample.StateHash == LatestStateHash && Sample.EventHash == LatestEventHash));
 }

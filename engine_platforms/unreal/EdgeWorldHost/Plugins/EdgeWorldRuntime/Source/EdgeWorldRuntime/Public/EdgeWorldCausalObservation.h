@@ -40,13 +40,18 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldCausalHeadGate
 	int64 LatestRevision = 0;
 	FString LatestConfigHash;
 	FString LatestCheckpointHash;
+	FString LatestStateHash;
+	FString LatestEventHash;
 	bool bPending = false;
 	int64 PendingTick = 0;
 	int64 PendingRevision = 0;
 	FString PendingConfigHash;
 	FString PendingCheckpointHash;
+	FString PendingStateHash;
+	FString PendingEventHash;
 
-	void Stage(int64 Tick, int64 Revision, const FString& ConfigHash, const FString& CheckpointHash);
+	void Stage(int64 Tick, int64 Revision, const FString& ConfigHash, const FString& CheckpointHash,
+		const FString& StateHash, const FString& EventHash);
 	bool Accept(const FEdgeWorldCausalObservation& Sample);
 	bool CheckHistory(const FEdgeWorldCausalObservation& Sample) const;
 	bool CanAdvance() const { return !bPending; }
