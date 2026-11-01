@@ -158,5 +158,36 @@ bool EdgeWorldParseCausalObservation(const FEdgeWorldResponse& Response, const F
 	{ OutError = TEXT("current physics candidate mismatch"); return false; }
 	Out.Tick = Tick;
 	Out.Revision = Revision;
+	Out.GenesisConfigHash = GenesisHash;
+	Out.CheckpointHash = Checkpoint;
 	return true;
+}
+
+void FEdgeWorldCausalHeadGate::Stage(int64 Tick, int64 Revision, const FString& ConfigHash, const FString& CheckpointHash)
+{
+	bPending = true;
+	PendingTick = Tick;
+	PendingRevision = Revision;
+	PendingConfigHash = ConfigHash;
+	PendingCheckpointHash = CheckpointHash;
+}
+
+bool FEdgeWorldCausalHeadGate::Accept(const FEdgeWorldCausalObservation& Sample)
+{
+	if (!bPending || Sample.Tick != PendingTick || Sample.Revision != PendingRevision
+		|| Sample.GenesisConfigHash != PendingConfigHash || Sample.CheckpointHash != PendingCheckpointHash)
+		return false;
+	LatestTick = PendingTick;
+	LatestRevision = PendingRevision;
+	LatestConfigHash = PendingConfigHash;
+	LatestCheckpointHash = PendingCheckpointHash;
+	bPending = false;
+	return true;
+}
+
+bool FEdgeWorldCausalHeadGate::CheckHistory(const FEdgeWorldCausalObservation& Sample) const
+{
+	return !LatestConfigHash.IsEmpty() && Sample.Tick <= LatestTick
+		&& Sample.GenesisConfigHash == LatestConfigHash
+		&& (Sample.Tick != LatestTick || Sample.CheckpointHash == LatestCheckpointHash);
 }

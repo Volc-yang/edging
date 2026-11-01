@@ -27,8 +27,29 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldCausalObservation
 	int64 Revision = 0;
 	FString StateHash;
 	FString EventHash;
+	FString GenesisConfigHash;
+	FString CheckpointHash;
 	TArray<FEdgeWorldCausalNode> Nodes;
 	TArray<FEdgeWorldCausalEdge> Edges;
+};
+
+/** A worker head is staged until its same-revision Observe sample is validated. */
+struct EDGEWORLDRUNTIME_API FEdgeWorldCausalHeadGate
+{
+	int64 LatestTick = 0;
+	int64 LatestRevision = 0;
+	FString LatestConfigHash;
+	FString LatestCheckpointHash;
+	bool bPending = false;
+	int64 PendingTick = 0;
+	int64 PendingRevision = 0;
+	FString PendingConfigHash;
+	FString PendingCheckpointHash;
+
+	void Stage(int64 Tick, int64 Revision, const FString& ConfigHash, const FString& CheckpointHash);
+	bool Accept(const FEdgeWorldCausalObservation& Sample);
+	bool CheckHistory(const FEdgeWorldCausalObservation& Sample) const;
+	bool CanAdvance() const { return !bPending; }
 };
 
 /** Strict parser for the abstract-seed-genesis.v1 Observe result. */

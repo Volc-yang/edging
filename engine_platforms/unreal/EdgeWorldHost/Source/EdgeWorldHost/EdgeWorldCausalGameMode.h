@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EdgeWorldCausalObservation.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
 #include "EdgeWorldCausalGameMode.generated.h"
@@ -21,6 +22,7 @@ public:
 	virtual void StartPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void AdvanceOneTick();
+	void RefreshHead();
 	void ObserveHistory(int64 Tick);
 	void ObserveLatest();
 	void MoveCamera(const FVector& LocalOffset, const FRotator& RotationDelta);
@@ -33,8 +35,7 @@ private:
 	TSharedPtr<FEdgeWorldProcessTransport, ESPMode::ThreadSafe> Transport;
 	TSharedPtr<FEdgeWorldJsonlClient> Client;
 	FString WorldId = TEXT("stg-demo");
-	int64 LogicalTick = 0;
-	int64 Revision = 0;
+	FEdgeWorldCausalHeadGate HeadGate;
 	bool bRequestInFlight = false;
 };
 
@@ -50,6 +51,7 @@ private:
 	void History1();
 	void History2();
 	void Latest();
+	void Refresh();
 	void Forward();
 	void Backward();
 	void Left();
