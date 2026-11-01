@@ -126,6 +126,54 @@ def reap_owned(child, timeout, *, close_stdin):
     return outcome,primary
 
 
+
+def aggregate_bytes(output):
+    # Stat only for private keys. No key content is read, copied or hashed.
+    roots=[output]+[output.parent/(output.name+suffix) for suffix in ('-authority','-scratch','-owner','-keys')]
+    files=[output.parent/(output.name+suffix) for suffix in ('.stdout','.stderr','.inner.stdout','.inner.stderr')]
+    total=sum(p.stat().st_size for root in roots for p in root.rglob('*') if p.is_file() and not p.is_symlink())
+    return total+sum(p.stat().st_size for p in files if p.exists())
+
+
+def supervise_owned(child,output,*,soft_bytes,hard_bytes,seconds):
+    """Independent process monitor, including bootstrap and blocked pipe waits."""
+    start=time.monotonic();trigger=None;stop_at=None;peak=0;polls=0;max_poll=0.0;last=start
+    while child.poll() is None:
+        now=time.monotonic();max_poll=max(max_poll,now-last);last=now;polls+=1
+        size=aggregate_bytes(output);peak=max(peak,size)
+        if trigger is None and (size >= soft_bytes or now-start >= seconds):
+            trigger='soft-bytes' if size >= soft_bytes else 'runtime-seconds'
+            stop_at=now
+            # First ask the exact driver to execute its finally/reap path.
+            try:child.terminate()
+            except ProcessLookupError:pass
+        if size >= hard_bytes or (stop_at is not None and now-stop_at >= 10) or now-start >= 290:
+            trigger=trigger or 'hard-stop'
+            try:os.killpg(child.pid,signal.SIGKILL)
+            except ProcessLookupError:pass
+            break
+        time.sleep(0.05)
+    code=child.wait(timeout=5)
+    return dict(pid=child.pid,pgid=child.pid,exit_code=code,reaped=True,trigger=trigger,
+        peak_aggregate_bytes=peak,polls=polls,max_poll_interval_seconds=max_poll,elapsed_seconds=time.monotonic()-start)
+
+
+def supervised_runtime(output):
+    check(not output.exists(),'runtime original exists')
+    argv=[sys.executable,str(Path(__file__).resolve()),'runtime-inner','--output',str(output)]
+    with Path(str(output)+'.inner.stdout').open('xb') as stdout,Path(str(output)+'.inner.stderr').open('xb') as stderr:
+        child=subprocess.Popen(argv,cwd=REPO,stdout=stdout,stderr=stderr,start_new_session=True)
+        outcome=supervise_owned(child,output,soft_bytes=224<<20,hard_bytes=256<<20,seconds=240)
+    write(output/'supervisor.json',dict(outcome,argv=argv,soft_bytes=224<<20,hard_bytes=256<<20,outer_seconds=300))
+    # The owned driver has reaped normal children; retain a process-group check.
+    group=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
+    members=[line for line in group.stdout.splitlines() if len(line.split())>=3 and line.split()[1] == str(child.pid)]
+    write(output/'owned-group-after.json',dict(pgid=child.pid,members=members))
+    check(not members,'owned process group still active')
+    write(output/'supervised-index.json',mapping(output))
+    return 0 if outcome['exit_code'] == 0 and outcome['trigger'] is None else 1
+
+
 def cleanup_check(output):
     # Actual CPU child processes, no Genesis import/init, no keys or authority.
     argv=[sys.executable,'-c','import time;time.sleep(30)']
@@ -143,6 +191,12 @@ def cleanup_check(output):
     write(output/'stdin-close-check.json',dict(outcome,argv=argv,error_type=type(error).__name__))
     check(outcome['reaped'] and outcome['exit_code'] == 0 and isinstance(error,BrokenPipeError),'stdin close skipped reap')
     check('genesis' not in sys.modules,'cleanup check imported solver')
+    argv=[sys.executable,'-c',"import os,time\nwhile True: os.write(1,b'x'*16384);time.sleep(0.01)"]
+    with (output/'watchdog-child.stdout').open('xb') as stream:
+        child=subprocess.Popen(argv,stdout=stream,stderr=subprocess.DEVNULL,start_new_session=True)
+        outcome=supervise_owned(child,output,soft_bytes=128<<10,hard_bytes=512<<10,seconds=5)
+    write(output/'watchdog-check.json',dict(outcome,argv=argv))
+    check(outcome['reaped'] and outcome['trigger'] == 'soft-bytes' and outcome['peak_aggregate_bytes'] < 512<<10,'aggregate watchdog failed')
     write(output/'cleanup-check.json',dict(ok=True,solver_imported=False))
 
 
@@ -228,7 +282,7 @@ class Probe:
         self.stderr_file = (self.output/(label+'.stderr')).open('xb')
         self.stdout_file = (self.output/(label+'.stdout')).open('xb')
         self.child = subprocess.Popen(argv,cwd=REPO,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
-            stderr=self.stderr_file,start_new_session=True,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+            stderr=self.stderr_file,start_new_session=False,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
         self.owned.append(dict(child=self.child,label=label,reaped=False))
         row = dict(argv=argv,pid=self.child.pid,mode=mode,start_unix=time.time())
         self.children.append(row); write(self.output/(label+'-start.json'),row)
@@ -384,17 +438,18 @@ class Probe:
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('operation',choices=('preflight','cleanup-check','runtime'))
+    parser.add_argument('operation',choices=('preflight','cleanup-check','runtime','runtime-inner'))
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     check(args.output.is_absolute() and args.output.resolve() == args.output,'canonical output required')
+    if args.operation == 'runtime':return supervised_runtime(args.output)
     args.output.mkdir(mode=0o700,exist_ok=False)
     start=time.monotonic();probe=None;code=0
     def stop_requested(signum,frame):
         raise TimeoutError('owner watchdog signal '+str(signum))
     signal.signal(signal.SIGTERM,stop_requested)
     signal.signal(signal.SIGALRM,stop_requested)
-    signal.alarm(240 if args.operation == 'runtime' else 120)
+    signal.alarm(240 if args.operation == 'runtime-inner' else 120)
     write(args.output/'invocation.json',dict(argv=sys.argv,pid=os.getpid(),python=sys.version,executable=sys.executable,
         executable_sha256=sha(Path(sys.executable).resolve()),source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),
         cwd=str(REPO),operation=args.operation,start_unix=time.time(),
