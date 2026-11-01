@@ -17,4 +17,4 @@
 
 工作：完成；PR [#74](https://github.com/Volc-yang/edging/pull/74) merged；初稿 `b3d3740`，最终 `28122b7cbfdb14a16c2c3a75887445cae75b9c59`，merge `09ef8cb034cd4b5ef8339705647dc81ac386cd69`。owner、非作者审查和局部集成设计门 pass，新运行门 planned。恢复耐久性阻断经 D_recovery 修订关闭，实际检查及限制见[审查](design/universe-u4-integration-review.md)。最终 CI verify SUCCESS；确认干净和祖先后已移除本卡 worktree，分支/报告保留。
 
-U8 依赖满足、ready，尚未派发；U9 等待 U8。现有 V-HOME 有限访客结果与原默认退出可靠性、写实/性能等开放门不因本卡文档改变。
+U8 后续已交付接受，见[登记](universe_u8_execution_register.md)；当前 U9 ready、尚未派发。现有 V-HOME 有限访客结果与原默认退出可靠性、写实/性能等开放门不因本卡文档改变。

@@ -1,6 +1,6 @@
 # U8 规模与质量预算：执行登记
 
-状态：2026-11-01，v0.1，进行中；parent=U。依据[架构树](universe_architecture_design_plan.md)和[U4 接受记录](design/universe-u4-integration-review.md)，用户授权继续下一步设计，不是授权正式压力运行或批准产品阈值。
+状态：2026-11-01，v0.2，本卡设计交付完成，U 总轮继续；parent=U。依据[架构树](universe_architecture_design_plan.md)和[U4 接受记录](design/universe-u4-integration-review.md)，用户授权继续下一步设计，不是授权正式压力运行或批准产品阈值。
 
 ## 固定任务卡
 
@@ -15,4 +15,4 @@
 
 ## 当前状态与收尾
 
-工作进行中；PR 未建；owner/独立设计/局部集成门 planned；全部新运行门 planned；worktree 活跃保留。最终逐项记录 exact source、PR/merge、实际检查和限制；通过 CI/审查后按 expected head 合并，干净且 source 为集成祖先才清理任务 worktree，保留分支/报告，更新 backlog 并 commit/push。U9 仍等待 U8，U 总轮和 V-HOME 产品总门保持开放。
+工作完成；PR [#75](https://github.com/Volc-yang/edging/pull/75) merged；最终source `98890bafe73a1403a559f1a8ca6ef7270777ba26`，merge `06eb9eacdd7b87880df6cea9254935dcf91f7954`。两轮定向修订闭合历史/结构和阶段资源预算，见[独立审查](design/universe-u8-integration-review.md)。owner/非作者/局部集成设计门pass，最终 CI verify SUCCESS；所有新运行门planned。确认干净和source祖先后已移除worktree，分支/报告保留。U9 已ready、尚未派发，U 总轮和 V-HOME 产品总门保持开放。

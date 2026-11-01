@@ -2,9 +2,18 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## U 总计划设计（两批已交付，U 总轮继续）
+## U 总计划设计（U1–U8 已交付，待 U9）
 
-[架构树](universe_architecture_design_plan.md) v0.1 的 U1/U5 已从 `5a5fe11` 在独立 worktree 交付、经非作者设计复审与最终 CI 后集成：U1 source `a7fed69` / PR #67 / merge `da84aba`；U5 source `ec8bf6e` / PR #68 / merge `89254ab`。独立设计门 pass，新世界运行门 planned；准确检查、返工和跨卡身份边界见[审查](design/universe-u1-u5-integration-review.md)，任务/清理见[登记](universe_design_execution_register.md)。两卡干净 worktree 已清理、分支保留，主工作区用户改动未触碰。第二批从 `6f3c142` 交付并完成独立 PR/CI/局部集成审查：U2 `b78b3ab` / #70 / merge `88d3427`，U3 `9f2fe7e` / #72 / `fc1f80f`，U6 `95903b2` / #73 / `c4c5f7e`，U7 `38f8e02` / #71 / `622c2d9`。四卡设计门 pass，新运行门 planned；[第二批登记](universe_design_batch2_register.md)与[审查](design/universe-batch2-integration-review.md)保留具体输入/检查/限制，四个干净 worktree 已清理、分支保留。U4 从 `3b5044d` 完成设计，source `28122b7` / PR #74 / merge `09ef8cb`，最终 CI 与非作者设计/集成门通过；D_recovery 补齐“完整性不等于耐久确认”的恢复缺口。见[登记](universe_u4_execution_register.md)与[复核](design/universe-u4-integration-review.md)，干净 worktree 已清理、分支保留。**当前执行：U8 规模与质量预算设计**，已从 `fb93c29` 在独立 worktree 派发，并安排非作者只读审查；见[登记](universe_u8_execution_register.md)。U9 等待 U8。新锁/故障/耐久性运行门仍 planned。正式世界法则、灵域记录出现时刻、具体地理与产品阈值仍开放。
+[架构树](universe_architecture_design_plan.md) v0.1 的 U1–U8 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
+
+| 设计批次 | 已集成交付与准确上下文 |
+| --- | --- |
+| U1 身份/因果、U5 丰富初态 | PR #67/#68，merge `da84aba`/`89254ab`；[登记](universe_design_execution_register.md)、[复核](design/universe-u1-u5-integration-review.md) |
+| U2 物理、U3 AI权限、U6 进入重访、U7 UE投影 | PR #70/#72/#73/#71；[登记](universe_design_batch2_register.md)、[复核](design/universe-batch2-integration-review.md)保留source/merge/门 |
+| U4 事务/调度/恢复 | source `28122b7` / PR #74 / merge `09ef8cb`；[登记](universe_u4_execution_register.md)、[复核](design/universe-u4-integration-review.md)。D_recovery闭合完整性与耐久确认的区别 |
+| U8 规模/质量预算 | 基线 `fb93c29`，source `98890ba` / PR #75 / merge `06eb9ea`；[登记](universe_u8_execution_register.md)、[复核](design/universe-u8-integration-review.md)。H33/H23及只读H8/32/64、完整typed域/字节及时间/证据配额已做设计核算，所有新数值provisional |
+
+**下一 ready：U9 最终跨卡审查与实现任务树**（依赖 U4/U8），尚未派发；reviewer须未承担U1–U8交付。新锁/故障/耐久性、压力/性能/视觉门仍planned；世界规律、灵域出现时刻、载具权威性、具体地理、授权资产与目标阈值保持待决。U总轮尚未关闭，不将候选预算作为运行授权或已批准产品门。
 
 ## V-HOME 可访问世界纵切（进行中）
 
