@@ -168,7 +168,7 @@ def bound_head(binding, context):
     """Pure public binding, supplied by trusted owner/worker, never the response."""
     exact(context, {"world_id", "authority_root", "trust_algorithm", "trust_anchor",
                     "artifact_class", "expected_build", "expected_options"})
-    exact(binding, set(context) | {"head", "domain", "version", "profile"})
+    exact(binding, set(context) | {"head", "domain", "version", "profile", "storage_state"})
     require(binding["authority_root"] == context["authority_root"], "ROOT_MISMATCH")
     root = binding["authority_root"]
     require(type(root) is str and root.startswith("/") and not root.startswith("//")
@@ -176,7 +176,13 @@ def bound_head(binding, context):
             and str(PurePosixPath(root)) == root, "ROOT_MISMATCH")
     require(all(binding[k] == v for k, v in context.items()), "AUTHORIZATION")
     require(binding["domain"] == DOMAIN and binding["version"] == "0.2"
-            and binding["profile"] == "composite-rigid-support.v0.2", "PROFILE")
+            and binding["profile"] == "composite-rigid-support.v0.2"
+            and binding["storage_state"] in ("ready", "unconfirmed_readonly")
+            and binding["trust_algorithm"] == "local-hmac-sha256.v0.2"
+            and binding["artifact_class"] in CLASSES, "PROFILE")
+    ident(binding["world_id"])
+    for key in ("trust_anchor", "expected_build", "expected_options"):
+        hashref(binding[key])
     hashref(binding["head"])
     return binding["head"]
 
@@ -197,6 +203,7 @@ class FixtureVerifier:
         self.assert_context(context)
 
     def assert_context(self, context):
+        require(context["artifact_class"] == "synthetic-contract-only", "AUTHORIZATION")
         require(context["authority_root"] == self.root, "ROOT_MISMATCH")
         require(context["world_id"] == self.world and context["trust_anchor"] == self.anchor
                 and context["trust_algorithm"] == "local-hmac-sha256.v0.2", "AUTHORIZATION")
@@ -235,7 +242,7 @@ class Oracle:
         elif spec in {"delta", "steps", "blob_size"}:
             uint(value)
             require(value in (0, 1) if spec == "delta" else
-                    value <= 512 if spec == "steps" else 0 < value <= 8388608,
+                    value <= self.schema["physics_parameters"]["horizon_advances"] * 8 if spec == "steps" else 0 < value <= 8388608,
                     "BLOB_LIMIT" if spec == "blob_size" else "LIMIT")
         elif spec == "nullable_case":
             require(value in (None, "weak", "strong"), "SCHEMA")
@@ -467,6 +474,9 @@ class Oracle:
             branch = get("branch_route")["body"]["place_ids"]
             require(main == [get(x)["body"]["place_id"] for x in ("city", "plain", "forest", "river_marsh", "ocean")]
                     and branch == [get(x)["body"]["place_id"] for x in ("forest", "wildland")], "GEOGRAPHY")
+            require(all(bounds[0] <= p[0] <= bounds[2] and bounds[1] <= p[1] <= bounds[3]
+                        for name in ("main_route", "branch_route", "watercourse")
+                        for p in get(name)["body"]["polyline_cm"]), "GEOGRAPHY")
             decorations = get("projection")["body"]["decorations"]
             require(all(x["place_id"] in place_ids for x in decorations), "GEOGRAPHY")
         elif k == "state":
@@ -549,6 +559,7 @@ class Oracle:
         snapshot = get(state, "snapshot")
         if body["revision"] == 0:
             require(body["tick"] == 0 and sb["development_mm"] is None and sb["random_cursor"] == 0
+                    and sb["budget"] == 8
                     and snapshot["body"] == {"case_id": "initial", "physical_step_count": 0}, "HEAD")
             return
         prior = get(manifest, "prior_manifest"); previous = get(prior, "state")
@@ -605,8 +616,6 @@ class Oracle:
     def archive(self, archive, context, blobs):
         require(self.receipt_verifier is not None, "AUTHORIZATION")
         self.receipt_verifier.assert_context(context)
-        if context["artifact_class"] == "genesis-runtime":
-            runtime_key_allowed(self.receipt_verifier.key)
         exact(archive, {"domain", "version", "test_profile", "artifact_class", "records", "head"})
         require(archive["domain"] == DOMAIN and archive["version"] == "0.2", "DOMAIN")
         require(archive["test_profile"] == "composite-rigid-support.v0.2"
@@ -695,6 +704,7 @@ class Oracle:
                 "unreferenced_raw_bytes": sum(len(v) for k, v in blobs.items() if k not in binary_refs)}
 
     def proof(self, raw, context, *, expected_request_id, tick, revision, watermark, trusted_head):
+        trusted_storage_state = trusted_head["storage_state"] if type(trusted_head) is dict else None
         trusted_head = bound_head(trusted_head, context)
         env = wire(raw)
         exact(env, {"protocol_version", "request_id", "ok", "result"})
@@ -713,6 +723,7 @@ class Oracle:
                   "head", "membership", "records", "opaque_refs"})
         require(p["storage_state"] in ("ready", "unconfirmed_readonly")
                 and p["artifact_class"] == context["artifact_class"], "PROFILE")
+        require(p["storage_state"] == trusted_storage_state, "PROOF")
         require(type(p["watermark"]) is int and p["watermark"] == watermark, "WATERMARK")
         require(p["head"] == trusted_head, "PROOF")
         require(type(p["membership"]) is list and 1 <= len(p["membership"]) <= 64
@@ -736,6 +747,10 @@ class Oracle:
                     require(records[ref]["kind"] == expected_refs[name], "PROOF")
         counts = Counter(r["kind"] for r in all_records)
         require(all(counts[k] <= n for k, n in self.schema["proof_kind_max"].items()), "PROOF_LIMIT")
+        auxiliary = [digest(r) for r in p["records"]]
+        explicit = {digest(r) for r in p["membership"] + [p["manifest"], p["state"]]
+                    + ([p["event"]] if p["event"] is not None else [])}
+        require(len(auxiliary) == len(set(auxiliary)) and not set(auxiliary) & explicit, "PROOF")
         selected = digest(p["manifest"])
         membership = p["membership"]
         require(all(r["kind"] == "manifest" for r in membership)
@@ -793,7 +808,7 @@ class Oracle:
         return {"manifest": selected, "state": p["state"], "event": p["event"],
                 "storage_state": p["storage_state"], "artifact_class": p["artifact_class"],
                 "scope": "selected-slice-membership-only-not-full-history-or-raw-validation",
-                "bytes": len(canonical(env))}
+                "bytes": len(raw) - (1 if raw.endswith(b"\n") else 0)}
 
 
 def main():
