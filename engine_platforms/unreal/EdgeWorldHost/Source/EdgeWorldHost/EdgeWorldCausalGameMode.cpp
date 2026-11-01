@@ -2,6 +2,7 @@
 
 #include "EdgeWorldCausalActor.h"
 #include "EdgeWorldCausalHud.h"
+#include "EdgeWorldVisitorCharacter.h"
 #include "EdgeWorldCausalObservation.h"
 #include "EdgeWorldJsonlClient.h"
 
@@ -15,7 +16,7 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "EngineUtils.h"
-#include "GameFramework/SpectatorPawn.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SkyLightComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -117,7 +118,7 @@ namespace
 AEdgeWorldCausalGameMode::AEdgeWorldCausalGameMode()
 {
 	PlayerControllerClass = AEdgeWorldCausalPlayerController::StaticClass();
-	DefaultPawnClass = ASpectatorPawn::StaticClass();
+	DefaultPawnClass = nullptr;
 	HUDClass = AEdgeWorldCausalHud::StaticClass();
 }
 AEdgeWorldCausalGameMode::~AEdgeWorldCausalGameMode() = default;
@@ -142,10 +143,27 @@ void AEdgeWorldCausalGameMode::StartPlay()
 	if (Camera)
 	{
 		Camera->GetCameraComponent()->SetFieldOfView(55.0f);
-		if (APlayerController* Controller = World->GetFirstPlayerController()) Controller->SetViewTarget(Camera);
+	}
+	if (APlayerController* Controller = World->GetFirstPlayerController())
+	{
+		FActorSpawnParameters Spawn;
+		Spawn.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		AEdgeWorldVisitorCharacter* Visitor = World->SpawnActor<AEdgeWorldVisitorCharacter>(
+			AEdgeWorldVisitorCharacter::EntryLocation(), FRotator(0, 90, 0), Spawn);
+		if (Visitor && Visitor->ReturnToEntry())
+		{
+			Controller->Possess(Visitor);
+			Controller->SetControlRotation(FRotator(0, 90, 0));
+			Controller->SetViewTarget(Visitor);
+		}
+		else
+		{
+			if (Visitor) Visitor->Destroy();
+			UE_LOG(LogTemp, Error, TEXT("Visitor safe entry unavailable"));
+		}
 	}
 	StartWorker();
-	UE_LOG(LogTemp, Display, TEXT("Causal world: Space advances; 0/1/2 history; H latest; R reconciles head; WASD/QE and arrows move one step per keypress."));
+	UE_LOG(LogTemp, Display, TEXT("Causal world: Space advances; 0/1/2 history; H latest; R reconciles head; WASD walk; mouse/arrows look; Tab overview."));
 }
 
 void AEdgeWorldCausalGameMode::EndPlay(const EEndPlayReason::Type Reason)
@@ -285,9 +303,65 @@ void AEdgeWorldCausalGameMode::MoveCamera(const FVector& LocalOffset, const FRot
 	Camera->SetActorLocationAndRotation(Camera->GetActorLocation() + WorldOffset, NewRotation);
 }
 
+void AEdgeWorldCausalGameMode::ToggleVisitorView()
+{
+	APlayerController* Controller = GetWorld() ? GetWorld()->GetFirstPlayerController() : nullptr;
+	AEdgeWorldVisitorCharacter* Visitor = Controller ? Cast<AEdgeWorldVisitorCharacter>(Controller->GetPawn()) : nullptr;
+	if (!Visitor || !Camera) return;
+	bOverview = !bOverview;
+	Visitor->GetCharacterMovement()->StopMovementImmediately();
+	Visitor->ConsumeMovementInputVector();
+	Visitor->GetCharacterMovement()->SetMovementMode(bOverview ? MOVE_None : MOVE_Walking);
+	Controller->SetViewTarget(bOverview ? static_cast<AActor*>(Camera.Get()) : static_cast<AActor*>(Visitor));
+	UE_LOG(LogTemp, Display, TEXT("Visitor view=%s position=%s"), bOverview ? TEXT("overview") : TEXT("walking"), *Visitor->GetActorLocation().ToString());
+}
+
+AEdgeWorldCausalPlayerController::AEdgeWorldCausalPlayerController()
+{
+	bAutoManageActiveCameraTarget = false;
+}
+
+void AEdgeWorldCausalPlayerController::PlayerTick(float DeltaSeconds)
+{
+	Super::PlayerTick(DeltaSeconds);
+	AEdgeWorldCausalGameMode* GameMode = Mode();
+	AEdgeWorldVisitorCharacter* Visitor = Cast<AEdgeWorldVisitorCharacter>(GetPawn());
+	if (!GameMode || !Visitor || !IsLocalController()) return;
+	const float ForwardInput = static_cast<float>(IsInputKeyDown(EKeys::W)) - static_cast<float>(IsInputKeyDown(EKeys::S));
+	const float RightInput = static_cast<float>(IsInputKeyDown(EKeys::D)) - static_cast<float>(IsInputKeyDown(EKeys::A));
+	const float YawInput = static_cast<float>(IsInputKeyDown(EKeys::Right)) - static_cast<float>(IsInputKeyDown(EKeys::Left));
+	const float PitchInput = static_cast<float>(IsInputKeyDown(EKeys::Down)) - static_cast<float>(IsInputKeyDown(EKeys::Up));
+	float MouseX = 0, MouseY = 0;
+	GetInputMouseDelta(MouseX, MouseY);
+	if (GameMode->IsOverview())
+	{
+		const float VerticalInput = static_cast<float>(IsInputKeyDown(EKeys::E)) - static_cast<float>(IsInputKeyDown(EKeys::Q));
+		GameMode->MoveCamera(FVector(ForwardInput, RightInput, VerticalInput).GetClampedToMaxSize(1.0f) * 240.0f * DeltaSeconds,
+			FRotator(PitchInput * 60.0f * DeltaSeconds, YawInput * 60.0f * DeltaSeconds, 0));
+		return;
+	}
+	FRotator Look = GetControlRotation();
+	Look.Yaw += YawInput * 75.0f * DeltaSeconds + MouseX * 0.15f;
+	Look.Pitch = FMath::Clamp(FRotator::NormalizeAxis(Look.Pitch) - PitchInput * 60.0f * DeltaSeconds + MouseY * 0.15f, -75.0f, 75.0f);
+	Look.Roll = 0;
+	SetControlRotation(Look);
+	const FRotationMatrix Heading(FRotator(0, Look.Yaw, 0));
+	const FVector Input = FVector(ForwardInput, RightInput, 0).GetClampedToMaxSize(1.0f);
+	Visitor->AddMovementInput(Heading.GetUnitAxis(EAxis::X), Input.X);
+	Visitor->AddMovementInput(Heading.GetUnitAxis(EAxis::Y), Input.Y);
+}
+
 AEdgeWorldCausalGameMode* AEdgeWorldCausalPlayerController::Mode() const
 {
 	return GetWorld() ? Cast<AEdgeWorldCausalGameMode>(GetWorld()->GetAuthGameMode()) : nullptr;
+}
+void AEdgeWorldCausalPlayerController::VisitorStatus()
+{
+	const AEdgeWorldVisitorCharacter* Visitor = Cast<AEdgeWorldVisitorCharacter>(GetPawn());
+	if (!Visitor || !Mode()) return;
+	UE_LOG(LogTemp, Display, TEXT("Visitor status position=%s rotation=%s velocity=%s grounded=%d overview=%d"),
+		*Visitor->GetActorLocation().ToString(), *GetControlRotation().ToString(), *Visitor->GetVelocity().ToString(),
+		Visitor->GetCharacterMovement()->IsMovingOnGround(), Mode()->IsOverview());
 }
 void AEdgeWorldCausalPlayerController::Advance() { if (auto* M = Mode()) M->AdvanceOneTick(); }
 void AEdgeWorldCausalPlayerController::History0() { if (auto* M = Mode()) M->ObserveHistory(0); }
@@ -295,16 +369,7 @@ void AEdgeWorldCausalPlayerController::History1() { if (auto* M = Mode()) M->Obs
 void AEdgeWorldCausalPlayerController::History2() { if (auto* M = Mode()) M->ObserveHistory(2); }
 void AEdgeWorldCausalPlayerController::Latest() { if (auto* M = Mode()) M->ObserveLatest(); }
 void AEdgeWorldCausalPlayerController::Refresh() { if (auto* M = Mode()) M->RefreshHead(); }
-void AEdgeWorldCausalPlayerController::Forward() { if (auto* M = Mode()) M->MoveCamera(FVector(100,0,0), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::Backward() { if (auto* M = Mode()) M->MoveCamera(FVector(-100,0,0), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::Left() { if (auto* M = Mode()) M->MoveCamera(FVector(0,-100,0), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::Right() { if (auto* M = Mode()) M->MoveCamera(FVector(0,100,0), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::Up() { if (auto* M = Mode()) M->MoveCamera(FVector(0,0,100), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::Down() { if (auto* M = Mode()) M->MoveCamera(FVector(0,0,-100), FRotator::ZeroRotator); }
-void AEdgeWorldCausalPlayerController::TurnLeft() { if (auto* M = Mode()) M->MoveCamera(FVector::ZeroVector, FRotator(0,-10,0)); }
-void AEdgeWorldCausalPlayerController::TurnRight() { if (auto* M = Mode()) M->MoveCamera(FVector::ZeroVector, FRotator(0,10,0)); }
-void AEdgeWorldCausalPlayerController::LookUp() { if (auto* M = Mode()) M->MoveCamera(FVector::ZeroVector, FRotator(-10,0,0)); }
-void AEdgeWorldCausalPlayerController::LookDown() { if (auto* M = Mode()) M->MoveCamera(FVector::ZeroVector, FRotator(10,0,0)); }
+void AEdgeWorldCausalPlayerController::ToggleView() { if (auto* GameMode = Mode()) GameMode->ToggleVisitorView(); }
 void AEdgeWorldCausalPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -314,14 +379,5 @@ void AEdgeWorldCausalPlayerController::SetupInputComponent()
 	InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &AEdgeWorldCausalPlayerController::History2);
 	InputComponent->BindKey(EKeys::H, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Latest);
 	InputComponent->BindKey(EKeys::R, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Refresh);
-	InputComponent->BindKey(EKeys::W, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Forward);
-	InputComponent->BindKey(EKeys::S, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Backward);
-	InputComponent->BindKey(EKeys::A, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Left);
-	InputComponent->BindKey(EKeys::D, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Right);
-	InputComponent->BindKey(EKeys::Q, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Down);
-	InputComponent->BindKey(EKeys::E, IE_Pressed, this, &AEdgeWorldCausalPlayerController::Up);
-	InputComponent->BindKey(EKeys::Left, IE_Pressed, this, &AEdgeWorldCausalPlayerController::TurnLeft);
-	InputComponent->BindKey(EKeys::Right, IE_Pressed, this, &AEdgeWorldCausalPlayerController::TurnRight);
-	InputComponent->BindKey(EKeys::Up, IE_Pressed, this, &AEdgeWorldCausalPlayerController::LookUp);
-	InputComponent->BindKey(EKeys::Down, IE_Pressed, this, &AEdgeWorldCausalPlayerController::LookDown);
+	InputComponent->BindKey(EKeys::Tab, IE_Pressed, this, &AEdgeWorldCausalPlayerController::ToggleView);
 }
