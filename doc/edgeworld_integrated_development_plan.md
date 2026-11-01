@@ -30,7 +30,8 @@
 | Seed→Tree | Worker 重演/幂等/恢复及 UE Standalone Metal 成树画面有记录 | 生长规则批准、PIE 完整只读矩阵、产品级植被 |
 | CHAOS→ONE | 固定 seed7 初态、六类 BasicShapes 代理及路线可辨；相机/暂停/显隐/历史观察的已执行只读检查通过；见[第二轮登记](chaos_universe_pdca_02_register.md) | TWO、最终世界美术、跨平台和生产并发；FPS 设定回读不等于帧时间实测 |
 | 写实样区 | V1 视觉失败后 T1-VF 修复，V2 Metal 复测技术呈现通过，权威状态隔离通过；见[登记](chaos_realism_01_register.md) | 仍为程序代理；授权写实资产、视觉标准和 CPU/GPU trace 未通过 |
-| 开发框架 | F0/F1/F2 集成，G0 过程规划门接受；见[总计划](ai_4d_universe_pdca_master_plan.md)与[登记](ai_4d_universe_pdca_register.md) | G0 产品阈值、目标机器/规模/预算冻结；G1/GQ 及产品端到端门尚无通过证据 |
+| 开发框架 | F0/F1/F2 集成，G0 过程规划门接受；见[总计划](ai_4d_universe_pdca_master_plan.md)与[登记](ai_4d_universe_pdca_register.md) | G0 产品阈值、目标机器/规模/预算冻结；GQ 正式性能门及产品端到端门尚无通过证据；已有 GQ 有限信号试采 |
+| 可访问因果观测场景 | V-HOME H2/H3 场景与 HUD、H4 准确组合提交的 UE Metal tick 0/1/2、只读历史和重启有[有限证据](evidence/home-integration/report.md)；GQ 导出 600 帧 CPU/GPU 同窗信号 | H5 独立体验复核、间歇性 `SceneViewport` 退出断言、正式视觉/性能门；BasicShapes 场景不是写实世界 |
 
 历史失败不因后续修复而抹去；每次 Check 绑定构建、输入、配置、阈值版本和原始证据。PR 合并、子任务完成、父级集成通过和产品验收是不同状态。
 
