@@ -1,0 +1,37 @@
+{
+  "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-watchdog-check-attempt2",
+  "retained_indexes_and_logs": {
+    "invocation.json": {
+      "bytes": 908,
+      "sha256": "2cabeb0a01aaa8842026ce0cd86c6f7191fef78c60e5fc980aea0399edc166c8"
+    },
+    "outer-exit.json": {
+      "bytes": 424,
+      "sha256": "c2526e63a168ab03b9c9ad050ab48965e2318f08dc7cc408aadee5cb7729582a"
+    },
+    "exit.json": {
+      "bytes": 93,
+      "sha256": "157f5ff349daa0872683804f8a8c440fc1f0a7d3cc6ff1c5b9238f794ddc2855"
+    },
+    "raw-index.json": {
+      "bytes": 2873,
+      "sha256": "7640ffa9ebd835cce1a2ef264c6093fdbc3122c3ee0c9faad11fdcbcb91f02e3"
+    },
+    "cleanup-check.json": {
+      "bytes": 35,
+      "sha256": "9c519582da0b716ef4b76cc9b3728a634e951834a2932cc4c44a8330fb2e21aa"
+    },
+    "watchdog-check.json": {
+      "bytes": 357,
+      "sha256": "916e21fc544f8e8f6048c55f664fa12abe566c84ac47cf18ea8d2dfc12a590bf"
+    },
+    "pins-timeout-check.json": {
+      "bytes": 1138,
+      "sha256": "67a8535101af6e1e22b6ec1baa50207c8406efed2cba5b79f040b88ea9f00b05"
+    },
+    "stdin-close-check.json": {
+      "bytes": 866,
+      "sha256": "5d6403df8f199a5ced17c82afbeacecf0df0b0bf1f817d8711df6f2db45d4c8a"
+    }
+  }
+}

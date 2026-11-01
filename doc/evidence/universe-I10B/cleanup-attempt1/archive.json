@@ -1,0 +1,33 @@
+{
+  "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-cleanup-check-attempt1",
+  "retained_indexes_and_logs": {
+    "invocation.json": {
+      "bytes": 907,
+      "sha256": "acfab8b9993d4ecdab965ee51b4d558a1c7debf39e7e2f76290d56a596290ef1"
+    },
+    "outer-exit.json": {
+      "bytes": 423,
+      "sha256": "c3dc7a7b786356d1e03fd4294888f736f9d97921d1b47157fbd8c2143c80d138"
+    },
+    "exit.json": {
+      "bytes": 93,
+      "sha256": "3b49185fa82e385818c7edb3b566560ec347fd07a0472928d43f67d4fa5a07a0"
+    },
+    "raw-index.json": {
+      "bytes": 2645,
+      "sha256": "c385579fff345d2a5f55e32a779687bb1ebc67bc4d53ed3f7b4a92115ed3f44a"
+    },
+    "cleanup-check.json": {
+      "bytes": 35,
+      "sha256": "9c519582da0b716ef4b76cc9b3728a634e951834a2932cc4c44a8330fb2e21aa"
+    },
+    "pins-timeout-check.json": {
+      "bytes": 1139,
+      "sha256": "5d03d6b7229c141dce404f216afaf307853f1f3acf245401ed5cfcbc7d078527"
+    },
+    "stdin-close-check.json": {
+      "bytes": 866,
+      "sha256": "5118347430aaebdc0d257021b048bd0ab7f2fa0d2f7ff6cdcd34fa31fb3eea81"
+    }
+  }
+}

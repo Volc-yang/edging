@@ -1,0 +1,65 @@
+{
+  "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-runtime-attempt2-topological",
+  "retained_indexes_and_logs": {
+    "invocation.json": {
+      "bytes": 913,
+      "sha256": "e05b9eacb6000a615d7894b67ce24c5b23504022a8e1d614a43358285800d640"
+    },
+    "outer-exit.json": {
+      "bytes": 550,
+      "sha256": "de0c75acc2456effd330885baf1bb16e23ca0c16ca4ce2db00db32a1b9da473c"
+    },
+    "exit.json": {
+      "bytes": 93,
+      "sha256": "d614382d4d1762716ecc0c402f7e6eeadbaabbeed2c2597a0633ef1944b0563e"
+    },
+    "raw-index.json": {
+      "bytes": 45568,
+      "sha256": "2c2aaf1773d8b55cbaa3fdaee797a3d22770dc60202dd4248fb7ea0f814e06dd"
+    },
+    "complete-raw-index.json": {
+      "bytes": 140687,
+      "sha256": "dab3c337f56032182f470535acfd337b0d75cd3fabf6e915a11000828d592058"
+    },
+    "supervisor.json": {
+      "bytes": 716,
+      "sha256": "8426409fe04efa52c33a793a27767a74a0da9d2c671705986374e4359a1cb4f6"
+    },
+    "accepted.json": {
+      "bytes": 144,
+      "sha256": "70d8c9cd726b11b370bbe7f0714391d468ba94dfcc6968731d23efa86931ed75"
+    },
+    "owned-processes.json": {
+      "bytes": 180,
+      "sha256": "cb7e512684e3b016207d5332b67c455fcbd066278f2198072ab41922c5f45a8a"
+    },
+    "owned-group-after.json": {
+      "bytes": 75,
+      "sha256": "c147075b74d67885457e10dfa9b9867030d0624c099b7cc3871c701ea394ec39"
+    },
+    "pins-process.json": {
+      "bytes": 354,
+      "sha256": "1a970188830aec70300843e5e4ff4af45030758c272b370907511d7c28dd1df3"
+    },
+    "worker-1-start.json": {
+      "bytes": 307,
+      "sha256": "450216f0dd08992a90a830b0b946ed6ff284cf8fa57ef2b833f17c4c45c3bdf4"
+    },
+    "worker-1-exit.json": {
+      "bytes": 409,
+      "sha256": "36c16029bf68aed358ab2447adf20f974caeacdd90d5499e2e87bf70fdfa9b26"
+    },
+    "worker-2-start.json": {
+      "bytes": 304,
+      "sha256": "62a5f543ef43898be3bf6bb85d8feb53c9fe2a7e1b93abd75f0f157322183b0d"
+    },
+    "worker-2-exit.json": {
+      "bytes": 405,
+      "sha256": "a63ec19f5824194fb1bc884b49a8b6ee7be9453a8e753a6cb74338355a77d4e5"
+    },
+    "bootstrap-runtime-destroy.json": {
+      "bytes": 23,
+      "sha256": "a5245c4de9ca582aa90a0b5f493ea3d1af9c7de6d0f8d8d9474673dea896b28c"
+    }
+  }
+}

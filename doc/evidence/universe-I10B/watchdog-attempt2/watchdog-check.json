@@ -1,0 +1,1 @@
+{"argv":["/Users/yangacan/edgeWorld/edge-world/.venv-genesis/bin/python3.12","-c","import os,time\nwhile True: os.write(1,b'x'*16384);time.sleep(0.01)"],"elapsed_seconds":0.12089083390310407,"exit_code":-15,"max_poll_interval_seconds":0.06041279202327132,"peak_aggregate_bytes":426484,"pgid":32256,"pid":32256,"polls":2,"reaped":true,"trigger":"soft-bytes"}
