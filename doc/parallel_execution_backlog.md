@@ -2,33 +2,28 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## V-HOME 可访问世界纵切（有限技术链路通过；访客体验与可靠性开放）
+## V-HOME 可访问世界纵切（进行中）
 
-用户最新优先级：先解决 UE 打开/运行报错，H6B/H6C 暂停。启动链拆分为模块/工具链、真实 UE 进程身份、运行时视口退出三层：Mac 的 Win64/Linux SDK 提示不是阻塞证据；各 worktree 需先构建自己的 UE 模块。预构建[启动入口](ue_mac_launch.md) PR #58/集成 `507b9c2`，初次真实 `--launch` 暴露外层 launcher PID 提前退出却遗留实际 App 的误报；[PID 修复与真实启动报告](evidence/ue-mac-launch-app-pid/report.md) PR #60/集成 `81bcd79` 已改为直接运行 App 内二进制，准确 PID、引擎初始化、GameMode、有效 tick0、⌘Q exit0 和无残留进程均经一次实测。两个启动任务 worktree 已清理。启动入口改善了 Missing Modules/误报体验，不解决视口断言。
+用户优先级：先处理 UE 打开/运行报错，H6B/H6C 暂停。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-H1d [完整 Genesis 临时模式报告](evidence/g3-live-safe-render/report.md) PR #61/集成 `3a38109`，CI 通过：启动脚本新增显式 `--no-render-thread`，默认模式不变。两次独立 UE/Worker 会话在同一隔离 UserDir 中完成 tick 0/1/2、12 项逐项历史/相机只读检查、重启恢复、窗口关闭；UE 与启动器退出码均为 0，120/120 份原始证据哈希复算匹配，无遗留进程。这只支持有限临时使用，未测性能，默认线程视口断言仍 `fail/open`，光照未构建警告另行处理。用户未保存此前弹窗截图；今后每次运行按[Mac 启动入口](ue_mac_launch.md)记录构建结果、真实 App PID、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码，不推断未留证的弹窗内容。H1d 干净任务 worktree 已移除，分支与 DevSSD 原始证据保留。H1e [默认线程归因卡](evidence/g3-live-safe-render/default-thread-next-card.md)已由统筹审定为诊断实施卡，派发给现有“edgeWorld · 退出可靠性诊断”子对话，从 `006a302` 新建独立 worktree/PR，检查发布版项目扩展点中视口释放前的渲染同步；该候选尚未验证。H6B/H6C 继续暂停。
+**下一动作与资源：**H-LIGHT-01 独占构建/GPU，在 `.worktrees/home-runtime-lighting` / `codex/home-runtime-lighting`、基线 `e577ac2` 做真实前后对照。baseline2 已实测未构建对象 16、DirectionalLight 为 Stationary，原生交互列表指向全部 16 个环境组件；仍需 Movable 修复后的实际零计数、画面、只读与恢复。baseline1 因过早 UI 绑定产生额外 Editor 已排除并归档。H1g [显式启动器接线卡](evidence/viewport-preflush-launch-plan.md) 已从 `c820933` 发布给可见退出可靠性子对话：先准备脚本/定向测试，真实启动验证等待光照任务交接，禁止 GPU 并发。
 
-H1e [默认线程同步候选](evidence/g3-viewport-preflush/report.md) PR #62 / `b89c5f3` 已通过 CI 与[独立代码审查](evidence/g3-viewport-preflush/independent-review.md)，作为默认关闭的诊断实现集成。A 退出 1/0，B 退出 0/0，其中 B1 有 reporter 干扰；四次恢复退出 0，40 项只读检查通过，396/396 原始证据哈希复算匹配。默认线程可靠性继续 `fail/open`。H1f [干净复测卡](evidence/g3-viewport-preflush-followup-plan.md)已审定：先补重复 Init 幂等注册/解绑，再用新 binary 完成 reporter-free A/B/A/B 和两个 B 边界样本；只允许有限显式旁路裁决，不默认启用。
-
-H1f 已在 `.worktrees/g3-preflush-followup` / `codex/g3-preflush-followup` 从 `12f7fb7` 实施，GPU 独占。H1e 干净且已集成的任务 worktree 已移除，原始证据保留。[H-LIGHT-01](evidence/home-runtime-lighting-plan.md) 只读调查指出动态 DirectionalLight 默认 Stationary 与 16 个 runtime Static 组件相关；统筹接受最小 Movable 候选，独立准备，构建/Metal 采证须等待 H1f 释放 GPU，不能用静态归因直接宣称修复。统筹 `12f7fb7` 经 HTTPS 推送成功；SSH443 连接超时，LFS 无待上传对象。
-
-H1f [最终报告](evidence/g3-preflush-followup/report.md) PR #63 / `e6c9d96` 已通过 CI 与[独立审查](evidence/g3-preflush-followup/independent-review.md)：修正后两项测试成功，六个真实 UE 退出全 0、19 组只读快照一致、同目录恢复通过、369/369 原始证据哈希匹配。接受为有限显式项目旁路，默认关闭；A 也全正常，本轮不支持失败率改善或根治结论。首次错误夹具 ensure 与 B3 工具限制完整保留；干净已集成任务 worktree 已清理。H1g [标准启动器显式接线卡](evidence/viewport-preflush-launch-plan.md) 已放行代码准备，真实验证等待 H-LIGHT-01 释放 GPU。H-LIGHT-01 正从 `e577ac2` 的独立工作树实施前后对照；baseline1 因过早 UI 绑定产生额外 Editor 已排除并归档，baseline2 在清空进程后继续，不能将工具引起的第二实例计作 UE 失败。
-
-用户随后提供 Crash Reporter 截图，确认为 `SceneViewport.cpp:196 IsInGameThread()`。现场进程核对发现三个残留 reporter 对应 H1c A1/A2/B2 的 UE PID 18962/22076/22535，日志关窗断言为本地 11:58/12:07/12:11；当时无 UE/Worker 在运行，不能据此称 H1d 新失败。残留 reporter 已关闭，原始 crash 目录保留且未向 Epic 发送。后续测试需核对并清理本次 reporter，避免残留窗口混淆运行状态。
-
-[H1c 相机目标差分](evidence/g3-viewtarget-differential/report.md) PR #59/集成 `c22e126`：A（保留 SetViewTarget）2/2 次断言；B（跳过）1 次正常、1 次同样断言，因此该调用不是必要条件。`-norenderthread` 单次无 worker/无因果 Actor 的限时运行正常退出，当时仅作为 H1d 的前置探针。92/92 原始证据哈希复算匹配，诊断开关已撤回、worktree 已清理。可靠性门继续 `fail/open`，UE 引擎源码未修改。
-
-用户授权按[总计划](edgeworld_integrated_development_plan.md)自主推进：让人可进入、观察抽象 Seed→Tree 因果演化并重访持久状态；Genesis 是必需路径，seed/tree 非植物。[PDCA 方案树](visitable_world_iteration_plan.md)的本轮集成分支为 `codex/plan-consolidation`，各任务从固定提交建独立 worktree。主工作区未提交改动未触碰。
-
-| 节点 | 已审查交付与准确集成 | 状态 / 证据门 |
+| 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
-| HQ | [600 帧 Metal CPU/GPU 试采](evidence/gq-metal-sample/c3-report.md)，PR #49，集成 `db20383` | GPUTime 598 个正值，p95 5.3435 ms；仅信号导出，正式性能门 `inconclusive` |
-| H1/H1a | [原序列复现](evidence/g3-shutdown-isolation/report.md) PR #50/`a421f78`；[无 worker 与普通 GameMode 对照](evidence/g3-viewport-differential/report.md) PR #53/`78fb890` | `SceneViewport.cpp:196` 断言重复出现；无 worker 仍可出现，普通 GameMode 一次正常退出。可靠性 `fail/open`，具体归因未知 |
-| H2/H3 | [因果观测场景](evidence/home-causal-scene/report.md) PR #51/`785b3ea`；[访客 HUD](evidence/home-visitor-hud/report.md) PR #52/`cb10df7` | UE Editor build、Metal 独立检查和定向 NullRHI 通过；场景仍是 UE BasicShapes 技术代理 |
-| H4 | [准确组合运行](evidence/home-integration/report.md) PR #54/`58362f4` | tick 0/1/2、Genesis 物理探针、HUD/场景、历史/相机只读、重启恢复通过有限检查；两次 ⌘Q 退出 0，不消除间歇性失败 |
-| H5 | [非实现 owner 独立复核](evidence/home-independent-review/report.md) PR #55/`0c77e3d` | 原始索引 19/19 哈希匹配；技术证据复核部分完成。真人访客体验、原始 UE 传输 JSONL 和正式视觉门仍开放 |
+| 启动入口 | [预构建入口](ue_mac_launch.md) PR #58 / `507b9c2`；[真实 App PID 修复](evidence/ue-mac-launch-app-pid/report.md) PR #60 / `81bcd79` | 先构建所属 worktree 模块，直接监测 App 内二进制；初始化、有效 tick0、退出 0 已实测。Mac 上其他平台 SDK 提示不等于启动失败 |
+| H1/H1a/H1b | [复现](evidence/g3-shutdown-isolation/report.md) #50 / `a421f78`；[无 worker 对照](evidence/g3-viewport-differential/report.md) #53 / `78fb890`；[组件差分](evidence/g3-component-differential/report.md) #57 / `6fbfd43` | `SceneViewport.cpp:196 IsInGameThread()` 为视口销毁断言，worker、因果 Actor/环境均非必要触发条件 |
+| H1c | [相机目标差分](evidence/g3-viewtarget-differential/report.md) #59 / `c22e126` | 跳过 SetViewTarget 仍断言；92/92 原始哈希匹配。旧测试残留 reporter 已清理，用户截图不作为 H1d 新失败 |
+| H1d | [无渲染线程临时路径](evidence/g3-live-safe-render/report.md) #61 / `3a38109` | 显式 `--no-render-thread`；两次完整 Genesis 会话/退出及恢复通过，12 项只读、120/120 原始哈希匹配；性能未测，默认模式不变 |
+| H1e | [同步候选](evidence/g3-viewport-preflush/report.md) #62 / `b89c5f3`；[独立审查](evidence/g3-viewport-preflush/independent-review.md) | 默认关闭，A 退出 1/0、B 0/0；B1 reporter 干扰保留；40 项只读、396/396 原始哈希匹配。仅有限诊断实现 |
+| H1f | [幂等修复与干净复测](evidence/g3-preflush-followup/report.md) #63 / `e6c9d96`；[独立审查](evidence/g3-preflush-followup/independent-review.md) | 修正后自动化 2/2；A/B/A/B 和两 B 边界样本退出均 0，19 组只读、同目录恢复、369/369 哈希通过。首次夹具 ensure 与 B3 工具限制保留；接受有限显式项目旁路，默认关闭。A 也全正常，不推断失败率改善或根治 |
+| HQ | [600 帧试采](evidence/gq-metal-sample/c3-report.md) #49 / `db20383` | GPUTime 598 个正值，p95 5.3435 ms，仅信号导出；旧计时不适用于临时执行模式，正式性能门 inconclusive |
+| H2/H3 | [场景](evidence/home-causal-scene/report.md) #51 / `785b3ea`；[HUD](evidence/home-visitor-hud/report.md) #52 / `cb10df7` | 构建、Metal 独立检查及定向 NullRHI 通过，仍为 BasicShapes 技术代理 |
+| H4/H5 | [组合运行](evidence/home-integration/report.md) #54 / `58362f4`；[独立复核](evidence/home-independent-review/report.md) #55 / `0c77e3d` | tick 0/1/2、Genesis 探针、HUD、只读、恢复有限通过；真人体验、UE 原始传输 JSONL 和正式视觉门未过 |
+| H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合未验 |
 
-以上 PR 均通过 CI，任务 worktree 在确认干净、提交已集成后移除。H1b [组件差分报告](evidence/g3-component-differential/report.md) PR #57/集成 `6fbfd43`、CI 通过：四次启动均完成并运行超过 180 秒；跳过因果 Actor 仍有一次同样断言，故 Actor/环境不是必要条件；可靠性门继续 `fail/open`。H6A [场景碰撞](evidence/home-walkable-environment/report.md) PR #56/集成 `f848c84`、CI 与 NullRHI 通过：地面支撑胶囊体、墙/栏杆阻挡，因果代理无碰撞。两个任务 worktree 均确认干净、提交已集成后移除。用户要求先解决 UE 报错，H6B/H6C 暂停；可见“退出可靠性诊断”子对话从 `6fbfd43` 接手下一轮 GameMode 组件差分与可归因修复。GPU 测试串行。用户可见的后续子对话已创建：退出可靠性 `01a1952c-5012-76b2-9506-93ade84370b0`、可步行访客路径 `01a1952c-73e3-7e13-89c1-8986048ea657`；两者先只读准备，等 H1b/H6A 集成后再各建独立 worktree 实施，避免重复 GPU/共享文件写入。**V-HOME 未接受**：退出可靠性、真正可步行的访客路径、G0 写实参考与性能阈值、H5 真人体验仍未通过。下一轮入口是收齐 H1b/H6A 报告，审查集成后发布 H6B；UE5 发布版插件/适配优先，不修改引擎源码。
+以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。活跃任务为 H-LIGHT-01、H1g，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 保持暂停。
+
+**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。H1g 真实启动器接线、光照修复、步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
