@@ -88,7 +88,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseTransportTest,"edgeWorld.UniverseHost.
 bool FUniverseTransportTest::RunTest(const FString& Parameters)
 {
  const FString Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_TEST_PYTHON"));if(!TestTrue(TEXT("explicit test Python"),!Python.IsEmpty()&&FPaths::FileExists(Python)))return false;
- FString Root=FPaths::Combine(FPaths::ProjectSavedDir(),TEXT("UniverseTransportSynthetic"),FGuid::NewGuid().ToString(EGuidFormats::Digits));FString Package=Root/TEXT("engine/universe_authority");IFileManager::Get().MakeDirectory(*Package,true);
+ FString Root=FPaths::ConvertRelativePathToFull(FPaths::Combine(FPaths::ProjectSavedDir(),TEXT("UniverseTransportSynthetic"),FGuid::NewGuid().ToString(EGuidFormats::Digits)));FString Package=Root/TEXT("engine/universe_authority");IFileManager::Get().MakeDirectory(*Package,true);
  FFileHelper::SaveStringToFile(TEXT(""),*(Root/TEXT("engine/__init__.py")));FFileHelper::SaveStringToFile(TEXT(""),*(Package/TEXT("__init__.py")));
  FString Script=TEXT("import sys,pathlib\nassert sys.argv[1]=='--owner-config' and len(sys.argv)==3\nmode=pathlib.Path(sys.argv[2]).read_text()\nfor line in sys.stdin.buffer:\n sys.stderr.buffer.write(b'synthetic stderr\\x00\\xff\\n');sys.stderr.buffer.flush()\n if mode=='crlf':sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\r\\n')\n elif mode=='utf8':sys.stdout.buffer.write(b'\\xc0\\n')\n elif mode=='limit':sys.stdout.buffer.write(b'x'*1048578)\n else:sys.stdout.buffer.write(b'{\\\"synthetic\\\":true}\\n')\n sys.stdout.buffer.flush()\n");
  FString Worker=Package/TEXT("worker.py");FFileHelper::SaveStringToFile(Script,*Worker,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
