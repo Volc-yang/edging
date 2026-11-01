@@ -1,0 +1,54 @@
+{
+  "exclusions": [
+    "index files",
+    "__pycache__",
+    "generated user files except EdgeWorldCausal authority/checkpoints"
+  ],
+  "file_count": 179,
+  "index_sha256": "8bab7ef0933e2e99e64fff1bc416ee21a48e370d01bb4d670659f728e5b74163",
+  "indexed_bytes": 26059156,
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H1g-20261101/raw",
+  "samples": {
+    "primary": {
+      "artifacts": {
+        "launcher-artifacts/build.log": "f5fce9ab567fa76c9c9f3abc239a6e1e293eeddfe8995e2c8e388dd5dbf47c99",
+        "launcher-artifacts/status.log": "ceccb159e12a203d05770febe0c48308f2b312fa953223e2c68908238718c81d",
+        "launcher-artifacts/ue.log": "220d48bda42b2c4cedf2d096dc145d81a396df0d1789bc389009167a4e48130e",
+        "launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "postclose-attempt1.json": "897e52a52e07a810d397b13da255c416ee2b33d8db96ed0f097a2cdcfbc131b8",
+        "tick0-attempt1/decoded/image.jpg": "857bb64e897539a1d377ac0f33db81f9258922d38a33e70a076fa9ff2744b0ca"
+      },
+      "authority_files": {
+        "abstract_world.json": "556bc0ded7f3a1e858e7e032e657a8ba8eea096fb8a930c58ef46ca91ffebe9d",
+        "checkpoints/4669ff18846ac38d33b2e426806ca21f921dee2488e7d5a826e8d76d5509cf5d.gstraj": "4669ff18846ac38d33b2e426806ca21f921dee2488e7d5a826e8d76d5509cf5d",
+        "checkpoints/d02ae8bb7951fc908771160aac4c043a9392275b507d981360cb4018a8b09ca1.gstraj": "d02ae8bb7951fc908771160aac4c043a9392275b507d981360cb4018a8b09ca1",
+        "checkpoints/f65b2ac9cd78faa9179760a028eb99e37caf96003c1b6f1de30d8335da42f56e.gstraj": "f65b2ac9cd78faa9179760a028eb99e37caf96003c1b6f1de30d8335da42f56e"
+      },
+      "launcher_exit": 0,
+      "ue_exit": 0,
+      "ue_pid": 47683,
+      "worker_pid": 47866
+    },
+    "recovery": {
+      "artifacts": {
+        "launcher-artifacts/build.log": "a09bc3a48318a7aaaf274bc2da552d1c1224f5539d792ddf35d3192fefda898c",
+        "launcher-artifacts/status.log": "89947bf1b74e5d02a3447ab212c079fc7db882ba63b653e274b4c387a01061f7",
+        "launcher-artifacts/ue.log": "0d0743974ad53a51c4476bfa7dfc55c9d80c73a7dfa5b6fae7f4eb2c91f00c75",
+        "launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "postclose-attempt1.json": "3dd226cd83d472ffbed7caf0a00972711de257b4d0b33afaee4b293c99b954bd",
+        "restored-tick2-attempt1/decoded/image.jpg": "3b2f819243b441d599ba1eae51d1ba38cbd538e9f9d05c4578b6234bc20abcb3"
+      },
+      "authority_files": {
+        "abstract_world.json": "556bc0ded7f3a1e858e7e032e657a8ba8eea096fb8a930c58ef46ca91ffebe9d",
+        "checkpoints/4669ff18846ac38d33b2e426806ca21f921dee2488e7d5a826e8d76d5509cf5d.gstraj": "4669ff18846ac38d33b2e426806ca21f921dee2488e7d5a826e8d76d5509cf5d",
+        "checkpoints/d02ae8bb7951fc908771160aac4c043a9392275b507d981360cb4018a8b09ca1.gstraj": "d02ae8bb7951fc908771160aac4c043a9392275b507d981360cb4018a8b09ca1",
+        "checkpoints/f65b2ac9cd78faa9179760a028eb99e37caf96003c1b6f1de30d8335da42f56e.gstraj": "f65b2ac9cd78faa9179760a028eb99e37caf96003c1b6f1de30d8335da42f56e"
+      },
+      "launcher_exit": 0,
+      "ue_exit": 0,
+      "ue_pid": 48265,
+      "worker_pid": 48400
+    }
+  },
+  "summary_sha256": "01cc1a18bafbbcf7175b44e5d258725089ad9155deae40147da954db915f0642"
+}
