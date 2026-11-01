@@ -102,3 +102,13 @@ I10只读规划三项裁决接受：
 - 真实B/O由外部正式bootstrap先审定，普通worker启动/status不得调用gs.init/measure_runtime_options；I0A实际资产body须重绑真实world并重算引用，I10纯组合单root。
 
 I11由u7只读规划新Host/显式launcher，I10由u9只读规划；均尚未开始实现/运行，保持实际依赖门。
+
+## 当前并行执行检查点
+
+[执行依赖细化](design/universe-runtime-execution-refinement.md) @761a967：I10A/I11A固定接口CPU构造并行；I10B/I11B真实门仍等G-P1/I10B，I12独立组合后置。I10A base761a967 / `.worktrees/i10-universe-worker` / `codex/i10-universe-worker`；I11A同base / `.worktrees/i11-universe-host` / `codex/i11-universe-host`。二者已正式获CPU卡及独占文件，无真实Genesis或UE运行许可；I11的构建窗口另授。
+
+I8修复source399bcd0，新build9243757d/adapter972f94首次真实options采集Oa91c16dc（4323B，GPU3.773s，23raw经root核对）。owner-freeze1仅真实外部key/publiccontext，authority路径未创建；随后物理attempt1在首Scene build后BUILD拒绝，0step、exit1/GPU4.642s，destroy/reap成功，23raw SHA5299d78b920a0a751e0f7b60449cd25ff8991d2f589774b4d986b6836b152cf2。
+
+唯一0step诊断exit0/GPU4.217s，22raw index ac05d7a233f7b8e347bd5f860b08a03de74310ee4d283805fd875c6fd78f715c；root逐项核对actual/expected/source：material sdf_max_res128→32，rigid contact_resolution null→0、contact_patch null→false、impratio null→1、max_contacts请求cap32→实际candidate5、tolerance null→约1e-6。源码链完整，不由猜测判根因。G-P1未通过，无step/checkpoint/两臂证据。
+
+root批准最小修复：bootstrap通过同参数public Scene.build零步后导完整5组actual+support material；_measure先实测B并全量重测当前owned scene O，无scene则零步identity scene导出/destroy；每次load/build后仍strict全量比较。config输入32及原goldens不改，不手抄派生默认，不跳字段。adapter变化需新B/O/context，旧原件仅历史失效输入。当前仅授代码/stdlib定向+新audit，GPU需新卡。R8已用A3.773s、B首4.642+诊断4.217=8.859s，失败均计600s/1GiB总账，不重置。

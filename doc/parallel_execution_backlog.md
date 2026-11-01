@@ -2,32 +2,30 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（E4/E5/I9接受；E6与I0A验收）
+## 当前入口：I 实现轮执行中（I8真实物理；I10A/I11A并行构造）
 
-[架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
+总目标仍为持久AI 4D数字宇宙；Seed→Tree是抽象初态的因果发展。用户已批准I0–I12树并要求分配实现。集成branch `codex/plan-consolidation` / `.worktrees/plan-consolidation`，本地主工作区用户改动不碰。Goal旧“继续执行计划”blocked且API无resume，未冒称active。
 
-| 设计批次 | 已集成交付与准确上下文 |
+| 已接受里程碑 | 准确结果入口 |
 | --- | --- |
-| U1 身份/因果、U5 丰富初态 | PR #67/#68，merge `da84aba`/`89254ab`；[登记](universe_design_execution_register.md)、[复核](design/universe-u1-u5-integration-review.md) |
-| U2 物理、U3 AI权限、U6 进入重访、U7 UE投影 | PR #70/#72/#73/#71；[登记](universe_design_batch2_register.md)、[复核](design/universe-batch2-integration-review.md)保留source/merge/门 |
-| U4 事务/调度/恢复 | source `28122b7` / PR #74 / merge `09ef8cb`；[登记](universe_u4_execution_register.md)、[复核](design/universe-u4-integration-review.md)。D_recovery闭合完整性与耐久确认的区别 |
-| U8 规模/质量预算 | 基线 `fb93c29`，source `98890ba` / PR #75 / merge `06eb9ea`；[登记](universe_u8_execution_register.md)、[复核](design/universe-u8-integration-review.md)。H33/H23及只读H8/32/64、完整typed域/字节及时间/证据配额已做设计核算，所有新数值provisional |
+| U1–U9设计树 | [U9复核/原I0–I12树](design/universe-integration-review.md)、[U登记](universe_u9_execution_register.md)，仅设计接受 |
+| I0–I7中性内核/静态物理及I0E契约 | PR77–85，G-C0.2格式/API及G-S1有限进程门pass；[I登记](universe_implementation_register.md)、[I0E/I6复核](design/universe-i0e-i6-coordination-review.md) |
+| E1–E5 v0.2 blob/trust/commands/recovery | PR87–91，含finalCI/独立review/raw；[E1/E2](design/universe-e1-e2-coordination-review.md)、[E3](design/universe-e3-coordination-review.md)、[E4/E5](design/universe-e4-e5-i9-coordination-review.md) |
+| I9 UE严格parser | PR86 / final0a905cf / mergee47065a，真实Build/StrictV02 NullRHI exit0，仅解析门；失败保留，[复核](design/universe-e4-e5-i9-coordination-review.md) |
+| E6独立blob/trust进程门 | PR92 / final0ebd7b3 / mergeba7568c；89child/8真kill全部回收、finalCI全suite与root原件审查，G-S1.2有限pass；[报告](evidence/universe-E6/report.md) |
+| I0A实际资产图 | PR93 / final572d4a4 / mergecb39e0d；9content/4native/352341B/0gap、root111raw+9actual files/DAG核验；仅editor-source，不是cook/许可/写实，[报告](evidence/universe-I0A/report.md) |
+| E7 fixed support mass修订 | PR94 / finalbe951dc / merge52dd964；17CPU+oracle+UE实际StrictV02及finalCI通过；首测试TArray自别名失败保留，[记录](e7_support_mass_amendment.md) |
 
-U9已由未参与U1–U8交付的新reviewer完成：基线 `4bb7452`，source `72450e3` / PR #76 / merge `047b89f`；[执行登记](universe_u9_execution_register.md)、[统筹收尾](design/universe-u9-coordination-review.md)。[新实现树](design/universe-integration-review.md)13张叶卡/42路径独占，任务与契约/资源/结果门并集25节点54边无环，最终CI通过，干净worktree已清理、分支保留。
+上述已接受任务的干净worktree均已核对后非force清理，分支/失败/DevSSD目标/原件保留。PR只合入集成branch，不表示已同步脏的本地主工作区或通过全部产品门。
 
-**当前执行：I0已接受并合入，I1/I2/I7并行实施。**I0 source `2aabfcb` / PR #77 / merge `a9506eb`；独立ASCII编码器复算24条golden字节/摘要及3个历史根，owner最终27个拒绝向量通过，最终head CI通过；[统筹审查](design/universe-i0-coordination-review.md)。G-C/G-S0仅契约门pass，G-S1/真实Genesis/UE新域仍planned。I0干净worktree已清理，分支和DevSSD原件保留。
+**当前方案与owner：**[执行依赖细化](design/universe-runtime-execution-refinement.md)已由root接受，允许固定接口的CPU构造并行，真实门不变。
 
-I1 PR #78/source `ae4fd16`/merge `efba6fa`、I2 PR #79/source `232e0a7`/merge `d2b7d29`已接受；父级集成39tests通过、输入hash不变。I2首轮漏磁盘归档已披露，唯一attempt2补证24tests通过，非首轮原件。I7 PR #80/source `e005c2c`/merge `fe2176a`静态门G-P0通过；真实物理未运行。三卡干净worktree已清理，分支/证据保留，[复核](design/universe-i2-i7-coordination-review.md)。
+- I8（u2，`.worktrees/i8-universe-genesis`）：真实build与初版5组options采集成功，但首Scene构建后的完整options比较失败、0step停止。唯一零步诊断证实6字段由库在build中解析（含max_contacts请求32→实际5）；全部原件保留。正最小修正bootstrap为public零步Scene.build后完整导出，保持config字节与严格全字段比较，旧B/O/context失效不得重用；新source/audit后再授GPU。G-P1尚未通过。
+- I10A（u9，`.worktrees/i10-universe-worker`）：CPU实现单root worker/六区初态/owner-config/public-pins，独占4组路径；B-C≤120s/raw64MiB，synthetic测试，不启动Genesis。I10B真实路径等I8/G-P1与新B/O。
+- I11A（u7，`.worktrees/i11-universe-host`）：新Host/严格raw transport/control parser/launcher与mock检查，独占13源码路径+I11证据；CPU≤120s/raw16MiB，UE构建窗口待root资源卡。legacy默认不改。I11B真实入口等I10B。
+- I12：非相关实现owner，等G-P1/I10B/I11B与R-12，执行真实UE↔worker↔Genesis、逐动作只读map、历史/重启/原图/实际退出。未派发，未通过。
 
-I3已由PR #81/source `9a27207`/merge `69daec3`接受，22tests/CI、root静态review与375/375原始字节摘要一致，[复核](design/universe-i3-coordination-review.md)；干净worktree已清理。I5 PR #82/source `49f7b7a`/merge `09ed3bb`接受，16tests/CI与488/488原始字节摘要一致，[复核](design/universe-i5-coordination-review.md)，干净worktree已清理；I4 PR #83/source `5fcd8d3`/merge `607e550`接受，首loader失败保留、唯一attempt2共78tests通过，[复核](design/universe-i4-coordination-review.md)；干净worktree清理。I6 PR #85/source `d8636d6`/merge `3e02376`已接受：本地20cases/85child/12真SIGKILL全回收，首harness失败保留，final CI与root旧output拒绝check通过，G-S1有限pass。I0E PR #84/source `f13a73d`/merge `9ad01c3`独立67golden/6MAC/4root/5proof复算及最终CI通过，G-C0.2格式/API门接受；[复核与后继树](design/universe-i0e-i6-coordination-review.md)。干净worktree已清理、原件/分支保留。
-
-E1 PR #87/source `4a69788`/merge `3d6c161`（116tests、i6 review、finalCI、root958raw）与E2 PR #88/source `c3b02ad`/merge `accbe3b`（首alias测试错误保留、唯一12case重跑pass、finalCI/root review）已接受，干净worktree已清理；[复核](design/universe-e1-e2-coordination-review.md)。
-
-E3 PR #89/source `2f76b75`/merge `1f95fac`接受，[复核](design/universe-e3-coordination-review.md)。E4 PR #91/source `1fcae8b`/merge `a4c86b3`、E5 PR #90/source `0db45fe`/merge `33c4fcb`、I9 PR #86/source `0a905cf`/merge `e47065a`均经审查、真实局部Check与最终CI接受，干净worktree清理；[复核](design/universe-e4-e5-i9-coordination-review.md)保留失败及限制。
-
-E6 PR92/final `0ebd7b3`/merge `ba7568c`接受，首失败和唯一segmented复测保留，89child/8真kill全回收；最终CI全suite及root原件审查通过，G-S1.2有限pass。I0A PR93/final `572d4a4`/merge `cb39e0d`接受9资产/4native/352341B的editor-source完整图，非cook/许可/质量门。详细报告及清理见[I登记](universe_implementation_register.md)。
-
-I8静态源码核对发现fixed support真实mass=0与校验mass>0冲突，最小E7语义修订先行（dynamic仍>0，旧synthetic黄金值不改）；I8尚未启动GPU。之后继续真实Genesis I8→单root worker I10→Host I11→独立组合I12。完整实现树未完成；S_records不是U8 S_typed，G-Q/实际defaults/产品门开放，Goal工具限制不变。
+owner-config/public-pins接口与typed36的明确分类、原件/资源总账见[I登记](universe_implementation_register.md)。S_records30、S_typed36、H≤64及资产A独立计量；旧U8初态≤32和G-Q不称通过。没有新域真实组合或写实产品门通过结论。默认网站/DNS与api.edging.cloud路由不变。
 
 ## V-HOME 可访问世界纵切（进行中）
 
