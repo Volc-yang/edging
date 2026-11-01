@@ -1,6 +1,7 @@
 #include "EdgeWorldUniverseObservation.h"
-#include "GenericPlatform/GenericPlatformMisc.h"
-#include "Misc/SecureHash.h"
+#if PLATFORM_MAC
+#include <CommonCrypto/CommonDigest.h>
+#endif
 
 namespace EdgeUniverse
 {
@@ -121,9 +122,17 @@ static FString Sha(const FString& Text,bool Record=false)
 {
  FTCHARToUTF8 Utf8(*Text);TArray<uint8> B;
  if(Record){static const ANSICHAR Prefix[]="edgeworld.universe.authority\0v0.2\0";B.Append(reinterpret_cast<const uint8*>(Prefix),sizeof(Prefix)-1);}
- B.Append(reinterpret_cast<const uint8*>(Utf8.Get()),Utf8.Length());FSHA256Signature Sig;
- if(!FPlatformMisc::GetSHA256Signature(B.GetData(),B.Num(),Sig))return {};
- return BytesToHex(Sig.Signature,32).ToLower();
+ B.Append(reinterpret_cast<const uint8*>(Utf8.Get()),Utf8.Length());
+#if PLATFORM_MAC
+ // UE5.8 Mac inherits a GenericPlatformMisc SHA256 stub that asserts. Use the
+ // installed Apple system API; unsupported platforms fail closed without calling that stub.
+ if(uint64(B.Num())>uint64(TNumericLimits<CC_LONG>::Max()))return {};
+ uint8 Hash[CC_SHA256_DIGEST_LENGTH];
+ if(CC_SHA256(B.GetData(),static_cast<CC_LONG>(B.Num()),Hash)==nullptr)return {};
+ return BytesToHex(Hash,CC_SHA256_DIGEST_LENGTH).ToLower();
+#else
+ return {};
+#endif
 }
 static bool F64(const V& X,double& D,uint64* Bits=nullptr)
 {
