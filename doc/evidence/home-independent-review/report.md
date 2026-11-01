@@ -1,0 +1,19 @@
+# H5 independent evidence review of V-HOME
+
+Date: 2026-11-01. Reviewer did not implement H2/H3/H4 or launch UE. Reviewed exact integration commit `58362f4` and the local H4 raw bundle `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/HOME-H4/raw/`; this bundle is not portable. The `sha256-index.json` SHA256 is `4f235b06e414595632b01ca46ef50899d3b9cb95e69bfb4fced5f329f9a9967f`. A fresh script check found all **19/19** indexed files present with matching byte lengths and SHA256 values. This checks evidence integrity, not the truth of every claimed UI action.
+
+## Check
+
+| Gate | Independent finding |
+| --- | --- |
+| Scene entry and legibility | `tick0.png`, `tick1.png`, `tick2.png`, `history0.png`, `camera-w.png` and `restart-tick2.png` were visually inspected. The released UE Metal window displays a dark finite observatory, a readable HUD, one/two/three colored causal nodes, and zero/one/two connecting edges at the respective ticks. The unrelated white Pawn sphere is absent. This is a technical diorama seen through a camera, not embodied entry into a realistic world. |
+| Genesis and explicit advancement | H4 manifest records `causal-1` at tick/revision 1/1 with `influence_mm=-7`, and `causal-2` at 2/2 with `-48`; their physical candidate hashes and causal edge IDs are present. UE log lines 1460, 1463 and 1464 record observation 0→1→2. Screenshots and manifest agree. The raw UE transport JSONL was not captured, so request/response identity is not independently reconstructed from wire bytes. |
+| History and camera pure reads | `history0.png` visibly says head 2, viewing 0, read only, with one node; `camera-w.png` visibly changes framing. `head2-before-readonly.json`, `head2-after-readonly.json` and `head2-after-restart.json` are byte identical, SHA256 `068c76b503362960ef9de55c2e883396fc35f029b5ac4940099684a256f868e9`; all say `stg-demo`, tick/revision 2/2, head `193c4948…28192`, event head `d28b52a6…ec0b`. This supports the sampled read-only set, not untested pause/visibility/frame-cap actions. |
+| Restart and normal exit | `restart-tick2.png` visibly restores the three-node graph/HUD; `restart-ue.log` records observed tick 2. Both `first-exit` and `restart-exit` contain `0`; both logs contain `LogExit: Exiting`. These two normal ⌘Q exits do not remove the separately reproduced `SceneViewport.cpp:196` failure. |
+| Performance and product quality | GQ C3 has one boot capture with nonempty CPU/GPU timing columns, but no approved workload, warmup, repeat count or G0 threshold. The scene uses UE BasicShapes and fixed three-tick geometry. It is not evidence of a realistic, freely explorable digital universe or of vehicle landing. |
+
+## Act and invitation decision
+
+**H5 technical evidence review: partial. V-HOME acceptance: open.** The finite observatory can be demonstrated as an engineering preview: a visitor can see the causal chain, advance by Space, switch history and move a camera, and the state can be reopened. No independent human visitor session has been conducted. The present viewport is a fixed overhead diorama with stepwise camera controls, so it does not yet deliver the broader “land, play and revisit” experience in the total plan.
+
+Do not present this as the finished home invitation while the intermittent UE viewport assertion remains an observed reliability failure. Next bounded work: (1) isolate the causal GameMode actor/camera/controller setup against the clean minimal GameMode and fix only an attributable release-plugin path; repeat the original and passive exit checks; (2) capture live UE transport identity and the missing read-only actions; (3) plan an embodied visitor path and a visual reference/asset standard under G0 before claiming a world that people can enter. Keep this H4 run as positive finite evidence and preserve all failing runs separately.
