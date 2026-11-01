@@ -4,7 +4,7 @@
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
-G3 [真实集成证据](evidence/stg-g3/integration-report.md)提交 `5c2190b`，PR #48/集成 `cd0283a`，CI 通过。原始证据保存在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-lxKhO5/`，索引 SHA256 为 `e6e912a3…0333b2a`。真实 Metal UE↔worker↔Genesis 的 tick 0/1/2、两相物理差异、重复命令幂等、历史/相机只读及重启恢复通过有限探针。点击窗口关闭按钮曾触发 `SceneViewport.cpp:196` 断言，第二次通过 ⌘Q 正常退出；**G3 部分完成，V-STG 总门未通过**。UE/Worker 已退出。下一步独立复现并定位关窗退出路径，再补 UE 原始传输身份记录、缺失的只读动作矩阵与 GQ CPU/GPU 采样。G0 产品规律、写实视觉及性能阈值继续开放。
+G3 [真实集成证据](evidence/stg-g3/integration-report.md)提交 `5c2190b`，PR #48/集成 `cd0283a`，CI 通过；任务 worktree 确认干净且提交已包含于集成分支后移除。原始证据保存在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-lxKhO5/`，索引 SHA256 为 `e6e912a3…0333b2a`。真实 Metal UE↔worker↔Genesis 的 tick 0/1/2、两相物理差异、重复命令幂等、历史/相机只读及重启恢复通过有限探针。点击窗口关闭按钮曾触发 `SceneViewport.cpp:196` 断言，第二次通过 ⌘Q 正常退出；**G3 部分完成，V-STG 总门未通过**。UE/Worker 已退出。下一步独立复现并定位关窗退出路径，再补 UE 原始传输身份记录、缺失的只读动作矩阵与 GQ CPU/GPU 采样。G0 产品规律、写实视觉及性能阈值继续开放。
 
 G2-AUTHORITY 新组合权威 worker 提交 `562b902`、恢复校验修复 `5603808`，PR #45/集成 `40bd7e8`；9 项定向测试和真实 Genesis Metal 两相探针通过。UE 按绝对脚本路径启动的导入问题另由 `495ccf7` 修复，PR #47/集成 `b70faa7`，10 项测试通过。G2-UE 抽象因果图、严格解析与键盘输入提交 `5ec7472`，审查修复 `2660fa9`、`0cfddd7`、`6a98b14`，PR #46/集成 `87732d3`；UE 5.8.3 Editor build、NullRHI 严格身份测试和 CI 通过。两任务均经非 owner 代码复审，干净 worktree 已移除。G3 已在其上完成有限运行验证，状态见本节。
 
