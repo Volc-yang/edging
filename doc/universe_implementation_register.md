@@ -144,3 +144,12 @@ I12 RUNNER code-only卡仍执行：精确root资源卡/产品source/显式execut
 I11B clean tree已root非force移除，branch/DevSSD/raw保留；cleanup11原件hash、42配置间接依赖检查、source祖先与clean通过，indexe73d86be7c7af0c2cadab97f0568347092a05776d6f13bdc1cf9e98dc596bec2。I12 runner独立u9预审要求两处局部返工：owner实际typedmetadata须与卡内四输入/world/root/mode交叉核对；日志IO错误不能阻断finally中的owned进程回收。旧检查/失败保留，实际R12仍未派卡。
 
 I12A-RUNNER sourcea1170a4首8mock全pass（0.124s/raw1256B）；u9四项review后sourceb5a5851完成owner交叉、finally cleanup、liveENOENT与completion最终封存记账，唯一targeted5newcases全pass（0.120s/raw866B）。root源码复核和u9准确source复审接受工具准备，等待evidence-only final/PR99新head CI后集成；旧c14d4cd的CI不代表新source。初步receipt固定normal=false，existing只接受封存后completion。没有实际R12/G-B2通过。
+
+## 当前可靠入口：I11B与I12A均已结算，I12B实际门等待解锁
+
+- I11B PR100 final1d9f42f / merge36d88ec，有限G-B1接受；root与u9源码/raw/maps/proof/lifecycle独立review，finalCI成功。详见[复核](design/universe-i11b-coordination-review.md)。任务tree已非force移除，branch/DevSSD/raw保留。
+- I12A PR99 finalb3902be36bf1d66db83ed0f2e2961725bfd4b580 / merge971ed03ea8f3de5db50ac386500325e14e4622ea。工具sourceb5a5851，后两commit仅证据；finalCI run41346566146/job124967537022 success。root复核35文件/215624B，indexfd1715289753f5633fa3f39e3ed9c0ff0c7adf2c87f9e792afcebf9dcfcfc1a3；u9准确source四fix复核通过。首8mock和唯一5case targeted通过，不冒称全suite重跑或实机通过。[报告](evidence/universe-I12/runner-report.md)、[资源卡接口](evidence/universe-I12/runner-contract.md)。
+- I12A仅工具准备complete；clean/source祖先与42持久配置无间接引用确认后，root非force移除 `.worktrees/i12-universe-acceptance`，branch及全部证据已在集成tree保留。没有该工具的实际运行、UE/Genesis/新authority/keys或临时输出链接。
+- fresh CUA listApps仍明确Mac locked，既有解锁问题pending；不尝试绕过或反复启动UE。I0–I12总树仍进行中，G-B2未通过，旧blocked goal未伪造恢复/完成。主工作区用户改动未触碰，远端feature合并不在本checkpoint内。
+
+**下一轮第一步：**确认手动解锁；从准确已接受集成树获取新I12B实际验收worktree，载入本登记和runner contract。固定工具source与产品source（现产品集成971ed03，后续统筹文档提交不改产品字节），创建全新单authority/context/key和DevSSD持久四输入/两mode owner，真实来源预检后由root发具体R12卡，输出映射逐项allowlist。再按已接受P1做两个真实UE会话：显式初始化/retain/弱物理/幂等/历史写拒绝、各只读动作独立map、真实StartPlay/相机变换/Metal原图、正常退出与同root重访；root独立审查才裁决G-B2。候选总预算20min/2GiB尚未实际消耗，不把工具模拟与上游I10B离线数据算新实机证据。
