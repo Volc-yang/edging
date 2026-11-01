@@ -2,9 +2,19 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## V-HOME 可访问世界纵切（规划及测量进行中）
+## V-HOME 可访问世界纵切（有限技术链路通过；访客体验与可靠性开放）
 
-用户授权按总计划自主推进，目标是让访客可进入、移动、观察抽象 Seed→Tree 因果演化并重访持久状态；不把抽象 seed/tree 解释成植物。[PDCA 方案树](visitable_world_iteration_plan.md)以集成提交 `f5532e6` 为输入。H1 退出路径复现由 `g3-shutdown-isolation` worktree/分支 `codex/g3-shutdown-isolation` 执行；HQ [Metal 试采](evidence/gq-metal-sample/c3-report.md)提交 `8403669`，PR #49/集成 `db20383`、CI 通过；600 帧同窗 CSV 中 GPUTime 598 个正值，p95 5.3435 ms，GameThreadTime p95 0.9020 ms；仅证实信号导出，G0 阈值和正式负载未冻结，性能门 inconclusive。HQ worktree 确认干净后移除。H1 [退出隔离复现](evidence/g3-shutdown-isolation/report.md)提交 `7941e2b`，PR #50/集成 `a421f78`、CI 通过，worktree 干净并移除；原序列 tick 0→1→2、历史 0/1/2、W、H/R 后，在计划点击关闭前同样断言并以 1 退出。只读前后 manifest SHA 相同；崩溃后的孤儿 worker 已停止。H2/H3 只读方案复核完成，文件所有权已划分；H2 场景 PR #51/集成 `785b3ea`、CI 与 UE Editor build 通过，Metal tick 0/1/2 和相机/历史只读有有限证据；干净 worktree 已移除，H3 已从 `db20383` 派往 `home-visitor-hud` worktree/`codex/home-visitor-hud` 分支实现。统筹保留接口裁决和集成；正式视觉/性能门与 4D 世界规律仍待 G0 冻结。HQ 在 600 帧 CSV 捕获后约 61 秒出现与 G3 相同的 `SceneViewport.cpp:196` 断言，报告称关闭按钮尚未点击，原先“仅关窗触发”的归因需撤回；HQ 原始证据与局限见报告；两次点击前断言证明关窗按钮不是必要触发条件，窗口销毁原因和责任仍未知，退出门 fail/open。H1a 最小差分诊断已派往 `g3-viewport-differential` worktree/分支 `codex/g3-viewport-differential`，比较禁用 worker 与最小 viewport；GPU 串行。H3 访客 HUD PR #52/集成 `cb10df7`，CI、UE Editor build、NullRHI 严格身份和独立 Metal 操作检查通过；干净 worktree 已移除。H1a [最小差分报告](evidence/g3-viewport-differential/report.md)提交 `b8bd427`，PR #53/集成 `78fb890`，CI 通过，干净 worktree 已移除。无 worker 的因果 GameMode 仍出现断言（关闭点击是否送达未明）；普通 GameMode 超过 180 秒后正常关闭，缩小范围但未归因。H4 [组合报告](evidence/home-integration/report.md)提交 `78668fe`，PR #54/集成 `58362f4`，CI 通过，干净 worktree 已移除；准确组合 `cb10df7` 的 Metal tick 0/1/2、HUD、历史/相机只读和同状态目录重启通过有限检查，两次 ⌘Q 正常退出。H5 独立证据复核已从 `58362f4` 派往 `home-independent-review` worktree/`codex/home-independent-review` 分支，尚未交付。下一步审查 H5，随后做因果 GameMode 组件差分诊断；V-HOME 因退出可靠性与 G0 产品门开放而不能接受。
+用户授权按[总计划](edgeworld_integrated_development_plan.md)自主推进：让人可进入、观察抽象 Seed→Tree 因果演化并重访持久状态；Genesis 是必需路径，seed/tree 非植物。[PDCA 方案树](visitable_world_iteration_plan.md)的本轮集成分支为 `codex/plan-consolidation`，各任务从固定提交建独立 worktree。主工作区未提交改动未触碰。
+
+| 节点 | 已审查交付与准确集成 | 状态 / 证据门 |
+| --- | --- | --- |
+| HQ | [600 帧 Metal CPU/GPU 试采](evidence/gq-metal-sample/c3-report.md)，PR #49，集成 `db20383` | GPUTime 598 个正值，p95 5.3435 ms；仅信号导出，正式性能门 `inconclusive` |
+| H1/H1a | [原序列复现](evidence/g3-shutdown-isolation/report.md) PR #50/`a421f78`；[无 worker 与普通 GameMode 对照](evidence/g3-viewport-differential/report.md) PR #53/`78fb890` | `SceneViewport.cpp:196` 断言重复出现；无 worker 仍可出现，普通 GameMode 一次正常退出。可靠性 `fail/open`，具体归因未知 |
+| H2/H3 | [因果观测场景](evidence/home-causal-scene/report.md) PR #51/`785b3ea`；[访客 HUD](evidence/home-visitor-hud/report.md) PR #52/`cb10df7` | UE Editor build、Metal 独立检查和定向 NullRHI 通过；场景仍是 UE BasicShapes 技术代理 |
+| H4 | [准确组合运行](evidence/home-integration/report.md) PR #54/`58362f4` | tick 0/1/2、Genesis 物理探针、HUD/场景、历史/相机只读、重启恢复通过有限检查；两次 ⌘Q 退出 0，不消除间歇性失败 |
+| H5 | [非实现 owner 独立复核](evidence/home-independent-review/report.md) PR #55/`0c77e3d` | 原始索引 19/19 哈希匹配；技术证据复核部分完成。真人访客体验、原始 UE 传输 JSONL 和正式视觉门仍开放 |
+
+以上 PR 均通过 CI，任务 worktree 在确认干净、提交已集成后移除。当前 H1b 组件差分诊断在 `.worktrees/g3-component-differential` / `codex/g3-component-differential` 进行；H6A 场景碰撞在 `.worktrees/home-walkable-environment` / `codex/home-walkable-environment` 并行进行，H6B 访客角色依赖两者收束，H6C 再做独立 Metal 访问/重访。GPU 测试串行。**V-HOME 未接受**：退出可靠性、真正可步行的访客路径、G0 写实参考与性能阈值、H5 真人体验仍未通过。下一轮入口是收齐 H1b/H6A 报告，审查集成后发布 H6B；UE5 发布版插件/适配优先，不修改引擎源码。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
