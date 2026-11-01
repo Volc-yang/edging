@@ -33,8 +33,8 @@
 | E3 Store扩展 | u2；`.worktrees/e3-universe-blob-store` / `codex/e3-universe-blob-store` / `accbe3b` | complete / PR #89 source `2f76b75`，merge `1f95fac` / 142tests、u7review、root raw12/12、CI pass / 干净worktree已清理 |
 | E4 command/prepare/provider扩展 | u7；原`.worktrees/e4-universe-commands` / `codex/e4-universe-commands` / `1f95fac` | complete / PR #91 source `1fcae8b`，merge `a4c86b3` / 164tests、finalCI、独立review/root2321raw pass / 干净worktree已清理 |
 | E5 recovery/proof builder扩展 | u2；原`.worktrees/e5-universe-recovery` / `codex/e5-universe-recovery` / `1f95fac` | complete / PR #90 source `0db45fe`，merge `33c4fcb` / 155tests、finalCI、独立review/root13raw pass / 干净worktree已清理 |
-| E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | complete / PR #92 final `0ebd7b3`，merge `ba7568c` / 首15组+唯一segmented定向pass、89child/8kill全部回收，finalCI全suite成功、root原件/源码审查 / G-S1.2有限pass；干净worktree待清理 |
-| I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | complete / PR #93 final `572d4a4`，merge `cb39e0d` / Build/NullRHI exit0、9content/4native/0gap、root111raw+9actual文件及DAG核对、finalCI pass；生成物归档清理中 |
+| E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | complete / PR #92 final `0ebd7b3`，merge `ba7568c` / 首15组+唯一segmented定向pass、89child/8kill全部回收，finalCI全suite成功、root原件/源码审查 / G-S1.2有限pass；干净worktree已清理 |
+| I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | complete / PR #93 final `572d4a4`，merge `cb39e0d` / Build/NullRHI exit0、9content/4native/0gap、root111raw+9actual文件及DAG核对、finalCI pass；6生成物核验归档后干净worktree已清理 |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
 
@@ -68,11 +68,21 @@ I3补充纯内存nonblocking操作锁与按Lease身份的活跃Store登记：同
 
 E4/E5/I9已接受，准确source/merge、原始索引、最终CI及限制见[统筹复核](design/universe-e4-e5-i9-coordination-review.md)。当前集成代码HEAD `a4c86b382df01876a811af771df86af8a2fdb899`，不是主工作区或最终产品验收。
 
-E6已独立接受，PR92 merge `ba7568c7742bbc989703f9449f96e06a89548e05`。首source057fcc2的15组通过，唯一失败为harness错误要求原子替换HEAD后inode相同；target source0db8769仅segmented通过，保留首失败；两轮89child/8真kill全部回收，原件17,003,816B。finalhead0ebd7b3 CI全suite成功（run41334290240/job124930716919），root完整review及两runner-index1860/178原件哈希核对通过。G-S1.2仅synthetic/localPOSIX进程/blob/trust门pass，不证明断电/Genesis/UE/敌对同UID隔离。见[E6报告](evidence/universe-E6/report.md)。干净已合并worktree待清理，分支/原件保留。
+E6已独立接受，PR92 merge `ba7568c7742bbc989703f9449f96e06a89548e05`。首source057fcc2的15组通过，唯一失败为harness错误要求原子替换HEAD后inode相同；target source0db8769仅segmented通过，保留首失败；两轮89child/8真kill全部回收，原件17,003,816B。finalhead0ebd7b3 CI全suite成功（run41334290240/job124930716919），root完整review及两runner-index1860/178原件哈希核对通过。G-S1.2仅synthetic/localPOSIX进程/blob/trust门pass，不证明断电/Genesis/UE/敌对同UID隔离。见[E6报告](evidence/universe-E6/report.md)。干净已合并worktree已非force清理，分支/原件保留。
 
 I0A PR93 merge `cb39e0df0138b6195b32e4e0f3ef5dced5d25cf8`接受安装版editor source-content资产图：9content/4native/352341B/0gap；root独立核对111raw及9实际UE文件、完整roots/Package edges/DAG/canonical；final572d4a4 CI run41334309759/job124930765837成功。见[I0A报告](evidence/universe-I0A/report.md)。只代表editor-source图，不是cook/许可/写实门；清理owner正在归档6生成物，DevSSD目标/branch/raw保留。
 
 I8静态准备发现固定Box真实inertial mass默认0，而Python/oracle/UE要求所有mass>0。root与u2独立源码核实，局部重开E7技术语义：仅冻结fixed body-support允许实际非负值，dynamic仍>0；旧positive synthetic3200与golden/hash不改且不当真实读回。E7方案审查后实施/独立check，I8实际运行等其接受。批准未来I8预算内0step非对称pose/set_quat校准及初checkpoint恢复；p≤1e-6m、q±分量≤2e-6、norm²≤1e-6、零速度≤1e-6；dynamic解析质量rtol1e-6/atol1e-7kg为实验技术阈值，fixed runtime预期+0bits。未导入/运行Genesis。
+
+### 当前正式派卡与清理交接
+
+E7 owner u7，base `13899a2`，`.worktrees/e7-universe-support-mass` / `codex/e7-universe-support-mass`；已审定8路径（两契约、records、独立oracle、UE parser及测试、Python新mass测试、修订报告），仅fixed support mass≥0、dynamic>0，允许support±0且保留bits，原golden不改。CPU≤120s/raw16MiB、一次定向；额外R-B授权5min/raw128MiB的-NoUBA/紧凑NullRHI StrictV02及最多一次有理由定向。未将计划运行判通过。
+
+I8 owner u2，base `13899a2`，`.worktrees/i8-universe-genesis` / `codex/i8-universe-genesis`；独占genesis_adapter.py、probe脚本、I8证据目录。已授编写/stdlib静态≤120s/raw64MiB，尚未授Genesis import/init/GPU；等E7接受后合并准确输入及正式GPU卡。已审bootstrap/frame/mass方案及真实身份冻结流程不得用fixtures替代。
+
+I10 owner u9当前仅只读规划；无worktree/运行/实现，不猜I8未交接口。I11/I12后置。
+
+I0A清理仅5个provenance一致链接和untracked DefaultInput.ini（SHA e1b7a60e4da1acca28b8540ed7b2746551df9ae1ddc0056eb45a0932ed82ea78），DevSSD链接目标保留。新cleanup raw-index SHA61b79d89e08088597344974b7aba0796d96c4e54971beffef0e238a423d5afb0，root核对13文件。路径 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I0A-20261102-cleanup-attempt1/`。source为集成祖先且worktree干净后非force移除，branch/raw保留。
 
 后续完整树仍是I8真实Genesis→I10单root worker→I11显式Host→I12非作者真实组合验收，不能停在内核里程碑。
 
