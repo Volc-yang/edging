@@ -1,0 +1,37 @@
+{
+  "card": "I12B-PREP",
+  "public_rebind": {
+    "build": {
+      "normalized_origin_equal": true,
+      "origin_sha256": "dfda3b69f5c5eb47e2c0de1f6b0586d5dd056b3da90943d3fd05abce9afc7382",
+      "deployed_sha256": "f213895b32a7c875af36e36e1e29389e71e5b8b7867909c5551afe577dec304c",
+      "origin_body_sha256": "4cf5b4b24b13a1a8e45d5438e7db05fb71e2207630b5c9cd2adebea632bf5ab7",
+      "deployed_body_sha256": "4cf5b4b24b13a1a8e45d5438e7db05fb71e2207630b5c9cd2adebea632bf5ab7"
+    },
+    "options": {
+      "normalized_origin_equal": true,
+      "origin_sha256": "f37a4a144ea49eb773ec4886b01d217a461905f191441977e2fc1b8a825e2d6d",
+      "deployed_sha256": "37a215157636f54c7db8eeac86c54dac3e3d97d2453c035180a003e4fb2521e7",
+      "origin_body_sha256": "d28c6f8cc9757727bbb92158477bf77a1a0ae878d69daa6008648c48efcef4cd",
+      "deployed_body_sha256": "d28c6f8cc9757727bbb92158477bf77a1a0ae878d69daa6008648c48efcef4cd"
+    },
+    "assets": {
+      "normalized_origin_equal": true,
+      "origin_sha256": "c44b1ef6c49ef87bcfbe554405cde63819437be0ee27d30a307b80a15032d6da",
+      "deployed_sha256": "59e16ae27fd618311e2d01604fb58f609a9b2d10bf329146c77f858396191f25",
+      "origin_body_sha256": "9bb5d07badd78e900dfaf80b88dff8d3408f3100f8229b819caf5f41565188c9",
+      "deployed_body_sha256": "9bb5d07badd78e900dfaf80b88dff8d3408f3100f8229b819caf5f41565188c9"
+    },
+    "asset_audit": {
+      "normalized_origin_equal": true,
+      "origin_sha256": "0e4879cdb640296a96c0fcae2dd7baa9712dc51ce0205815030d7a0bad032052",
+      "deployed_sha256": "ad28660681a36b30961761405a314b3798b5f0d97f04c98a577f5418757aefda"
+    }
+  },
+  "accepted_owner_crosscheck": true,
+  "candidate_unapproved": true,
+  "authority_absent": true,
+  "scratch_absent": true,
+  "no_runtime": true,
+  "elapsed_seconds": 0.017127665923908353
+}

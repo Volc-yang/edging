@@ -1,0 +1,20 @@
+{
+  "card": "I12B-PREP",
+  "source_commit": "61b9a853f1ee29b7c63bbbd3e0bd7faee7c705b5",
+  "helper_sha256": "4dd028ff8e14242f00c47e1a19d0d54549b7079cec8e06fcb5347070f5499d58",
+  "argv": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "doc/evidence/universe-I12B/prepare_deployment.py",
+    "--storage",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world",
+    "--prepare"
+  ],
+  "PYTHONHOME_cleared": true,
+  "PYTHONPATH_cleared": true,
+  "exit_code": 0,
+  "elapsed_seconds": 1.0248137500602752,
+  "stdout_bytes": 151,
+  "stderr_bytes": 0,
+  "runtime_authorized": false
+}
