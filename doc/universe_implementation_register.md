@@ -142,3 +142,5 @@ PR100 final1d9f42f / merge36d88ec，经root准确源码、89原件、final CI及
 I12 RUNNER code-only卡仍执行：精确root资源卡/产品source/显式execute后才允许监督器启动；默认不执行，父Popen实际wait，两个session聚合预算/逐阶段限制/DevSSD持久四输入与owner。root预审要求准确生成物allowlist，不能全拒实际必须的输出链接，也不能泛忽略untracked。产品必须选已集成PR97/100准确树；工具旧分支launcher不适用。未授实际UE/Genesis/新authority，G-B2未通过。fresh CUA仍锁屏，解锁问题pending。
 
 I11B clean tree已root非force移除，branch/DevSSD/raw保留；cleanup11原件hash、42配置间接依赖检查、source祖先与clean通过，indexe73d86be7c7af0c2cadab97f0568347092a05776d6f13bdc1cf9e98dc596bec2。I12 runner独立u9预审要求两处局部返工：owner实际typedmetadata须与卡内四输入/world/root/mode交叉核对；日志IO错误不能阻断finally中的owned进程回收。旧检查/失败保留，实际R12仍未派卡。
+
+I12A-RUNNER sourcea1170a4首8mock全pass（0.124s/raw1256B）；u9四项review后sourceb5a5851完成owner交叉、finally cleanup、liveENOENT与completion最终封存记账，唯一targeted5newcases全pass（0.120s/raw866B）。root源码复核和u9准确source复审接受工具准备，等待evidence-only final/PR99新head CI后集成；旧c14d4cd的CI不代表新source。初步receipt固定normal=false，existing只接受封存后completion。没有实际R12/G-B2通过。
