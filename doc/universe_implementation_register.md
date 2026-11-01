@@ -124,3 +124,13 @@ I10B下一任务从本精确合并树新建worktree，先固定采证driver/owne
 [I10B/I11A统筹复核](design/universe-i10b-i11a-coordination-review.md)为最新裁决。PR98 source/final15e0dc9/mergeb1c0371，真实CLI/propose/两正常worker恢复通过；PR97 final13498d7/merge96466b5，所有CPU/build/Protocol/Strict/TransportRaw通过，仅构造接受。原相对路径/compile/采证排序失败全部保留。I11B真实NullRHI existing入口与首次camera aim修正尚未执行；I12G-B2仍未执行。
 
 I12A工具source a2b9fa2/final d6e30f7，纯stdlib verifier/被动driver/actionplan已交；首4/6、唯一2case targeted及新guard小卡2case通过，失败/源码区别保留。run仍硬拒绝，实际R12才授权dispatch，不把synthetic工具检查称组合接受。
+
+## I11B入口重试与环境前置（最新）
+
+I11B worktree `.worktrees/i11b-universe-live` / branch `codex/i11b-universe-live` / base c786b0b，3源码+I11B报告独占。source3ea2d07新增LiveReadOnly及首verifiedDTO一次camera LookAt；首build字符串拼接错误，唯一target sourceac9e430 build exit0但actualapp exit3：root批准的old owner inputs仍指向已移除I10B worktree，FileNotFound导致worker37513 normal exit1/reaped，未有首status；authority90/scratch6 maps与原owner SHA不变，总167.738s/180，原件保留。此为统筹清理漏迁移依赖，非通过门或状态损坏。
+
+root已将原approved四输入逐SHA复制至DevSSD持久bundle `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11B-20261102-persistent-owner-bundle/`，新owner-existing.json SHA5f0a46ca403423cb9a92a4d68dad92cde54d42fc81c33a6011278689273028f9；原owner/authority/key/context/session/scratch不变，无provision或solver，实际load_owner_config+load_inputs通过，publicpins仍ee04cf29a40cf1837a49967010af354836c79908034c83ba5106fd3f1b77ef67。新I11B-T卡90s/64MiB NoUBA+onlyLiveReadOnly已授，唯一新attempt3-persistent，仍待结果。后续配置输入须持久化并逐依赖检查，规则已补工作流。I11A旧6生成物清理原件index01b2a532a576b1092ff8e412adbada04552c285125b1277b64f093a1e77f2c8d共11文件root核验，旧tree非force清理、target/branch/raw保留；I10Bclean tree亦已清理。
+
+I12A draftPR99最新tools sourceef17707 / evidencec14d4cd，PREP2修真实三参历史示例与action-before cursor/prefix/dev/inode marker等待；offline首因HEAD storage/archive profile混淆失败保留，改后只读真实I10B 81records/5roots/3raw及D/budget/cursor/steps全部吻合、所有maps不变。仅工具与离线子集，run仍禁用、G-B2 planned。
+
+root CUA只读getState确认Mac locked，native自动解锁不能完成；已通过异步问题请用户手动解锁且无需启动UE/Play，等待回应。不得绕过锁屏/输入凭据。I11B NullRHI可继续；I12真实Metal可见阶段需解锁与最终准确合并树/R12实际卡，未开始运行或消耗其20min/2GiB候选。

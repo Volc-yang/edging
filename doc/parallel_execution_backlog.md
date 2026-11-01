@@ -22,8 +22,8 @@
 
 - I8已接受PR95 / merge51b95de：source9270349的post-build B/O与两臂/恢复/真实exit及root292raw+逐步FractionD核对通过，G-P1有限pass；首默认解析失败及全部原件保留。[I8/I10A复核](design/universe-i8-i10a-coordination-review.md)。
 - I10完整接受：I10A PR96 / mergedcfd3bc；I10B PR98 / mergeb1c0371，真实初始化/retain/weak/strong/历史/幂等与worker双PID正常恢复通过，D−7/−48；root131+445raw/81records5roots3raw/32readonlypairs及finalCI复核，[最新审查](design/universe-i10b-i11a-coordination-review.md)。
-- I11A PR97 / merge96466b5已接受CPU/build/Protocol/Strict/TransportRaw/实际synthetic exit evidence，finalCI/root审查；真实I11B LiveReadOnly入口及初始相机LookAt修正下一卡。legacy默认不改。
-- I12：fresh独立owner已完成I12A stdlib verifier/被动driver准备，实际run仍拒绝；等I11B/G-B1/R12与准确合并树后执行两UE会话/动作map/Metal原图/历史/恢复/真实退出，G-B2未通过。
+- I11A PR97 / merge96466b5已接受CPU/build/Protocol/Strict/TransportRaw/实际synthetic exit evidence，finalCI/root审查；I11B已写LiveReadOnly/首次LookAt，首入口因已清理worktree被owner间接引用失败；现批准输入已逐SHA固定到DevSSD持久bundle，新90s只读复验进行中。legacy默认不改。
+- I12：fresh独立owner已完成I12A stdlib verifier/被动driver准备，实际run仍拒绝；等I11B/G-B1/R12与准确合并树后执行两UE会话/动作map/Metal原图/历史/恢复/真实退出，G-B2未通过。Mac当前锁屏，已异步请用户手动解锁；可见阶段在解锁与I11B通过后派卡。
 
 owner-config/public-pins接口与typed36的明确分类、原件/资源总账见[I登记](universe_implementation_register.md)。S_records30、S_typed36、H≤64及资产A独立计量；旧U8初态≤32和G-Q不称通过。没有新域真实组合或写实产品门通过结论。默认网站/DNS与api.edging.cloud路由不变。
 
