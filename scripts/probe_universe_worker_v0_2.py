@@ -182,8 +182,23 @@ def supervised_runtime(output):
     # The owned driver has reaped normal children; retain a process-group check.
     group=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
     members=[line for line in group.stdout.splitlines() if len(line.split())>=3 and line.split()[1] == str(child.pid)]
-    write(output/'owned-group-after.json',dict(pgid=child.pid,members=members))
-    check(not members,'owned process group still active')
+    original_members=list(members)
+    if members:
+        try:os.killpg(child.pid,signal.SIGTERM)
+        except ProcessLookupError:pass
+        until=time.monotonic()+2
+        while members and time.monotonic()<until:
+            time.sleep(0.05)
+            snapshot=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
+            members=[line for line in snapshot.stdout.splitlines() if len(line.split())>=3 and line.split()[1] == str(child.pid)]
+        if members:
+            try:os.killpg(child.pid,signal.SIGKILL)
+            except ProcessLookupError:pass
+            time.sleep(0.1)
+            snapshot=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
+            members=[line for line in snapshot.stdout.splitlines() if len(line.split())>=3 and line.split()[1] == str(child.pid)]
+    write(output/'owned-group-after.json',dict(pgid=child.pid,original_members=original_members,members=members,cleanup_attempted=bool(original_members)))
+    check(not original_members and not members,'owned process group required emergency cleanup')
     write(output/'supervised-index.json',mapping(output))
     return 0 if outcome['exit_code'] == 0 and outcome['trigger'] is None else 1
 
@@ -490,6 +505,14 @@ def main():
             try:probe.finish()
             except Exception:
                 with (args.output/'cleanup-exception.txt').open('x') as stream:traceback.print_exc(file=stream)
+        runtime_module=sys.modules.get('genesis')
+        if runtime_module is not None:
+            try:
+                runtime_module.destroy()
+                write(args.output/'bootstrap-runtime-destroy.json',dict(ok=True,pid=os.getpid()))
+            except Exception:
+                code=1
+                with (args.output/'bootstrap-destroy-exception.txt').open('x') as stream:traceback.print_exc(file=stream)
         if probe is not None:
             try:probe.cleanup_remaining()
             except Exception:
