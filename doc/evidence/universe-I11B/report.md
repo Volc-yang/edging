@@ -1,6 +1,6 @@
 # I11B real existing-worker entry
 
-Status: implementation prepared; CPU/native execution pending. Base c786b0b.
+Status: implementation and real readonly checks complete; root review/CI pending. Base c786b0b.
 Owned source: UniverseGameMode.h/.cpp and UniverseProtocolTest.cpp only.
 
 ## Plan / fixed inputs
@@ -93,3 +93,69 @@ Immutable raw directories under /Volumes/DevSSD/Unreal/Projects/EdgeWorld/:
 | I11B-20261102-live-attempt2 | 39 | afdd0e409972c75fc3de5b07456604d77695c0afa340c4945ed27fb23d8921a9 |
 
 No actual G-B1 pass, screenshot/Metal gate or combined I12 pass is claimed.
+
+## Persistent-input rebind and successful new window
+
+Root supplied a new persistent owner bundle; original owner, authority, key and
+scratch were not edited. The four input payloads have identical approved plain
+SHA and now live under DevSSD rather than a retired worktree. New ownerfile:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11B-20261102-persistent-owner-bundle/owner-existing.json`,
+SHA256 `5f0a46ca403423cb9a92a4d68dad92cde54d42fc81c33a6011278689273028f9`.
+Public pins remain exactly653B and the same ee04...ef67 SHA. Outer wrapper checks
+all four input file paths/regular-file identities/plainSHA before build, saves
+metadata only in approved-inputs.json, and never adds these private metadata
+capabilities to UE/publicpins. Key bytes are not read or archived by the wrapper;
+the trusted worker retains its existing authority verification responsibilities.
+
+Root explicitly issued a new independent90s/raw64MiB input-repair check card;
+the earlier180s window and its consumed retry were not reused. Native C++ source
+remains `ac9e430` (check HEAD6c16b55 only adds historical report). New run:
+
+- NoUBA build PID38365 exit0/2.837s.
+- Actual UnrealEditor.app PID38419: only LiveReadOnly, Completed Success,
+  real exit0/16.475s. Total19.498s, raw1,153,660B, no targeted retry.
+- One real existing worker PID38508/generation1 handled exactly five requests:
+  status, observe current(2,4), observe history(0,1), observe genesis(0,0), status.
+  No initialize/prepare/advance was built/sent. Actual selected physics samples
+  were verified through the strict native proof parser, not synthetic records.
+- Three real I0A same-world asset audits/candidates exactly matched the verified
+  asset-manifest-runtime canonical/digest and runtime-resolved dependency graph.
+  Audit/candidate original bytes are retained for each selection; no file mismatch
+  fallback or static-declared substitution was used.
+- Current and historical proofs used independent public context, request IDs and
+  the fresh owned status HeadBinding. Final status preserved HEAD/state/event
+  and current(2,4)/watermark4. Status response lengths differ only as envelopes
+  use different request IDs; authority state was compared semantically and by map.
+- Actual current DTO placed the camera toward its physical dynamic target; dot
+  alignment assertion >1-1e-9 passed. Both historical observations refused a
+  second placement and left the camera transform unchanged. This verifies the
+  shared one-shot geometry helper, not a rendered image or user-visible frame.
+- Real worker EOF: GetProcReturnCode available/actual0, normal, reaped=true,
+  trace_complete=true, operational_failure=false, tail_bytes0. UE exit0 and worker
+  exit0 are separate evidence. Recorded post-check process inventory had neither
+  build/app nor worker PID live.
+- Outer full authority90/scratch6 maps unchanged including file bytes/digests,
+  mode/UID/inode/nlink/mtime. Source, binaries and private-owner metadata SHA
+  unchanged before/after. UE did not read owner config contents, key_dir/scratch
+  or key bytes. The accepted existing backend read path performs no Genesis init
+  or step; raw operations were exclusively status/observe. No Metal/RHI image run.
+
+Immutable new raw:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I11B-20261102-live-attempt3-persistent/`
+contains89 originals: approved input metadata, complete source/binary/argv/env/PID
+records and true exits, exact wire/stderr/EOF chunks, three proofs/audits/candidates,
+selection summaries, normal worker-exit original, independent before/after maps,
+automation report and readonly-evidence-summary.json. Raw-index SHA256:
+`1d3f8cede679ca4ba6de9e66905e3571af8536741b76eae3b034380cbebd3963`.
+Earlier failures/indices remain unchanged. No further runs are necessary without
+a new review finding. Final follow-up commit is report-only; checked code stays
+identical to ac9e430.
+
+## Author handoff
+
+Scoped implementation and real NullRHI readonly entry checks are complete,
+awaiting root independent source/raw/final-head CI acceptance and integration.
+No full rendered/interactive/Metal acceptance is claimed; independent I12 must
+use the accurate merged tree. This task opens its own PR and never self-merges.
+Five new registered output links and the generated ini remain untracked for root
+cleanup only after acceptance; DevSSD output targets/raw are retained.
