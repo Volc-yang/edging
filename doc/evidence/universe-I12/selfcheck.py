@@ -375,6 +375,189 @@ class RunnerPreparation(unittest.TestCase):
                     driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'initialize', True)
                 popen.assert_not_called()
 
+    def valid_card(self, folder):
+        prepared, run = self.prepared(folder)
+        card = prepared['card']
+        product = Path(card['product_root'])
+        (product / 'scripts').mkdir(parents=True)
+        launcher = product / 'scripts/launch_edgeworld_ue_mac.sh'
+        launcher.write_text('# synthetic only, never executed: --universe --owner-config --universe-initialize -NoUBA\n')
+        saved = product / 'engine_platforms/unreal/EdgeWorldHost/Saved'
+        saved.mkdir(parents=True)
+        (saved / 'MacLauncher').symlink_to(card['launcher_output_root'])
+        deployment = Path(card['storage_root']) / 'deployment'
+        deployment.mkdir(mode=0o700)
+        key = folder / 'no-key-files-only-metadata'
+        key.mkdir(mode=0o700)
+        runtime = folder / 'never-executed-python'
+        runtime.write_bytes(b'synthetic not executable code')
+        runtime.chmod(0o700)
+        ue = folder / 'no-UE-app'
+        ue.mkdir()
+        inputs = {}
+        for role in ('build', 'options', 'assets', 'asset_audit'):
+            path = deployment / (role + '.json')
+            path.write_text(json.dumps({'domain': 'edgeworld.universe.authority', 'version': '0.2',
+                'world_id': card['world_id'], 'kind': role, 'id': role, 'body': {}, 'refs': {}}))
+            inputs[role] = {'path': str(path), 'sha256': oracle.file_hash(path)}
+        context = {'world_id': card['world_id'], 'authority_root': card['authority_root'],
+                   'trust_anchor': 'c' * 64, 'artifact_class': 'genesis-runtime',
+                   'trust_algorithm': 'local-hmac-sha256.v0.2', 'domain_version': '0.2',
+                   'archive_profile': 'composite-rigid-support.v0.2',
+                   'storage_profile': 'local-posix-blob-sync-v0.2'}
+        for role, name in (('build', 'expected_build'), ('options', 'expected_options')):
+            context[name] = oracle.hashlib.sha256(oracle.PREFIX +
+                oracle.canonical(oracle.read_json(inputs[role]['path']))).hexdigest()
+        actions = ['retain_snapshot', 'physics_step']
+        for mode in ('initialize', 'existing'):
+            owner = {'config_version': 'universe-owner-launch.v0.1', 'mode': mode,
+                     'context': context, 'session': {'principal': 'synthetic-owner',
+                     'can_initialize': mode == 'initialize', 'allowed_actions': actions},
+                     'key_dir': str(key), 'scratch': str(Path(card['storage_root']) / 'not-created-scratch'),
+                     'inputs': inputs}
+            path = deployment / (mode + '-owner.json')
+            path.write_text(json.dumps(owner)); path.chmod(0o600)
+            card['sessions'][mode]['owner_config'] = {'path': str(path), 'sha256': oracle.file_hash(path)}
+        now = datetime.now(timezone.utc)
+        card.update(format='universe-i12-r12.v1', approved=True, issuer='root',
+                    scope='two-real-ue-owned-sessions', allow_forced_cleanup=True,
+                    issued_at=(now - timedelta(minutes=1)).isoformat(),
+                    expires_at=(now + timedelta(minutes=5)).isoformat(), product_source='a' * 40,
+                    launcher_sha256=oracle.file_hash(launcher), allowed_untracked={},
+                    accepted_gates={'G-P1': 'mock', 'I10B': 'mock', 'G-B1': 'mock'},
+                    deployment_root=str(deployment), inputs=inputs, context=context,
+                    key_directory=str(key), principal='synthetic-owner', allowed_actions=actions,
+                    python_executable=str(runtime), ue_root=str(ue),
+                    runtime_files=[{'path': str(runtime), 'sha256': oracle.file_hash(runtime)}])
+        path = folder / 'synthetic-r12-card.json'
+        path.write_text(json.dumps(card)); path.chmod(0o600)
+        return card, path, run
+
+    def test_runner_fixed_full_valid_card_two_session_protocol(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            card, path, run = self.valid_card(Path(temporary).resolve())
+            with mock.patch.object(driver, 'on_devssd', return_value=True), \
+                 mock.patch.object(driver, 'product_identity', return_value='a' * 40):
+                prepared = driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'initialize', True)
+                self.assertIn('--universe-initialize', prepared['argv'])
+                process, spawn = self.process(run)
+                def initialized(argv, **kwargs):
+                    # Stand-in marker only, not a registered or Store-readable authority.
+                    authority = Path(card['authority_root']); authority.mkdir(mode=0o700)
+                    (authority / 'HEAD.json').write_bytes(b'{"synthetic-only":true}')
+                    return spawn(argv, **kwargs)
+                with mock.patch.object(driver.subprocess, 'Popen', side_effect=initialized), \
+                     mock.patch.object(driver, 'observed_processes', side_effect=[self.owned(), {}]), \
+                     mock.patch.object(driver, 'inspect_trace', return_value={
+                         'worker_exits': [{'worker_pid': 203, 'exit_code': 0}],
+                         'transport_count': 1, 'frames': [{'host_pid': 202}]}):
+                    complete = driver.supervise(prepared)
+                self.assertTrue(complete['normal'])
+                self.assertFalse(oracle.read_json(prepared['output'] / 'supervisor-exit.json')['normal'])
+                self.assertEqual(complete['final_bytes_including_completion'], driver.tree_bytes(card['storage_root']))
+                existing = driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'existing', True)
+                self.assertNotIn('--universe-initialize', existing['argv'])
+                self.assertIn(card['sessions']['existing']['owner_config']['path'], existing['argv'])
+                self.assertEqual(existing['prior_seconds'], complete['cumulative_seconds'])
+
+    def test_runner_fixed_stale_owner_inputs_mode_world_root_rejected(self):
+        for mutation, message in (('inputs', 'owner inputs'), ('mode', 'session mode'),
+                                  ('world_id', 'owner context'), ('authority_root', 'owner context')):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                card, path, _ = self.valid_card(Path(temporary).resolve())
+                owner_path = Path(card['sessions']['initialize']['owner_config']['path'])
+                owner = oracle.read_json(owner_path)
+                if mutation == 'inputs':
+                    owner['inputs']['build']['path'] = '/old/deleted-worktree/build.json'
+                elif mutation == 'mode':
+                    owner['mode'] = 'existing'
+                else:
+                    owner['context'][mutation] = 'wrong-world' if mutation == 'world_id' else '/wrong/root'
+                owner_path.write_text(json.dumps(owner))
+                # Both hashes are individually valid: only cross-check can catch stale metadata.
+                card['sessions']['initialize']['owner_config']['sha256'] = oracle.file_hash(owner_path)
+                path.write_text(json.dumps(card))
+                with mock.patch.object(driver, 'on_devssd', return_value=True), \
+                     mock.patch.object(driver, 'product_identity', return_value='a' * 40), \
+                     mock.patch.object(driver.subprocess, 'Popen') as popen:
+                    with self.assertRaisesRegex(oracle.Invalid, message):
+                        driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'initialize', True)
+                    popen.assert_not_called()
+
+    def test_runner_fixed_log_io_finally_cleans_and_preserves_original(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prepared, run = self.prepared(Path(temporary).resolve())
+            process, spawn = self.process(run, running=True)
+            original = driver.os.fdopen
+            class FailedEvents:
+                def __init__(self, stream): self.stream = stream
+                def write(self, value): raise OSError('synthetic original disk-full write')
+                def flush(self): raise OSError('synthetic flush failure')
+                def close(self):
+                    self.stream.close()
+                    raise OSError('synthetic secondary close failure')
+            def fdopen(fd, mode):
+                stream = original(fd, mode)
+                return FailedEvents(stream) if mode == 'w' else stream
+            with mock.patch.object(driver.os, 'fdopen', side_effect=fdopen), \
+                 mock.patch.object(driver.subprocess, 'Popen', side_effect=spawn), \
+                 mock.patch.object(driver, 'observed_processes', return_value={}), \
+                 mock.patch.object(driver.os, 'kill') as kill:
+                result = driver.supervise(prepared)
+            process.terminate.assert_called_once()
+            process.wait.assert_called()
+            kill.assert_not_called()
+            self.assertFalse(result['normal'])
+            self.assertIn('original disk-full write', result['failure'])
+
+    def test_runner_fixed_live_counter_only_tolerates_enoent(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / 'stable').write_bytes(b'ab')
+            (root / 'renamed.tmp').write_bytes(b'ignored-after-rename')
+            original = Path.lstat
+            def renamed(path):
+                if path.name == 'renamed.tmp': raise FileNotFoundError(path)
+                return original(path)
+            with mock.patch.object(Path, 'lstat', renamed):
+                self.assertEqual(driver.tree_bytes(root), 2)
+            def denied(path):
+                if path.name == 'stable': raise PermissionError(path)
+                return original(path)
+            with mock.patch.object(Path, 'lstat', denied), self.assertRaises(PermissionError):
+                driver.tree_bytes(root)
+
+    def test_runner_fixed_seal_time_bytes_prevent_existing_admission(self):
+        for kind in ('time', 'bytes'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temporary:
+                card, path, run = self.valid_card(Path(temporary).resolve())
+                if kind == 'bytes':
+                    card['budget']['bytes'] = 2 * 1024**2
+                    path.write_text(json.dumps(card))
+                clock = [0]
+                emit = driver.emit
+                def delayed_emit(value, output):
+                    emit(value, output)
+                    if output.name == 'session-seal.json':
+                        if kind == 'time': clock[0] = 60
+                        else: (output.parent / 'synthetic-seal-growth').write_bytes(b'x' * (2 * 1024**2))
+                with mock.patch.object(driver, 'on_devssd', return_value=True), \
+                     mock.patch.object(driver, 'product_identity', return_value='a' * 40):
+                    prepared = driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'initialize', True)
+                    process, spawn = self.process(run)
+                    with mock.patch.object(driver.subprocess, 'Popen', side_effect=spawn), \
+                         mock.patch.object(driver, 'observed_processes', side_effect=[self.owned(), {}]), \
+                         mock.patch.object(driver, 'inspect_trace', return_value={
+                             'worker_exits': [{'worker_pid': 203, 'exit_code': 0}],
+                             'transport_count': 1, 'frames': [{'host_pid': 202}]}), \
+                         mock.patch.object(driver.time, 'monotonic', side_effect=lambda: clock[0]), \
+                         mock.patch.object(driver, 'emit', side_effect=delayed_emit):
+                        result = driver.supervise(prepared)
+                    self.assertFalse(result['normal'])
+                    self.assertFalse(oracle.read_json(prepared['output'] / 'supervisor-exit.json')['normal'])
+                    with self.assertRaises((oracle.Invalid, FileNotFoundError)):
+                        driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'existing', True)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

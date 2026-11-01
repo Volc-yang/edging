@@ -61,17 +61,23 @@ Required fields:
   persistent inputs and both session outputs. Time/bytes leave cleanup and 1MiB evidence reserve.
 * `sessions` has exactly initialize/existing. Each has `{owner_config:{path,sha256},max_seconds,
   stage_seconds:{build,startup,interaction,shutdown}}`. Both owner files must already exist in
-  deployment, UID-owned0600/nlink1 under0700, hash-pinned; contents are not printed or parsed.
-  Root must provision proper initialize/existing settings for the same world/root/anchor and
-  confirm all four input paths in those owner files before issuing the card. Driver only passes
-  the private path to the child. Sum session limits plus earlier spent time cannot exceed total.
+  deployment, UID-owned0600/nlink1 under0700, hash-pinned. Trusted typed metadata is read once
+  for cross-check, never printed/copied into evidence. Card also pins exact `context` (the ten
+  DeploymentContext fields), `principal` and `allowed_actions` (retain_snapshot/physics_step).
+  Owner mode, typed initialization grant, key directory, world/root/trust/profile context and
+  all four path/SHA input specs must exactly match card; expected B/O record digests are independently
+  recomputed from deployed public records. A separately valid inputs list cannot hide an owner's
+  stale indirect worktree path. Scratch must be persistent and disjoint from authority/deployment/key.
+  No key file is opened. Driver passes only private owner path to child. Sum session limits plus
+  earlier spent time cannot exceed total.
 
 ## Supervision and failure evidence
 
 Each session uses exclusive `storage_root/sessions/<session>`. Existing outputs refuse overwrite
 before Popen; new failures need a new explicit root decision/card/output, not automatic retry.
 Initialization and re-entry cannot overlap; existing requires the same-card/source initialize
-receipt marked normal plus HEAD. Normal receipt is only supervision, never G-B2.
+`completion.json` marked normal plus HEAD. Preliminary `supervisor-exit.json` is always normal=false
+and can never authorize existing. Normal completion is only supervision, never G-B2.
 
 Supervisor writes source/card/argv/environment-path receipt, PID/PPID/start/argv observations,
 stage/budget event JSONL, raw launcher stdout, authority before/after maps when present, actual
@@ -87,11 +93,19 @@ After grace, only previously observed descendants with unchanged PID/start/argv 
 unrelated/reused PIDs are never signaled. Parent uses actual wait and bounded KILL fallback.
 Unknown/detached/unobserved processes are reported, not guessed by authority path. Any remaining
 owned processes, incomplete trace, failed observation/exit or exceeded budget fails supervision.
-An interrupted/error path preserves diagnostics and actual wait results where available.
+An interrupted/error path preserves diagnostics and actual wait results where available. Runtime
+event-write failure cannot bypass cleanup: failure logging is best effort and cleanup is in finally;
+secondary log/close errors do not replace the original runtime error. Live byte measurement uses
+lstat, refuses symlinks/nonregular entries, and tolerates only FileNotFound from Store atomic rename.
 
 Session seal hashes current raw files (large raw remains DevSSD) and records that later CUA
-screenshots need final collection/sealing. Receipt byte count is explicitly before receipt/seal,
-with 1MiB reserve; final bundle independently counts every artifact. All original attempts persist.
+screenshots need final collection/sealing. Receipt/whole seal are written before final accounting.
+Completion charges ceil(observed time after sealing)+2 seconds for its own final write/audit, and
+computes the exact JSON byte fixed point including the completion file. After writing pending
+completion, actual elapsed/bytes are audited against that conservative charge before publishing
+`completion.json`. Exceeded time/bytes yields false or no completion, never an existing-session
+grant. Pending/failure evidence stays intact. Second session charges the first final cumulative
+time. The final bundle still independently counts every artifact. All original attempts persist.
 Tool tests only mock Popen/git/ps/cleanup/logs; they do not prove the future runtime path, physical
 startup, UI, Metal rendering, default exit reliability or G-B2. Root must review exact runner
 source/card/product/deployment and separately issue actual R12 after unlock and accepted gates.

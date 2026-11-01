@@ -9,6 +9,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -19,7 +20,8 @@ import sys
 import time
 
 from verify_universe_slice_evidence import (Invalid, authority_map, file_hash,
-                                            inspect_trace, read_json, require, safe_path)
+                                            inspect_trace, read_json, require, safe_path,
+                                            safe_read, unique_pairs, canonical, PREFIX)
 
 PLAN = [
     ('bootstrap', 'session1: trusted launcher/worker identity and public pins; registered empty root status may be NOT_READY; no HEAD/scratch/solve before explicit initialize'),
@@ -175,6 +177,10 @@ def private_metadata(path, directory=False):
     return path
 
 
+def on_devssd(path):
+    return str(path).startswith('/Volumes/DevSSD/')
+
+
 def product_identity(product, allowed_untracked=None):
     head = subprocess.run(['git', '-C', str(product), 'rev-parse', 'HEAD'],
                           capture_output=True, text=True, timeout=5, check=True).stdout.strip()
@@ -191,7 +197,7 @@ def product_identity(product, allowed_untracked=None):
         if spec['kind'] == 'symlink':
             require(path.is_symlink() and os.readlink(path) == spec['readlink'] and
                     str(path.resolve()) == spec['target'] and
-                    spec['target'].startswith('/Volumes/DevSSD/'), 'product output mapping changed')
+                    on_devssd(spec['target']), 'product output mapping changed')
         else:
             require(spec['kind'] == 'file' and file_hash(path) == spec['sha256'],
                     'generated product artifact hash mismatch')
@@ -200,6 +206,47 @@ def product_identity(product, allowed_untracked=None):
             require(entry.startswith(b'?? '), 'tracked product source modification')
             require(entry[3:].decode('utf-8') in allowed, 'unapproved untracked product path')
     return head
+
+
+def validate_owner_deployment(card, name, owner_path, expected_sha):
+    """Read typed owner metadata once; never return/log config or open key files."""
+    raw = safe_read(owner_path, 65536)
+    require(hashlib.sha256(raw).hexdigest() == expected_sha, 'owner metadata changed from pinned SHA')
+    owner = json.loads(raw.decode('utf-8'), object_pairs_hook=unique_pairs)
+    require(set(owner) == {'config_version', 'mode', 'context', 'session', 'key_dir', 'scratch', 'inputs'} and
+            owner['config_version'] == 'universe-owner-launch.v0.1', 'owner metadata shape/version')
+    require(owner['mode'] == name, 'owner session mode mismatch')
+    expected_context = card['context']
+    require(set(expected_context) == {'world_id', 'authority_root', 'trust_anchor', 'expected_build',
+            'expected_options', 'artifact_class', 'trust_algorithm', 'domain_version',
+            'archive_profile', 'storage_profile'} and expected_context['world_id'] == card['world_id'] and
+            expected_context['authority_root'] == card['authority_root'] and
+            expected_context['artifact_class'] == 'genesis-runtime' and
+            expected_context['trust_algorithm'] == 'local-hmac-sha256.v0.2' and
+            expected_context['domain_version'] == '0.2' and
+            expected_context['archive_profile'] == 'composite-rigid-support.v0.2' and
+            expected_context['storage_profile'] == 'local-posix-blob-sync-v0.2', 'card deployment context')
+    require(owner['context'] == expected_context, 'owner context/world/root differs from card')
+    require(owner['key_dir'] == card['key_directory'], 'owner key directory differs from card')
+    require(owner['inputs'] == card['inputs'], 'owner inputs differ from persistent four-input pins')
+    require(type(owner['session']) is dict and type(owner['session'].get('can_initialize')) is bool and
+            re.fullmatch('[a-z][a-z0-9._-]{0,63}', card['principal']) and
+            type(card['allowed_actions']) is list and len(card['allowed_actions']) == 2 and
+            set(card['allowed_actions']) == {'retain_snapshot', 'physics_step'} and
+            all(type(expected_context[key]) is str and re.fullmatch('[0-9a-f]{64}', expected_context[key])
+                for key in ('trust_anchor', 'expected_build', 'expected_options')), 'owner typed grants/context')
+    require(owner['session'] == {'principal': card['principal'],
+            'can_initialize': name == 'initialize', 'allowed_actions': card['allowed_actions']},
+            'owner principal/actions/initialization grant differs from card')
+    for role, context_key in (('build', 'expected_build'), ('options', 'expected_options')):
+        record = read_json(card['inputs'][role]['path'])
+        require(hashlib.sha256(PREFIX + canonical(record)).hexdigest() == expected_context[context_key],
+                'owner context does not bind deployed ' + role)
+    scratch = safe_path(owner['scratch'])
+    require(scratch.is_relative_to(safe_path(card['storage_root'])), 'owner scratch outside persistent storage')
+    protected = [safe_path(card[k]) for k in ('authority_root', 'deployment_root', 'key_directory')]
+    require(all(not scratch.is_relative_to(p) and not p.is_relative_to(scratch) for p in protected),
+            'owner scratch overlaps authority/deployment/key')
 
 
 def validate_run(card_path, card_hash, accepted_source, session, execute):
@@ -230,11 +277,12 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
     launcher = product / 'scripts/launch_edgeworld_ue_mac.sh'
     require(file_hash(launcher) == card['launcher_sha256'], 'accepted launcher hash mismatch')
     storage = private_metadata(card['storage_root'], directory=True)
-    require(str(storage).startswith('/Volumes/DevSSD/'), 'runtime evidence must be on DevSSD')
+    require(on_devssd(storage), 'runtime evidence must be on DevSSD')
     deployment = private_metadata(card['deployment_root'], directory=True)
     require(deployment.is_relative_to(storage), 'deployment bundle must be persistent inside storage root')
     require(set(card['inputs']) == {'build', 'options', 'assets', 'asset_audit'}, 'exact four deployment inputs')
     for spec in card['inputs'].values():
+        require(set(spec) == {'path', 'sha256'}, 'input pin shape')
         path = safe_path(spec['path'])
         require(path.is_relative_to(deployment) and file_hash(path) == spec['sha256'],
                 'deployed input missing or hash mismatch')
@@ -256,7 +304,7 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
             type(limits['spent_bytes']) is int and limits['spent_bytes'] >= 0 and
             sum(s['max_seconds'] for s in card['sessions'].values()) + limits['spent_seconds'] <=
             limits['seconds'], 'R12 total limits')
-    for slot in card['sessions'].values():
+    for name, slot in card['sessions'].items():
         require(type(slot['max_seconds']) is int and slot['max_seconds'] > limits['cleanup_seconds'] and
                 set(slot['stage_seconds']) == {'build', 'startup', 'interaction', 'shutdown'} and
                 all(type(n) is int and n > 0 for n in slot['stage_seconds'].values()), 'session/stage limits')
@@ -264,6 +312,7 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
         private_metadata(owner.parent, directory=True)
         require(owner.is_relative_to(deployment) and file_hash(owner) == slot['owner_config']['sha256'],
                 'persistent owner config hash mismatch')
+        validate_owner_deployment(card, name, owner, slot['owner_config']['sha256'])
     # These public/binary hashes are input pins, never commands chosen by JSON.
     require(card['runtime_files'], 'explicit runtime/build identity pins required')
     for spec in card['runtime_files']:
@@ -273,7 +322,7 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
             safe_path(card['ue_root']).is_dir(), 'runtime executable/environment unavailable')
     prior = None
     if session == 'existing':
-        prior = read_json(storage / 'sessions/initialize/supervisor-exit.json')
+        prior = read_json(storage / 'sessions/initialize/completion.json')
         require(prior['card_sha256'] == card_hash and prior['accepted_source'] == accepted_source and
                 prior['normal'] is True and prior['session'] == 'initialize', 'first session not normally completed')
         require((authority / 'HEAD.json').is_file(), 'existing revisit requires authority HEAD')
@@ -296,11 +345,15 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
 def tree_bytes(root):
     total = 0
     for path in safe_path(root).rglob('*'):
-        safe_path(path)
-        if path.is_dir():
+        try:
+            info = path.lstat()
+        except FileNotFoundError:
+            continue  # A live Store temp file can be atomically renamed after enumeration.
+        require(not stat.S_ISLNK(info.st_mode), 'symlink runtime evidence entry')
+        if stat.S_ISDIR(info.st_mode):
             continue
-        require(path.is_file(), 'nonregular runtime evidence entry')
-        total += path.stat().st_size
+        require(stat.S_ISREG(info.st_mode), 'nonregular runtime evidence entry')
+        total += info.st_size
     return total
 
 
@@ -370,6 +423,54 @@ def cleanup_owned(process, known, grace):
     return code, actions
 
 
+def finalize_session(prepared, receipt, start, launcher_dir, candidate):
+    """Seal first; only publish audited completion after all receipt/seal writes.
+
+    Completion charges a conservative extra 2s (plus ceil) for its own write/audit.
+    If writing/auditing exceeds that bound, retain pending/failure evidence and
+    publish no usable completion. Existing session never trusts preliminary receipt.
+    """
+    output, card = prepared['output'], prepared['card']
+    emit(receipt, output / 'supervisor-exit.json')  # Always normal=false, not a completion.
+    indexed = []
+    for directory in (output, launcher_dir):
+        if directory:
+            for path in sorted(directory.rglob('*')):
+                if path.is_file():
+                    indexed.append({'path': str(path), 'bytes': path.stat().st_size, 'sha256': file_hash(path)})
+    emit({'format': 'universe-i12-session-seal.v1', 'captured_at': utc(), 'files': indexed,
+          'note': 'exclusive snapshot at supervisor close; later screenshots need a new final bundle'},
+         output / 'session-seal.json')
+    observed = time.monotonic() - start
+    charged = math.ceil(observed) + 2
+    completion = dict(receipt, format='universe-i12-completion.v1', normal=candidate,
+                      elapsed_seconds=charged, cumulative_seconds=prepared['prior_seconds'] + charged,
+                      elapsed_observed_before_completion=observed, completion_required=False)
+    budget = card['budget']
+    if charged > card['sessions'][prepared['session']]['max_seconds'] or \
+            completion['cumulative_seconds'] > budget['seconds']:
+        completion.update(normal=False, failure=receipt['failure'] or 'final seal/completion time budget exceeded')
+    base_bytes = tree_bytes(card['storage_root']) + budget['spent_bytes']
+    completion['final_bytes_including_completion'] = base_bytes
+    # This integer field affects its own encoded length; converge before writing.
+    for _ in range(10):
+        count = base_bytes + len((json.dumps(completion, ensure_ascii=True, sort_keys=True, indent=2) + '\n').encode())
+        if count == completion['final_bytes_including_completion']:
+            break
+        completion['final_bytes_including_completion'] = count
+    require(completion['final_bytes_including_completion'] <= budget['bytes'],
+            'final seal/receipt/completion byte budget exceeded')
+    pending, final = output / 'completion-pending.json', output / 'completion.json'
+    emit(completion, pending)
+    actual_time = time.monotonic() - start
+    actual_bytes = tree_bytes(card['storage_root']) + budget['spent_bytes']
+    require(actual_time <= charged and actual_bytes == completion['final_bytes_including_completion'],
+            'completion write/audit exceeded conservative final accounting')
+    require(not final.exists(), 'completion already exists')
+    os.rename(pending, final)  # Same bytes; private exclusive session, no ready marker before audit.
+    return completion
+
+
 def supervise(prepared):
     """One live parent owns wait(). No UI, screenshot, solver or trust operations."""
     card, session, output = prepared['card'], prepared['session'], prepared['output']
@@ -396,10 +497,16 @@ def supervise(prepared):
     event_path = output / 'supervisor-events.jsonl'
     stdout_fd = os.open(stdout_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
     event_fd = os.open(event_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
-    with os.fdopen(stdout_fd, 'wb') as stdout, os.fdopen(event_fd, 'w') as events:
+    with os.fdopen(stdout_fd, 'wb') as stdout:
+        events = os.fdopen(event_fd, 'w')
         def record(value):
             events.write(json.dumps(dict(value, utc=utc(), monotonic_seconds=time.monotonic())) + '\n')
             events.flush()
+        def best_effort_record(value):
+            try:
+                record(value)
+            except (OSError, ValueError):
+                pass
         try:
             process = subprocess.Popen(prepared['argv'], cwd=card['product_root'], env=environment,
                                        stdin=subprocess.DEVNULL, stdout=stdout, stderr=subprocess.STDOUT,
@@ -459,19 +566,26 @@ def supervise(prepared):
                 time.sleep(.25)
         except BaseException as error:
             reason = type(error).__name__ + ': ' + str(error)
-            record({'event': 'failure', 'reason': reason})
-            if process is not None:
-                try:
-                    exit_code, cleanup = cleanup_owned(process, known, max(1, budget['cleanup_seconds'] // 3))
-                except (OSError, subprocess.SubprocessError, Invalid) as cleanup_error:
-                    reason += '; cleanup error: ' + str(cleanup_error)
-                    if process.poll() is None:
-                        process.kill()  # Only our actual Popen child; no PID discovery fallback.
+            try:
+                best_effort_record({'event': 'failure', 'reason': reason})
+            finally:
+                if process is not None:
                     try:
-                        exit_code = process.wait(timeout=1)
-                    except subprocess.TimeoutExpired:
-                        reason += '; parent wait incomplete'
-            record({'event': 'cleanup', 'actions': cleanup, 'launcher_wait_exit': exit_code})
+                        exit_code, cleanup = cleanup_owned(process, known, max(1, budget['cleanup_seconds'] // 3))
+                    except (OSError, subprocess.SubprocessError, Invalid) as cleanup_error:
+                        reason += '; cleanup error: ' + str(cleanup_error)
+                        if process.poll() is None:
+                            process.kill()  # Only actual Popen child; no PID discovery fallback.
+                        try:
+                            exit_code = process.wait(timeout=1)
+                        except subprocess.TimeoutExpired:
+                            reason += '; parent wait incomplete'
+            best_effort_record({'event': 'cleanup', 'actions': cleanup, 'launcher_wait_exit': exit_code})
+        finally:
+            try:
+                events.close()
+            except OSError as close_error:
+                reason = reason or 'event log close error: ' + str(close_error)
     if launcher_dir is None:
         found = re.search(r'\[launcher\] evidence=([^\r\n]+)', launcher_text)
         if found:
@@ -527,23 +641,23 @@ def supervise(prepared):
                'supervisor_pid': os.getpid(), 'launcher_pid': process.pid if process else None,
                'launcher_wait_exit': exit_code, 'ue_pid': ue_pid, 'ue_exit_code': ue_exit,
                'ue_exit_source': 'actual launcher parent wait status line; correlate pinned launcher source/raw',
-               'worker_exits': worker_exits, 'normal': normal, 'failure': reason,
+               'worker_exits': worker_exits, 'normal': False, 'exit_candidate': normal,
+               'completion_required': True, 'failure': reason,
                'forced_cleanup': cleanup, 'remaining_owned': list(remaining.values()),
                'elapsed_seconds': elapsed, 'cumulative_seconds': prepared['prior_seconds'] + elapsed,
                'evidence_bytes_before_receipt_seal': final_bytes, 'captured_at': utc(),
                'launcher_evidence': str(launcher_dir) if launcher_dir else None,
                'verdict': 'supervision only; UI/G-B2 require independent evidence review'}
-    emit(receipt, output / 'supervisor-exit.json')
-    indexed = []
-    for directory in (output, launcher_dir):
-        if directory:
-            for path in sorted(directory.rglob('*')):
-                if path.is_file():
-                    indexed.append({'path': str(path), 'bytes': path.stat().st_size, 'sha256': file_hash(path)})
-    emit({'format': 'universe-i12-session-seal.v1', 'captured_at': utc(), 'files': indexed,
-          'note': 'exclusive snapshot at supervisor close; later screenshots need a new final bundle'},
-         output / 'session-seal.json')
-    return receipt
+    try:
+        return finalize_session(prepared, receipt, start, launcher_dir, normal)
+    except (OSError, Invalid, ValueError) as error:
+        failure = dict(receipt, normal=False, finalization_error=str(error),
+                       failure=reason or 'finalization failed: ' + str(error))
+        try:
+            emit(failure, output / 'finalization-failed.json')
+        except (OSError, Invalid):
+            pass
+        return failure  # Caller stdout preserves original runtime error even on a full evidence disk.
 
 
 def main():
