@@ -1,6 +1,6 @@
 # I12C exact Python interpreter pin
 
-Status: implementation prepared; bounded stdlib checks pending. Base f854281.
+Status: scoped tool checks/review complete; root final CI/integration pending. Base f854281.
 Owned runner + this evidence directory; verifier/product/venv are unchanged.
 
 PREP correctly refused general symlink evidence paths, but GS's approved lexical
@@ -47,3 +47,27 @@ prefixes, redirected roots or linked leaves are rejected. Launcher and generic
 safe_path remain unchanged. Synthetic tests exercise both accepted parents and
 rejection even when an unapproved prefix resolves to the same target. No check
 had executed before adding this root-reviewed refinement to the first batch.
+
+## Actual bounded checks / disposition
+
+Ordinary checked source `0c2e7435b6768a58a3b93699c09a8ea4e72b7f8f` passed18
+focused stdlib cases (including the logged-directory bridge), and the actual GS
+interpreter chain was collected and validated read-only using tool Python3.14.
+The approved GS binary was only read/hashed, never executed. Both commands exited0;
+0.276s total, raw10,741B at completion, no targeted retry. Source/unchanged verifier
+SHA remained stable. Original lexical executable was returned unchanged; complete
+metadata pin equality before/after held. The helper output includes the precise
+ordered4-link chain, canonical binary hash, cfg hash and site directory identity
+for root to copy into an independently approved card. No automatic card changes.
+
+Raw: `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12C-20261102-python-pin-attempt1/`.
+`2-stdout.log` is the proposed pin/canonical runtime-file suggestions;
+`actual-interpreter-readonly-check.json` records validation and stable metadata.
+Raw-index SHA256: `66ed82e9cbe24bcdefb3b150c74340daaf8198a760f18f56cc11a845ac989d2e`. Root/u9 independently
+reviewed this checked source and the two narrow exceptions without blocking
+findings. Final commit only updates this report; no further source/test runs.
+
+This leaf repairs tools only. Actual R12 runtime/UE/Genesis/CUA and per-session
+postbuild binary attestation remain separate accepted-source/resource gates.
+No generic evidence-path policy, product, launcher, venv or package content was
+modified; no mutable Host/plugin output is suggested as a prebuild runtime pin.
