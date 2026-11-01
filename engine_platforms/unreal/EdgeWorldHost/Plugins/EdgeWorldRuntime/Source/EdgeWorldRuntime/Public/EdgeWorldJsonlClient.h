@@ -96,6 +96,7 @@ private:
  bool TraceRaw(const FString& Direction,TArrayView<const uint8> Bytes,const FEdgeWorldRequest& Request,int32 Written=-1);
  bool TraceReserve(int64 Bytes);
 	void StopProcess(bool bTerminate);
+ void StopUniverseProcess(bool bFailure);
 
 	FEdgeWorldWorkerLaunchConfig Config;
 	FCriticalSection RequestMutex;
@@ -111,6 +112,7 @@ private:
  bool bNeedsUniverseStatus = true;
  FString TracePrefix=FGuid::NewGuid().ToString(EGuidFormats::Digits);
  uint64 TraceSerial=0, RequestSerial=0;
+ FEdgeWorldRequest LastTraceRequest;
 };
 
 /** Small request builder for the prototype operations; it does not own state. */

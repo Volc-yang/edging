@@ -172,3 +172,28 @@ absence is not evidence of worker exit0. Root reserved a separate Universe-only
 EOF/tail/GetProcReturnCode/exit-trace change and resource card; it is not folded
 into this already-consumed check window. Legacy remains outside that change.
 No fake/synthetic data can pass I10B/G-B1/I12 real combination acceptance.
+
+## I11R2 implementation (new root review card)
+
+The consumed300s window above is not reused. Root separately authorized R2 code
+and CPU<=120s/raw32MiB, with a future distinct180s targeted UE proposal pending
+resource release. R2 combines the absolute synthetic harness path with the actual
+lifecycle evidence gap, preserving legacy StopProcess byte-for-byte beneath an
+explicit Universe branch.
+
+Universe closes stdin, traces EOF and drains original stdout/stderr tail chunks
+under a1MiB tail cap and the shared64MiB trace budget. Grace is8s, then an owned
+TERM phase<=0.5s and, only for the matching still-running owned Mac handle/PID,
+SIGKILL phase<=0.5s. Forced/operational failure stays explicit. It waits/reaps the
+owned handle and calls GetProcReturnCode; unavailable code is null/false, never
+invented0. Exit raw evidence records PID/generation, return-code availability,
+code, normal/forced, hard-kill request, reaped status, tail bytes and trace
+completeness. Trace failure/cap does not turn a failed operation into success.
+No unbounded WaitForProc is called while the process remains running.
+
+TransportRaw's isolated synthetic child now emits distinct EOF-only stdout and
+stderr tails and exits0. Its test checks exclusive-file preservation, original
+request/response/stderr bytes, separate EOF tails, one actual exit record,
+GetProcReturnCode availability/exit0, normal shutdown and true reaping. The
+oversize request case must remain an operational failure even if EOF exits0.
+R2 code/fixture CPU and actual C++ execution remain pending; no new UE run yet.

@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include <signal.h>
 #endif
 
 #include "EdgeWorldObservationActor.h"
@@ -188,6 +189,7 @@ bool FEdgeWorldProcessTransport::TraceRaw(const FString& Direction,TArrayView<co
 FEdgeWorldResponse FEdgeWorldProcessTransport::ExchangeUniverse(const FEdgeWorldRequest& Request)
 {
  FScopeLock Lock(&RequestMutex);
+ LastTraceRequest=Request;
  FEdgeWorldResponse Response; Response.RequestId = Request.RequestId;
  FString Error;
  if(!TraceReserve(4*1024*1024)){Response.ErrorCode=TEXT("trace_limit_or_unsafe");return Response;}
@@ -354,8 +356,71 @@ FEdgeWorldResponse FEdgeWorldProcessTransport::Exchange(const FEdgeWorldRequest&
 	return Response;
 }
 
+void FEdgeWorldProcessTransport::StopUniverseProcess(bool bFailure)
+{
+ // EOF is the normal owned-child shutdown protocol. Never infer exit0 from PID absence.
+ bool bTraceComplete=true;
+ if(StdinWritePipe)
+ {
+  void* Pipe=StdinWritePipe;StdinWritePipe=nullptr;void* Null=nullptr;FPlatformProcess::ClosePipe(Null,Pipe);
+  bTraceComplete=TraceRaw(TEXT("stdin-eof"),{},LastTraceRequest);
+ }
+ if(ProcessHandle.IsValid())
+ {
+  FProcHandle Closing=ProcessHandle;ProcessHandle=FProcHandle();
+  bool bForced=false,bHardKilled=false;int64 TailBytes=0;constexpr int64 TailCap=1048576;
+  auto Drain=[&](bool& ReadAny)
+  {
+   ReadAny=false;
+   if(TailBytes+65536>TailCap||!TraceReserve(2*32768+8192))return false;
+   for(int32 I=0;I<2;++I)
+   {
+    void* Pipe=I==0?StdoutReadPipe:StderrReadPipe;if(!Pipe)continue;TArray<uint8> Chunk;FPlatformProcess::ReadPipeToArray(Pipe,Chunk);
+    if(!Chunk.IsEmpty()){ReadAny=true;TailBytes+=Chunk.Num();if(!TraceRaw(I==0?TEXT("shutdown-stdout-chunk"):TEXT("shutdown-stderr-chunk"),Chunk,LastTraceRequest))return false;}
+   }
+   return true;
+  };
+  const double GraceDeadline=FPlatformTime::Seconds()+8.;
+  while(FPlatformTime::Seconds()<GraceDeadline)
+  {
+   bool Any=false;if(!Drain(Any)){bTraceComplete=false;break;}
+   if(!FPlatformProcess::IsProcRunning(Closing))
+   {
+    while(Any){if(!Drain(Any)){bTraceComplete=false;break;}}
+    break;
+   }
+   FPlatformProcess::Sleep(.01f);
+  }
+  if(FPlatformProcess::IsProcRunning(Closing))
+  {
+   bForced=true;bFailure=true;FPlatformProcess::TerminateProc(Closing,true);
+   const double TermDeadline=FPlatformTime::Seconds()+.5;
+   while(FPlatformProcess::IsProcRunning(Closing)&&FPlatformTime::Seconds()<TermDeadline)
+   {bool Any=false;if(!Drain(Any))bTraceComplete=false;FPlatformProcess::Sleep(.01f);}
+#if PLATFORM_MAC
+   if(FPlatformProcess::IsProcRunning(Closing)&&int64(Closing.Get())==int64(WorkerPid))
+   {bHardKilled=true;kill(pid_t(WorkerPid),SIGKILL);}
+#endif
+   const double KillDeadline=FPlatformTime::Seconds()+.5;
+   while(FPlatformProcess::IsProcRunning(Closing)&&FPlatformTime::Seconds()<KillDeadline)FPlatformProcess::Sleep(.01f);
+  }
+  bool bReaped=!FPlatformProcess::IsProcRunning(Closing);int32 Exit=INDEX_NONE;bool bHaveCode=false;
+  if(bReaped){FPlatformProcess::WaitForProc(Closing);bHaveCode=FPlatformProcess::GetProcReturnCode(Closing,&Exit);}
+  bool Any=false;if(!Drain(Any))bTraceComplete=false;while(Any){if(!Drain(Any)){bTraceComplete=false;break;}}
+  auto E=MakeShared<FJsonObject>();E->SetBoolField(TEXT("return_code_available"),bHaveCode);if(bHaveCode)E->SetNumberField(TEXT("exit_code"),Exit);else E->SetField(TEXT("exit_code"),MakeShared<FJsonValueNull>());
+  E->SetNumberField(TEXT("worker_pid"),WorkerPid);E->SetStringField(TEXT("generation"),LexToString(Generation));E->SetStringField(TEXT("stop_kind"),bForced?TEXT("forced"):TEXT("normal"));E->SetBoolField(TEXT("hard_kill_sent"),bHardKilled);E->SetBoolField(TEXT("reaped"),bReaped);E->SetBoolField(TEXT("trace_complete"),bTraceComplete);E->SetBoolField(TEXT("operational_failure"),bFailure||!bReaped||!bHaveCode||Exit!=0||!bTraceComplete);E->SetNumberField(TEXT("tail_bytes"),double(TailBytes));
+  FString Text;FJsonSerializer::Serialize(E,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));FTCHARToUTF8 U(*Text);
+  if(!TraceRaw(TEXT("worker-exit"),MakeArrayView(reinterpret_cast<const uint8*>(U.Get()),U.Length()),LastTraceRequest)||bFailure||!bReaped||!bHaveCode||Exit!=0||!bTraceComplete)
+   UE_LOG(LogTemp,Warning,TEXT("Universe child lifecycle failed: pid=%u reaped=%d return_code_available=%d forced=%d trace_complete=%d"),WorkerPid,bReaped,bHaveCode,bForced,bTraceComplete);
+  FPlatformProcess::CloseProc(Closing);
+ }
+ for(void** Field:{&StdoutReadPipe,&StderrReadPipe})if(*Field){void* Pipe=*Field;*Field=nullptr;void* Null=nullptr;FPlatformProcess::ClosePipe(Pipe,Null);}
+ PendingRaw.Reset();PendingStdout.Reset();bNeedsUniverseStatus=true;
+}
+
 void FEdgeWorldProcessTransport::StopProcess(bool bTerminate)
 {
+ if(Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe){StopUniverseProcess(bTerminate);return;}
 	if (StdinWritePipe)
 	{
 		void* PipeToClose = StdinWritePipe;
