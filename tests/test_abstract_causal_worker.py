@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import json
 from decimal import Decimal, ROUND_HALF_EVEN
+import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -42,6 +45,18 @@ class FakeGenesis:
 
 
 class AbstractCausalWorkerTests(unittest.TestCase):
+    def test_absolute_script_entrypoint_from_other_directory(self):
+        script = Path(__file__).resolve().parents[1] / "engine/edgeworld_worker/abstract_causal_worker.py"
+        with tempfile.TemporaryDirectory() as cwd:
+            env = os.environ.copy()
+            env.pop("PYTHONPATH", None)
+            completed = subprocess.run(
+                [sys.executable, str(script), "--help"], cwd=cwd, env=env,
+                capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("--state-dir", completed.stdout)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
