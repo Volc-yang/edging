@@ -1,0 +1,44 @@
+# Seed→Tree × Genesis：下一版 PDCA 方案树
+
+状态：2026-11-01，v0.2 设计方案；基线 `8a069fa`。用户已选择 Seed→Tree 场景，并要求 Genesis 物理为必需路径。用户进一步明确 seed/tree 是抽象的初态与因果发展态，并非植物实体。本文定义设计任务与接口裁决门；旧植物原型只作技术参考，不批准其生长规律、外形或 Genesis 物理行为。
+
+## 版本根节点 V-STG
+
+目标：从可标识的抽象 seed 初态出发，经显式逻辑时间及可追溯的 Genesis 物理候选和其他已批准因果输入，发展为可观察的抽象 tree 结构态；UE5 发布版渲染至少初态、中间态和发展态的指定历史切片。重复命令、重启恢复与纯读呈现须有可复查证据。AI 提案和载具登陆留作后续版本，不是本版必需门。
+
+**边界冲突：**[Seed→Tree v0.1](seed_tree_4d_render_slice_contract.md)的植物实验树 worker 不调用 Genesis，旧[阶段 1 契约](phase1_4d_prototype_contract.md)仅有单自由刚体。两条旧纵切不能简单并排运行就声称一个权威世界。G1 必须先冻结物理结果如何作为因果输入进入同一 tick 的候选状态、事件与提交边界，及其失败时不提交的规则。抽象 seed/tree 的最小状态语义、物理对象/量与因果作用需要单独产品/技术裁决。
+
+```text
+V-STG 范围和质量门
+├─ S0 场景/物理语义与 G0 阈值裁决 ─────────────┐
+├─ S1 共享状态和 Genesis 接口设计 ────────────┼─ S4 契约 v0.2 冻结
+├─ S2 UE 呈现与输入/只读检查设计 ──────────────┤           │
+└─ S3 证据、性能与独立验收设计 ────────────────┘           ▼
+                                         G2a/b/c 实现 → G3 集成 → G4 独立验收 → G5 复盘
+```
+
+S1/S2/S3 可并行提交**设计提案**，写文件互不重叠；S4 由统筹对齐字段、时序、误差与门后发布实现卡。G2 实现不得根据未批准的物理语义或视觉/性能阈值抢先定案。
+
+| 卡 / owner / 独占交付 | Plan / Do | Check / 证据 | Act / 放行条件 |
+| --- | --- | --- | --- |
+| S0 / 统筹与产品负责人 / [G0 决策记录](pdca_g0_freeze_decision_record.md) | 固定抽象状态/发展结构、场景动作与 Genesis 对象/物理量，目标机、资源预算、视觉/性能/恢复阈值；标明建议和批准 | 检查每个必需门的输入、数值/单位、方法、版本及裁决来源；缺项列为 `inconclusive` | 未定项阻止依赖它的实现/验收；允许 S1–S3 设计和无门值基准测量 |
+| S1 / 架构设计 agent / `doc/seed_tree_genesis_interface_proposal.md` | 比较旧植物树/刚体 worker 和 Genesis API；不得将植物阶段当作新语义；提出唯一写者、稳定 ID、单位/坐标、tick 内顺序、候选/提交/失败/恢复协议与 v1→v2 迁移 | 对照实际代码给字段映射、正常/拒绝时序图、最小可执行 fixture；独立 reviewer 找出双写或孤立物理结果 | 若旧适配器无法满足需求，限定最小扩展；不直接改 UE 源码 |
+| S2 / UE 设计 agent / `doc/seed_tree_genesis_ue_proposal.md` | 设计 UE 发布版观察、显式推进和抽象状态/因果结构的可见投影；区分权威物理状态与纯视觉动画 | 审查响应身份校验、初态/中间态/发展态画面、相机/帧率/暂停/显隐只读矩阵与输入可操作性；列真实 Metal 采证步骤 | 未有实图不判视觉通过；错误结果不得应用到 Actor |
+| S3 / QA 设计 agent / `doc/seed_tree_genesis_acceptance_proposal.md` | 固定 build/seed/Genesis 配置/Worker 目录/场景路线的证据包；设计物理轨迹、重演/恢复、CPU/GPU trace 与成本门 | 非实现 owner 审查每项能复算原始请求/响应/状态摘要和采样窗口；区分缺样与失败 | 缺 GPU trace 或阈值只报告观测值；保留旧 Seed→Tree 证据原版本 |
+| S4 / 统筹 / `doc/seed_tree_genesis_slice_contract.md` | 将 S0–S3 审查后的共享决定合成新版本实验契约，发布独立 G2a/b/c 任务 | 独立接口审查、DAG 无环、各文件所有权与固定输入检查；非批准项明确开放 | 通过才启动同一世界的实现；失败只返工受影响设计卡 |
+
+## 迭代检查与停止条件
+
+设计卡各自经独立 PR 和 CI 审查；PR 合并仅说明设计交付已集成。S4 需单独验收其接口与门，不把三份提案自动提升为已批准契约。运行阶段至少包含抽象发展转移、Genesis 物理候选、UE 只读呈现、重启恢复和独立复核；实测失败保留原始证据并只重开受影响叶卡。若目标机/性能/物理容差尚未冻结，G4 不能判产品门通过。
+
+## G2 实现任务卡（2026-11-01 放行有限技术纵切）
+
+[S4 实验契约](seed_tree_genesis_slice_contract.md)、[冻结的技术 fixture](fixtures/abstract_seed_genesis_v1.md)及[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md)已通过独立审查；`shaoyang=-7`、`taiyang=-35` 是同机四进程重复的**工程刺激结果**。下列实现可并行，均从同一集成提交创建独立 worktree。正式世界法则与 G0 产品阈值继续开放。
+
+| 卡 / 写入所有权 | Plan / Do | Check 与交付 |
+| --- | --- | --- |
+| G2-AUTHORITY / 新 `engine/edgeworld_worker/abstract_causal_worker.py`、新 `tests/test_abstract_causal_worker.py`，必要时仅新增同目录辅助文件 | 实现一个组合权威 manifest/revision、Genesis 候选、`influence_mm` 发展节点/因果边、JSONL v1、历史/幂等/错误/恢复；旧树/刚体 worker 与存档只读 | 固定两相配置的进程往返、预声明反事实字段差异、重复命令/负例无提交、重启对照和原始哈希；提交代码/定向测试与运行报告。Genesis 失败或提交不确定不得伪造成功 |
+| G2-UE / 新 `EdgeWorldCausal*` 插件/Host C++ 文件和仅本卡所需的 UE Build/config；不得改 Python worker/fixture | 从冻结组合 JSON 样本验证 world/tick/revision/watermark/版本/节点/物理引用后投影抽象节点/边；显式 Space、历史观察、键盘相机；UE 发布版优先 | UE 5.8.3 Editor build、固定 fixture 的正确/错身份解析、NullRHI 结构测试；Metal 三切片与 live Worker 留给 G3 集成，未运行不判通过 |
+| G3-INTEGRATE / 依赖两个 G2 PR 经审查集成 | 单 UE↔组合 worker↔Genesis 实际往返，固定同一 world 与 state dir；逐项只读和恢复，留存 Metal 图/日志 | 由非实现 owner 复查准确集成提交、原始 JSONL、权威摘要与画面；失败只重开受影响叶卡 |
+
+共享 wire/fixture 变更须先回到 G2-SCHEMA-FIXTURE 升版，不能由两个实现卡分别定义。两个实现卡独立 PR 指向本轮集成分支，统筹逐项审查后才执行 G3；G4 产品验收仍以 G0 完整门为前提。
