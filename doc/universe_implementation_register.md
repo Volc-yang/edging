@@ -34,7 +34,7 @@
 | E4 command/prepare/provider扩展 | u7；原`.worktrees/e4-universe-commands` / `codex/e4-universe-commands` / `1f95fac` | complete / PR #91 source `1fcae8b`，merge `a4c86b3` / 164tests、finalCI、独立review/root2321raw pass / 干净worktree已清理 |
 | E5 recovery/proof builder扩展 | u2；原`.worktrees/e5-universe-recovery` / `codex/e5-universe-recovery` / `1f95fac` | complete / PR #90 source `0db45fe`，merge `33c4fcb` / 155tests、finalCI、独立review/root13raw pass / 干净worktree已清理 |
 | E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | complete / PR #92 final `0ebd7b3`，merge `ba7568c` / 首15组+唯一segmented定向pass、89child/8kill全部回收，finalCI全suite成功、root原件/源码审查 / G-S1.2有限pass；干净worktree已清理 |
-| E7 fixed support质量语义修订 | u7；`.worktrees/e7-universe-support-mass` / `codex/e7-universe-support-mass` / `13899a2` | in progress / 原8路径独占；CPU与R-B已授 / 语义/runtime门待实际Check |
+| E7 fixed support质量语义修订 | u7；`.worktrees/e7-universe-support-mass` / `codex/e7-universe-support-mass` / `13899a2` | complete / PR #94 final `be951dc`，merge `52dd964` / 17CPU+oracle、UE实际StrictV02/exit0与finalCI/root raw审查pass；首TArray测试失败保留 / 干净worktree已清理 |
 | I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | complete / PR #93 final `572d4a4`，merge `cb39e0d` / Build/NullRHI exit0、9content/4native/0gap、root111raw+9actual文件及DAG核对、finalCI pass；6生成物核验归档后干净worktree已清理 |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
@@ -88,3 +88,17 @@ I0A清理仅5个provenance一致链接和untracked DefaultInput.ini（SHA e1b7a6
 后续完整树仍是I8真实Genesis→I10单root worker→I11显式Host→I12非作者真实组合验收，不能停在内核里程碑。
 
 G-C0.2/G-S1有限门pass；S_records不等于S_typed，后者及G-Q仍开放。没有新域真实Genesis/UE组合通过证据，完整I树进行中。默认legacy、主工作区用户改动与网站路由保持原边界。
+
+## E7接受与后继接口裁决（2026-11-02）
+
+E7 final `be951dc80a4b11e2aed81512db0b8edcd9313d83` / PR94 / merge `52dd9646fd9871d164a30ba0c20bac3024845c85`。root逐差异审质量谓词、契约、闭包/proof边界；source1753680 CPU17tests+oracle67golden/57negative/5proof通过；首UE构建成功但新增测试TArray自别名断言保留，精确PID22352终止exit-9；唯一test-only fix source8601ad2 Build/StrictV02真实exit0，总149.45s。finalCI run41335504783/job124934361722成功，root核对CPU10/UE24+26原件。详见[E7记录](e7_support_mass_amendment.md)。6生成物核验归档后非force移除worktree；cleanup raw-index `e7004cf893058caa372010a4176f44a62b626d5e2fbc3441776207f6ee055173`，branch/raw/DevSSD输出目标保留。
+
+I8 source834635c首次静态审计通过，root独立核对raw17/实际264源码/6 METADATA/adapter SHA；没有Genesis import。i6非作者预审提出两项最小返工：scratch不得落入authority；probe输入missing/unreadable/途中消失仍须保留原始异常、exit与index。u2获范围内返工、合并准确E7、stdlib定向与新build audit；adapter变化使旧B/O pins失效，旧原件保留，未授GPU。
+
+I10只读规划三项裁决接受：
+
+- 完整typed槽按明确分类/alias拟36，替换U8原32候选仅针对本technical profile；current typed≤288、S_records30与H≤64独立。资产、build/options身份和物理sample/snapshot/raw分账计件/bytes，不从总资源账消失。此profile只替换D/物理样本，typed槽不按+4增长；完整枚举方案待最终卡，不宣称G-Q通过。
+- 可信launcher传canonical owner-config文件，0700目录/0600文件、nofollow/nlink1/ownerUID核对后读一次freeze；无key字节，无request路径/session变更，无动态import。默认existing/recover不开新root；显式owner初始化mode可注册空root，仍需initialize命令，status本身不初始化/求解。
+- 真实B/O由外部正式bootstrap先审定，普通worker启动/status不得调用gs.init/measure_runtime_options；I0A实际资产body须重绑真实world并重算引用，I10纯组合单root。
+
+I11由u7只读规划新Host/显式launcher，I10由u9只读规划；均尚未开始实现/运行，保持实际依赖门。
