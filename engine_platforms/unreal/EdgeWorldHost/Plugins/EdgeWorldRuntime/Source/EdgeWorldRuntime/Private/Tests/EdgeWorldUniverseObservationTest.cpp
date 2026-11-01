@@ -99,7 +99,7 @@ bool FEdgeWorldUniverseObservationTest::RunTest(const FString& Parameters)
   if(Variant==0)Bodies[0]->AsObject()->SetStringField(TEXT("physical_id"),TEXT("body-support"));
   if(Variant==1)Bodies.Swap(0,1);
   if(Variant==2)Bodies.Pop();
-  if(Variant==3)Bodies.Add(Bodies[1]);
+  if(Variant==3){auto Extra=Bodies[1];Bodies.Add(Extra);}
   if(Variant==4)Bodies[0]->AsObject()->SetBoolField(TEXT("fixed"),true);
   Bad->GetObjectField(TEXT("body"))->SetArrayField(TEXT("bodies"),Bodies);CheckMassRecord(TEXT("E7 exact body identities/order/fields"),Bad,false);
  }
