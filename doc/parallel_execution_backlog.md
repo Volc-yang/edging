@@ -4,7 +4,7 @@
 
 ## G1 接口复核与 GQ 采样可行性（进行中）
 
-从远端基线 `617eb5c` 继续。G1 [独立代码审查](pdca_g1_interface_review.md)提交 `8244328`，PR #29/集成 `29facac`：共用 JSONL envelope 存在，但原通用探针不能跨单刚体、树、混沌直接复用。G1 [v0.2 设计](pdca_g1_interface_design.md)提交 `6c7b1b6`，PR #31/集成 `4d3f8d2`，补齐分领域 fixture、错误映射与 UE 身份校验责任；第二次独立只读复核和 CI 通过。树/混沌各六步 `Worker.handle` 自检通过，进程 JSONL、重启、UE 和 Genesis 未在该设计卡运行，G1 接口仍未冻结。GQ [可行性报告](pdca_gq_probe_report.md)提交 `6c16a6f`，PR #30/集成 `2cea123`：本机工具文件与计时路径存在，但用户 UE/Worker 正运行，未启动第二场景，CPU/GPU 信号导出门为 `inconclusive`。上述三任务 worktree 已核验干净并移除。下一动作：独立 G1 树/混沌进程探针正在执行；GQ 待隔离运行窗口；G0 版本场景、AI/Genesis 必需范围和运行阈值仍待裁决。
+从远端基线 `617eb5c` 继续。G1 [独立代码审查](pdca_g1_interface_review.md)提交 `8244328`，PR #29/集成 `29facac`：共用 JSONL envelope 存在，但原通用探针不能跨单刚体、树、混沌直接复用。G1 [v0.2 设计](pdca_g1_interface_design.md)提交 `6c7b1b6`，PR #31/集成 `4d3f8d2`，补齐分领域 fixture、错误映射与 UE 身份校验责任；第二次独立只读复核和 CI 通过。树/混沌各六步 `Worker.handle` 自检通过，进程 JSONL、重启、UE 和 Genesis 未在该设计卡运行，G1 接口仍未冻结。GQ [可行性报告](pdca_gq_probe_report.md)提交 `6c16a6f`，PR #30/集成 `2cea123`：本机工具文件与计时路径存在，但用户 UE/Worker 正运行，未启动第二场景，CPU/GPU 信号导出门为 `inconclusive`。G1 [进程探针](pdca_g1_runtime_probe_report.md)提交 `3d2f30a`，PR #32/集成 `8abc93f`：树和混沌各 9/9 次 JSONL 响应成功，重复命令结果、重启历史观察与已初始化后的只读文件哈希一致；初次 `status` 与状态文件创建重叠，该项归因未定。统筹复算五份原始文件 SHA256 与报告一致。四个独立任务 worktree 均已核验干净并移除。G1 仍需负例错误矩阵、UE/Genesis 必需路径和本版本范围裁决后才能冻结；GQ 待隔离运行窗口；G0 版本场景、AI/Genesis 必需范围和运行阈值仍待裁决。
 
 ## G0/G1/GQ 设计迭代（2026-11-01）
 
