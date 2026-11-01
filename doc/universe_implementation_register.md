@@ -16,9 +16,9 @@
 | I1 codec/records | `/root/u7_projection_design`；`.worktrees/i1-universe-codec` / `codex/i1-universe-codec` / `a9506eb` | complete / PR #78 source `ae4fd16`，merge `efba6fa` / 15tests、黄金/负例、非作者review和最终CI pass / 干净worktree已清理、分支保留 |
 | I2 ownership/进程锁 | `/root/u9_architecture_review`；`.worktrees/i2-universe-ownership` / `codex/i2-universe-ownership` / `a9506eb` | complete / PR #79 source `232e0a7`，merge `d2b7d29` / 24tests、3.10grammar、最终CI、root review/raw8/8 pass；首轮漏归档/唯一attempt2补证如实保留 / 干净worktree已清理、分支保留 |
 | I3 store/提交 | `/root/u9_architecture_review`；`.worktrees/i3-universe-store` / `codex/i3-universe-store` / `d2b7d29` | complete / PR #81 source `9a27207`，merge `69daec3` / 22tests+最终CI、root review/raw10/10及375/375 bytes pass / 干净worktree已清理、分支保留 |
-| I4 commands/admission/rules | `/root/u2_physics_design`；`.worktrees/i4-universe-commands` / `codex/i4-universe-commands` / `69daec3` | in progress / 未建PR / v0.1授权/准入/幂等fake候选，正式B-C / 活跃保留 |
-| I5 recovery/observe | `/root/u9_architecture_review`；`.worktrees/i5-universe-recovery` / `codex/i5-universe-recovery` / `69daec3` | in progress / 未建PR / 全历史恢复/精确纯读，正式B-C / 活跃保留 |
-| I6 无GPU独立故障验收 | 非I1–I5实现owner，待依赖 | queued / 未建 / G-S1 planned / 未建worktree |
+| I4 commands/admission/rules | `/root/u2_physics_design`；`.worktrees/i4-universe-commands` / `codex/i4-universe-commands` / `69daec3` | complete / PR #83 source `5fcd8d3`，merge `607e550` / 17新+共78tests、CI/root review，首loader失败与唯一attempt2保留 / 干净worktree已清理、分支保留 |
+| I5 recovery/observe | `/root/u9_architecture_review`；`.worktrees/i5-universe-recovery` / `codex/i5-universe-recovery` / `69daec3` | complete / PR #82 source `49f7b7a`，merge `09ed3bb` / 16tests+最终CI、root review/raw10/10及488/488 bytes pass / 干净worktree已清理、分支保留 |
+| I6 无GPU独立故障验收 | fresh `/root/i6_fault_acceptance`；`.worktrees/i6-universe-faults` / `codex/i6-universe-faults` / `607e550` | in progress / 11真实SIGKILL phase+独立子进程负例/重启/只读矩阵；G-S1 planned / 活跃保留 |
 | I7 物理fixture/API契约 | `/root/u2_physics_design`；`.worktrees/i7-universe-physics-contract` / `codex/i7-universe-physics-contract` / `a9506eb` | complete / PR #80 source `e005c2c`，merge `fe2176a` / G-P0静态pass；G-C0.2未接受 / 干净worktree已清理、分支保留 |
 | I8 真实Genesis新适配 | 等I6/I7/G-S1/G-P0/R-8 | queued / 未建 / G-P1 planned / 未建worktree |
 | I9 UE新域严格解析 | 等I0/I7/G-B0 | queued / 未建 / planned / 未建worktree |
@@ -32,7 +32,7 @@ worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C
 
 ## 已发布执行额度与审查分工
 
-I0及本轮已发布I1/I2/I3/I4/I5/I7/I0E各自正式获得本地stdlib无GPU检查额度：单次≤120秒、至多一次定向重跑、原件≤64MiB；不安装依赖、不运行UE/Genesis/模型，不写world状态。八份设计中候选75分钟/16GiB没有自动转为运行授权。
+I0及本轮已发布I1/I2/I3/I4/I5/I6/I7/I0E各自正式获得本地stdlib无GPU检查额度：单次≤120秒、至多一次定向重跑、原件≤64MiB；不安装依赖、不运行UE/Genesis/模型，不写world状态。八份设计中候选75分钟/16GiB没有自动转为运行授权。
 
 I0由`/root/u2_physics_design`准备非作者黄金bytes/hash复算与对抗审查；`/root/u7_projection_design`只读检查现Runtime envelope/UE兼容边界。这两项当前不是I1/I7提前实现。最终source经独立重算与主审接受G-C/G-S0（仅契约门），见[I0复核](design/universe-i0-coordination-review.md)。G-S1实际锁/故障/恢复仍planned。I1/I2/I7从同一merge `a9506eb7cadce9c5646e89f2c9daa48bf447730e`正式派发。I2编码可按冻结codec API并行，但实际import/Check边补充I1→I2，等待准确I1合并树；禁止stub。
 
@@ -58,10 +58,10 @@ I3补充纯内存nonblocking操作锁与按Lease身份的活跃Store登记：同
 
 ## 当前下一动作
 
-I0/I1/I2/I3/I7接受，[I3复核](design/universe-i3-coordination-review.md)。I4(u2)与I5(u9)从同一 `69daec3dcd443b5fab8e3405a3eaeda5fd85f499` 并行实现。I6必须新任非I1–I5实现者，u2现为I4作者不能任I6；I0E非作者字节复算仍可由u2承担。I4/I5各最终PR/CI/review接受后才派I6。
+I0–I5/I7全部接受，[I4复核](design/universe-i4-coordination-review.md)、[I5复核](design/universe-i5-coordination-review.md)。I6从准确合并 `607e5500797854e5026d72e67ae8f45c70454a31` 派fresh非I1–I5作者，独占script/tests/evidence，正式B-C；已审定最小11 phase真实SIGKILL握手+双writer/alias/恢复/幂等/坏历史/只读/分段等价矩阵。无GPU、不改production。准确source/完整raw/独立磁盘observer与门裁决后才可给G-S1。
 
-I0E由u7合成新v0.2共享契约，独占新contract/fixtures/oracle；root已接受最小4root方案（initial→retain→physical→retain）。retain显式命令，不调用provider，tick/physics steps/snapshot/D/预算/游标不变，只新增revision/A/event/index/root并计H；同tick覆盖null和数值D。六区typed起源/路线水系/九个显式存在/技术资产与投影不分配独立灵域，S旧32假设重算。独立Observe proof有可信current_head/member chain/selected bundle，与full history closure校验分离；<=1MiB且无raw。
+I0E由u7合成新v0.2共享契约；review source `3dadf39a1d97215eb8d01199f0649a6b9de7a68a`。首次check exit1：67golden+4正proof已过，full-history负例先触per-kind cap得到PROOF_LIMIT，原期望PROOF；u9静态核实既有拒绝优先级，允许纠正预期，不放松算法。唯一次rerun留待汇总修订：proof duplicate拒绝/有界memo、typed HeadBinding及外部storage_state/root/anchor完整绑定、FixtureVerifier与runtime-keyban/无secret属性协议、route/water范围/horizon、精确向后兼容模块API与无anchor ProvisionSpec→公共TrustAnchor→固定DeploymentContext生命周期。当前不通过G-C0.2。
 
-新增实质差距：固定未来receipt map无法承接未知真实Genesis candidate hash及重启历史A校验；I0E须冻结owner-injected可恢复动态trust机制，禁止archive自述授权或私改Store._trusted。runtime provider build/完整resolved defaults/资产依赖闭包必须真实封存，synthetic fixture声明不冒充runtime结果。
+合成机制：4root initial→retain→physics→retain；retain不调用provider，tick/steps/snapshot/D/预算/游标不变、只新增revision/A/event/index/root并计H。六区typed/九显式存在/技术资产投影不分独立灵域，S重新枚举；A_declared与未验证实际资产依赖闭包分开。独立Observe proof有外部可信HeadBinding，与完整archive/MAC/raw恢复分开，<=1MiB且无raw。外置owner-only HMAC key绑定唯一注册root，signer仅coordinator、Store/records只得verifier，纯读不建key，禁fixture公开key/runtime合成数据，不宣称anti-rollback或恶意owner隔离。
 
-修订边：I7→I0E/G-C0.2；I0E→受影响I1/I2/I3/I4/I5局部实现→扩展独立故障复验→I8/I9/I10对应接线。具体局部卡在准确契约通过后绑定范围/输入，禁止先猜实现；未受影响v0.1 I4/I5→I6继续。I12也必须非相关实现者验收。完整I树仍进行中。
+后继边：I7→I0E/G-C0.2→受影响I1–I5局部实现与扩展独立故障复验→I8/I9/I10对应接线，精确契约接受后另卡绑定范围/输入，不先猜实现。I6无GPU门与I0E并行；I8/UE/真实世界组合门仍planned，完整I树进行中。
