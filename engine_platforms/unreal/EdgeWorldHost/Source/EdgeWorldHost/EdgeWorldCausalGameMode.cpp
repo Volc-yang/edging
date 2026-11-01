@@ -1,6 +1,7 @@
 #include "EdgeWorldCausalGameMode.h"
 
 #include "EdgeWorldCausalActor.h"
+#include "EdgeWorldCausalHud.h"
 #include "EdgeWorldCausalObservation.h"
 #include "EdgeWorldJsonlClient.h"
 
@@ -13,6 +14,7 @@
 #include "Engine/SkyLight.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "GameFramework/SpectatorPawn.h"
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SkyLightComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -96,6 +98,8 @@ namespace
 AEdgeWorldCausalGameMode::AEdgeWorldCausalGameMode()
 {
 	PlayerControllerClass = AEdgeWorldCausalPlayerController::StaticClass();
+	DefaultPawnClass = ASpectatorPawn::StaticClass();
+	HUDClass = AEdgeWorldCausalHud::StaticClass();
 }
 AEdgeWorldCausalGameMode::~AEdgeWorldCausalGameMode() = default;
 
@@ -120,8 +124,6 @@ void AEdgeWorldCausalGameMode::StartPlay()
 	}
 	StartWorker();
 	UE_LOG(LogTemp, Display, TEXT("Causal world: Space advances; 0/1/2 history; H latest; R reconciles head; WASD/QE and arrows move one step per keypress."));
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 20.0f, FColor::Cyan,
-		TEXT("Causal world: click viewport; Space advance; 0/1/2 history; H latest; R reconcile; WASD/QE/arrows camera"));
 }
 
 void AEdgeWorldCausalGameMode::EndPlay(const EEndPlayReason::Type Reason)
@@ -237,9 +239,16 @@ void AEdgeWorldCausalGameMode::ObserveAt(int64 Tick)
 				return;
 			}
 			if (Weak->CausalActor) Weak->CausalActor->ApplyObservation(Sample);
-			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan,
-				FString::Printf(TEXT("Causal world %s tick %lld, revision %lld"), *Sample.WorldId,
-					static_cast<long long>(Sample.Tick), static_cast<long long>(Sample.Revision)));
+			if (UWorld* World = Weak->GetWorld())
+			{
+				if (APlayerController* Controller = World->GetFirstPlayerController())
+				{
+					if (AEdgeWorldCausalHud* Hud = Cast<AEdgeWorldCausalHud>(Controller->GetHUD()))
+						Hud->PresentValidated(Sample, Weak->HeadGate.LatestTick, Weak->HeadGate.LatestRevision);
+				}
+			}
+			UE_LOG(LogTemp, Display, TEXT("Causal world %s observed tick %lld, revision %lld"), *Sample.WorldId,
+				static_cast<long long>(Sample.Tick), static_cast<long long>(Sample.Revision));
 		});
 	});
 }
