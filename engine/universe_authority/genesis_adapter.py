@@ -33,7 +33,8 @@ _CRITICAL = (
     'engine/entities/base_entity.py', 'engine/entities/rigid_entity/rigid_entity.py',
     'engine/entities/rigid_entity/description.py', 'engine/entities/rigid_entity/inertial.py',
     'engine/solvers/kinematic_solver.py', 'engine/solvers/base_solver.py',
-    'engine/solvers/rigid/rigid_solver.py', 'engine/mesh.py', 'engine/scene.py', 'utils/geom.py',
+    'engine/solvers/rigid/rigid_solver.py', 'engine/solvers/rigid/collider/gjk.py',
+    'engine/solvers/rigid/constraint/solver.py', 'engine/mesh.py', 'engine/scene.py', 'utils/geom.py',
 )
 _DEPENDENCIES = ('numpy', 'pydantic', 'quadrants', 'torch', 'trimesh')
 _MAX_RAW = 8_388_608
@@ -223,28 +224,51 @@ def _objects(gs, parameters):
     return scene_options, morphs, material
 
 
-def _exports(objects):
-    scene_options, morphs, material = objects
-    return dict(sim_options=_dump(scene_options.sim), rigid_options=_dump(scene_options.rigid),
-                dynamic_morph=_dump(morphs[0]), support_morph=_dump(morphs[1]),
-                rigid_material=_dump(material))
+def _scene_exports(scene, parameters):
+    """Read the complete public post-build view, including support material."""
+    _require(tuple(scene.entity_names) == tuple(e['genesis_name'] for e in parameters['entities'])
+             and len(scene.entities) == 2, 'BUILD')
+    entities = [scene.get_entity(name=e['genesis_name']) for e in parameters['entities']]
+    _require(not entities[0].base_link.is_fixed and entities[1].base_link.is_fixed, 'BUILD')
+    exports = dict(sim_options=_dump(scene.options.sim), rigid_options=_dump(scene.options.rigid),
+                   dynamic_morph=_dump(entities[0].morph), support_morph=_dump(entities[1].morph),
+                   rigid_material=_dump(entities[0].material))
+    _require(_dump(entities[1].material) == exports['rigid_material'], 'BUILD',
+             'dynamic and support public material differ')
+    return exports, entities
+
+
+def _options_record(parameters, approved_build, options_id, exports):
+    body = dict(artifact_class='genesis-runtime', resolution='runtime-exported',
+                normalizer='public-model-dump.v0.2', declarations={}, exports=exports,
+                parameter_hash=hashlib.sha256(canonical(dict(parameters))).hexdigest())
+    return _record(approved_build['world_id'], 'resolved_options', options_id, body,
+                   {'build': digest(approved_build)})
 
 
 @_logged
 def measure_runtime_options(parameters: Mapping, *, approved_build: Record, options_id: str) -> Record:
-    """Explicit runtime bootstrap; no Scene/build/step/checkpoint or world HEAD."""
+    """Owner bootstrap: public zero-step Scene.build resolves actual defaults.
+
+    The exact input parameter literals stay unchanged. Post-build fields such as
+    max_contacts are read, never copied from a diagnostic or patched by adapter.
+    No checkpoint, world record, authority write or physics step occurs here.
+    """
     validate_record(approved_build)
     _require(approved_build['kind'] == 'provider_build'
              and approved_build['body']['artifact_class'] == 'genesis-runtime', 'BUILD')
     measured, _ = measure_installed_build(world_id=approved_build['world_id'], build_id=approved_build['id'])
     _require(canonical(measured) == canonical(approved_build), 'BUILD', 'owner-audited source changed')
+    scene = None
     try:
-        exports = _exports(_objects(_runtime(), deepcopy(dict(parameters))))
-        body = dict(artifact_class='genesis-runtime', resolution='runtime-exported',
-                    normalizer='public-model-dump.v0.2', declarations={}, exports=exports,
-                    parameter_hash=hashlib.sha256(canonical(dict(parameters))).hexdigest())
-        result = _record(approved_build['world_id'], 'resolved_options', options_id, body,
-                         {'build': digest(approved_build)})
+        gs = _runtime()
+        scene_options, morphs, material = _objects(gs, deepcopy(dict(parameters)))
+        scene = gs.Scene(show_viewer=False, options=scene_options)
+        for declaration, morph in zip(parameters['entities'], morphs):
+            scene.add_entity(morph=morph, material=material, name=declaration['genesis_name'])
+        scene.build()
+        exports, _ = _scene_exports(scene, parameters)
+        result = _options_record(parameters, approved_build, options_id, exports)
         after, _ = measure_installed_build(world_id=approved_build['world_id'], build_id=approved_build['id'])
         _require(canonical(after) == canonical(approved_build), 'BUILD', 'source changed during bootstrap')
         return result
@@ -254,6 +278,9 @@ def measure_runtime_options(parameters: Mapping, *, approved_build: Record, opti
         raise ContractError('BUILD', 'complete public options validation failed') from exc
     except Exception as exc:
         raise ContractError('BUILD', 'complete public options export failed') from exc
+    finally:
+        if scene is not None:
+            scene.destroy()
 
 
 def _serialized(function):
@@ -322,7 +349,14 @@ class GenesisProvider:
         self._lock = threading.Lock()
 
     def _measure(self):
-        measured = measure_runtime_options(self._parameters, approved_build=self._build, options_id=self._options['id'])
+        build, _ = measure_installed_build(world_id=self._build['world_id'], build_id=self._build['id'])
+        _require(canonical(build) == canonical(self._build), 'BUILD', 'owner-audited source changed')
+        if self._scene is None:
+            measured = measure_runtime_options(self._parameters, approved_build=self._build,
+                                                options_id=self._options['id'])
+        else:
+            exports, _ = _scene_exports(self._scene, self._parameters)
+            measured = _options_record(self._parameters, self._build, self._options['id'], exports)
         _require(canonical(measured) == canonical(self._options), 'BUILD', 'runtime defaults differ from owner pins')
         return _runtime()
 
@@ -343,16 +377,8 @@ class GenesisProvider:
             scene.destroy()
 
     def _scene_identity(self):
-        scene = self._scene
-        _require(tuple(scene.entity_names) == tuple(e['genesis_name'] for e in self._parameters['entities'])
-                 and len(scene.entities) == 2)
-        entities = [scene.get_entity(name=e['genesis_name']) for e in self._parameters['entities']]
-        _require(not entities[0].base_link.is_fixed and entities[1].base_link.is_fixed)
-        expected = self._options['body']['exports']
-        actual = dict(sim_options=_dump(scene.options.sim), rigid_options=_dump(scene.options.rigid),
-                      dynamic_morph=_dump(entities[0].morph), support_morph=_dump(entities[1].morph),
-                      rigid_material=_dump(entities[0].material))
-        _require(actual == expected and _dump(entities[1].material) == expected['rigid_material'], 'BUILD',
+        actual, entities = _scene_exports(self._scene, self._parameters)
+        _require(actual == self._options['body']['exports'], 'BUILD',
                  'loaded scene options/geometry/material differ from owner pins')
         return entities
 

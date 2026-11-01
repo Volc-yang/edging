@@ -3,6 +3,7 @@
 
 `audit` is stdlib-only. `options` and `probe` explicitly require a separately
 approved GPU window; neither creates an authority directory or world HEAD.
+Options bootstrap resolves defaults with a public zero-step Scene.build.
 """
 from __future__ import annotations
 
