@@ -204,7 +204,13 @@ version/profile, algorithm/anchor, expected_build/options and artifact_class.
 CLI state-dir must equal that root; a copied/migrated authority directory, even
 with the same world/key, fails ROOT_MISMATCH. Path identity is also checked under
 the lease; no alias, symlink escape or automatic re-registration. Root identity
-adds trust_algorithm and trust_anchor. Registration is external trusted input,
+adds trust_algorithm and trust_anchor. v0.2 identity.json exact keys are
+`domain,version,world_id,profile,root_canonical,root_device,root_inode,
+trust_algorithm,trust_anchor,expected_build,expected_options,artifact_class,
+archive_profile`; profile is local-posix-blob-sync-v0.2, archive_profile is
+composite-rigid-support.v0.2. All public pins must equal DeploymentContext;
+device/inode keep v0.1 decimal-string syntax. No key bytes or key_dir are stored
+in identity. Registration is external trusted input,
 not a field accepted from archive/CLI request JSON.
 
 Exact framing (NUL is one byte; ASCII digests are lowercase):
@@ -473,7 +479,7 @@ CommitBundle(expected_head:str,records:tuple[Record,...],head:str,
              principal:str,command_id:str,fingerprint:str,
              blobs:tuple[BlobWrite,...]=())
 PinnedRoot(head:str,head_bytes:bytes,objects:Mapping[str,bytes],
-           blobs:Mapping[str,bytes])
+           blobs:Mapping[str,bytes]=field(default_factory=dict))
 ```
 
 Static allowed ownership pairs are (0.1,local-posix-sync-v0.1) and
@@ -495,6 +501,8 @@ read-only injected verifier for v0.2 only, raises PROFILE on v0.1. Existing
 `storage_state:str,closure:ValidatedClosure`; CommitReceipt stays
 `manifest:str,result:Record|None,commit_status:str="confirmed"`.
 
+PinnedRoot.blobs uses a fresh empty mapping per instance and defensive immutable
+copy on construction; existing three-argument v0.1 construction remains legal.
 v0.1 initialize/commit requires empty blobs and pin returns empty blobs mapping.
 v0.2 initializes exact initial world/physics closure and descriptor payloads;
 commit includes every new required raw BlobWrite once, may reuse already pinned
