@@ -1,0 +1,9 @@
+{
+  "artifact_class": "synthetic-contract-only",
+  "authority_root": "/edgeworld-static-fixture/composite-demo",
+  "expected_build": "82194ced26d70bb7120d12b5c4cb65f20a0eab22605d1186ffffe42a7671cccb",
+  "expected_options": "741f8470d29c5985c2954afdb304a85fee207211c68fa5a25696ef07996cfd7f",
+  "trust_algorithm": "local-hmac-sha256.v0.2",
+  "trust_anchor": "6846314412ac5ee37b770f1dd7d7ce71076a8df04ee00c59c9bae11483b4fc68",
+  "world_id": "composite-demo"
+}
