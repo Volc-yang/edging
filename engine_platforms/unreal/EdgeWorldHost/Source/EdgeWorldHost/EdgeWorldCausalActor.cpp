@@ -1,4 +1,5 @@
 #include "EdgeWorldCausalActor.h"
+#include "EdgeWorldCausalEnvironment.h"
 
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
@@ -8,6 +9,13 @@
 AEdgeWorldCausalActor::AEdgeWorldCausalActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
+}
+
+void AEdgeWorldCausalActor::BeginPlay()
+{
+	Super::BeginPlay();
+	if (UWorld* World = GetWorld())
+		Environment = World->SpawnActor<AEdgeWorldCausalEnvironment>();
 }
 
 void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& Observation)
@@ -24,7 +32,7 @@ void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& 
 	TArray<FVector> Centers;
 	for (const FEdgeWorldCausalNode& Node : Observation.Nodes)
 	{
-		const FVector Center(200.0 * Node.Tick, Node.bInitial ? 0.0 : static_cast<double>(Node.InfluenceMm), 0.0);
+		const FVector Center(200.0 * Node.Tick, Node.bInitial ? 0.0 : static_cast<double>(Node.InfluenceMm), 115.0);
 		Centers.Add(Center);
 		if (AStaticMeshActor* Proxy = World->SpawnActor<AStaticMeshActor>(Center, FRotator::ZeroRotator))
 		{
@@ -32,7 +40,7 @@ void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& 
 			Mesh->SetMobility(EComponentMobility::Movable);
 			Mesh->SetStaticMesh(Sphere);
 			Mesh->SetMaterial(0, BaseMaterial);
-			Proxy->SetActorScale3D(FVector(0.24));
+			Proxy->SetActorScale3D(FVector(0.40));
 			if (UMaterialInstanceDynamic* Material = Mesh->CreateAndSetMaterialInstanceDynamic(0))
 				Material->SetVectorParameterValue(TEXT("Color"), Node.bInitial
 					? FLinearColor(0.0f, 0.6f, 1.0f) : FLinearColor(1.0f, 0.6f, 0.0f));
@@ -50,7 +58,7 @@ void AEdgeWorldCausalActor::ApplyObservation(const FEdgeWorldCausalObservation& 
 			Mesh->SetMobility(EComponentMobility::Movable);
 			Mesh->SetStaticMesh(Cylinder);
 			Mesh->SetMaterial(0, BaseMaterial);
-			Proxy->SetActorScale3D(FVector(0.04, 0.04, Delta.Size() / 100.0));
+			Proxy->SetActorScale3D(FVector(0.065, 0.065, Delta.Size() / 100.0));
 			if (UMaterialInstanceDynamic* Material = Mesh->CreateAndSetMaterialInstanceDynamic(0))
 				Material->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.8f, 0.8f, 0.8f));
 			Proxies.Add(Proxy);
