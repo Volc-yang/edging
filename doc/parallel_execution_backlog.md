@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## U 总计划设计检查点（进行中）
+
+以 `f674483` 为固定输入，已合成两位只读规划 agent 的方案，形成[下一阶段架构设计树](universe_architecture_design_plan.md) v0.1；同步总图 v0.3，纠正将历史 G1/GQ/F0–F2 规划误作尚未开始的描述。U1 世界身份/因果、U5 丰富混沌初态为下一 ready 设计卡；U2–U9 按依赖解锁，尚未派发写入子任务。基础单元建模为可追溯世界存在属于设计建议，不限定方块、不批准灵域分化或最终演化规律。方案树经非作者只读复核，并检查九卡路径唯一、依赖一致、DAG 无环与链接有效；尚不代表叶卡验收。设计本身不占 GPU；H6C 在独立 worktree 从 `f674483` 运行，仍未完成，不因本次文档提交关闭 V-HOME。
+
 ## V-HOME 可访问世界纵切（进行中）
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
