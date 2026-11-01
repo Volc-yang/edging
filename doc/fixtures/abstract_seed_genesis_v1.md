@@ -19,7 +19,7 @@
 
 ## 2. 数值与发展函数 F（仅工程探针）
 
-求解器返回有限 IEEE-754 binary64 `position[3]` 和 `velocity[3|6]`。worker 在同一候选 tick 取 `z_new=position[2]` 与前一已提交物理状态 `z_previous`；使用 Python 3.12 的 `Decimal.from_float(z_new)` 和 `Decimal.from_float(z_previous)` 精确转换二进制浮点值，再在 Decimal 中计算 `(z_new-z_previous)*1000`，以 `ROUND_HALF_EVEN` 四舍六入、五成双到整数，得到 `influence_mm`。先分别验证原浮点有限，再运算；结果必须在 `[-(2^53-1), +(2^53-1)]`，否则拒绝本 tick。精确半值向偶数整数舍入，例如 `2.5→2`、`3.5→4`、`-2.5→-2`。UE **只读取整数结果**，不重新计算 F。
+求解器返回有限 IEEE-754 binary64 `position[3]` 和 `velocity[3|6]`。worker 在同一候选 tick 取 `z_new=position[2]` 与前一已提交物理状态 `z_previous`；使用 Python `decimal.Decimal.from_float(z_new)` 和 `Decimal.from_float(z_previous)` 精确转换二进制浮点值；在 `localcontext(prec=2000, rounding=ROUND_HALF_EVEN)` 内计算 `(z_new-z_previous)*1000` 并以 `to_integral_value(rounding=ROUND_HALF_EVEN)` 得到 `influence_mm`。记录实际 Python/Decimal 运行时版本，精确重演使用同版本。先分别验证原浮点有限，再运算；结果必须在 JSON 安全整数范围 `[-(2^53-1), +(2^53-1)]`，且本工程探针另限制在 `[-1000,+1000]` 毫米，否则以 `invalid_influence_range` 拒绝本 tick且不提交。精确半值向偶数整数舍入，例如 `2.5→2`、`3.5→4`、`-2.5→-2`。UE **只读取整数结果**，不重新计算 F。
 
 每次成功 tick 的发展节点含 `{node_id,tick,influence_mm,physics_candidate_hash}`；因果边含 `{edge_id,from_node_id,to_node_id,command_id,physics_candidate_hash}`。`influence_mm` 必须由实际 Genesis 候选向量计算，并进入发展结构的 canonical hash；仅存物理 hash 或直接显示轨迹不算发展差异。规则 ID `abstract-causal-probe.v1`。反事实检查固定全部其他输入，仅改变显式 phase，比较同一节点 ID 的 `influence_mm` 与按第 4 节计算的 UE 抽象节点位置。此 F 不代表真实宇宙演化规律。
 
@@ -35,7 +35,7 @@
 | --- | --- | --- |
 | `status` | 无 | `world_id,schema_version="abstract-seed-genesis.v1",logical_tick,state_revision,seed_id,physical_probe_id,head_state_hash,event_head_hash,checkpoint_sha256,genesis_config_hash`；初态的 checkpoint hash 也必须可定位 |
 | `advance` | `command_id` 非空；`expected_revision`、`target_tick` 安全非负整数；`external_inputs={"schema_version":"abstract-causal-input.v1","phase":"shaoyang"|"taiyang"}`；本版只允许恰好下一 tick | 同 status 的 head 字段，加 `command_id,record`；`record={logical_tick,state_revision,node_id,edge_id,influence_mm,physics_candidate_hash,checkpoint_sha256,state_hash,event_hash}`。重复同 command/payload 返回相同领域 result，响应 request ID 可不同 |
-| `observe` | `logical_tick` 安全非负整数；`view_spec={watermark,region:"causal-fragment-v1",observer:"ue-causal-camera-v1",resolution:"causal-graph-proxy-v1",error_budget:{semantic_state:"exact",visual_geometry:"unmeasured-proxy"},rules:{evolution:"abstract-causal-probe.v1",projection:"causal-graph-ue.v1"}}` | `world_id,schema_version,logical_tick,source_revision,watermark,seed_state,development_structure,physics_sample,state_hash,event_hash,checkpoint_sha256,projection_version,view_spec`。`seed_state={seed_id,initial_state_hash}`；`development_structure={root_id,nodes,edges,structure_hash}`；`physics_sample={physical_probe_id,position,velocity,physics_candidate_hash,genesis_config_hash}`。所有样本/引用来自同一提交 revision |
+| `observe` | `logical_tick` 安全非负整数；`view_spec={watermark,region:"causal-fragment-v1",observer:"ue-causal-camera-v1",resolution:"causal-graph-proxy-v1",error_budget:{semantic_state:"exact",visual_geometry:"unmeasured-proxy"},rules:{evolution:"abstract-causal-probe.v1",projection:"causal-graph-ue.v1"}}` | `world_id,schema_version,logical_tick,source_revision,watermark,seed_state,development_structure,physics_sample,state_hash,event_hash,checkpoint_sha256,projection_version,view_spec`。`seed_state={seed_id,initial_state_hash}`；`development_structure={root_id,nodes,edges,structure_hash}`；`physics_sample={physical_probe_id,position,velocity,phase,physics_candidate_hash,genesis_config_hash}`。所有样本/引用来自同一提交 revision |
 
 `observe` 的 `watermark` 必须等于该历史 tick 的 revision；本版每个成功命令恰好推进一 tick/revision，初态二者为 0。初态节点的 `influence_mm` 为 JSON `null`，edges 为空；之后 nodes/edges 按 tick 升序，既有节点不可被历史查询重写。`event_hash` 是该 tick 事件头，初态使用固定 genesis event hash；`checkpoint_sha256` 对应该 tick 的可加载物理前态/后态。UE 检查 world、tick、revision、水位、schema/投影版本、稳定 ID、节点/边引用完整性、物理候选引用、字段范围；错误或不完整响应不得更新画面或本地 head。
 
@@ -43,16 +43,16 @@
 
 精确摘要输入：`physics_candidate_hash=SHA256(canonical({physical_probe_id,position,velocity,genesis_config_hash,phase}))`；`event_hash=SHA256(canonical({previous_event_hash,logical_tick,command_id,physics_candidate_hash,node_id,edge_id,influence_mm,rule_version:"abstract-causal-probe.v1"}))`；`state_hash=SHA256(canonical({world_id,logical_tick,state_revision,seed_state,structure_hash,physics_candidate_hash,genesis_config_hash}))`。初态 `phase=null`、无边/事件，用初态物理候选 hash 计算初态 state hash。实现者不得把 `request_id`、UE 相机或墙钟加入这些摘要。
 
-`genesis_config_hash=SHA256(canonical({genesis_version:"1.4.3",backend:"metal",dt:0.01,physical_steps:8,seed:7,initial_position:[0,0,1],radius:0.1}))`；phase 是逐命令输入，不包含在此固定配置 hash。`physics_sample` 的初态 `phase` 为 JSON `null`，推进后回显命令 phase；其余字段在所有时刻必填。`nodes` 和 `edges` 的每个对象仅允许前述精确字段，不能擅自增加别名；若今后扩展，提升 schema_version。`record` 的 `node_id/edge_id` 必须指向该 revision 中的 nodes/edges。
+`genesis_config_hash=SHA256(canonical({genesis_version:"1.4.3",backend:"metal",dt:0.01,physical_steps:8,seed:7,initial_position:[0,0,1],radius:0.1}))`；phase 是逐命令输入，不包含在此固定配置 hash。`physics_sample.phase` 必填，初态为 JSON `null`，推进后回显命令 phase；其余字段在所有时刻必填。`nodes` 和 `edges` 的每个对象仅允许前述精确字段，不能擅自增加别名；若今后扩展，提升 schema_version。`record` 的 `node_id/edge_id` 必须指向该 revision 中的 nodes/edges。
 
 ## 4. UE v1 确定性纯投影
 
-观察结果中的发展节点 `t` 映成一个 UE BasicShapes 代理中心 `(X,Y,Z)=(200*t,10*influence_mm,0)`，单位厘米；初态节点 `(0,0,0)`。每个因果边用中心间一条线段/圆柱表示，端点由两节点坐标确定，色彩按固定 `causal-graph-ue.v1` 材质参数表；物理样本可作为独立标记或文字证据，但不能替代发展节点差异。相同 Observe 样本须得到同样组件数、节点中心和边端点；相机与画质不参与投影输入或 worker 命令。这里的平面坐标只为可视化编码，不是 Genesis 世界坐标或最终宇宙空间。
+观察结果中的发展节点 `t` 映成一个 UE BasicShapes 代理中心 `(X,Y,Z)=(200*t,1*influence_mm,0)`，单位厘米；本探针 `influence_mm` 限于 `[-1000,+1000]`，因此 Y 位于 ±1000 cm；初态节点 `(0,0,0)`。每个因果边用中心间一条线段/圆柱表示，端点由两节点坐标确定，色彩按固定 `causal-graph-ue.v1` 材质参数表；物理样本可作为独立标记或文字证据，但不能替代发展节点差异。相同 Observe 样本须得到同样组件数、节点中心和边端点；相机与画质不参与投影输入或 worker 命令。这里的平面坐标只为可视化编码，不是 Genesis 世界坐标或最终宇宙空间。
 
 v1 代理参数：每节点一个半径 12 cm 的球，初态线性 RGB `(0.0,0.6,1.0)`，成功 tick 节点 `(1.0,0.6,0.0)`；每边一个半径 2 cm 的圆柱，线性 RGB `(0.8,0.8,0.8)`，长度为两端球心欧氏距离，方向沿端点向量。投影不使用帧时间、相机位姿或未提交物理轨迹，组件以 node/edge ID 排序创建。屏幕可辨性仍须 Metal 实图独立验收，尺寸和色彩只是技术 fixture。
 
 ## 5. 错误与 Check
 
-本组合领域冻结的 worker 错误码：`invalid_json`、`unsupported_protocol`、`invalid_request`、`world_not_found`、`unsupported_schema`、`invalid_command_id`、`command_id_conflict`、`revision_conflict`、`tick_sequence_error`、`invalid_external_inputs`、`unsupported_phase`、`history_missing`、`watermark_mismatch`、`unsupported_rules`、`unsupported_projection`、`genesis_failed`、`invalid_physics_result`、`persistence_failed`、`commit_status_uncertain`、`worker_stopped`。UE transport/解析错误另记，不将其伪装成 worker wire code。负例、Genesis 失败、非有限值及缺历史不得产生成功提交；替换 manifest 已开始且结果不明时进入停止写入状态，重启后从磁盘判定。旧 worker 现有错误名与此新领域不必逐项相同。
+本组合领域冻结的 worker 错误码：`invalid_json`、`unsupported_protocol`、`invalid_request`、`world_not_found`、`unsupported_schema`、`invalid_command_id`、`command_id_conflict`、`revision_conflict`、`tick_sequence_error`、`invalid_external_inputs`、`unsupported_phase`、`history_missing`、`watermark_mismatch`、`unsupported_rules`、`unsupported_projection`、`genesis_failed`、`invalid_physics_result`、`invalid_influence_range`、`persistence_failed`、`commit_status_uncertain`、`worker_stopped`。UE transport/解析错误另记，不将其伪装成 worker wire code。负例、Genesis 失败、非有限值及缺历史不得产生成功提交；替换 manifest 已开始且结果不明时进入停止写入状态，重启后从磁盘判定。旧 worker 现有错误名与此新领域不必逐项相同。
 
 **当前 Check：**请求/结果字段、ID 和 F/投影规则可静态审查；Genesis 公开 API 支持相位重力和 checkpoint 见 [旧 API 审计](../genesis_public_api_audit.md)及当前 `worker.py`。真实两相数值、checkpoint 可复查性、UE 解析和 Metal 画面均**未执行**；用户 UE/Worker 运行占用 GPU，且系统 Python 无 Genesis。阶段门为 `inconclusive`，G2-AUTHORITY/G2-UE 的并行实施仍待独立审查与隔离 Genesis 反事实短探针，不从文档存在推出运行通过。
