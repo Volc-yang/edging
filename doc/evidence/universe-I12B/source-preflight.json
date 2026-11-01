@@ -1,0 +1,11 @@
+{
+  "current_source_head": "1e1361a65a8310547dc608afa1a0ab3e0d3bf4c4",
+  "tracked_source_clean": true,
+  "exact_allowed_untracked_verified": 6,
+  "launcher_output_mapping_verified": true,
+  "immutable_runtime_paths_canonical": true,
+  "candidate_approved": false,
+  "candidate_source_requires_root_final_repin": true,
+  "actual_runner_called": false,
+  "elapsed_seconds": 0.031132875010371208
+}
