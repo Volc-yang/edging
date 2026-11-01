@@ -115,6 +115,18 @@ fixed-support, settle and recovery probe obligations remain I7's accepted
 [`universe_physics_v0_1.md`](universe_physics_v0_1.md). This oracle is not evidence
 that those dynamic obligations have run.
 
+E7 mass amendment (2026-11-02): each sample retains the public Genesis
+`get_links_mass()` solver inertial-mass value as a finite typed f64. Only
+`body-support`, identified as fixed by the frozen config and exact binding,
+may have mass >=0; `body-dynamic` requires mass >0. Both signed zeros are
+accepted for support and preserved bit-for-bit; both are rejected for dynamic.
+Negative/nonfinite mass, unknown/duplicate/missing/reordered body IDs and
+forged fixed/config/binding identities remain invalid. This does not change
+config bytes, f64 encoding, record prefixes, or existing synthetic goldens.
+Their positive support mass 3200 remains a static synthetic value, never a
+runtime expectation or substitute for a getter result. Zero-support derived
+test closures/proofs remain synthetic and do not prove runtime physics.
+
 provider_build pins distribution/version, METADATA byte SHA, Python ABI,
 critical source byte hashes, installed Python source-tree hash/count, dependency
 METADATA/version and adapter source hash. Tree hash is SHA256(C(files)), where
