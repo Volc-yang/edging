@@ -355,7 +355,8 @@ HeadBinding(head:str, world_id:str, authority_root:str, trust_algorithm:str,
             artifact_class:str, domain:str, version:str, profile:str,
             storage_state:str)
 VerifiedObservation(manifest:str, state:Record, event:Record|None,
-                    storage_state:str, artifact_class:str, scope:str, bytes:int)
+                    storage_state:str, artifact_class:str, scope:str, bytes:int,
+                    selected_records:Mapping[str,Record])
 BlobMeta(sha256:str, byte_count:int, media_type:str,
          artifact_class:str="genesis-runtime")
 BlobWrite(sha256:str, payload:bytes, media_type:str,
@@ -371,6 +372,14 @@ constants are explicit on archive/HeadBinding. VerifiedObservation.scope is
 exactly `selected-slice-membership-only-not-full-history-or-raw-validation`.
 bytes is actual validated wire JSON byte count excluding one optional LF.
 Its manifest field is selected record digest; state/event are full records.
+selected_records is a defensive read-only digest→record mapping of the verified
+selected dependency slice, including full selected manifest, world/geography/
+assets, physics snapshot/sample/config/binding/build/options and transform plus
+required prior transition dependencies. I9 resolves rendering inputs through
+this already validated mapping, never by an unvalidated external lookup. Opaque
+history refs are not materialized; unrelated membership-only history manifests
+are not added as rendering dependencies. This production DTO addition does not
+require the compact static oracle to simulate renderer DTO construction.
 This is not a ValidatedClosure and cannot authorize Store writes.
 
 Trust module imports codec only; verifier protocol does not import trust.py:
