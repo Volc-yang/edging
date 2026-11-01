@@ -25,7 +25,9 @@ E1 PR #87/source `4a69788`/merge `3d6c161`（116tests、i6 review、finalCI、ro
 
 E3 PR #89/source `2f76b75`/merge `1f95fac`接受，[复核](design/universe-e3-coordination-review.md)。E4 PR #91/source `1fcae8b`/merge `a4c86b3`、E5 PR #90/source `0db45fe`/merge `33c4fcb`、I9 PR #86/source `0a905cf`/merge `e47065a`均经审查、真实局部Check与最终CI接受，干净worktree清理；[复核](design/universe-e4-e5-i9-coordination-review.md)保留失败及限制。
 
-当前E6独立v0.2故障门：首轮16组15pass、8真kill/79child全回收；唯一HEAD inode测试判断错误已批准仅segmented定向复测，G-S1.2尚未接受。I0A owner首实跑报告9资产/4native/0gap，待审；I8仅只读准备，未启动GPU。后续继续真实Genesis I8→单root worker I10→Host I11→独立组合I12，完整实现树未完成。准确状态/资源/Goal工具限制见[I登记](universe_implementation_register.md)。S_records不是U8 S_typed，G-Q/实际defaults/产品门保持开放。
+E6 PR92/final `0ebd7b3`/merge `ba7568c`接受，首失败和唯一segmented复测保留，89child/8真kill全回收；最终CI全suite及root原件审查通过，G-S1.2有限pass。I0A PR93/final `572d4a4`/merge `cb39e0d`接受9资产/4native/352341B的editor-source完整图，非cook/许可/质量门。详细报告及清理见[I登记](universe_implementation_register.md)。
+
+I8静态源码核对发现fixed support真实mass=0与校验mass>0冲突，最小E7语义修订先行（dynamic仍>0，旧synthetic黄金值不改）；I8尚未启动GPU。之后继续真实Genesis I8→单root worker I10→Host I11→独立组合I12。完整实现树未完成；S_records不是U8 S_typed，G-Q/实际defaults/产品门开放，Goal工具限制不变。
 
 ## V-HOME 可访问世界纵切（进行中）
 

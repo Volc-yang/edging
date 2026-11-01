@@ -33,8 +33,8 @@
 | E3 Store扩展 | u2；`.worktrees/e3-universe-blob-store` / `codex/e3-universe-blob-store` / `accbe3b` | complete / PR #89 source `2f76b75`，merge `1f95fac` / 142tests、u7review、root raw12/12、CI pass / 干净worktree已清理 |
 | E4 command/prepare/provider扩展 | u7；原`.worktrees/e4-universe-commands` / `codex/e4-universe-commands` / `1f95fac` | complete / PR #91 source `1fcae8b`，merge `a4c86b3` / 164tests、finalCI、独立review/root2321raw pass / 干净worktree已清理 |
 | E5 recovery/proof builder扩展 | u2；原`.worktrees/e5-universe-recovery` / `codex/e5-universe-recovery` / `1f95fac` | complete / PR #90 source `0db45fe`，merge `33c4fcb` / 155tests、finalCI、独立review/root13raw pass / 干净worktree已清理 |
-| E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | in progress / source `057fcc2`首轮16组15pass、8真kill/79child全回收；HEAD inode harness比较失败保留，批准唯一segmented定向复测 / G-S1.2未通过 |
-| I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | in progress / source `937c866` owner首实跑报告Build/NullRHI exit0、9content/4native/0gap；待PR与独立审查，不提前接受 |
+| E6 独立扩展验收 | i6；`.worktrees/e6-universe-blob-trust-faults` / `codex/e6-universe-blob-trust-faults` / `a4c86b3` | complete / PR #92 final `0ebd7b3`，merge `ba7568c` / 首15组+唯一segmented定向pass、89child/8kill全部回收，finalCI全suite成功、root原件/源码审查 / G-S1.2有限pass；干净worktree待清理 |
+| I0A 实际资产依赖审计 | u9；`.worktrees/i0a-universe-assets` / `codex/i0a-universe-assets` / `e47065a` | complete / PR #93 final `572d4a4`，merge `cb39e0d` / Build/NullRHI exit0、9content/4native/0gap、root111raw+9actual文件及DAG核对、finalCI pass；生成物归档清理中 |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
 
@@ -68,8 +68,12 @@ I3补充纯内存nonblocking操作锁与按Lease身份的活跃Store登记：同
 
 E4/E5/I9已接受，准确source/merge、原始索引、最终CI及限制见[统筹复核](design/universe-e4-e5-i9-coordination-review.md)。当前集成代码HEAD `a4c86b382df01876a811af771df86af8a2fdb899`，不是主工作区或最终产品验收。
 
-E6从该HEAD执行独立v0.2故障门：首轮source057fcc2，16组15pass、8真SIGKILL/79children全回收，14.69s、14,922,214B；唯一失败为harness错误要求原子替换HEAD后inode相同。root批准仅排除HEAD inode、保留其bytes/mode/device/nlink及全部其他map/root/stable lock断言的唯一segmented定向检查，新attempt保留首失败。G-S1.2尚未接受，不据此诊断产品缺陷。
+E6已独立接受，PR92 merge `ba7568c7742bbc989703f9449f96e06a89548e05`。首source057fcc2的15组通过，唯一失败为harness错误要求原子替换HEAD后inode相同；target source0db8769仅segmented通过，保留首失败；两轮89child/8真kill全部回收，原件17,003,816B。finalhead0ebd7b3 CI全suite成功（run41334290240/job124930716919），root完整review及两runner-index1860/178原件哈希核对通过。G-S1.2仅synthetic/localPOSIX进程/blob/trust门pass，不证明断电/Genesis/UE/敌对同UID隔离。见[E6报告](evidence/universe-E6/report.md)。干净已合并worktree待清理，分支/原件保留。
 
-I0A实际资产依赖审计已由u9首跑，报告9 content assets/4 compiled-in native terminals/0 gaps；待准确PR、独立文件hash/图核对与审查。I8由u2只读准备实际bootstrap options/build、非对称frame校准与mass证据，尚未获GPU运行卡；E6及所需实际context接受后派发。随后依序I10单root worker、I11显式Host、I12非作者真实组合验收，不能停在内核里程碑。
+I0A PR93 merge `cb39e0df0138b6195b32e4e0f3ef5dced5d25cf8`接受安装版editor source-content资产图：9content/4native/352341B/0gap；root独立核对111raw及9实际UE文件、完整roots/Package edges/DAG/canonical；final572d4a4 CI run41334309759/job124930765837成功。见[I0A报告](evidence/universe-I0A/report.md)。只代表editor-source图，不是cook/许可/写实门；清理owner正在归档6生成物，DevSSD目标/branch/raw保留。
+
+I8静态准备发现固定Box真实inertial mass默认0，而Python/oracle/UE要求所有mass>0。root与u2独立源码核实，局部重开E7技术语义：仅冻结fixed body-support允许实际非负值，dynamic仍>0；旧positive synthetic3200与golden/hash不改且不当真实读回。E7方案审查后实施/独立check，I8实际运行等其接受。批准未来I8预算内0step非对称pose/set_quat校准及初checkpoint恢复；p≤1e-6m、q±分量≤2e-6、norm²≤1e-6、零速度≤1e-6；dynamic解析质量rtol1e-6/atol1e-7kg为实验技术阈值，fixed runtime预期+0bits。未导入/运行Genesis。
+
+后续完整树仍是I8真实Genesis→I10单root worker→I11显式Host→I12非作者真实组合验收，不能停在内核里程碑。
 
 G-C0.2/G-S1有限门pass；S_records不等于S_typed，后者及G-Q仍开放。没有新域真实Genesis/UE组合通过证据，完整I树进行中。默认legacy、主工作区用户改动与网站路由保持原边界。
