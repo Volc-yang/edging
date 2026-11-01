@@ -1,6 +1,6 @@
 # I 实现轮统筹登记
 
-状态：2026-11-01，v0.1，执行中。用户已明确同意[U9任务树](design/universe-integration-review.md)，要求分配subagents并实现；原U设计轮不重开。目标为I0–I12有界内核、新域Genesis/UE接线与独立组合验收，延期X分支不被默认为当前必需范围。
+状态：2026-11-02，v0.2，执行中。用户已明确同意[U9任务树](design/universe-integration-review.md)，要求分配subagents并实现；原U设计轮不重开。目标为I0–I12有界内核、新域Genesis/UE接线与独立组合验收，延期X分支不被默认为当前必需范围。
 
 ## Goal 与基线
 
@@ -18,15 +18,22 @@
 | I3 store/提交 | `/root/u9_architecture_review`；`.worktrees/i3-universe-store` / `codex/i3-universe-store` / `d2b7d29` | complete / PR #81 source `9a27207`，merge `69daec3` / 22tests+最终CI、root review/raw10/10及375/375 bytes pass / 干净worktree已清理、分支保留 |
 | I4 commands/admission/rules | `/root/u2_physics_design`；`.worktrees/i4-universe-commands` / `codex/i4-universe-commands` / `69daec3` | complete / PR #83 source `5fcd8d3`，merge `607e550` / 17新+共78tests、CI/root review，首loader失败与唯一attempt2保留 / 干净worktree已清理、分支保留 |
 | I5 recovery/observe | `/root/u9_architecture_review`；`.worktrees/i5-universe-recovery` / `codex/i5-universe-recovery` / `69daec3` | complete / PR #82 source `49f7b7a`，merge `09ed3bb` / 16tests+最终CI、root review/raw10/10及488/488 bytes pass / 干净worktree已清理、分支保留 |
-| I6 无GPU独立故障验收 | fresh `/root/i6_fault_acceptance`；`.worktrees/i6-universe-faults` / `codex/i6-universe-faults` / `607e550` | in progress / 11真实SIGKILL phase+独立子进程负例/重启/只读矩阵；G-S1 planned / 活跃保留 |
+| I6 无GPU独立故障验收 | fresh `/root/i6_fault_acceptance`；`.worktrees/i6-universe-faults` / `codex/i6-universe-faults` / `607e550` | complete / PR #85 source `d8636d6`，merge `3e02376` / 20cases、85child、12真kill及CI/review，G-S1有限pass / 干净worktree已清理 |
 | I7 物理fixture/API契约 | `/root/u2_physics_design`；`.worktrees/i7-universe-physics-contract` / `codex/i7-universe-physics-contract` / `a9506eb` | complete / PR #80 source `e005c2c`，merge `fe2176a` / G-P0静态pass；G-C0.2未接受 / 干净worktree已清理、分支保留 |
 | I8 真实Genesis新适配 | 等I6/I7/G-S1/G-P0/R-8 | queued / 未建 / G-P1 planned / 未建worktree |
-| I9 UE新域严格解析 | 等I0/I7/G-B0 | queued / 未建 / planned / 未建worktree |
+| I9 UE新域严格解析 | u9；`.worktrees/i9-universe-ue-parser` / `codex/i9-universe-ue-parser` / `3e02376` | in progress / G-B0/R-B parser-only已准入；尚未build / 活跃保留 |
 | I10 单root worker/初态 | 等I6/I8/G-S1/G-P1 | queued / 未建 / planned / 未建worktree |
 | I11 Host/启动接线 | 等I9/I10/G-B0/R-B | queued / 未建 / G-B1 planned / 未建worktree |
 | I12 独立组合验收 | 非相关实现owner，待I10/I11/G-P1/G-B1/R-12 | queued / 未建 / G-B2 planned / 未建worktree |
 
-| I0E 共享契约局部重开 | `/root/u7_projection_design`；`.worktrees/i0e-universe-contract` / `codex/i0e-universe-contract` / `d2b7d29` | in progress / 先方案裁决，再新v0.2 contract/fixture/oracle；G-C0.2 planned / 活跃保留 |
+| I0E 共享契约局部重开 | `/root/u7_projection_design`；`.worktrees/i0e-universe-contract` / `codex/i0e-universe-contract` / `d2b7d29` | complete / PR #84 source `f13a73d`，merge `9ad01c3` / G-C0.2格式门pass（S_typed/G-Q不通过）/ 干净worktree已清理 |
+
+| E1 codec/records/trust扩展 | u7；`.worktrees/e1-universe-codec-trust` / `codex/e1-universe-codec-trust` / `3e02376` | in progress / 正式B-C / 活跃保留 |
+| E2 ownership扩展 | u2；`.worktrees/e2-universe-ownership` / `codex/e2-universe-ownership` / `3e02376` | 静态commit `aaef012` / 实际Check等E1合入 / 活跃保留 |
+| E3 Store扩展 | 等E1/E2接受 | queued / 未建worktree |
+| E4 command/prepare/provider扩展 | 等E3 | queued / 未建worktree |
+| E5 recovery/proof builder扩展 | 等E3 | queued / 未建worktree |
+| E6 独立扩展验收 | 非E1–E5作者，等E4/E5 | queued / 未建worktree |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
 
@@ -58,10 +65,8 @@ I3补充纯内存nonblocking操作锁与按Lease身份的活跃Store登记：同
 
 ## 当前下一动作
 
-I0–I5/I7全部接受，[I4复核](design/universe-i4-coordination-review.md)、[I5复核](design/universe-i5-coordination-review.md)。I6从准确合并 `607e5500797854e5026d72e67ae8f45c70454a31` 派fresh非I1–I5作者，独占script/tests/evidence，正式B-C；已审定最小11 phase真实SIGKILL握手+双writer/alias/恢复/幂等/坏历史/只读/分段等价矩阵。无GPU、不改production。准确source/完整raw/独立磁盘observer与门裁决后才可给G-S1。
+I0–I7及I0E全部接受，[I0E/I6统筹复核](design/universe-i0e-i6-coordination-review.md)。G-C0.2格式/API、G-S1有限进程门pass；真实物理/0.2实现/UE组合仍未过。E1(u7)与E2(u2)及I9(u9)从统一准确base3e02376并行实施；E2实际Check等E1合入，不stub。E1后依序E3→E4/E5→非作者E6，再I8/I10/Host及I12。
 
-I0E由u7合成新v0.2共享契约；review source `3dadf39a1d97215eb8d01199f0649a6b9de7a68a`。首次check exit1：67golden+4正proof已过，full-history负例先触per-kind cap得到PROOF_LIMIT，原期望PROOF；u9静态核实既有拒绝优先级，允许纠正预期，不放松算法。唯一次rerun留待汇总修订：proof duplicate拒绝/有界memo、typed HeadBinding及外部storage_state/root/anchor完整绑定、FixtureVerifier与runtime-keyban/无secret属性协议、route/water范围/horizon、精确向后兼容模块API与无anchor ProvisionSpec→公共TrustAnchor→固定DeploymentContext生命周期。当前不通过G-C0.2。
+E1仅codec/records/trust与3专属测试路径，生产不依赖doc/schema；authority.key与session API补充见复核。E2仅ownership/tests，静态aaef012待真实prerequisite。I9仅三UE新parser文件，外部HeadBinding/DTO/raw严格校验/精确F/旧parser不放宽，R-B正式15min/256MiB build+NullRHI窗口已发布，不是Metal或组合运行许可。
 
-合成机制：4root initial→retain→physics→retain；retain不调用provider，tick/steps/snapshot/D/预算/游标不变、只新增revision/A/event/index/root并计H。六区typed/九显式存在/技术资产投影不分独立灵域，S重新枚举；A_declared与未验证实际资产依赖闭包分开。独立Observe proof有外部可信HeadBinding，与完整archive/MAC/raw恢复分开，<=1MiB且无raw。外置owner-only HMAC key绑定唯一注册root，signer仅coordinator、Store/records只得verifier，纯读不建key，禁fixture公开key/runtime合成数据，不宣称anti-rollback或恶意owner隔离。
-
-后继边：I7→I0E/G-C0.2→受影响I1–I5局部实现与扩展独立故障复验→I8/I9/I10对应接线，精确契约接受后另卡绑定范围/输入，不先猜实现。I6无GPU门与I0E并行；I8/UE/真实世界组合门仍planned，完整I树进行中。
+S_records30不等U8 S_typed，typed域/alias仍须I10规模准入前冻结；实际资产依赖图/defaults/provider build等必须真实导出，synthetic fixture不能洗成runtime。注册root/key/session来自owner部署，不是request自述；无anti-rollback或恶意owner隔离保证。阶段PR/证据/清理逐卡记录，完整I树进行中。
