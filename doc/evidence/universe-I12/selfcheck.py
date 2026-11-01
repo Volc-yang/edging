@@ -132,7 +132,7 @@ class EvidenceTools(unittest.TestCase):
                 (folder / 'blobs' / (digest + '.static')).write_bytes(bytes.fromhex(payload))
             (folder / 'HEAD.json').write_bytes(oracle.canonical({
                 'domain': archive['domain'], 'version': '0.2', 'world_id': archive['records'][0]['world_id'],
-                'manifest': archive['head'], 'profile': archive['test_profile']}))
+                'manifest': archive['head'], 'profile': 'local-posix-blob-sync-v0.2'}))
             result = oracle.inspect_authority(folder, oracle.read_json(fixtures / 'schema.json'))
             self.assertEqual([(h['tick'], h['revision']) for h in result['history']],
                              [(0, 0), (0, 1), (1, 2), (1, 3)])
@@ -170,7 +170,7 @@ class EvidenceTools(unittest.TestCase):
             (folder / 'objects' / (digest + '.json')).write_bytes(raw)
             (folder / 'HEAD.json').write_bytes(oracle.canonical({
                 'domain': record['domain'], 'version': '0.2', 'world_id': 'synthetic',
-                'manifest': digest, 'profile': 'composite-rigid-support.v0.2'}))
+                'manifest': digest, 'profile': 'local-posix-blob-sync-v0.2'}))
             schema = {'body': {'checkpoint_descriptor': record['body']},
                       'kind_bytes': {'checkpoint_descriptor': 2048},
                       'refs': {'checkpoint_descriptor': {}}}

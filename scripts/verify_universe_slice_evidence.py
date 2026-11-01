@@ -159,13 +159,17 @@ def inspect_authority(root, schema):
     require(safe_read(root / 'HEAD.json') == canonical(head), 'noncanonical HEAD')
     require(set(head) == {'domain', 'version', 'world_id', 'manifest', 'profile'} and
             head['domain'] == 'edgeworld.universe.authority' and head['version'] == '0.2' and
-            head['profile'] == 'composite-rigid-support.v0.2', 'HEAD identity')
+            head['profile'] == 'local-posix-blob-sync-v0.2', 'HEAD identity')
     for digest, record in records.items():
         require(record['world_id'] == head['world_id'], 'mixed world')
         declarations = schema['refs'][record['kind']]
         if record['kind'] == 'route':
             declarations = {'p' + str(i): 'place'
                             for i in range(len(record['body']['place_ids']))}
+        elif record['kind'] == 'manifest':
+            # Schema's '?' describes the revision union, not arbitrary omission.
+            declarations = {'state': 'state'} if record['body']['revision'] == 0 else {
+                'state': 'state', 'event': 'event', 'index': 'index', 'prior_manifest': 'manifest'}
         allowed = {name.rstrip('?'): kind for name, kind in declarations.items()}
         required = {name for name in declarations if not name.endswith('?')}
         require(required <= record['refs'].keys() <= allowed.keys(), 'record refs keys')
@@ -260,9 +264,15 @@ def inspect_authority(root, schema):
                         candidate['body']['adapter_kind'] == 'genesis', 'physical step count/adapter')
         states.append(state)
     return {'world_id': head['world_id'], 'head': head['manifest'],
+            'storage_profile': head['profile'], 'archive_profile': schema['archive_profile'],
             'records': len(records), 'retained_manifests': len(manifests),
             'history': [{'tick': s['body']['tick'], 'revision': s['body']['revision'],
-                         'development_mm': s['body']['development_mm']} for s in states],
+                         'development_mm': s['body']['development_mm'],
+                         'budget': s['body']['budget'], 'random_cursor': s['body']['random_cursor'],
+                         'physical_step_count': snapshot(s)['body']['physical_step_count']}
+                        for s in states],
+            'unique_raw_payloads': len({r['body']['payload_sha256'] for r in records.values()
+                                        if r['kind'] == 'checkpoint_descriptor'}),
             'descriptor_bytes_including_reuse': raw_total,
             'records_by_hash': records}
 
