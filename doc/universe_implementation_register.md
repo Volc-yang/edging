@@ -153,3 +153,7 @@ I12A-RUNNER sourcea1170a4首8mock全pass（0.124s/raw1256B）；u9四项review�
 - fresh CUA listApps仍明确Mac locked，既有解锁问题pending；不尝试绕过或反复启动UE。I0–I12总树仍进行中，G-B2未通过，旧blocked goal未伪造恢复/完成。主工作区用户改动未触碰，远端feature合并不在本checkpoint内。
 
 **下一轮第一步：**确认手动解锁；从准确已接受集成树获取新I12B实际验收worktree，载入本登记和runner contract。固定工具source与产品source（现产品集成971ed03，后续统筹文档提交不改产品字节），创建全新单authority/context/key和DevSSD持久四输入/两mode owner，真实来源预检后由root发具体R12卡，输出映射逐项allowlist。再按已接受P1做两个真实UE会话：显式初始化/retain/弱物理/幂等/历史写拒绝、各只读动作独立map、真实StartPlay/相机变换/Metal原图、正常退出与同root重访；root独立审查才裁决G-B2。候选总预算20min/2GiB尚未实际消耗，不把工具模拟与上游I10B离线数据算新实机证据。
+
+## I12B恢复派卡（2026-11-02）
+
+用户回复已解锁，root fresh CUA listApps确认native可用、UE/CrashReporter均未运行。I12B-PREP已派独立owner i12_universe_acceptance，worktree `.worktrees/i12b-universe-live` / branch `codex/i12b-universe-live` / basef854281。独占 `doc/evidence/universe-I12B/`（含准备helper），不改产品/runner/launcher；CPU120s/raw64MiB，仅持久部署、精确身份预检与新world可信owner配置，未授GS/UE/真实launcher。u9并行只读预审实际动作/相机读回/来源身份。root唯一UI协调，后续正式R12卡候选两session总1200s/2GiB（含build/所有失败），尚未消耗。已接受输入可在adapter/native/source逐项不漂移证明后提出复用同B/O字节，真实provider初始化仍测量；不得复用旧root或凭旧source拼新世界。UI截图/输入全经CUA，visible尽量fullscreen独立Space；正常退出与原始失败完整保留。
