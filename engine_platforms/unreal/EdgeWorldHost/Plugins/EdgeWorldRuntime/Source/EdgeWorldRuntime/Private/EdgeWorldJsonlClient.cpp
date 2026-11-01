@@ -1,4 +1,11 @@
 #include "EdgeWorldJsonlClient.h"
+#if PLATFORM_MAC
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <signal.h>
+#endif
 
 #include "EdgeWorldObservationActor.h"
 
@@ -27,6 +34,7 @@ void FEdgeWorldUnavailableTransport::SendJsonLine(FEdgeWorldRequest Request, FEd
 FEdgeWorldProcessTransport::FEdgeWorldProcessTransport(FEdgeWorldWorkerLaunchConfig InConfig)
 	: Config(MoveTemp(InConfig))
 {
+ if(!Config.TraceDirectory.IsEmpty()&&!Config.TraceBudget)Config.TraceBudget=MakeShared<FEdgeWorldTraceBudget,ESPMode::ThreadSafe>();
 }
 
 FEdgeWorldProcessTransport::~FEdgeWorldProcessTransport()
@@ -61,7 +69,8 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		StopProcess(false);
 	}
 	if (Config.PythonExecutable.IsEmpty() || Config.WorkerScript.IsEmpty()
-		|| Config.StateDirectory.IsEmpty() || Config.WorldId.IsEmpty())
+        || (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe
+            ? Config.OwnerConfigPath.IsEmpty() : Config.StateDirectory.IsEmpty() || Config.WorldId.IsEmpty()))
 	{
 		OutError = TEXT("PythonExecutable, WorkerScript, StateDirectory, and WorldId must be configured.");
 		return false;
@@ -70,7 +79,8 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		|| Config.StateDirectory.Contains(TEXT("\"")) || Config.WorldId.Contains(TEXT("\""))
 		|| Config.WorldId.Contains(TEXT("\n")) || Config.WorldId.Contains(TEXT("\r"))
 		|| Config.InitialWorldPath.Contains(TEXT("\""))
-		|| Config.InitialWorldPath.Contains(TEXT("\n")) || Config.InitialWorldPath.Contains(TEXT("\r")))
+		|| Config.InitialWorldPath.Contains(TEXT("\n")) || Config.InitialWorldPath.Contains(TEXT("\r"))
+        || Config.OwnerConfigPath.Contains(TEXT("\"")) || Config.OwnerConfigPath.Contains(TEXT("\n")) || Config.OwnerConfigPath.Contains(TEXT("\r")))
 	{
 		OutError = TEXT("Worker paths and world ID must not contain quotes or line breaks.");
 		return false;
@@ -82,6 +92,11 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		return false;
 	}
 
+ if(Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe)
+ {
+  for(const FString& P:{Config.PythonExecutable,Config.WorkerScript,Config.OwnerConfigPath})
+   if(FPaths::IsRelative(P)||P.Contains(TEXT("\n"))||P.Contains(TEXT("\r"))||P.Contains(TEXT("\\"))) {OutError=TEXT("Universe requires safe absolute launch paths");return false;}
+ }
 	void* StdoutChildRead = nullptr;
 	void* StdoutChildWrite = nullptr;
 	void* StdinChildRead = nullptr;
@@ -111,8 +126,11 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		Arguments += FString::Printf(TEXT(" --initial-world \"%s\""),
 			*FPaths::ConvertRelativePathToFull(Config.InitialWorldPath));
 	}
-	ProcessHandle = FPlatformProcess::CreateProc(*PythonPath, *Arguments, false, true, true,
-		nullptr, 0, nullptr, StdoutChildWrite, StdinChildRead, StderrChildWrite);
+	if (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe)
+        Arguments = FString::Printf(TEXT("-m engine.universe_authority.worker --owner-config \"%s\""), *Config.OwnerConfigPath);
+    const FString WorkingRoot=FPaths::ConvertRelativePathToFull(FPaths::Combine(FPaths::GetPath(ScriptPath),TEXT("../..")));
+    ProcessHandle = FPlatformProcess::CreateProc(*PythonPath, *Arguments, false, true, true,
+        &WorkerPid, 0, Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe?*WorkingRoot:nullptr, StdoutChildWrite, StdinChildRead, StderrChildWrite);
 
 	// The parent owns only stdout/stderr read ends and the stdin write end.
 	void* NullHandle = nullptr;
@@ -132,11 +150,96 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 	StdinWritePipe = StdinChildWrite;
 	StderrReadPipe = StderrChildRead;
 	PendingStdout.Reset();
+ PendingRaw.Reset(); ++Generation; bNeedsUniverseStatus=true;
 	return true;
+}
+
+bool FEdgeWorldProcessTransport::TraceFileExclusive(const FString& Path,TArrayView<const uint8> Bytes)
+{
+#if PLATFORM_MAC
+ FTCHARToUTF8 U(*Path);int Fd=open(U.Get(),O_WRONLY|O_CREAT|O_EXCL|O_NOFOLLOW,0600);if(Fd<0)return false;
+ bool OK=true;int64 Done=0;while(Done<Bytes.Num()){ssize_t N=write(Fd,Bytes.GetData()+Done,Bytes.Num()-Done);if(N<0&&errno==EINTR)continue;if(N<=0){OK=false;break;}Done+=N;}if(fsync(Fd))OK=false;if(close(Fd))OK=false;return OK;
+#else
+ return false;
+#endif
+}
+bool FEdgeWorldProcessTransport::TraceReserve(int64 Bytes)
+{
+ if(Config.TraceDirectory.IsEmpty())return true;
+#if PLATFORM_MAC
+ FTCHARToUTF8 P(*Config.TraceDirectory);struct stat D;if(FPaths::IsRelative(Config.TraceDirectory)||lstat(P.Get(),&D)||!S_ISDIR(D.st_mode)||D.st_uid!=getuid()||(D.st_mode&0777)!=0700||!Config.TraceBudget)return false;
+ FScopeLock Lock(&Config.TraceBudget->Mutex);return Config.TraceBudget->Bytes+Bytes<=64LL*1024*1024;
+#else
+ return false;
+#endif
+}
+bool FEdgeWorldProcessTransport::TraceRaw(const FString& Direction,TArrayView<const uint8> Bytes,const FEdgeWorldRequest& Request,int32 Written)
+{
+ if(Config.TraceDirectory.IsEmpty())return true;
+ if(!TraceReserve(Bytes.Num()+4096))return false;
+ FScopeLock Lock(&Config.TraceBudget->Mutex);
+ FString Stem=FString::Printf(TEXT("%s-%08llu"),*TracePrefix,(unsigned long long)++TraceSerial);
+ auto M=MakeShared<FJsonObject>();M->SetStringField(TEXT("direction"),Direction);M->SetStringField(TEXT("utc"),FDateTime::UtcNow().ToIso8601());M->SetNumberField(TEXT("monotonic_seconds"),FPlatformTime::Seconds());M->SetStringField(TEXT("serial"),LexToString(TraceSerial));M->SetStringField(TEXT("request_serial"),LexToString(RequestSerial));M->SetStringField(TEXT("generation"),LexToString(Generation));M->SetNumberField(TEXT("worker_pid"),WorkerPid);M->SetNumberField(TEXT("host_pid"),FPlatformProcess::GetCurrentProcessId());M->SetStringField(TEXT("request_id"),Request.RequestId);M->SetStringField(TEXT("operation"),Request.Operation);M->SetStringField(TEXT("raw_file"),Stem+TEXT(".bin"));M->SetNumberField(TEXT("byte_count"),Bytes.Num());M->SetNumberField(TEXT("written_bytes"),Written);
+ FString Text;FJsonSerializer::Serialize(M,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));FTCHARToUTF8 U(*Text);int64 Cost=Bytes.Num()+U.Length();if(Config.TraceBudget->Bytes+Cost>64LL*1024*1024)return false;
+ // Reserve before I/O so partial trace failures cannot free/reuse budget or overwrite originals.
+ Config.TraceBudget->Bytes+=Cost;
+ return TraceFileExclusive(Config.TraceDirectory/(Stem+TEXT(".bin")),Bytes)&&TraceFileExclusive(Config.TraceDirectory/(Stem+TEXT(".json")),MakeArrayView(reinterpret_cast<const uint8*>(U.Get()),U.Length()));
+}
+
+FEdgeWorldResponse FEdgeWorldProcessTransport::ExchangeUniverse(const FEdgeWorldRequest& Request)
+{
+ FScopeLock Lock(&RequestMutex);
+ LastTraceRequest=Request;
+ FEdgeWorldResponse Response; Response.RequestId = Request.RequestId;
+ FString Error;
+ if(!TraceReserve(4*1024*1024)){Response.ErrorCode=TEXT("trace_limit_or_unsafe");return Response;}
+ if (!EnsureStarted(Error)) { Response.ErrorCode=TEXT("worker_start_failed"); Response.ErrorMessage=Error; return Response; }
+ Response.ProcessGeneration=Generation; Response.WorkerPid=WorkerPid; ++RequestSerial;
+ // A new owned channel must first establish a status binding. Never replay a write on lazy restart.
+ if (bNeedsUniverseStatus && Request.Operation != TEXT("status"))
+ { Response.ErrorCode=TEXT("worker_generation_changed"); return Response; }
+ FTCHARToUTF8 Input(*Request.JsonLine);
+ if (Input.Length()>1048577) { Response.ErrorCode=TEXT("LIMIT"); return Response; }
+ if(!TraceRaw(TEXT("request"),MakeArrayView(reinterpret_cast<const uint8*>(Input.Get()),Input.Length()),Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
+ int32 Written=0;
+ if (!FPlatformProcess::WritePipe(StdinWritePipe,reinterpret_cast<const uint8*>(Input.Get()),Input.Length(),&Written) || Written!=Input.Length())
+ { TraceRaw(TEXT("write-result"),{},Request,Written);Response.ErrorCode=TEXT("worker_write_failed"); StopProcess(true); return Response; }
+ if(!TraceRaw(TEXT("write-result"),{},Request,Written)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
+ const double Deadline=FPlatformTime::Seconds()+Config.RequestTimeoutSeconds;
+ int32 DiagnosticBytes=0;
+ while (FPlatformTime::Seconds()<Deadline)
+ {
+  // Mac's public byte read is <=32768B. Stop before reading if the trace cannot preserve that chunk.
+  if(!TraceReserve(2*32768+8192)){Response.ErrorCode=TEXT("trace_limit_or_unsafe");StopProcess(true);return Response;}
+  TArray<uint8> Chunk; FPlatformProcess::ReadPipeToArray(StdoutReadPipe,Chunk);
+  if(!Chunk.IsEmpty()&&!TraceRaw(TEXT("stdout-chunk"),Chunk,Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}PendingRaw.Append(Chunk);
+  if (StderrReadPipe)
+  {
+   TArray<uint8> Diagnostic;FPlatformProcess::ReadPipeToArray(StderrReadPipe,Diagnostic);
+   if(!Diagnostic.IsEmpty()&&!TraceRaw(TEXT("stderr-chunk"),Diagnostic,Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}DiagnosticBytes+=Diagnostic.Num();
+   // Do not print untrusted/private diagnostics into the UI log.
+   if(DiagnosticBytes>65536){Response.ErrorCode=TEXT("worker_stderr_limit");StopProcess(true);return Response;}
+  }
+  int32 LF=PendingRaw.IndexOfByKey(uint8('\n'));
+  if((LF==INDEX_NONE && PendingRaw.Num()>1048576) || LF>1048576)
+  {Response.ErrorCode=TEXT("LIMIT");StopProcess(true);return Response;}
+  if(LF!=INDEX_NONE)
+  {
+   // One in-flight request: extra unsolicited stdout is a channel violation.
+   if(PendingRaw.Num()!=LF+1){Response.ErrorCode=TEXT("unsolicited_worker_response");StopProcess(true);return Response;}
+   if(!TraceRaw(TEXT("response-complete"),{},Request)){Response.ErrorCode=TEXT("trace_write_failed");StopProcess(true);return Response;}
+   Response.RawJsonl=MoveTemp(PendingRaw);PendingRaw.Reset();Response.bSuccess=true; if(Request.Operation==TEXT("status"))bNeedsUniverseStatus=false; return Response;
+  }
+  if(!FPlatformProcess::IsProcRunning(ProcessHandle))
+  {Response.ErrorCode=TEXT("worker_exited");StopProcess(false);return Response;}
+  FPlatformProcess::Sleep(.01f);
+ }
+ Response.ErrorCode=TEXT("worker_timeout");StopProcess(true);return Response;
 }
 
 FEdgeWorldResponse FEdgeWorldProcessTransport::Exchange(const FEdgeWorldRequest& Request)
 {
+ if (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe) return ExchangeUniverse(Request);
 	FEdgeWorldResponse Response;
 	Response.RequestId = Request.RequestId;
 	{
@@ -253,8 +356,71 @@ FEdgeWorldResponse FEdgeWorldProcessTransport::Exchange(const FEdgeWorldRequest&
 	return Response;
 }
 
+void FEdgeWorldProcessTransport::StopUniverseProcess(bool bFailure)
+{
+ // EOF is the normal owned-child shutdown protocol. Never infer exit0 from PID absence.
+ bool bTraceComplete=true;
+ if(StdinWritePipe)
+ {
+  void* Pipe=StdinWritePipe;StdinWritePipe=nullptr;void* Null=nullptr;FPlatformProcess::ClosePipe(Null,Pipe);
+  bTraceComplete=TraceRaw(TEXT("stdin-eof"),{},LastTraceRequest);
+ }
+ if(ProcessHandle.IsValid())
+ {
+  FProcHandle Closing=ProcessHandle;ProcessHandle=FProcHandle();
+  bool bForced=false,bHardKilled=false;int64 TailBytes=0;constexpr int64 TailCap=1048576;
+  auto Drain=[&](bool& ReadAny)
+  {
+   ReadAny=false;
+   if(TailBytes+65536>TailCap||!TraceReserve(2*32768+8192))return false;
+   for(int32 I=0;I<2;++I)
+   {
+    void* Pipe=I==0?StdoutReadPipe:StderrReadPipe;if(!Pipe)continue;TArray<uint8> Chunk;FPlatformProcess::ReadPipeToArray(Pipe,Chunk);
+    if(!Chunk.IsEmpty()){ReadAny=true;TailBytes+=Chunk.Num();if(!TraceRaw(I==0?TEXT("shutdown-stdout-chunk"):TEXT("shutdown-stderr-chunk"),Chunk,LastTraceRequest))return false;}
+   }
+   return true;
+  };
+  const double GraceDeadline=FPlatformTime::Seconds()+8.;
+  while(FPlatformTime::Seconds()<GraceDeadline)
+  {
+   bool Any=false;if(!Drain(Any)){bTraceComplete=false;break;}
+   if(!FPlatformProcess::IsProcRunning(Closing))
+   {
+    while(Any){if(!Drain(Any)){bTraceComplete=false;break;}}
+    break;
+   }
+   FPlatformProcess::Sleep(.01f);
+  }
+  if(FPlatformProcess::IsProcRunning(Closing))
+  {
+   bForced=true;bFailure=true;FPlatformProcess::TerminateProc(Closing,true);
+   const double TermDeadline=FPlatformTime::Seconds()+.5;
+   while(FPlatformProcess::IsProcRunning(Closing)&&FPlatformTime::Seconds()<TermDeadline)
+   {bool Any=false;if(!Drain(Any))bTraceComplete=false;FPlatformProcess::Sleep(.01f);}
+#if PLATFORM_MAC
+   if(FPlatformProcess::IsProcRunning(Closing)&&int64(Closing.Get())==int64(WorkerPid))
+   {bHardKilled=true;kill(pid_t(WorkerPid),SIGKILL);}
+#endif
+   const double KillDeadline=FPlatformTime::Seconds()+.5;
+   while(FPlatformProcess::IsProcRunning(Closing)&&FPlatformTime::Seconds()<KillDeadline)FPlatformProcess::Sleep(.01f);
+  }
+  bool bReaped=!FPlatformProcess::IsProcRunning(Closing);int32 Exit=INDEX_NONE;bool bHaveCode=false;
+  if(bReaped){FPlatformProcess::WaitForProc(Closing);bHaveCode=FPlatformProcess::GetProcReturnCode(Closing,&Exit);}
+  bool Any=false;if(!Drain(Any))bTraceComplete=false;while(Any){if(!Drain(Any)){bTraceComplete=false;break;}}
+  auto E=MakeShared<FJsonObject>();E->SetBoolField(TEXT("return_code_available"),bHaveCode);if(bHaveCode)E->SetNumberField(TEXT("exit_code"),Exit);else E->SetField(TEXT("exit_code"),MakeShared<FJsonValueNull>());
+  E->SetNumberField(TEXT("worker_pid"),WorkerPid);E->SetStringField(TEXT("generation"),LexToString(Generation));E->SetStringField(TEXT("stop_kind"),bForced?TEXT("forced"):TEXT("normal"));E->SetBoolField(TEXT("hard_kill_sent"),bHardKilled);E->SetBoolField(TEXT("reaped"),bReaped);E->SetBoolField(TEXT("trace_complete"),bTraceComplete);E->SetBoolField(TEXT("operational_failure"),bFailure||!bReaped||!bHaveCode||Exit!=0||!bTraceComplete);E->SetNumberField(TEXT("tail_bytes"),double(TailBytes));
+  FString Text;FJsonSerializer::Serialize(E,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));FTCHARToUTF8 U(*Text);
+  if(!TraceRaw(TEXT("worker-exit"),MakeArrayView(reinterpret_cast<const uint8*>(U.Get()),U.Length()),LastTraceRequest)||bFailure||!bReaped||!bHaveCode||Exit!=0||!bTraceComplete)
+   UE_LOG(LogTemp,Warning,TEXT("Universe child lifecycle failed: pid=%u reaped=%d return_code_available=%d forced=%d trace_complete=%d"),WorkerPid,bReaped,bHaveCode,bForced,bTraceComplete);
+  FPlatformProcess::CloseProc(Closing);
+ }
+ for(void** Field:{&StdoutReadPipe,&StderrReadPipe})if(*Field){void* Pipe=*Field;*Field=nullptr;void* Null=nullptr;FPlatformProcess::ClosePipe(Pipe,Null);}
+ PendingRaw.Reset();PendingStdout.Reset();bNeedsUniverseStatus=true;
+}
+
 void FEdgeWorldProcessTransport::StopProcess(bool bTerminate)
 {
+ if(Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe){StopUniverseProcess(bTerminate);return;}
 	if (StdinWritePipe)
 	{
 		void* PipeToClose = StdinWritePipe;

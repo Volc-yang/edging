@@ -28,7 +28,7 @@ class UnrealMacLauncherTest(unittest.TestCase):
         engine = self.root / "UE/Engine"
         build = engine / "Build/BatchFiles/Mac/Build.sh"
         build.parent.mkdir(parents=True)
-        build.write_text('#!/bin/bash\ntouch "$MOCK_BUILD_STARTED"\nexit "${MOCK_BUILD_EXIT:-0}"\n')
+        build.write_text('#!/bin/bash\nprintf "%s\\n" "$@" > "$MOCK_BUILD_ARGUMENTS"\ntouch "$MOCK_BUILD_STARTED"\nexit "${MOCK_BUILD_EXIT:-0}"\n')
         (engine / "Build/Build.version").write_text(json.dumps({
             "MajorVersion": 5, "MinorVersion": 8, "PatchVersion": 3, "Changelist": 58210709,
         }))
@@ -52,10 +52,12 @@ class UnrealMacLauncherTest(unittest.TestCase):
         uname.chmod(0o755)
         self.arguments = self.root / "editor-arguments.txt"
         self.build_started = self.root / "build-started"
+        self.build_arguments = self.root / "build-arguments.txt"
         self.environment = dict(os.environ, UE5_ROOT=str(engine.parent),
                                 EDGEWORLD_CAUSAL_PYTHON=sys.executable,
                                 MOCK_ARGUMENTS=str(self.arguments),
                                 MOCK_BUILD_STARTED=str(self.build_started),
+                                MOCK_BUILD_ARGUMENTS=str(self.build_arguments),
                                 PATH=str(commands) + os.pathsep + os.environ["PATH"])
 
     def launch(self, *arguments):
@@ -67,6 +69,7 @@ class UnrealMacLauncherTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertFalse(self.arguments.exists())
         self.assertIn("runtime_not_tested", result.stdout)
+        self.assertNotIn("-NoUBA", self.build_arguments.read_text().splitlines())
 
     def test_launch_keeps_engine_default(self):
         result = self.launch("--launch")
@@ -131,6 +134,121 @@ class UnrealMacLauncherTest(unittest.TestCase):
         self.assertFalse(self.arguments.exists())
         self.assertIn("runtime_not_tested", result.stdout)
         self.assertNotIn("viewport_preflush=enabled", result.stdout)
+
+
+
+class UniverseMacLauncherTest(unittest.TestCase):
+    """Synthetic launcher mocks, not a real worker/world or runtime provenance.
+
+    The export mock supplies only public metadata shaped like a deployment; no
+    physics records are relabelled and no production fake switch is introduced.
+    """
+    def setUp(self):
+        UnrealMacLauncherTest.setUp(self)
+        self.owner = self.root / 'owner config.json'
+        self.owner.write_text('PRIVATE CONFIG MUST ONLY BE READ BY REAL I10 OWNER LOADER')
+        module = self.repository / 'engine/universe_authority/worker.py'
+        module.parent.mkdir(parents=True)
+        (module.parent / '__init__.py').write_text('')
+        (module.parent.parent / '__init__.py').write_text('')
+        module.write_text('''import json,os,sys
+assert sys.argv[1:]==['--owner-config',os.environ['MOCK_OWNER'],'--print-public-pins']
+x={'domain':'edgeworld.universe.authority','version':'0.2','profile':'composite-rigid-support.v0.2','world_id':'test-world','authority_root':'/mock-authority/test-world','trust_algorithm':'local-hmac-sha256.v0.2','trust_anchor':'a'*64,'artifact_class':'genesis-runtime','expected_build':'b'*64,'expected_options':'c'*64,'principal':'mock-owner','allowed_actions':['physics_step','retain_snapshot']}
+mode=os.environ.get('MOCK_PINS_MODE','')
+if mode=='synthetic':x['artifact_class']='synthetic-contract-only'
+if mode=='extra':x['can_initialize']=True
+raw=json.dumps(x,sort_keys=True,separators=(',',':'))
+if mode=='noncanonical':raw=json.dumps(x)
+if mode=='duplicate':raw=raw.replace('"version":"0.2"','"version":"0.2","version":"0.2"')
+print(raw)
+''')
+        self.environment.update(EDGEWORLD_UNIVERSE_PYTHON=sys.executable,MOCK_OWNER=str(self.owner),
+                                EDGEWORLD_UNIVERSE_WORKER='/wrong/stale-worker',
+                                EDGEWORLD_UNIVERSE_INITIALIZE='1')
+        self.child_environment=self.root/'child-env.json'
+        editor=self.root/'UE/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'
+        editor.write_text('''#!/usr/bin/env python3
+import json,os,pathlib,sys
+pathlib.Path(os.environ['MOCK_ARGUMENTS']).write_text('\\n'.join(sys.argv[1:]))
+pathlib.Path(os.environ['MOCK_CHILD_ENV']).write_text(json.dumps({k:v for k,v in os.environ.items() if k.startswith('EDGEWORLD_UNIVERSE_')}))
+log=next(x.split('=',1)[1] for x in sys.argv[1:] if x.startswith('-abslog='))
+pathlib.Path(log).write_text('Engine is initialized. Leaving FEngineLoop::Init()\\nUniverse world: 1 weak;\\nUniverse world test-world observed tick 0, revision 0\\n')
+''')
+        editor.chmod(0o755)
+        self.environment['MOCK_CHILD_ENV']=str(self.child_environment)
+
+    def launch(self, *arguments):
+        return UnrealMacLauncherTest.launch(self, *arguments)
+
+    def test_universe_explicit_mode_and_safe_public_pins(self):
+        result=self.launch('--launch','--universe','--owner-config',str(self.owner))
+        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+        args=self.arguments.read_text();env=json.loads(self.child_environment.read_text())
+        self.assertIn('EdgeWorldUniverseGameMode',args)
+        self.assertEqual(1,self.build_arguments.read_text().splitlines().count('-NoUBA'))
+        self.assertNotIn('EdgeWorldCausalGameMode',args)
+        self.assertEqual('0',env['EDGEWORLD_UNIVERSE_INITIALIZE'])
+        self.assertEqual(str((self.repository/'engine/universe_authority/worker.py').resolve()),env['EDGEWORLD_UNIVERSE_WORKER'])
+        self.assertEqual(str(self.owner),env['EDGEWORLD_UNIVERSE_OWNER_CONFIG'])
+        pins=Path(env['EDGEWORLD_UNIVERSE_PINS']);raw=pins.read_bytes()
+        self.assertFalse(raw.endswith(b'\n'))
+        self.assertEqual(0o600,pins.stat().st_mode&0o777)
+        self.assertEqual(0o700,pins.parent.stat().st_mode&0o777)
+        self.assertEqual(1,pins.stat().st_nlink)
+        self.assertEqual(12,len(json.loads(raw)))
+        trace=Path(env['EDGEWORLD_UNIVERSE_TRACE'])
+        self.assertTrue(trace.is_dir())
+        self.assertEqual(0o700,trace.stat().st_mode&0o777)
+        self.assertEqual([],list(trace.iterdir()))
+        import hashlib
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),env['EDGEWORLD_UNIVERSE_PINS_SHA256'])
+        self.assertNotIn('PRIVATE CONFIG',result.stdout+result.stderr+raw.decode())
+        self.assertIn('validated_observation_seen',result.stdout)
+
+    def test_explicit_initialize_requires_both_flags(self):
+        result=self.launch('--launch','--universe','--owner-config',str(self.owner),'--universe-initialize')
+        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+        self.assertEqual('1',json.loads(self.child_environment.read_text())['EDGEWORLD_UNIVERSE_INITIALIZE'])
+
+    def test_private_option_without_universe_rejected_before_build(self):
+        for flags in (('--owner-config',str(self.owner)),('--universe-initialize',)):
+            with self.subTest(flags=flags):
+                r=self.launch('--launch',*flags)
+                self.assertEqual(64,r.returncode)
+                self.assertFalse(self.build_started.exists())
+                self.assertFalse(self.arguments.exists())
+
+    def test_universe_missing_owner_rejected_before_build(self):
+        r=self.launch('--universe','--launch')
+        self.assertEqual(64,r.returncode)
+        self.assertFalse(self.build_started.exists())
+
+    def test_bad_pins_rejected_before_build_or_editor(self):
+        for mode in ('synthetic','extra','noncanonical','duplicate'):
+            with self.subTest(mode=mode):
+                self.environment['MOCK_PINS_MODE']=mode
+                r=self.launch('--launch','--universe','--owner-config',str(self.owner))
+                self.assertNotEqual(0,r.returncode)
+                self.assertFalse(self.build_started.exists())
+                self.assertFalse(self.arguments.exists())
+
+    def test_universe_trace_run_is_exclusive(self):
+        roots=[]
+        for unused in range(2):
+            result=self.launch('--launch','--universe','--owner-config',str(self.owner))
+            self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+            trace=Path(json.loads(self.child_environment.read_text())['EDGEWORLD_UNIVERSE_TRACE'])
+            roots.append(trace)
+            (trace/'preserved.bin').write_bytes(b'original raw\x00\xff')
+        self.assertNotEqual(roots[0],roots[1])
+        self.assertEqual(b'original raw\x00\xff',(roots[0]/'preserved.bin').read_bytes())
+
+    def test_universe_build_only_does_not_export_or_launch(self):
+        r=self.launch('--universe')
+        self.assertEqual(0,r.returncode,r.stdout+r.stderr)
+        self.assertFalse(self.arguments.exists())
+        self.assertFalse(self.child_environment.exists())
+        self.assertEqual(1,self.build_arguments.read_text().splitlines().count('-NoUBA'))
 
 
 if __name__ == "__main__":
