@@ -12,6 +12,8 @@ H1e [默认线程同步候选](evidence/g3-viewport-preflush/report.md) PR #62 /
 
 H1f 已在 `.worktrees/g3-preflush-followup` / `codex/g3-preflush-followup` 从 `12f7fb7` 实施，GPU 独占。H1e 干净且已集成的任务 worktree 已移除，原始证据保留。[H-LIGHT-01](evidence/home-runtime-lighting-plan.md) 只读调查指出动态 DirectionalLight 默认 Stationary 与 16 个 runtime Static 组件相关；统筹接受最小 Movable 候选，独立准备，构建/Metal 采证须等待 H1f 释放 GPU，不能用静态归因直接宣称修复。统筹 `12f7fb7` 经 HTTPS 推送成功；SSH443 连接超时，LFS 无待上传对象。
 
+H1f 中间检查点：修正 Outer 夹具后两项自动化报告成功、测试进程退出 0，首次 ensure 失败完整保留；独立只读代码审查接受幂等注册/解绑，完整运行门尚待两个 B 边界样本与原始证据审查。H1g [标准启动器显式接线卡](evidence/viewport-preflush-launch-plan.md) 已备妥，依赖 H1f 全部 B 成功及 PR 集成后再发布，不默认启用。H-LIGHT-01 已在 `.worktrees/home-runtime-lighting` / `codex/home-runtime-lighting` 从 `e577ac2` 准备最小 Movable 修复及只读证据命令，未构建/实测，等待资源。
+
 用户随后提供 Crash Reporter 截图，确认为 `SceneViewport.cpp:196 IsInGameThread()`。现场进程核对发现三个残留 reporter 对应 H1c A1/A2/B2 的 UE PID 18962/22076/22535，日志关窗断言为本地 11:58/12:07/12:11；当时无 UE/Worker 在运行，不能据此称 H1d 新失败。残留 reporter 已关闭，原始 crash 目录保留且未向 Epic 发送。后续测试需核对并清理本次 reporter，避免残留窗口混淆运行状态。
 
 [H1c 相机目标差分](evidence/g3-viewtarget-differential/report.md) PR #59/集成 `c22e126`：A（保留 SetViewTarget）2/2 次断言；B（跳过）1 次正常、1 次同样断言，因此该调用不是必要条件。`-norenderthread` 单次无 worker/无因果 Actor 的限时运行正常退出，当时仅作为 H1d 的前置探针。92/92 原始证据哈希复算匹配，诊断开关已撤回、worktree 已清理。可靠性门继续 `fail/open`，UE 引擎源码未修改。
