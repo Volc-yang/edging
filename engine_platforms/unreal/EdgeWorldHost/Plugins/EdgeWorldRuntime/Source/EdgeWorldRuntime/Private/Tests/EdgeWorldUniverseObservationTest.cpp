@@ -131,7 +131,7 @@ bool FEdgeWorldUniverseObservationTest::RunTest(const FString& Parameters)
  {
   FString Canon, Digest, CodecError;
   TestTrue(Label, FEdgeWorldUniverseObservationParser::CanonicalRecord(Bytes(OptionsRecord(Input)), Canon, Digest, CodecError));
-  TestTrue(TEXT("canonical object bytes exact including case/NUL/scalar key order"), Bytes(Canon) == Bytes(OptionsRecord(ExpectedObject)));
+  TestTrue(*(FString(Label)+TEXT(" canonical bytes exact including case/NUL/scalar key order")), Bytes(Canon) == Bytes(OptionsRecord(ExpectedObject)));
   ++StrictTextCases;
  };
  CheckObject(TEXT("case-distinct generic keys accepted"), TEXT("{\"a\":2,\"A\":1}"), TEXT("{\"A\":1,\"a\":2}"));

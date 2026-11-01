@@ -180,7 +180,7 @@ static FString Canon(const V& X)
 {
  if(!X)return TEXT("<missing>");switch(X->Type){case FValue::Null:return TEXT("null");case FValue::Bool:return X->B?TEXT("true"):TEXT("false");case FValue::Int:return LexToString(X->I);case FValue::String:return Quote(X->S);
  case FValue::Array:{FString S=TEXT("[");for(int32 I=0;I<X->A.Num();++I){if(I)S+=TEXT(",");S+=Canon(X->A[I]);}return S+TEXT("]");}
- case FValue::Object:{TArray<FString> Keys;X->O.GetKeys(Keys);Keys.Sort(OrdinalLess);FString S=TEXT("{");for(int32 I=0;I<Keys.Num();++I){if(I)S+=TEXT(",");S+=Quote(Keys[I])+TEXT(":")+Canon(X->O[Keys[I]]);}return S+TEXT("}");}}
+ case FValue::Object:{TArray<FString> Keys;for(const auto& Pair:X->O)Keys.Add(Pair.Key);Keys.Sort(OrdinalLess);FString S=TEXT("{");for(int32 I=0;I<Keys.Num();++I){if(I)S+=TEXT(",");S+=Quote(Keys[I])+TEXT(":")+Canon(X->O[Keys[I]]);}return S+TEXT("}");}}
  return {};
 }
 static bool Eq(const V& A,const V& B){return A&&B&&SameText(Canon(A),Canon(B));}
