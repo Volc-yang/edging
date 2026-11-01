@@ -120,3 +120,96 @@ bool FUniverseTransportTest::RunTest(const FString& Parameters)
  return true;
 }
 #endif
+
+#if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseLiveReadOnlyTest,"edgeWorld.UniverseHost.LiveReadOnly",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FUniverseLiveReadOnlyTest::RunTest(const FString& Parameters)
+{
+ // A real, root-approved existing deployment. Missing inputs fail; there is no fixture/fake fallback.
+ const FString Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PYTHON"));
+ const FString Worker=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_WORKER"));
+ const FString Owner=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_OWNER_CONFIG"));
+ const FString PinsPath=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS"));
+ const FString PinsHash=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS_SHA256"));
+ const FString Trace=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_TRACE"));
+ const FString Evidence=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_LIVE_EVIDENCE"));
+ const FString OwnWorker=FPaths::ConvertRelativePathToFull(FPaths::Combine(FPaths::ProjectDir(),TEXT("../../../engine/universe_authority/worker.py")));
+ for(const FString& Path:{Python,Worker,Owner,PinsPath,Trace,Evidence})
+  if(!TestTrue(TEXT("explicit absolute live input required"),!Path.IsEmpty()&&!FPaths::IsRelative(Path)))return false;
+ if(!TestEqual(TEXT("worker belongs to exact owning tree"),Worker,OwnWorker))return false;
+ FEdgeWorldUniversePublicPins Pins;FString Error;
+ if(!TestTrue(TEXT("safe independent runtime public pins"),AEdgeWorldUniverseGameMode::ReadLaunchPins(PinsPath,PinsHash,Pins,Error)))return false;
+ TestEqual(TEXT("real deployment class"),Pins.Context.ArtifactClass,FString(TEXT("genesis-runtime")));
+ auto Save=[&](const FString& Name,const FString& Text){return TestTrue(*(TEXT("exclusive evidence ")+Name),FEdgeWorldProcessTransport::TraceFileExclusive(Evidence/Name,UB(Text)));};
+ FEdgeWorldWorkerLaunchConfig Config;Config.LaunchMode=EEdgeWorldWorkerLaunchMode::Universe;Config.PythonExecutable=Python;Config.WorkerScript=Worker;Config.OwnerConfigPath=Owner;Config.TraceDirectory=Trace;Config.RequestTimeoutSeconds=15.;
+ auto Transport=MakeShared<FEdgeWorldProcessTransport,ESPMode::ThreadSafe>(Config);
+ uint32 OwnedPid=0;uint64 OwnedGeneration=0;int32 Requests=0;
+ auto Exchange=[&](const FString& Operation,const FString& Id,const FString& Payload,FEdgeWorldResponse& Out)
+ {
+  FString Line;if(!TestTrue(TEXT("strict real request"),FEdgeWorldUniverseControlParser::Request(Operation,Id,Payload,Line,Error)))return false;
+  struct FDone{FCriticalSection Lock;bool Ready=false;FEdgeWorldResponse Response;};auto Done=MakeShared<FDone,ESPMode::ThreadSafe>();
+  ++Requests;Transport->SendJsonLine({Id,Operation,Line},[Done](FEdgeWorldResponse&& R){FScopeLock Lock(&Done->Lock);Done->Response=MoveTemp(R);Done->Ready=true;});
+  const double Deadline=FPlatformTime::Seconds()+20.;bool Ready=false;
+  while(FPlatformTime::Seconds()<Deadline){{FScopeLock Lock(&Done->Lock);Ready=Done->Ready;}if(Ready)break;FPlatformProcess::Sleep(.005f);}
+  if(!TestTrue(TEXT("real owned worker replied"),Ready))return false;
+  {FScopeLock Lock(&Done->Lock);Out=MoveTemp(Done->Response);}
+  if(!TestTrue(*(TEXT("real byte frame: ")+Out.ErrorCode),!Out.RawJsonl.IsEmpty()&&Out.WorkerPid>0&&Out.ProcessGeneration>0))return false;
+  if(OwnedPid==0){OwnedPid=Out.WorkerPid;OwnedGeneration=Out.ProcessGeneration;}
+  return TestEqual(TEXT("same owned worker PID"),Out.WorkerPid,OwnedPid)&&TestEqual(TEXT("same process generation"),Out.ProcessGeneration,OwnedGeneration);
+ };
+ const FString Base=TEXT("\"domain\":\"edgeworld.universe.authority\",\"version\":\"0.2\",\"world_id\":\"")+Pins.Context.WorldId+TEXT("\"");
+ auto Status=[&](const FString& Id,FEdgeWorldUniverseControl& Out)
+ {
+  FEdgeWorldResponse R;if(!Exchange(TEXT("status"),Id,TEXT("{")+Base+TEXT("}"),R))return false;
+  FEdgeWorldUniverseControlExpectation E;E.Pins=Pins;E.RequestId=Id;E.Operation=TEXT("status");
+  return TestTrue(TEXT("real strict status context/binding"),FEdgeWorldUniverseControlParser::Verify(R.RawJsonl,E,Out,Error))&&TestTrue(TEXT("real status success"),Out.bSuccess);
+ };
+ FEdgeWorldUniverseControl Initial;
+ if(!Status(TEXT("live-status-initial"),Initial)){Transport->Shutdown();return false;}
+ if(!TestTrue(TEXT("approved existing current pair"),Initial.Tick==2&&Initial.Revision==4&&Initial.Watermark==4&&Initial.Head.StorageState==TEXT("ready"))){Transport->Shutdown();return false;}
+ FEdgeWorldUniverseCameraPlacement Camera;FTransform InitialCamera;int32 Observations=0;
+ struct FSelection{const TCHAR* Name;int64 Tick,Revision;};
+ for(const FSelection& Selection:{FSelection{TEXT("current"),2,4},FSelection{TEXT("history-r1"),0,1},FSelection{TEXT("genesis"),0,0}})
+ {
+  const FString Id=TEXT("live-observe-")+Selection.Name;
+  const FString Payload=TEXT("{")+Base+FString::Printf(TEXT(",\"tick\":%lld,\"revision\":%lld,\"watermark\":%lld}"),(long long)Selection.Tick,(long long)Selection.Revision,(long long)Selection.Revision);
+  FEdgeWorldResponse R;if(!Exchange(TEXT("observe"),Id,Payload,R)){Transport->Shutdown();return false;}
+  FEdgeWorldUniverseExpectation E;E.Context=Pins.Context;E.TrustedHead=Initial.Head;E.RequestId=Id;E.Tick=Selection.Tick;E.Revision=Selection.Revision;E.Watermark=Selection.Revision;
+  FEdgeWorldUniverseObservation O;
+  if(!TestTrue(TEXT("real selected sample proof"),FEdgeWorldUniverseObservationParser::Verify(R.RawJsonl,E,O,Error))){Transport->Shutdown();return false;}
+  FString Audit,Candidate;const bool Assets=AEdgeWorldUniverseGameMode::VerifyInstalledAssets(O,Error,&Audit,&Candidate);
+  const FString Name=Selection.Name;Save(TEXT("asset-audit-")+Name+TEXT(".json"),Audit);Save(TEXT("asset-candidate-")+Name+TEXT(".json"),Candidate);
+  if(!TestTrue(*(TEXT("real same-world installed asset graph: ")+Error),Assets)){Transport->Shutdown();return false;}
+  if(Observations==0)
+  {
+   TestEqual(TEXT("current selection is trusted HEAD"),O.Manifest,Initial.Head.Head);
+   TestTrue(TEXT("first verified body positions camera"),Camera.TryPlace(O,InitialCamera));
+   FVector Target=AEdgeWorldUniverseActor::Position(O,O.Bodies[0].PositionM);
+   const double Alignment=FVector::DotProduct(InitialCamera.GetRotation().GetForwardVector(),(Target-InitialCamera.GetLocation()).GetSafeNormal());
+   TestTrue(TEXT("camera explicitly looks at real physical target"),Alignment>1.-1e-9);
+  }
+  else
+  {
+   FTransform Preserved=InitialCamera;TestFalse(TEXT("history never repositions user camera"),Camera.TryPlace(O,Preserved));TestTrue(TEXT("camera transform unchanged"),Preserved.Equals(InitialCamera));
+  }
+  auto Summary=MakeShared<FJsonObject>();Summary->SetStringField(TEXT("world_id"),O.WorldId);Summary->SetStringField(TEXT("head"),Initial.Head.Head);Summary->SetStringField(TEXT("manifest"),O.Manifest);Summary->SetStringField(TEXT("snapshot"),O.Snapshot);Summary->SetNumberField(TEXT("tick"),O.Tick);Summary->SetNumberField(TEXT("revision"),O.Revision);Summary->SetNumberField(TEXT("watermark"),O.Watermark);Summary->SetNumberField(TEXT("wire_bytes"),O.WireBytes);Summary->SetStringField(TEXT("artifact_class"),O.ArtifactClass);Summary->SetBoolField(TEXT("installed_assets_exact"),Assets);Save(TEXT("selection-")+Name+TEXT(".json"),Json(Summary));++Observations;
+ }
+ FEdgeWorldUniverseControl Final;const bool FinalStatus=Status(TEXT("live-status-final"),Final);
+ TestTrue(TEXT("fresh final HEAD and watermarks unchanged"),FinalStatus&&Final.Head.Head==Initial.Head.Head&&Final.State==Initial.State&&Final.Event==Initial.Event&&Final.Tick==2&&Final.Revision==4&&Final.Watermark==4);
+ Transport->Shutdown();
+ TArray<FString> Metadata;IFileManager::Get().FindFiles(Metadata,*(Trace/TEXT("*.json")),true,false);Metadata.Sort();int32 TracedRequests=0,Exits=0;
+ for(const FString& Filename:Metadata)
+ {
+  FString Text;FFileHelper::LoadFileToString(Text,*(Trace/Filename));auto M=Object(Text);if(!TestTrue(TEXT("trace metadata object"),M.IsValid()))continue;const FString Direction=M->GetStringField(TEXT("direction"));
+  if(Direction==TEXT("request")){++TracedRequests;FString Op=M->GetStringField(TEXT("operation"));TestTrue(TEXT("all real requests strictly readonly"),Op==TEXT("status")||Op==TEXT("observe"));}
+  if(Direction==TEXT("worker-exit"))
+  {
+   ++Exits;FString Raw;FFileHelper::LoadFileToString(Raw,*(Trace/M->GetStringField(TEXT("raw_file"))));auto Exit=Object(Raw);if(!TestTrue(TEXT("actual worker exit evidence"),Exit.IsValid()))continue;
+   TestTrue(TEXT("real worker return code available"),Exit->GetBoolField(TEXT("return_code_available")));TestEqual(TEXT("real existing worker exit0"),int32(Exit->GetNumberField(TEXT("exit_code"))),0);TestTrue(TEXT("real worker reaped"),Exit->GetBoolField(TEXT("reaped")));TestEqual(TEXT("normal EOF"),Exit->GetStringField(TEXT("stop_kind")),FString(TEXT("normal")));TestTrue(TEXT("real stderr/EOF trace complete"),Exit->GetBoolField(TEXT("trace_complete")));TestFalse(TEXT("real readonly lifecycle not failed"),Exit->GetBoolField(TEXT("operational_failure")));Save(TEXT("worker-exit.json"),Raw);
+  }
+ }
+ TestEqual(TEXT("three real observations"),Observations,3);TestEqual(TEXT("five real readonly requests"),Requests,5);TestEqual(TEXT("all request bytes recorded"),TracedRequests,Requests);TestEqual(TEXT("one real worker lifecycle"),Exits,1);
+ auto Outcome=MakeShared<FJsonObject>();Outcome->SetNumberField(TEXT("worker_pid"),OwnedPid);Outcome->SetNumberField(TEXT("requests"),Requests);Outcome->SetNumberField(TEXT("observations"),Observations);Outcome->SetStringField(TEXT("head"),Initial.Head.Head);Outcome->SetBoolField(TEXT("fresh_status_unchanged"),FinalStatus&&Final.Head.Head==Initial.Head.Head);Outcome->SetStringField(TEXT("scope"),TEXT("real-existing-readonly-nullrhi-not-metal-not-init-or-evolution"));Save(TEXT("live-outcome.json"),Json(Outcome));
+ return true;
+}
+#endif

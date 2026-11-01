@@ -44,7 +44,7 @@ void AEdgeWorldUniverseGameMode::StartPlay()
 {
  Super::StartPlay();if(!Configure()){Reject(TEXT("trusted public launch pins unavailable"),false);return;}
  if(auto* Light=GetWorld()->SpawnActor<ADirectionalLight>(FVector(0,0,500),FRotator(-45,-35,0))){Light->GetLightComponent()->SetMobility(EComponentMobility::Movable);Light->GetLightComponent()->SetIntensity(10.f);}
- Projection=GetWorld()->SpawnActor<AEdgeWorldUniverseActor>();Camera=GetWorld()->SpawnActor<ACameraActor>(FVector(700,-900,650),FRotator(-25,45,0));
+ Projection=GetWorld()->SpawnActor<AEdgeWorldUniverseActor>();Camera=GetWorld()->SpawnActor<ACameraActor>(FVector(700,-900,650),(FVector(0,0,100)-FVector(700,-900,650)).Rotation());
  if(APlayerController* C=GetWorld()->GetFirstPlayerController()){C->SetViewTarget(Camera);C->SetInputMode(FInputModeGameOnly());}
  OpenTransport();RefreshHead();UE_LOG(LogTemp,Display,TEXT("Universe world: 1 weak; 2 strong; Space physical; R retain; [ prior; H latest; UniverseRefresh/UniverseRetry explicit."));
 }
@@ -52,10 +52,15 @@ void AEdgeWorldUniverseGameMode::EndPlay(const EEndPlayReason::Type Reason){Sess
 bool AEdgeWorldUniverseGameMode::Configure()
 {
  Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PYTHON"));Worker=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_WORKER"));OwnerConfig=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_OWNER_CONFIG"));
- FString PinsPath=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS")),Hash=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS_SHA256"));TArray<uint8> Raw;FString Error;
+ FString PinsPath=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS")),Hash=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS_SHA256"));FString Error;
  TraceDirectory=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_TRACE"));TraceBudget=MakeShared<FEdgeWorldTraceBudget,ESPMode::ThreadSafe>();
  bExplicitInitialize=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_INITIALIZE"))==TEXT("1");
- return !FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadPins(PinsPath,Raw)&&FEdgeWorldUniverseControlParser::PublicPins(Raw,Hash,Pins,Error);
+ return !FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadLaunchPins(PinsPath,Hash,Pins,Error);
+}
+bool AEdgeWorldUniverseGameMode::ReadLaunchPins(const FString& Path,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error)
+{
+ Out={};TArray<uint8> Raw;if(!ReadPins(Path,Raw)){Error=TEXT("UNSAFE_PUBLIC_PINS");return false;}
+ return FEdgeWorldUniverseControlParser::PublicPins(Raw,Hash,Out,Error);
 }
 void AEdgeWorldUniverseGameMode::OpenTransport()
 {
@@ -116,17 +121,20 @@ void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
   if(!Weak.IsValid()||Token.Epoch!=Weak->Session.Epoch||Token.Serial!=Weak->Session.Serial||!Weak->Session.bBusy)return;
   if(R.WorkerPid==0||!Weak->Session.Accept(Token,R.ProcessGeneration)){Weak->ChannelFailed(TEXT("observe channel changed"));return;}
   FEdgeWorldUniverseObservation O;FString Error;
-  if(!FEdgeWorldUniverseObservationParser::Verify(R.RawJsonl,E,O,Error)||!Weak->ValidateAssets(O,Error)){Weak->Reject(Error,false);return;}
+  if(!FEdgeWorldUniverseObservationParser::Verify(R.RawJsonl,E,O,Error)||!VerifyInstalledAssets(O,Error)){Weak->Reject(Error,false);return;}
   Weak->Session.Observation=O;Weak->Session.bHasObservation=true;Weak->Session.bAssetsValidated=true;Weak->Session.bHistory=O.Manifest!=Weak->Session.Head.Head;Weak->Session.ClassifyView();
   if(Weak->Projection&&!Weak->Projection->ApplyVerified(O,Error)){Weak->Session.bAssetsValidated=false;Weak->Reject(Error,false);return;}
+  FTransform InitialCamera;if(Weak->Camera&&Weak->CameraPlacement.TryPlace(O,InitialCamera))Weak->Camera->SetActorTransform(InitialCamera);
   if(Weak->Projection)Weak->Session.DerivedInstances=Weak->Projection->GetDerivedInstanceCount();
   Weak->Present();UE_LOG(LogTemp,Display,TEXT("Universe world %s observed tick %lld, revision %lld"),*O.WorldId,(long long)O.Tick,(long long)O.Revision);
  });});Present();
 }
-bool AEdgeWorldUniverseGameMode::ValidateAssets(const FEdgeWorldUniverseObservation& O,FString& Error)
+bool AEdgeWorldUniverseGameMode::VerifyInstalledAssets(const FEdgeWorldUniverseObservation& O,FString& Error,FString* AuditJson,FString* CandidateJson)
 {
 #if WITH_EDITOR
- Error=TEXT("installed asset graph mismatch");FEdgeWorldUniverseAssetAuditResult A;if(!FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error)||!A.bResolved||A.GapCount!=0||O.AssetDependencyStatus!=TEXT("runtime-resolved"))return false;
+ Error=TEXT("installed asset graph mismatch");FEdgeWorldUniverseAssetAuditResult A;const bool Collected=FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error);
+ if(AuditJson)*AuditJson=A.AuditJson;if(CandidateJson)*CandidateJson=A.CandidateJson;
+ if(!Collected||!A.bResolved||A.GapCount!=0||O.AssetDependencyStatus!=TEXT("runtime-resolved"))return false;
  for(const auto& R:O.SelectedRecords)if(R.Kind==TEXT("asset_manifest"))return R.Id==TEXT("asset-manifest-runtime")&&R.Digest==A.CandidateDigest&&R.CanonicalJson==A.CandidateJson;
 #endif
  Error=TEXT("installed asset graph mismatch or unsupported non-editor path");return false;

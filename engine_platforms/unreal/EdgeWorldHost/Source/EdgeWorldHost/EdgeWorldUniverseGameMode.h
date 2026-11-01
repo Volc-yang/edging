@@ -45,6 +45,21 @@ struct FEdgeWorldUniverseSession
  void ClassifyView(){Phase=bUnknown?EUniverseClientPhase::Unknown:Head.StorageState!=TEXT("ready")?EUniverseClientPhase::ReadOnly:bHistory?EUniverseClientPhase::History:EUniverseClientPhase::Latest;}
 };
 
+/** First verified physical target only; later observations must preserve the user's camera. */
+struct FEdgeWorldUniverseCameraPlacement
+{
+ bool bPlaced=false;
+ bool TryPlace(const FEdgeWorldUniverseObservation& O,FTransform& Out)
+ {
+  if(bPlaced||O.Bodies.Num()!=2||O.Bodies[0].PhysicalId!=TEXT("body-dynamic"))return false;
+  const FVector3d M=O.Bodies[0].PositionM;
+  const FVector Target(O.OriginCm+FVector3d(M.X,-M.Y,M.Z)*O.Scale);
+  if(Target.ContainsNaN())return false;
+  const FVector Eye=Target+FVector(700,-900,550);
+  Out=FTransform((Target-Eye).Rotation(),Eye);bPlaced=true;return true;
+ }
+};
+
 UCLASS()
 class EDGEWORLDHOST_API AEdgeWorldUniverseGameMode : public AGameModeBase
 {
@@ -71,6 +86,9 @@ public:
  void RetryExact();
  void MoveCamera(const FVector& Offset,const FRotator& Turn);
  const FEdgeWorldUniverseSession& View()const{return Session;}
+ static bool ReadLaunchPins(const FString& Path,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error);
+ static bool VerifyInstalledAssets(const FEdgeWorldUniverseObservation& Observation,FString& Error,
+                                  FString* AuditJson=nullptr,FString* CandidateJson=nullptr);
 private:
  bool Configure();
  void OpenTransport();
@@ -83,11 +101,11 @@ private:
  void Reject(const FString& Error,bool Unknown);
  void ChannelFailed(const FString& Error);
  void Present();
- bool ValidateAssets(const FEdgeWorldUniverseObservation& Observation,FString& Error);
  FEdgeWorldUniverseControlExpectation Expectation(const FString& Op,const FString& RequestId)const;
  FString BasePayload()const;
  FEdgeWorldUniversePublicPins Pins;
  FEdgeWorldUniverseSession Session;
+ FEdgeWorldUniverseCameraPlacement CameraPlacement;
  FString Python,Worker,OwnerConfig,TraceDirectory;
  TSharedPtr<FEdgeWorldTraceBudget,ESPMode::ThreadSafe> TraceBudget;
  bool bExplicitInitialize=false, bInitializeSent=false;
