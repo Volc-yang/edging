@@ -31,4 +31,4 @@ Owner 必须回报状态、准确 commit、PR、实际检查、限制及下一�
 
 ## 本批结果
 
-独立审查与集成 Check 见[报告](design/universe-u1-u5-integration-review.md)。U1 最终 `a7fed69`、U5 最终 `ec8bf6e` 各自 CI 通过、独立 PR 已合并，统筹复核旧 fixture 摘要、文档范围/链接及新候选图内部一致性；仅设计门 pass，新运行门 planned。两个本批任务 worktree 已移除，分支保留。下一 ready 为 U2/U3/U6/U7（尚未派发）；本批没有并行扩展产品实现。
+独立审查与集成 Check 见[报告](design/universe-u1-u5-integration-review.md)。U1 最终 `a7fed69`、U5 最终 `ec8bf6e` 各自 CI 通过、独立 PR 已合并，统筹复核旧 fixture 摘要、文档范围/链接及新候选图内部一致性；仅设计门 pass，新运行门 planned。两个本批任务 worktree 已移除，分支保留。当时下一 ready 为 U2/U3/U6/U7；后续已完成，见[第二批登记](universe_design_batch2_register.md)。本首批登记保留原输入身份，没有扩展产品实现。
