@@ -1,0 +1,20 @@
+test_approved_runtime_asset_audit_consistency_and_counterexamples (tests.test_universe_worker.OwnerConfigTests.test_approved_runtime_asset_audit_consistency_and_counterexamples) ... ok
+test_owner_alias_permissions_link_and_synthetic_fail_closed (tests.test_universe_worker.OwnerConfigTests.test_owner_alias_permissions_link_and_synthetic_fail_closed) ... ok
+test_owner_exact_paths_and_missing_inputs (tests.test_universe_worker.OwnerConfigTests.test_owner_exact_paths_and_missing_inputs) ... ok
+test_public_print_only_reads_owner_and_never_creates (tests.test_universe_worker.OwnerConfigTests.test_public_print_only_reads_owner_and_never_creates) ... ok
+test_actual_lost_response_recovery_does_not_reexecute_physics (tests.test_universe_worker.WorkerTests.test_actual_lost_response_recovery_does_not_reexecute_physics) ... ok
+test_channel_errors_unknown_stops_and_no_fallback_id (tests.test_universe_worker.WorkerTests.test_channel_errors_unknown_stops_and_no_fallback_id) ... ok
+test_control_fd_isolated_from_python_and_native_stdout (tests.test_universe_worker.WorkerTests.test_control_fd_isolated_from_python_and_native_stdout) ... ok
+test_corruption_existing_fails_without_fallback_or_solver (tests.test_universe_worker.WorkerTests.test_corruption_existing_fails_without_fallback_or_solver) ... ok
+test_existing_head_initialize_mode_rejected_before_provider (tests.test_universe_worker.WorkerTests.test_existing_head_initialize_mode_rejected_before_provider) ... ok
+test_existing_owner_scratch_reused_without_creation_or_cleanup (tests.test_universe_worker.WorkerTests.test_existing_owner_scratch_reused_without_creation_or_cleanup) ... ok
+test_explicit_initialization_static_inventory_and_readonly (tests.test_universe_worker.WorkerTests.test_explicit_initialization_static_inventory_and_readonly) ... ok
+test_frozen_error_codes_for_protocol_build_and_reinitialize (tests.test_universe_worker.WorkerTests.test_frozen_error_codes_for_protocol_build_and_reinitialize) ... ok
+test_retain_physics_history_retry_and_restart (tests.test_universe_worker.WorkerTests.test_retain_physics_history_retry_and_restart) ... ok
+test_stale_new_intent_rejected_but_retry_survives_h64 (tests.test_universe_worker.WorkerTests.test_stale_new_intent_rejected_but_retry_survives_h64) ... ok
+test_strict_wire_rejects_malformed_and_bad_business_shapes (tests.test_universe_worker.WorkerTests.test_strict_wire_rejects_malformed_and_bad_business_shapes) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 11.283s
+
+OK
