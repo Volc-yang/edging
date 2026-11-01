@@ -506,6 +506,7 @@ def execute(store: Store, command_records: Sequence[Record], *, command_digest: 
                      candidate_id=candidate_id, admission_id=admission_id, state_id=state_id,
                      event_id=event_id, result_id=result_id, index_id=index_id, manifest_id=manifest_id)
     composite = (isinstance(command_records, Sequence) and not isinstance(command_records, (str, bytes, bytearray))
+                 and len(command_records) == 4
                  and any(type(r) is dict and r.get('version') == '0.2' for r in command_records))
     if composite:
         return _execute_v02(store, command_records, provider=provider, physics_ids=physics_ids, **arguments)
