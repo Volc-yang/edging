@@ -15,4 +15,4 @@
 
 ## 当前状态与收尾
 
-工作完成；PR [#75](https://github.com/Volc-yang/edging/pull/75) merged；最终source `98890bafe73a1403a559f1a8ca6ef7270777ba26`，merge `06eb9eacdd7b87880df6cea9254935dcf91f7954`。两轮定向修订闭合历史/结构和阶段资源预算，见[独立审查](design/universe-u8-integration-review.md)。owner/非作者/局部集成设计门pass，最终 CI verify SUCCESS；所有新运行门planned。确认干净和source祖先后已移除worktree，分支/报告保留。U9 已ready、尚未派发，U 总轮和 V-HOME 产品总门保持开放。
+工作完成；PR [#75](https://github.com/Volc-yang/edging/pull/75) merged；最终source `98890bafe73a1403a559f1a8ca6ef7270777ba26`，merge `06eb9eacdd7b87880df6cea9254935dcf91f7954`。两轮定向修订闭合历史/结构和阶段资源预算，见[独立审查](design/universe-u8-integration-review.md)。owner/非作者/局部集成设计门pass，最终 CI verify SUCCESS；所有新运行门planned。确认干净和source祖先后已移除worktree，分支/报告保留。U9 后续已完成，见[登记](universe_u9_execution_register.md)；当前I0 ready、尚未派发，U 总轮和 V-HOME 产品总门保持开放。

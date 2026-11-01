@@ -1,6 +1,6 @@
 # U9 最终跨卡审查与实现树：执行登记
 
-状态：2026-11-01，v0.1，进行中；parent=U。依据[架构树](universe_architecture_design_plan.md)，U4/U8 依赖及 U1–U8 局部设计门已接受，用户授权继续总审查。本卡不是实施放行或产品验收。
+状态：2026-11-01，v0.2，本卡完成；本次 U 设计轮收尾；parent=U。依据[架构树](universe_architecture_design_plan.md)，U4/U8 依赖及 U1–U8 局部设计门已接受，用户授权继续总审查。本卡不是实施放行或产品验收。
 
 ## 固定任务卡
 
@@ -19,4 +19,4 @@
 
 ## 当前状态
 
-工作进行中；PR未建；本卡自检/统筹集成门planned；新运行门planned；worktree活跃保留。收齐source/PR/检查/限制后逐项审查；最终CI通过、按expected head合并并确认干净/source祖先后清理，仅保留分支/报告。主统筹压缩更新backlog/当前总图与本登记，commit/push。U轮尚未关闭。
+工作完成；PR [#76](https://github.com/Volc-yang/edging/pull/76) merged；source `72450e3a99c2733f3d729b909372b5778da0d5f4`，merge `047b89f5c356b094f9062776dc57f6b3e643f8c5`。15链接、8输入祖先、25节点54边增广DAG与13卡42路径检查通过，最终CI verify SUCCESS；独立架构审查和统筹集成设计门pass，所有新运行门planned。见[统筹收尾](design/universe-u9-coordination-review.md)。确认干净/source祖先后已清理任务worktree，分支/报告保留。U1–U9本次设计轮义务完成，产品总计划仍开放；唯一下一ready为I0技术契约与可执行fixture，尚未派发。

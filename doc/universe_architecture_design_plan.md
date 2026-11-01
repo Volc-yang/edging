@@ -1,6 +1,6 @@
 # AI 4D 数字宇宙：下一阶段架构设计树
 
-版本：v0.1，2026-11-01；固定输入基线 `f674483`。父节点 G，设计节点 U。本文经统筹合成两份只读 subagent 提案，规定下一阶段设计任务，不批准新的世界法则，也不宣称产品运行验收通过。
+版本：v0.1，2026-11-01；固定输入基线 `f674483`。父节点 G，设计节点 U。本次设计轮已收尾，下一入口为[U9实现树](design/universe-integration-review.md)的I0；产品运行门不因此通过。本文经统筹合成两份只读 subagent 提案，规定下一阶段设计任务，不批准新的世界法则，也不宣称产品运行验收通过。
 
 ## 目标、现状与设计原则
 
@@ -40,7 +40,7 @@ AI 只产提案，Genesis 只产候选；都不直接替换世界 head。UE 本�
 
 ## U 设计轮：PDCA 根节点
 
-- **Owner / 状态：**主会话统筹；设计轮进行中，运行实现未派发。
+- **Owner / 状态：**主会话统筹；本次设计轮已完成并收尾，I0 ready但尚未派发，新域I实现尚未开始。
 - **Plan：**固定上述基线、用户决定及 S4 技术契约，形成可评审的架构接口和实现分工；每叶卡最多一份主设计、一个正例和一个反例矩阵。未决项给备选、影响和推荐，不无限研究。
 - **Do：**先完成本方案树，再按 ready 顺序发布独立设计卡。每卡单独 worktree/分支/PR，准确基线在发布时重新绑定；仅写该卡文档。两位只读规划 agent 的反馈已用于本方案树，尚不代表叶卡交付。
 - **Check：**非作者检查所有需求有来源、字段有所有者、依赖无环、正反例有可判结果；统筹检查跨卡身份/单位/时序兼容。设计通过仅放行对应实现规划，不能将未来运行检查标 pass。
@@ -49,7 +49,7 @@ AI 只产提案，Genesis 只产候选；都不直接替换世界 head。UE 本�
 
 ## 设计叶卡与拓扑
 
-所有卡 version=v0.1、parent=U；固定公共输入为 `f674483` 的总图、G0 决策记录、S4 契约及 backlog。依赖交付须绑定接受后的 commit/version。下列 owner 是角色，发布时绑定具体 agent；U1/U5 已按用户批准从 `5a5fe11` 发布并经独立 PR 集成、设计门接受，具体 owner/worktree/门状态见[执行登记](universe_design_execution_register.md)。U2/U3/U6/U7 已从 `6f3c142` 交付并审查集成，详见[第二批登记](universe_design_batch2_register.md)与[局部集成审查](design/universe-batch2-integration-review.md)；U4 已从 `3b5044d` 交付并审查集成（PR #74），见[登记](universe_u4_execution_register.md)及[复核](design/universe-u4-integration-review.md)；U8 已从 `fb93c29` 交付并审查集成（PR #75），见[登记](universe_u8_execution_register.md)与[复核](design/universe-u8-integration-review.md)；U9 已从 `4bb7452` 派发给全新reviewer，见[登记](universe_u9_execution_register.md)。
+所有卡 version=v0.1、parent=U；固定公共输入为 `f674483` 的总图、G0 决策记录、S4 契约及 backlog。依赖交付须绑定接受后的 commit/version。下列 owner 是角色，发布时绑定具体 agent；U1/U5 已按用户批准从 `5a5fe11` 发布并经独立 PR 集成、设计门接受，具体 owner/worktree/门状态见[执行登记](universe_design_execution_register.md)。U2/U3/U6/U7 已从 `6f3c142` 交付并审查集成，详见[第二批登记](universe_design_batch2_register.md)与[局部集成审查](design/universe-batch2-integration-review.md)；U4 已从 `3b5044d` 交付并审查集成（PR #74），见[登记](universe_u4_execution_register.md)及[复核](design/universe-u4-integration-review.md)；U8 已从 `fb93c29` 交付并审查集成（PR #75），见[登记](universe_u8_execution_register.md)与[复核](design/universe-u8-integration-review.md)；U9 已从 `4bb7452` 由全新reviewer完成并集成（PR #76），见[登记](universe_u9_execution_register.md)与[统筹收尾](design/universe-u9-coordination-review.md)。
 
 | ID / owner / depends_on / 独占交付路径 | Plan 与 Do | Check：设计检查与未来运行判据 | Act |
 | --- | --- | --- | --- |
@@ -88,4 +88,6 @@ graph TD
 
 开放：独立灵域产生/消亡、分化/合流、正式演化规律；载具是否权威实体；世界尺寸/在线人数/离线结算语义；写实参考/资产预算/目标机器和性能可靠性数值。设计 agent 应给小规模可测建议及替代成本，统筹集中裁决必要项，减少零散人工确认。
 
-本设计轮已检查九卡路径唯一、表格依赖一致、DAG 无环和当前文档本地链接有效；`shutdown_next_plan` 非作者只读复核无阻断 U1/U5 的问题，关于工程 fixture、地理提案与 AI 分支的三项语义建议已纳入。方案树检查已通过；U1/U5 及第二批 U2/U3/U6/U7 的 owner 自检、非作者审查和局部集成设计门已完成；U4 也经恢复确认修订后通过局部设计门；U8 经历史/结构/资源修订后也通过局部设计门；U9 与全部新运行门为 `planned`。已有 H6B、Genesis 等结果只作为标明版本的输入，不转移为新门通过。后续叶卡提交须分别记录工作状态、PR状态、门状态及裁决；U1/U5 的局部设计门现已通过，见[首批集成审查](design/universe-u1-u5-integration-review.md)；第二批结果另见[局部集成审查](design/universe-batch2-integration-review.md)。U4 设计结果另见[复核](design/universe-u4-integration-review.md)；U8 结果另见[复核](design/universe-u8-integration-review.md)；U9 与新运行门仍 planned，U 总轮继续。
+U1–U9 的设计交付、非作者审查和局部/父级集成检查已完成。逐卡证据见[首批](design/universe-u1-u5-integration-review.md)、[第二批](design/universe-batch2-integration-review.md)、[U4](design/universe-u4-integration-review.md)、[U8](design/universe-u8-integration-review.md)及[U9统筹收尾](design/universe-u9-coordination-review.md)。最终[实现树](design/universe-integration-review.md)含13张独占叶卡，任务与契约/资源/结果门合并检查无环；只有I0在本轮接受后ready。
+
+本次U设计轮完成，I实现轮从I0开始；全部新运行门仍planned。已有H6B/Genesis等结果只按原版本引用，不转移为新域门。共享实验字节、存储profile、真实物理、产品规律和质量/预算等未决项分别进入实现树的前置门，不用设计合并替代实测。

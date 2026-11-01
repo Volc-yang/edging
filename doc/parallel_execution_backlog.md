@@ -2,9 +2,9 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## U 总计划设计（U1–U8 已交付，待 U9）
+## 当前入口：U 设计轮已收尾，下一步 I0
 
-[架构树](universe_architecture_design_plan.md) v0.1 的 U1–U8 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
+[架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
 | 设计批次 | 已集成交付与准确上下文 |
 | --- | --- |
@@ -13,7 +13,9 @@
 | U4 事务/调度/恢复 | source `28122b7` / PR #74 / merge `09ef8cb`；[登记](universe_u4_execution_register.md)、[复核](design/universe-u4-integration-review.md)。D_recovery闭合完整性与耐久确认的区别 |
 | U8 规模/质量预算 | 基线 `fb93c29`，source `98890ba` / PR #75 / merge `06eb9ea`；[登记](universe_u8_execution_register.md)、[复核](design/universe-u8-integration-review.md)。H33/H23及只读H8/32/64、完整typed域/字节及时间/证据配额已做设计核算，所有新数值provisional |
 
-**当前执行：U9 最终跨卡审查与实现任务树**（依赖 U4/U8），已从 `4bb7452` 派发给未承担U1–U8交付的新reviewer；见[登记](universe_u9_execution_register.md)。新锁/故障/耐久性、压力/性能/视觉门仍planned；世界规律、灵域出现时刻、载具权威性、具体地理、授权资产与目标阈值保持待决。U总轮尚未关闭，不将候选预算作为运行授权或已批准产品门。
+U9已由未参与U1–U8交付的新reviewer完成：基线 `4bb7452`，source `72450e3` / PR #76 / merge `047b89f`；[执行登记](universe_u9_execution_register.md)、[统筹收尾](design/universe-u9-coordination-review.md)。[新实现树](design/universe-integration-review.md)13张叶卡/42路径独占，任务与契约/资源/结果门并集25节点54边无环，最终CI通过，干净worktree已清理、分支保留。
+
+**下一ready：I0 技术契约与可执行黄金fixture**，尚未派发；从届时准确统筹HEAD建独立worktree，按U9卡锁定 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。I0经非作者复算与G-C接受后才解锁I1/I2/I7，其后内核、锁/恢复、真实物理、UE及组合采证按独立前置执行。无需重做U规划。U设计轮义务已完成，产品总计划和V-HOME仍开放；新运行门planned，世界规律/灵域时刻/载具权威性/资产与目标阈值保持待决，候选预算不自动授权运行。
 
 ## V-HOME 可访问世界纵切（进行中）
 

@@ -1,6 +1,6 @@
 # edgeWorld 4D 数字宇宙：集成开发总图
 
-状态：2026-11-01，v0.3。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。远端基线 `feature/edge-world` 的 PR #25 合并提交为 `383c72e`；后续有限 Seed→Tree × Genesis 纵切在集成分支 `codex/plan-consolidation`，未因此自动进入基线。
+状态：2026-11-01，v0.4。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。远端基线 `feature/edge-world` 的 PR #25 合并提交为 `383c72e`；后续有限 Seed→Tree × Genesis 纵切在集成分支 `codex/plan-consolidation`，未因此自动进入基线。
 
 当前进展：抽象 Seed→Tree × Genesis 已有有限真实 Metal 集成证据；H6B 可步行实现经 PR #66 集成，H6C 独立访问、两模式推进、历史只读与恢复有限门经 PR #69 接受并集成（`0344827`）。显式 `--viewport-preflush` 开发入口有限接受；默认关闭路径可靠性、reporter 自身退出、正式视觉/性能门仍开放，V-HOME 未接受。准确提交和原始证据见[统筹清单](parallel_execution_backlog.md)。
 
@@ -49,7 +49,7 @@ G0 产品门阈值冻结 ────────────────→ 受
 
 旧 G1/GQ 规划卡已在历史轮次形成接口提案、负例探针与信号试采，不再作为“尚未开始”的任务重复派发。G0 未决产品规律和正式阈值仍由[决策记录](pdca_g0_freeze_decision_record.md)维护；技术 fixture 的有限放行不替代产品冻结。
 
-U1 世界身份/因果与 U5 丰富混沌初态已完成独立设计 PR 和局部集成审查，见[首批结果](design/universe-u1-u5-integration-review.md)。U2/U3/U6/U7 第二批也已交付并通过局部设计门，见[第二批审查](design/universe-batch2-integration-review.md)。U4 事务/调度/恢复设计经 PR #74 接受（仅设计门），见[复核](design/universe-u4-integration-review.md)。U8 规模/质量预算设计经 PR #75 接受（候选数值不升级为产品门），见[复核](design/universe-u8-integration-review.md)。下一 ready 为 U9 最终跨卡审查与实现树，尚未派发；H6C 独立运行及审查已完成，有限门接受，不转移为写实世界产品验收。AI、载具登陆、完整物理、TWO 和最终写实世界目前没有可宣称通过的产品门。
+U1 世界身份/因果与 U5 丰富混沌初态已完成独立设计 PR 和局部集成审查，见[首批结果](design/universe-u1-u5-integration-review.md)。U2/U3/U6/U7 第二批也已交付并通过局部设计门，见[第二批审查](design/universe-batch2-integration-review.md)。U4 事务/调度/恢复设计经 PR #74 接受（仅设计门），见[复核](design/universe-u4-integration-review.md)。U8 规模/质量预算设计经 PR #75 接受（候选数值不升级为产品门），见[复核](design/universe-u8-integration-review.md)。U9已由新reviewer完成并经PR #76集成，见[架构审查与13卡实现树](design/universe-integration-review.md)及[收尾](design/universe-u9-coordination-review.md)。本次U设计轮完成，下一ready为I0技术契约与可执行fixture，尚未派发；H6C 独立运行及审查已完成，有限门接受，不转移为写实世界产品验收。AI、载具登陆、完整物理、TWO 和最终写实世界目前没有可宣称通过的产品门。
 
 ## 仓库与历史边界
 
