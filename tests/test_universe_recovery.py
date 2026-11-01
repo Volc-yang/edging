@@ -1,5 +1,6 @@
 """Real local v0.1 file reads/sync and pure historical payload checks, no solver."""
 from copy import deepcopy
+from dataclasses import asdict
 import errno
 import hashlib
 import json
@@ -12,9 +13,11 @@ from unittest import mock
 
 from engine.universe_authority.codec import ContractError, canonical, digest
 from engine.universe_authority.ownership import acquire
-from engine.universe_authority.records import ValidatedClosure
-from engine.universe_authority.recovery import RecoveryReport, observe, recover, status
+from engine.universe_authority.records import ValidatedClosure, verify_observation
+from engine.universe_authority.recovery import RecoveryReport, head_binding, observe, recover, status
 from engine.universe_authority.store import CommitBundle, PinnedRoot, Snapshot, Store, StoreError
+from engine.universe_authority.trust import open_trust
+from tests import test_universe_store as _store_helpers
 
 _FIXTURES = Path(__file__).resolve().parents[1] / 'doc/fixtures/universe_authority_v0_1'
 _STORE_MODULE = 'engine.universe_authority.store'
@@ -386,6 +389,312 @@ class RecoveryTests(unittest.TestCase):
         forged = Snapshot('ready', object.__new__(ValidatedClosure))
         self.code('SCHEMA', status, forged)
         self.assertEqual(self.files(root), before)
+
+class CompositeRecoveryTests(unittest.TestCase):
+    # Reuse the accepted owner-provisioned synthetic template setup; no copied
+    # signer implementation or fixture-key shortcut enters the production path.
+    setUp = _store_helpers.CompositeStoreTests.setUp
+    new = _store_helpers.CompositeStoreTests.new
+    initialized = _store_helpers.CompositeStoreTests.initialized
+    blobs_for = _store_helpers.CompositeStoreTests.blobs_for
+    bundle = _store_helpers.CompositeStoreTests.bundle
+    advance_all = _store_helpers.CompositeStoreTests.advance_all
+    code = RecoveryTests.code
+    files = RecoveryTests.files
+
+    def build(self, steps=3, label='world', fault=None):
+        root, lease, store = self.initialized(label, fault)
+        for step in range(1, steps + 1):
+            store.commit(self.bundle(step))
+        return root, lease, store
+
+    def reopen(self, root, lease, store, fault=None):
+        context = self.context
+        store.close(); lease.close()
+        lease = acquire(root, context.world_id, domain_version='0.2',
+                        profile=context.storage_profile, context=context)
+        self.addCleanup(lease.close)
+        verifier = open_trust(self.base / (root.name + '-key'), context=context)
+        store = Store(lease, context=context, trust_verifier=verifier, fault=fault)
+        self.addCleanup(store.close)
+        return lease, store
+
+    def wire(self, payload, request_id='observe-' + 'x' * 56):
+        return json.dumps(dict(protocol_version=1, request_id=request_id, ok=True,
+                               result=dict(domain='edgeworld.universe.authority', version='0.2',
+                                           world_id=self.context.world_id, operation='observe',
+                                           payload=payload)), sort_keys=True, ensure_ascii=True,
+                          separators=(',', ':'), allow_nan=False).encode('ascii')
+
+    def verify(self, payload, binding, request_id='observe-' + 'x' * 56):
+        b = payload['manifest']['body']
+        return verify_observation(self.wire(payload, request_id), context=self.context,
+                                  expected_request_id=request_id, tick=b['tick'],
+                                  revision=b['revision'], watermark=b['watermark'],
+                                  trusted_head=binding)
+
+    def test_public_store_profile_context_getters_are_pure_and_readonly(self):
+        root, _, store = self.new()
+        before = self.files(root)
+        with mock.patch(_STORE_MODULE + '.os.open', side_effect=AssertionError('getter I/O')):
+            self.assertEqual(store.domain_version, '0.2')
+            self.assertIs(store.deployment_context, self.context)
+            with self.assertRaises(AttributeError):
+                store.domain_version = '0.1'
+            with self.assertRaises(AttributeError):
+                store.deployment_context = None
+        self.assertEqual(before, self.files(root))
+
+    def test_reopen_recovers_all_retained_records_raw_and_public_status(self):
+        root, lease, store = self.build()
+        trace = []
+        _, reader = self.reopen(root, lease, store,
+                                lambda phase, context: trace.append({'phase': phase, 'context': dict(context)}))
+        before = self.files(root)
+        report = recover(reader)
+        self.assertTrue(report.confirmed)
+        self.assertEqual(report.snapshot.closure.context, self.context)
+        self.assertEqual(len(report.snapshot.closure.records), 67)
+        self.assertEqual(len(report.snapshot.closure.binary_refs), 2)
+        current = status(report.snapshot)
+        self.assertEqual(set(current), {'world_id', 'head', 'tick', 'revision', 'watermark',
+                                       'state', 'event', 'storage_state', 'artifact_class', 'head_binding'})
+        self.assertEqual((current['tick'], current['revision'], current['watermark']), (1, 3, 3))
+        self.assertEqual(current['state'], self.hashes['state-3'])
+        self.assertEqual(current['event'], self.hashes['event-record-3'])
+        binding = head_binding(report.snapshot)
+        self.assertEqual(current['head_binding'], asdict(binding))
+        self.assertEqual(binding.authority_root, str(root))
+        self.assertEqual(binding.storage_state, 'ready')
+        self.assertEqual(binding.trust_anchor, self.context.trust_anchor)
+        self.assertEqual(sum(row['phase'] == 'RECOVERY_BLOBS_SYNCED' for row in trace), 2)
+        self.assertEqual(trace[-1]['phase'], 'W9_RECOVERY_SYNCED')
+        self.assertEqual(before, self.files(root))
+        evidence('E5-reopen-complete', before=before, after=self.files(root),
+                 status=current, trace=trace)
+
+    def test_all_four_exact_slices_verify_and_remain_selective(self):
+        root, _, store = self.build()
+        snapshot = recover(store).snapshot
+        binding = head_binding(snapshot)
+        before = self.files(root)
+        views = []
+        for revision, tick in ((0, 0), (1, 0), (2, 1), (3, 1)):
+            payload = observe(snapshot, tick=tick, revision=revision, watermark=revision)
+            self.assertEqual(set(payload), {'manifest', 'state', 'event', 'watermark',
+                                           'storage_state', 'artifact_class', 'head',
+                                           'membership', 'records', 'opaque_refs'})
+            checked = self.verify(payload, binding)
+            self.assertEqual(checked.manifest, self.hashes[f'manifest-{revision}'])
+            self.assertEqual(checked.scope, 'selected-slice-membership-only-not-full-history-or-raw-validation')
+            self.assertEqual(len(payload['membership']), 4 - revision)
+            if revision == 0:
+                self.assertIsNone(payload['event'])
+            else:
+                self.assertIsNotNone(payload['event'])
+            auxiliary = [digest(record) for record in payload['records']]
+            explicit = {digest(record) for record in payload['membership'] + [payload['manifest'], payload['state']]}
+            if payload['event'] is not None:
+                explicit.add(digest(payload['event']))
+            self.assertEqual(auxiliary, sorted(set(auxiliary)))
+            self.assertFalse(explicit & set(auxiliary))
+            self.assertEqual(payload['opaque_refs'], sorted(set(payload['opaque_refs'])))
+            self.assertLess(len(checked.selected_records), 67)
+            self.assertLessEqual(len(self.wire(payload)), 1 << 20)
+            self.assertEqual(checked.bytes, len(self.wire(payload)))
+            kinds = [r['kind'] for r in checked.selected_records.values()]
+            self.assertEqual(kinds.count('existence'), 9)
+            self.assertEqual(kinds.count('place'), 6)
+            self.assertEqual(kinds.count('world_manifest'), 1)
+            views.append(payload)
+        genesis = views[0]
+        self.assertEqual(genesis['state']['body']['development_mm'], None)
+        self.assertEqual(views[1]['state']['body']['development_mm'], None)
+        self.assertEqual(views[2]['state']['body']['development_mm'], views[3]['state']['body']['development_mm'])
+        genesis_refs = {digest(r) for r in genesis['records']}
+        self.assertNotIn(self.hashes['state-3'], genesis_refs)
+        self.assertIn(self.hashes['state-3'], genesis['opaque_refs'])
+        physical = self.verify(views[2], binding).selected_records
+        for name in ('state-1', 'state-2', 'snapshot-0', 'snapshot-1', 'sample-0', 'sample-1'):
+            self.assertIn(self.hashes[name], physical)
+        self.assertEqual(before, self.files(root))
+        evidence('E5-four-proofs', status=status(snapshot), payloads=views,
+                 wire_bytes=[len(self.wire(p)) for p in views], map=self.files(root))
+
+    def test_same_tuple_proofs_are_deterministic_after_reordered_pin(self):
+        root, _, store = self.build()
+        expected = observe(recover(store).snapshot, tick=1, revision=2, watermark=2)
+        original_pin = store.pin
+        def reversed_mapping():
+            pinned = original_pin()
+            return PinnedRoot(pinned.head, pinned.head_bytes,
+                              dict(reversed(list(pinned.objects.items()))),
+                              dict(reversed(list(pinned.blobs.items()))))
+        before = self.files(root)
+        with mock.patch.object(store, 'pin', side_effect=reversed_mapping):
+            report = recover(store)
+        actual = observe(report.snapshot, tick=1, revision=2, watermark=2)
+        self.assertEqual(actual, expected)
+        self.assertEqual(before, self.files(root))
+
+    def test_status_observe_binding_are_memory_only_and_defensive(self):
+        root, _, store = self.build()
+        snapshot = recover(store).snapshot
+        current = status(snapshot)
+        before = self.files(root)
+        with mock.patch('builtins.open', side_effect=AssertionError('pure view file read')), \
+                mock.patch(_STORE_MODULE + '.os.open', side_effect=AssertionError('pure view fd')), \
+                mock.patch(_STORE_MODULE + '.os.fsync', side_effect=AssertionError('pure view sync')):
+            for revision, tick in ((0, 0), (2, 1), (1, 0), (3, 1), (2, 1)):
+                payload = observe(snapshot, tick=tick, revision=revision, watermark=revision)
+                self.assertEqual(payload['state']['body']['revision'], revision)
+                payload['records'][0]['id'] = 'caller-changed'
+                payload['membership'][0]['body']['revision'] = 999
+                payload['opaque_refs'].append('0' * 64)
+                self.assertEqual(status(snapshot), current)
+                self.assertEqual(head_binding(snapshot).head, current['head'])
+        latest = observe(snapshot, tick=1, revision=3, watermark=3)
+        self.assertEqual(latest['state']['body']['budget'], 7)
+        self.assertEqual(latest['state']['body']['random_cursor'], 1)
+        self.assertEqual(before, self.files(root))
+        binding = head_binding(snapshot)
+        with self.assertRaises(AttributeError):
+            binding.storage_state = 'unconfirmed_readonly'
+
+    def test_exact_query_types_watermark_and_absence(self):
+        root, _, store = self.build()
+        snapshot = recover(store).snapshot
+        before = self.files(root)
+        queries = [({'tick': 0, 'revision': 1, 'watermark': 0}, 'WATERMARK'),
+                   ({'tick': 1, 'revision': 1, 'watermark': 1}, 'NOT_FOUND'),
+                   ({'tick': 1, 'revision': 4, 'watermark': 4}, 'NOT_FOUND'),
+                   ({'tick': True, 'revision': 1, 'watermark': 1}, 'INTEGER'),
+                   ({'tick': 1, 'revision': 2.0, 'watermark': 2}, 'INTEGER')]
+        for query, code in queries:
+            self.code(code, observe, snapshot, **query)
+        self.assertEqual(before, self.files(root))
+
+    def test_raw_or_json_history_corruption_never_uses_backup(self):
+        for index, mode in enumerate(('raw-missing', 'raw-changed', 'old-json')):
+            root, lease, store = self.build(label='bad-' + str(index))
+            _, store = self.reopen(root, lease, store)
+            (root / 'HEAD.backup.json').write_bytes((root / 'HEAD.json').read_bytes())
+            if mode == 'old-json':
+                (root / 'objects' / (self.hashes['state-0'] + '.json')).write_bytes(b'{}')
+            else:
+                path = root / 'blobs' / (self.blobs_for(self.records[:31])[0].sha256 + '.static')
+                path.unlink() if mode == 'raw-missing' else path.write_bytes(b'bad')
+            before = self.files(root)
+            self.code('CORRUPT', recover, store)
+            self.code('NOT_READY', store.snapshot)
+            self.assertEqual(before, self.files(root))
+            evidence('E5-bad-' + mode, before=before, after=self.files(root), state=store.state)
+
+    def test_modified_pin_raw_mapping_cannot_become_readonly(self):
+        for index, mode in enumerate(('missing', 'extra', 'changed')):
+            root, _, store = self.build(label='pin-' + str(index))
+            original_pin = store.pin
+            def modified():
+                pinned = original_pin(); raw = dict(pinned.blobs)
+                if mode == 'missing':
+                    raw.pop(next(iter(raw)))
+                elif mode == 'extra':
+                    raw['f' * 64] = b'not referenced'
+                else:
+                    raw[next(iter(raw))] = b'changed'
+                return PinnedRoot(pinned.head, pinned.head_bytes, pinned.objects, raw)
+            before = self.files(root)
+            with mock.patch.object(store, 'pin', side_effect=modified):
+                self.code('CORRUPT', recover, store)
+            self.code('NOT_READY', store.snapshot)
+            self.assertEqual(before, self.files(root))
+
+    def test_failed_raw_sync_produces_fresh_labeled_proof(self):
+        root, lease, store = self.build()
+        _, store = self.reopen(root, lease, store)
+        raw_inodes = {p.stat().st_ino for p in (root / 'blobs').iterdir()}
+        real_sync = os.fsync
+        def fail(fd):
+            if os.fstat(fd).st_ino in raw_inodes:
+                raise OSError(errno.EIO, 'raw sync failure')
+            return real_sync(fd)
+        before = self.files(root)
+        with mock.patch(_STORE_MODULE + '.os.fsync', side_effect=fail):
+            report = recover(store)
+        self.assertFalse(report.confirmed)
+        self.assertEqual(report.error_code, 'SYNC_UNSUPPORTED')
+        binding = head_binding(report.snapshot)
+        self.assertEqual(binding.storage_state, 'unconfirmed_readonly')
+        self.assertEqual(status(report.snapshot)['storage_state'], binding.storage_state)
+        payload = observe(report.snapshot, tick=1, revision=2, watermark=2)
+        self.assertEqual(self.verify(payload, binding).storage_state, binding.storage_state)
+        forged = deepcopy(payload); forged['storage_state'] = 'ready'
+        self.code('PROOF', self.verify, forged, binding)
+        self.code('NOT_READY', store.commit, self.bundle(3))
+        self.assertEqual(before, self.files(root))
+        restored = recover(store)
+        self.assertTrue(restored.confirmed)
+        self.assertEqual(head_binding(restored.snapshot).storage_state, 'ready')
+        self.assertEqual(binding.storage_state, 'unconfirmed_readonly')
+        evidence('E5-unconfirmed-proof', before=before, after=self.files(root),
+                 binding=asdict(binding), payload=payload)
+
+    def test_lost_raw_after_validation_cannot_return_snapshot(self):
+        armed = False
+        def hook(phase, context):
+            if armed and phase == 'RECOVERY_VALIDATED':
+                next((root / 'blobs').glob('*.static')).unlink()
+        root, _, store = self.build(fault=hook)
+        armed = True
+        self.code('CORRUPT', recover, store)
+        self.code('NOT_READY', store.snapshot)
+        evidence('E5-raw-lost-during-sync', state=store.state, map=self.files(root))
+
+    def test_unknown_visibility_recovers_exact_result_without_new_action(self):
+        armed = False
+        def hook(phase, context):
+            if armed and phase == 'W6_AFTER_REPLACE':
+                raise OSError(errno.EIO, 'response lost')
+        root, _, store = self.build(steps=1, fault=hook)
+        armed = True
+        error = self.code('COMMIT_UNKNOWN', store.commit, self.bundle(2))
+        self.assertEqual(error.commit_status, 'unknown')
+        armed = False
+        before = self.files(root)
+        snapshot = recover(store).snapshot
+        self.assertEqual(status(snapshot)['head'], self.hashes['manifest-2'])
+        result = store.lookup_result('fixture-principal', 'command-2', self.hashes['command-record-2'])
+        self.assertEqual(result['body']['revision'], 2)
+        payload = observe(snapshot, tick=1, revision=2, watermark=2)
+        self.assertEqual(payload['state']['body']['random_cursor'], 1)
+        self.verify(payload, head_binding(snapshot))
+        self.assertEqual(before, self.files(root))
+
+    def test_missing_key_open_never_falls_back_or_regenerates(self):
+        root, lease, store = self.build()
+        store.close(); lease.close()
+        path = self.base / (root.name + '-key') / 'authority.key'
+        path.unlink()
+        before = self.files(root)
+        self.code('AUTHORIZATION', open_trust, path.parent, context=self.context)
+        self.assertFalse(path.exists())
+        self.assertEqual(before, self.files(root))
+
+    def test_v01_binding_rejected_and_public_metadata_defaults_preserved(self):
+        helper = RecoveryTests('test_explicit_recover_genesis_after_reopen')
+        helper.setUp()
+        try:
+            _, _, store = helper.build()
+            snapshot = recover(store).snapshot
+            self.code('PROFILE', head_binding, snapshot)
+            with mock.patch(_STORE_MODULE + '.os.open', side_effect=AssertionError('getter I/O')):
+                self.assertEqual(store.domain_version, '0.1')
+                self.assertIsNone(store.deployment_context)
+            self.assertEqual(set(status(snapshot)), {'head', 'tick', 'revision', 'watermark', 'storage_state'})
+            self.assertEqual(set(observe(snapshot, tick=0, revision=0, watermark=0)),
+                             {'manifest', 'state', 'event', 'watermark', 'storage_state'})
+        finally:
+            helper.doCleanups()
 
 
 if __name__ == '__main__':
