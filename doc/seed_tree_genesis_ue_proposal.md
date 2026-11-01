@@ -1,40 +1,40 @@
-# S2：Seed→Tree × Genesis 的 UE5 呈现与输入设计
+# S2：抽象 Seed→Tree × Genesis 的 UE5 呈现与输入设计
 
-状态：2026-11-01，v0.1 **设计提案**；输入 `8a069fa`，另只读参考统筹 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)（该文件在建卡时尚未进入本分支）。父节点 V-STG/S2。本文不批准 Genesis 作用对象、物理参数或植物规律；实现与运行验收尚未执行。
+状态：2026-11-01，v0.2 **设计提案**；输入 `ac5ec2f`，依据用户对 Seed→Tree 语义的修正。父节点 V-STG/S2。seed 是可标识的抽象初态，tree 是因果发展后的抽象结构态；两者不预设植物。Genesis 作用对象、因果量、投影语义与产品门由 S0/S1/S4 冻结。本文未实现或运行新版本。
 
-## Plan：现有代码与设计约束
+## Plan：现有技术与新版本边界
 
-| 已有能力/缺口 | 代码依据 | 本版处理原则 |
+| 现有代码事实 | 新版本的使用方式 |
+| --- | --- |
+| `EdgeWorldGeneratedWorldGameMode.cpp:69-148,244-299` 生成地面、光、固定相机和植物代理，Space 显式推进 | 只参考生成场景、异步请求和显式推进；旧植物阶段、外形及环境系数不是抽象发展语义 |
+| 同文件 `151-199` 用一个 transport/client 启动旧树 worker，状态目录为 `Saved/EdgeWorldTree/<world>` | S1 定义一个新权威世界/进程及独立目录；UE 不并发启动旧树与刚体 worker 再拼因果链 |
+| `EdgeWorldJsonlClient.cpp:221-253` 核对请求 ID 与协议 v1；旧树解析器 `510-666` 核对 world/tick/revision/watermark 和版本 | 复用“解析、核验、应用”结构；新抽象 schema 与 Genesis 因果结果需新版本解析，不能直接复用旧植物样本字段 |
+| `EdgeWorldObservationActor.cpp:82-154` 将旧标量状态映成 BasicShapes 种子/树干/树冠 | 仅证明确定性代理投影可行；新 Actor 应从 S1 的节点、关系和物理证据构造抽象视觉图 |
+| 旧树 Controller 只绑定 Space、相机固定；Chaos 写实样区有 `WASD/QE`、方向键、Shift 导航 | 可复用纯视图输入思路，补历史切片和焦点反馈；导航不改变权威状态 |
+
+设计目标是 UE5 发布版在同一已提交修订上显示因果结构从初态发展。投影可用节点、连线、层级、时间轨迹或空间场；S4 必须固定一种版本化图形编码，支持稳定 ID 和重复布局。旧 BasicShapes 植物画面不算本版视觉通过。
+
+## Do：拟议呈现与交互路径
+
+1. **单权威入口。**S1 冻结新 worker 的 world ID、状态目录、Genesis 配置和原子提交边界后，GameMode 仅连接该进程。`Status → Observe` 初始化；Space 按下只发一个带稳定 command ID、expected revision、target tick 的显式命令。请求在途时禁止重入；超时后先 Status 对账，不能假定失败或自行推进。
+2. **结果身份。**Status/Advance 核对 result world ID、tick/revision 和 S1 指定的物理提交标识；Observe 核对请求 world/tick/source revision/watermark、schema/规则/投影版本、稳定节点/关系 ID、状态/事件 hash、Genesis 证据引用。通用传输成功仅说明 JSONL 往返。缺字段、错版本或水位时保留上一已验证画面和 head，记录原始响应与拒绝原因；新字段名和 revision 规则由 S1/S4 冻结。
+3. **抽象因果投影。**初态显示一个可辨的源节点；中间态显示新增的因果分支或关系；发展态显示经规则确认的结构扩展。位置、颜色、尺度、连线由版本化纯投影函数从样本稳定 ID 与关系生成，重复观察产生相同布局和组件集合。Genesis 结果只以**同 tick 已提交的物理候选及因果引用**进入图；如何影响节点/关系由 S1 决定，UE 动画不得编造。
+4. **物理与视觉边界。**若 S1 选择位姿、轨迹或约束等物理量，须冻结单位、坐标、参考系、时间步及数值范围；UE 可把已提交量投影为符号、轨迹或空间位置。UE Chaos、插值、LOD、镜头过渡与局部碰撞反馈仅供呈现，不能成为下一 tick Genesis 初态或因果输入。抽象结构与物理证据 revision 不一致时拒绝组合呈现。
+5. **历史与输入。**由 S0/S4 固定三个检查点：初态、中间态、发展态，不预设 tick 1/5 或萌发。建议 Space 推进、`0/1/2` 请求三个已定义检查点、`H` 回最新，`WASD/QE` 平移、方向键旋转、Shift 加速相机。键位须检查 Editor/PIE 冲突；可见帮助显示视口焦点、请求状态、观察 tick/revision。不存在的检查点明确提示；导航、帧率、暂停、显隐不发 Advance。
+
+## Check：独立验收设计
+
+| 门 | 方法与原始证据 | 判定 |
 | --- | --- | --- |
-| UE5 发布版通过 GameMode 生成地面、光、相机与树 Actor，Space 显式推进 | `EdgeWorldGeneratedWorldGameMode.cpp:69-148,244-299` | 保留生成场景与显式命令；不由 Game/Render Tick 推进权威时间 |
-| 树 Worker 从环境变量启动，状态目录在 `Saved/EdgeWorldTree/<world>`；GameMode 同时持有一个 transport/client | 同文件 `151-199` | S1 冻结同一权威世界的 Genesis 接线后，只连接**一个**权威进程/状态目录；禁止 UE 并发启两个 worker 再拼画面 |
-| 树 Observe 解析器核对 world/tick/revision/watermark、规则/投影版本及样本字段；Actor 无 Tick，以 BasicShapes 映射种子/树干/树冠 | `EdgeWorldJsonlClient.cpp:510-666`；`EdgeWorldObservationActor.cpp:82-154` | 沿用“验证后应用”；Genesis 结果必须先成为已提交 Observe 样本，不能从 UE 本地物理模拟倒灌状态 |
-| 通用传输只核对 request ID 和协议 v1；GameMode 的 Status/Advance 只读 tick/revision，没有核对 result world ID 与期望 revision | `EdgeWorldJsonlClient.cpp:221-253`；`EdgeWorldGeneratedWorldGameMode.cpp:175-199,256-279` | 为新契约定义各调用点身份校验；错误/不完整响应不更新显示或本地 head |
-| 当前树 PlayerController 只绑定 Space；相机固定且无历史切片快捷键 | `EdgeWorldGeneratedWorldGameMode.cpp:128-148,282-299` | 增加明确的相机导航与历史观察操作，解决视口聚焦后才可用键盘的可操作性问题；导航只改视图 |
+| C1 构建/运行 | 精确提交、UE 5.8.3 CL、插件/worker/Genesis 配置、独立状态目录、真实 Metal PIE 与 Standalone 启动日志 | 任一路径失败如实记录；NullRHI 不证明可见画面 |
+| C2 身份/拒绝 | 正常样本与错 world/tick/revision/watermark/schema、缺节点/关系或 Genesis 引用 fixture；保存完整响应、解析错误、Actor 前后快照 | 错样本不得改变画面或本地 head；未冻结字段先记待定 |
+| C3 三时刻画面 | 固定 world 的初态、中间态、发展态 Metal 图、日志、相机、请求/响应 hash 和节点/关系快照；非实现 owner 逐图复核 | 三态因果关系可辨，物理证据可回查同 tick；旧植物画面不算通过 |
+| C4 只读矩阵 | 相机移动/旋转、帧率/画质、暂停/恢复、显隐、历史/重复观察各自前后采 manifest/state/event/head 摘要；Space 单独执行 | 只读动作逐项摘要相等；只有显式推进可改变权威状态；缺项为 `inconclusive` |
+| C5 输入/焦点 | 独立操作者聚焦视口、按 Space 一次、历史键、导航键；保存录屏、键事件和 Worker 请求 | 单击只推进一次且键盘可用；失焦反馈清楚；多推进或无响应判失败 |
+| C6 性能 | GQ 按冻结场景/路线采 CPU/GPU 原始 trace、有效样本与资产来源 | 阈值未冻结或 GPU 信号缺失只记观测/`inconclusive` |
 
-现有 Chaos 写实样区控制器以 `WASD/QE`、方向键、Shift 移动相机（`ChaosRealismGameMode.cpp:24-52`），可复用其输入思路，但不要让相机移动发送 Worker 命令。现有树代理仍是固定数量 BasicShapes，不是写实资产或 Genesis 几何。
+证据须绑定 world/build/规则/投影/Genesis 配置、运行窗口、独立状态目录和哈希。不得使用当前用户 UE/Worker 作为新版本测试实例或共用其状态目录。
 
-## Do：拟议 UE 接口与呈现路径
+## Act：依赖与返工
 
-1. **进程与命令。**S1 明确新 Worker 入口、持久化目录、Genesis 版本/设备/步长和单写者提交语义后，GameMode 仅启动该 Worker。`Status → Observe` 初始化；Space 的 `IE_Pressed` 只产生一次具有稳定 `command_id`、`expected_revision` 与 `target_tick` 的显式 `advance`。请求在途时禁用再次提交，超时或断线显示状态，不能推测已提交；重新 `status` 对账后再决定是否重试相同 command ID。
-2. **结果身份。**`Status` 必须匹配请求 `world_id`，`tick/revision` 是安全精确整数且与已知 head 不倒退；`Advance` 必须匹配 world、目标 tick、预期的新 revision、command ID 回显（若 S1 规定）及物理提交标识。`Observe` 必须匹配请求 world/tick/source revision/watermark、规则/投影版本、稳定 seed/tree/物理实体 ID、状态/事件 hash。缺字段、错字段或负例时保留上一个已验证画面，记录 `request_id`、错误码和拒绝原因；不调用 `ApplyTreeObservation`。具体新字段由 S1/S4 冻结，UE 不自行发明别名。
-3. **物理投影。**S1 若将种子刚体位姿或其他物理量作为同 tick 的已提交样本，UE 仅将其经版本化单位/坐标变换放置代理。Tree Actor 继续从树状态控制种子、树干和树冠的显隐/尺寸；物理位姿可定位**已声明属于物理实体**的代理，但树根是否随位姿变化要由 S1 说明。UE Chaos、碰撞、插值、镜头过渡都只能是视觉效果，不能成为下一 tick Genesis 初态或规则输入。若物理样本缺失或版本不符，拒绝整帧绑定的组合样本，避免展示“树 tick 5 + 物理 tick 4”。
-4. **时间切片。**按冻结环境序列采 tick 0、一个明确幼苗 tick、一个明确成树 tick（现有实验序列约 tick 5 成树，须以固定输入实测为准）。历史观察键和“回到最新”操作只发 `observe`；界面或日志同时显示世界 ID、tick/revision、seed/tree ID、物理实体 ID 与 state/event hash。重复同一查询应得到相同可重建组件数量、变换与材质参数。
-5. **可操作性。**建议视口可聚焦后 Space 推进、`0/1/5` 请求相应已存在历史 tick、`H` 回到最新；未存在的 tick 显式报错而不显示旧画面为新时间。`WASD/QE` 平移、方向键转向、Shift 加速相机，提供可见帮助文本与当前“视口焦点/请求进行中/观察 tick”反馈。具体键位须在 S4 定案并和 Editor 快捷键冲突检查；所有观察/导航操作不触发 `advance`。
-
-## Check：可执行的独立验收设计
-
-| 门 | 方法与原始证据 | 判定边界 |
-| --- | --- | --- |
-| C1 构建/运行 | 精确提交、UE 5.8.3 CL、插件构建日志、Worker/Genesis 配置、一次真实 Metal PIE 与一次 Standalone 启动日志 | 任一失败如实记录；NullRHI 不能替代画面 |
-| C2 身份/拒绝 | 固定正确样本和故意错 world/tick/revision/watermark/物理版本或缺样本 fixture；记录完整响应、解析结果、Actor 应用次数及前后变换 | 错样本不得更新 head 或任何树/物理代理；不把传输成功当结果可信 |
-| C3 三时刻画面 | 同机同 build 的 tick 0、幼苗、成树三个固定观察，逐帧图、日志、相机参数、状态/事件摘要、组件快照；独立 reviewer 看 Metal 原图 | 三种阶段可辨、物理代理与同 tick 样本一致；BasicShapes 仅算技术可见，不算写实质量 |
-| C4 只读矩阵 | 初始化后保存 manifest/state/event/head 摘要；逐项执行移动/旋转相机、FPS/画质变化、UE 暂停恢复、显隐代理、历史与重复 Observe，再分别取完整摘要；另执行一次 Space | 每个只读动作前后摘要相等，只有显式命令可改变；遗漏/未取到摘要为 `inconclusive` |
-| C5 输入/焦点 | 独立操作者从启动场景点击视口、按 Space 一次、按历史键、WASD/方向键，录屏和请求日志对应；确认 `IE_Pressed` 单击只推进一次，失焦有明确提示 | 若键盘无响应或一次按键多次推进，判失败并重开输入卡 |
-| C6 性能 | GQ 用冻结分辨率/路线采原始 CPU/GPU 帧时间与有效样本比例 | G0 阈值未冻结或 GPU 信号缺失时只报告数值/`inconclusive` |
-
-所有证据需记录独立 Worker state directory、输入 seed/初态、Genesis 配置、运行窗口和绝对路径/哈希。避免与当前用户 UE/Worker 共用进程、GPU 测试窗口或状态目录。
-
-## Act：依赖与局部返工
-
-S2 的接口与键位仍为提案。S1 需给出物理对象、样本字段、单位/坐标、原子提交和错误语义；S0 冻结场景行为与视觉/性能标准；S4 对齐后才可拆实现为非重叠的 transport/parser、GameMode/input、projection/visual、独立验收卡。若 C2 失败先修校验调用点；若 C3 失败先区分样本错误与投影/可见性；若 C4 失败检查是否有 UE 帧/观察写入。保留通过的其他检查及原始失败证据，不以 UE 引擎源码修改代替插件层修正。
+S0 确定抽象初态/发展结构的可观察定义和场景信号；S1 冻结单一权威样本、Genesis 因果引用、单位/坐标、提交和错误路径；S4 才批准新投影版本、键位、检查点和实现卡。实现可拆为 transport/解析、GameMode/输入、结构投影和独立验收，写路径互斥。C2 失败返工校验调用点，C3 失败区分状态/因果映射与视觉可辨性，C4 失败追查越权写入；保留其他已过门和原始失败证据。优先使用 UE5 发布版插件及渲染能力。
