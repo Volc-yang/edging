@@ -1,0 +1,44 @@
+test_owner_alias_permissions_link_and_synthetic_fail_closed (tests.test_universe_worker.OwnerConfigTests.test_owner_alias_permissions_link_and_synthetic_fail_closed) ... ok
+test_owner_exact_paths_and_missing_inputs (tests.test_universe_worker.OwnerConfigTests.test_owner_exact_paths_and_missing_inputs) ... ok
+test_public_print_only_reads_owner_and_never_creates (tests.test_universe_worker.OwnerConfigTests.test_public_print_only_reads_owner_and_never_creates) ... ok
+test_channel_errors_unknown_stops_and_no_fallback_id (tests.test_universe_worker.WorkerTests.test_channel_errors_unknown_stops_and_no_fallback_id) ... ok
+test_corruption_existing_fails_without_fallback_or_solver (tests.test_universe_worker.WorkerTests.test_corruption_existing_fails_without_fallback_or_solver) ... ok
+test_explicit_initialization_static_inventory_and_readonly (tests.test_universe_worker.WorkerTests.test_explicit_initialization_static_inventory_and_readonly) ... ok
+test_retain_physics_history_retry_and_restart (tests.test_universe_worker.WorkerTests.test_retain_physics_history_retry_and_restart) ... ERROR
+test_strict_wire_rejects_malformed_and_bad_business_shapes (tests.test_universe_worker.WorkerTests.test_strict_wire_rejects_malformed_and_bad_business_shapes) ... ok
+
+======================================================================
+ERROR: test_retain_physics_history_retry_and_restart (tests.test_universe_worker.WorkerTests.test_retain_physics_history_retry_and_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/tests/test_universe_worker.py", line 146, in test_retain_physics_history_retry_and_restart
+    self.assertEqual(one['command_records'],self.call('prepare',principal=self.session.principal,
+                                            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        proposal=one['command_records'][0],intent=one['command_records'][1],approval_id='other-approval',command_record_id='other-command')['command_records'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/tests/test_universe_worker.py", line 102, in call
+    return dispatch(self.runtime,self.request(op,**payload))['result']['payload']
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/engine/universe_authority/worker.py", line 215, in dispatch
+    prepared = prepare_command(runtime.store,session=session,proposal=p['proposal'],intent=p['intent'],
+        approval_id=p['approval_id'],command_record_id=p['command_record_id'],signer=runtime.signer)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/engine/universe_authority/commands.py", line 43, in invoke
+    return function(store, *args, **kwargs)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/engine/universe_authority/commands.py", line 297, in prepare_command
+    _require(canonical(proposal) == canonical(stored_proposal)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             and canonical(intent) == canonical(stored_intent)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+             and approval['body']['expires_revision'] == intent['body']['expected_revision'],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             'COMMAND_CONFLICT')
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i10-universe-worker/engine/universe_authority/commands.py", line 25, in _require
+    raise ContractError(code, detail)
+engine.universe_authority.codec.ContractError: COMMAND_CONFLICT
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.283s
+
+FAILED (errors=1)

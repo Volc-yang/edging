@@ -16,7 +16,7 @@ from engine.universe_authority.codec import ContractError, DeploymentContext, Ow
 from engine.universe_authority.physics import PhysicsInitialDraft
 from engine.universe_authority.store import BlobWrite, StoreError
 from engine.universe_authority.trust import provision
-from engine.universe_authority.worker import OwnerConfig, load_owner_config, load_inputs, public_pins, open_runtime, dispatch, serve
+from engine.universe_authority.worker import OwnerConfig, load_owner_config, load_inputs, public_pins, open_runtime, dispatch, serve, validate_asset_audit, validate_scratch
 from engine.universe_authority.world_initialization import physics_parameters, enumerate_world
 from tests.test_universe_composite_commands import SyntheticProvider, CompositeCase
 
@@ -196,6 +196,50 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.call('status')['tick'],1)
         self.assertEqual(self.providers[-1].calls,0)
 
+    def test_existing_head_initialize_mode_rejected_before_provider(self):
+        self.initialize()
+        def mapping():
+            return {str(p.relative_to(self.root)):hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in self.root.rglob('*') if p.is_file()}
+        before = mapping()
+        self.runtime.close()
+        self.runtime = self.new_runtime(self.owner)
+        self.store = self.runtime.store
+        self.assertEqual(self.runtime.startup_error.code,'NOT_READY')
+        self.assertEqual(len(self.providers),1)
+        with self.assertRaises(ContractError) as caught: self.initialize()
+        self.assertEqual(caught.exception.code,'NOT_READY')
+        self.assertEqual(mapping(),before)
+
+    def test_existing_owner_scratch_reused_without_creation_or_cleanup(self):
+        self.initialize()
+        self.owner.scratch.mkdir(mode=0o700)
+        marker = self.owner.scratch/'retained-private-provider-artifact'
+        marker.write_bytes(b'retain unchanged')
+        self.runtime.close()
+        self.runtime = self.new_runtime(replace(self.owner,mode='existing'))
+        self.store = self.runtime.store
+        self.assertIsNone(self.runtime.startup_error)
+        self.assertEqual(self.call('status')['tick'],0)
+        self.assertEqual(marker.read_bytes(),b'retain unchanged')
+        os.chmod(self.owner.scratch,0o755)
+        with self.assertRaises(ContractError): validate_scratch(self.owner.scratch)
+        os.chmod(self.owner.scratch,0o700)
+
+    def test_frozen_error_codes_for_protocol_build_and_reinitialize(self):
+        self.initialize()
+        with self.assertRaises(ContractError) as repeated: self.initialize()
+        self.assertEqual(repeated.exception.code,'NOT_READY')
+        for change in ({'protocol_version':2},{'operation':'unknown'}):
+            request = self.request('status'); request.update(change)
+            with self.assertRaises(ContractError) as invalid: dispatch(self.runtime,request)
+            self.assertEqual(invalid.exception.code,'SCHEMA')
+        invalid = dict(self.inputs,build=deepcopy(self.inputs['build']))
+        invalid['build']['id'] = 'different-build'
+        with self.assertRaises(ContractError) as build:
+            open_runtime(self.owner,invalid,provider_factory=lambda **kw:None)
+        self.assertEqual(build.exception.code,'BUILD')
+
     def test_control_fd_isolated_from_python_and_native_stdout(self):
         code = """
 import os,sys
@@ -288,6 +332,26 @@ class OwnerConfigTests(unittest.TestCase):
         link.unlink()
         self.value['context']['artifact_class'] = 'synthetic-contract-only'; self.write()
         with self.assertRaises(ContractError): load_owner_config(str(self.path))
+
+    def test_approved_runtime_asset_audit_consistency_and_counterexamples(self):
+        directory = Path(__file__).resolve().parents[1]/'doc/evidence/universe-I10/approved-asset-inputs'
+        audit = json.loads((directory/'collection-first.json').read_bytes())
+        assets = json.loads((directory/'candidate-record.json').read_bytes())
+        validate_asset_audit(assets,audit)
+        rebound = dict(assets,world_id='different-authority-world')
+        validate_asset_audit(rebound,audit)
+        cases = []
+        for field,value in (('resolved',False),('gaps',['missing']),('A_actual',8),('asset_bytes_actual',0)):
+            bad = deepcopy(audit); bad[field] = value; cases.append(bad)
+        bad = deepcopy(audit); bad['files'][0]['sha256'] = '0'*64; cases.append(bad)
+        bad = deepcopy(audit); bad['registry_edges_all_categories'].pop(); cases.append(bad)
+        bad = deepcopy(audit); bad['content_nodes'][0]['primary_bytes'] += 1; cases.append(bad)
+        bad = deepcopy(audit); bad['candidate_manifest']['id'] = 'different-manifest'; cases.append(bad)
+        for bad in cases:
+            with self.subTest(field=bad.keys()):
+                with self.assertRaises(ContractError): validate_asset_audit(assets,bad)
+        wrong = deepcopy(assets); wrong['body']['entries'][0]['byte_count'] += 1
+        with self.assertRaises(ContractError): validate_asset_audit(wrong,audit)
 
     def test_owner_exact_paths_and_missing_inputs(self):
         owner = load_owner_config(str(self.path))

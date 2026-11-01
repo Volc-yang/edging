@@ -303,7 +303,7 @@ def compose_static_world(context, *, build, options, assets):
                               (options,'resolved_options',context.expected_options)):
         validate_record(source)
         if source['world_id'] != context.world_id or source['kind'] != kind or digest(source) != pin:
-            raise ContractError('BUILD_MISMATCH' if kind == 'provider_build' else 'OPTIONS_MISMATCH')
+            raise ContractError('BUILD')
         records.append(copy.deepcopy(source))
         hashes['provider-build' if kind == 'provider_build' else 'resolved-options'] = digest(source)
     validate_record(assets)
