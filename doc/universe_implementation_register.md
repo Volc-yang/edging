@@ -157,3 +157,7 @@ I12A-RUNNER sourcea1170a4首8mock全pass（0.124s/raw1256B）；u9四项review�
 ## I12B恢复派卡（2026-11-02）
 
 用户回复已解锁，root fresh CUA listApps确认native可用、UE/CrashReporter均未运行。I12B-PREP已派独立owner i12_universe_acceptance，worktree `.worktrees/i12b-universe-live` / branch `codex/i12b-universe-live` / basef854281。独占 `doc/evidence/universe-I12B/`（含准备helper），不改产品/runner/launcher；CPU120s/raw64MiB，仅持久部署、精确身份预检与新world可信owner配置，未授GS/UE/真实launcher。u9并行只读预审实际动作/相机读回/来源身份。root唯一UI协调，后续正式R12卡候选两session总1200s/2GiB（含build/所有失败），尚未消耗。已接受输入可在adapter/native/source逐项不漂移证明后提出复用同B/O字节，真实provider初始化仍测量；不得复用旧root或凭旧source拼新世界。UI截图/输入全经CUA，visible尽量fullscreen独立Space；正常退出与原始失败完整保留。
+
+I12B预检补充：已批准真实B/O完整record含旧world_id，root/u9接受仅新world顶层元数据/O.buildref与digest重绑，body canonical保持一致，资产/audit同world重绑；原输入原件保留。u9独立复算accepted实际Gen264py/19critical/37native+METADATA及adapter15f5b96…abb192，均与当前安装一致；真实initialize仍_measure strict比较。
+
+发现runner对真实venv Python symlink路径一律拒绝，故新增独立I12C-PYTHON叶：u7，`.worktrees/i12c-python-pin` / `codex/i12c-python-pin` / basef854281，仅runner及I12C证据目录。root/u9已审最小专用exact interpreter chain/targetSHA/同venv cfg与site身份pin；无pin保留旧拒绝、通用safe_path不变、原lexicalexe不替换、不造wrapper或改venv。stdlib120s/raw16MiB，first+一次定因targeted，无GS/UE。root实际启动清除PYTHONHOME/PYTHONPATH。两session runtime_files仅pin不可变安装文件，Host/plugin由每session实际build后二进制SHA另审，不能prepin将覆盖输出后换卡绕过。正式R12未派。
