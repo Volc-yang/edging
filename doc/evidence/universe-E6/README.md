@@ -38,5 +38,5 @@ EDGEWORLD_E6_OUTPUT=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/E6-20261102-proces
 
 The owner key sibling is retained for independent local review, never checked
 in or copied into raw evidence. Root adjudicates G-S1.2 after exact-source CI and
-independent source/raw review. This document is a plan until report.md records
-actual results; implementation completion does not self-accept the gate.
+independent source/raw review. See report.md for the retained first failure and sole targeted rerun.
+Implementation completion does not self-accept the gate.
