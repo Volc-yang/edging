@@ -1,6 +1,6 @@
 # S4 草案：抽象 Seed→Tree × Genesis 技术纵切契约
 
-状态：2026-11-01，v0.2 **实验设计经独立审查；仅 G2-SCHEMA-FIXTURE 可派**。依据用户确认的抽象 seed/tree 语义、[S1 接口](seed_tree_genesis_interface_proposal.md)、[S2 UE 设计](seed_tree_genesis_ue_proposal.md)与[S3 验收设计](seed_tree_genesis_acceptance_proposal.md)。本契约只提出一个有界工程探针，供 G2 分工和审查；不批准真实宇宙的物理法则、演化函数、生命规则或最终视觉语言。
+状态：2026-11-01，v0.2 **实验设计及技术 fixture 经独立审查；可发布 G2-AUTHORITY/G2-UE**。依据用户确认的抽象 seed/tree 语义、[S1 接口](seed_tree_genesis_interface_proposal.md)、[S2 UE 设计](seed_tree_genesis_ue_proposal.md)与[S3 验收设计](seed_tree_genesis_acceptance_proposal.md)。本契约只提出一个有界工程探针，供 G2 分工和审查；不批准真实宇宙的物理法则、演化函数、生命规则或最终视觉语言。
 
 ## 1. 技术目标与实验语义
 
@@ -37,4 +37,4 @@ G2-AUTHORITY 与 G2-UE 仅在 G2-SCHEMA-FIXTURE 经独立审查并冻结共享 w
 
 技术探针至少检查：初态、中间态、发展态三切片；两种预先固定物理刺激的可区分结果；同一命令幂等；错误请求与 Genesis 失败无提交；重启前后发展节点、物理向量与事件摘要对照；UE 相机/帧率/暂停/历史查询逐项只读。每次运行保存准确代码/fixture/Genesis/UE build、完整请求响应、checkpoint、状态/事件/因果摘要、Metal 原图和原始性能 trace。按[S3 方案](seed_tree_genesis_acceptance_proposal.md)判 `pass/fail/inconclusive`，不把旧植物或旧单刚体证据算入组合门。
 
-**S0 产品门仍开放：**抽象发展结构最终拓扑和世界语义、正式物理对象/规律、目标负载、视觉标准、性能/内存/恢复阈值与预算。上述缺口不阻止有界工程探针，但阻止宣称“4D 世界演化规律”或产品版本通过。本草案已获独立技术审查，允许先派 G2-SCHEMA-FIXTURE；它的准确 wire/fixture 经独立审查冻结后，才可发布 G2-AUTHORITY/G2-UE 实现任务。本文件本身尚无运行证据，也不是产品验收。
+**S0 产品门仍开放：**抽象发展结构最终拓扑和世界语义、正式物理对象/规律、目标负载、视觉标准、性能/内存/恢复阈值与预算。上述缺口不阻止有界工程探针，但阻止宣称“4D 世界演化规律”或产品版本通过。本草案已获独立技术审查；[G2 wire/fixture 提案](fixtures/abstract_seed_genesis_v1.md)经 PR #42 集成并消除字段/哈希歧义；[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md)经 PR #43 验证 `-7` 与 `-35`，满足预声明差异。独立 reviewer 据此接受**有限技术 fixture**并放行 G2-AUTHORITY/G2-UE 实现卡。本文件本身尚无运行证据，也不是产品验收。

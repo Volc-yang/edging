@@ -30,3 +30,15 @@ S1/S2/S3 可并行提交**设计提案**，写文件互不重叠；S4 由统筹�
 ## 迭代检查与停止条件
 
 设计卡各自经独立 PR 和 CI 审查；PR 合并仅说明设计交付已集成。S4 需单独验收其接口与门，不把三份提案自动提升为已批准契约。运行阶段至少包含抽象发展转移、Genesis 物理候选、UE 只读呈现、重启恢复和独立复核；实测失败保留原始证据并只重开受影响叶卡。若目标机/性能/物理容差尚未冻结，G4 不能判产品门通过。
+
+## G2 实现任务卡（2026-11-01 放行有限技术纵切）
+
+[S4 实验契约](seed_tree_genesis_slice_contract.md)、[冻结的技术 fixture](fixtures/abstract_seed_genesis_v1.md)及[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md)已通过独立审查；`shaoyang=-7`、`taiyang=-35` 是同机四进程重复的**工程刺激结果**。下列实现可并行，均从同一集成提交创建独立 worktree。正式世界法则与 G0 产品阈值继续开放。
+
+| 卡 / 写入所有权 | Plan / Do | Check 与交付 |
+| --- | --- | --- |
+| G2-AUTHORITY / 新 `engine/edgeworld_worker/abstract_causal_worker.py`、新 `tests/test_abstract_causal_worker.py`，必要时仅新增同目录辅助文件 | 实现一个组合权威 manifest/revision、Genesis 候选、`influence_mm` 发展节点/因果边、JSONL v1、历史/幂等/错误/恢复；旧树/刚体 worker 与存档只读 | 固定两相配置的进程往返、预声明反事实字段差异、重复命令/负例无提交、重启对照和原始哈希；提交代码/定向测试与运行报告。Genesis 失败或提交不确定不得伪造成功 |
+| G2-UE / 新 `EdgeWorldCausal*` 插件/Host C++ 文件和仅本卡所需的 UE Build/config；不得改 Python worker/fixture | 从冻结组合 JSON 样本验证 world/tick/revision/watermark/版本/节点/物理引用后投影抽象节点/边；显式 Space、历史观察、键盘相机；UE 发布版优先 | UE 5.8.3 Editor build、固定 fixture 的正确/错身份解析、NullRHI 结构测试；Metal 三切片与 live Worker 留给 G3 集成，未运行不判通过 |
+| G3-INTEGRATE / 依赖两个 G2 PR 经审查集成 | 单 UE↔组合 worker↔Genesis 实际往返，固定同一 world 与 state dir；逐项只读和恢复，留存 Metal 图/日志 | 由非实现 owner 复查准确集成提交、原始 JSONL、权威摘要与画面；失败只重开受影响叶卡 |
+
+共享 wire/fixture 变更须先回到 G2-SCHEMA-FIXTURE 升版，不能由两个实现卡分别定义。两个实现卡独立 PR 指向本轮集成分支，统筹逐项审查后才执行 G3；G4 产品验收仍以 G0 完整门为前提。

@@ -1,6 +1,6 @@
 # G2-SCHEMA-FIXTURE：抽象 Seed→Tree × Genesis v1 工程输入
 
-状态：2026-11-01，v0.1 **schema 提案，可做独立审查；物理反事实未实测，后续实现门未放行**。父节点 V-STG/G2-SCHEMA-FIXTURE，基线 `d3036e8`。seed 指可标识的抽象初态，tree 指累积的因果发展结构。本文的单 Sphere 是 Genesis API 工程探针，既不是植物种子，也不是已批准的世界物理法则。旧 `tree_worker.py` 与 `worker.py` 的领域存档及协议结果保持原样，新组合领域使用下述独立 schema。
+状态：2026-11-01，v0.1 **技术 schema/fixture 已经独立审查；两相数值短探针通过，可发布实现卡**。父节点 V-STG/G2-SCHEMA-FIXTURE，基线 `d3036e8`。seed 指可标识的抽象初态，tree 指累积的因果发展结构。本文的单 Sphere 是 Genesis API 工程探针，既不是植物种子，也不是已批准的世界物理法则。旧 `tree_worker.py` 与 `worker.py` 的领域存档及协议结果保持原样，新组合领域使用下述独立 schema。
 
 ## 1. 固定身份、求解配置与反事实输入
 
@@ -15,7 +15,7 @@
 
 预声明请求序列分别见同目录 `phase_shaoyang.jsonl` 和 `phase_taiyang.jsonl`。两文件各在**不同的全新状态目录**运行，不能合并送入一个 worker。每条序列是 `status → observe(0) → advance(1) → observe(1)`；实施时再增加重复命令、负例与重启脚本，并保存原始响应。
 
-当前进程调查：用户的 UnrealEditor PID `58296` 与 Chaos Worker PID `58437` 仍在运行；系统 `python3` 缺 `genesis`。本任务未启动第二 UE/Genesis Metal 进程，也未触碰用户状态目录。仓库根 `.venv-genesis/bin/python` 路径存在，静态导入回报 Genesis `1.4.3`；Metal backend 可用性与实际两相输出须在独占窗口核实。**本卡对两相真实输出和上述不等式的 Check 为 `inconclusive`。**
+设计本卡时用户 UE/Worker 占用 GPU，因此没有并发启动 Genesis。用户随后允许结束旧会话；[独立 Metal 探针](../seed_tree_genesis_counterfactual_probe.md)在四个隔离进程中测得 `shaoyang=-7`、`taiyang=-35`，各重复一次结果相同，满足预声明不等式。统筹复算原始文件哈希，独立 reviewer 接受有限数值门。旧组合 worker/UE 的端到端门仍 `planned`。
 
 ## 2. 数值与发展函数 F（仅工程探针）
 
@@ -55,4 +55,4 @@ v1 代理参数：每节点一个半径 12 cm 的球，初态线性 RGB `(0.0,0.
 
 本组合领域冻结的 worker 错误码：`invalid_json`、`unsupported_protocol`、`invalid_request`、`world_not_found`、`unsupported_schema`、`invalid_command_id`、`command_id_conflict`、`revision_conflict`、`tick_sequence_error`、`invalid_external_inputs`、`unsupported_phase`、`history_missing`、`watermark_mismatch`、`unsupported_rules`、`unsupported_projection`、`genesis_failed`、`invalid_physics_result`、`invalid_influence_range`、`persistence_failed`、`commit_status_uncertain`、`worker_stopped`。UE transport/解析错误另记，不将其伪装成 worker wire code。负例、Genesis 失败、非有限值及缺历史不得产生成功提交；替换 manifest 已开始且结果不明时进入停止写入状态，重启后从磁盘判定。旧 worker 现有错误名与此新领域不必逐项相同。
 
-**当前 Check：**请求/结果字段、ID 和 F/投影规则可静态审查；Genesis 公开 API 支持相位重力和 checkpoint 见 [旧 API 审计](../genesis_public_api_audit.md)及当前 `worker.py`。真实两相数值、checkpoint 可复查性、UE 解析和 Metal 画面均**未执行**；用户 UE/Worker 运行占用 GPU，且系统 Python 无 Genesis。阶段门为 `inconclusive`，G2-AUTHORITY/G2-UE 的并行实施仍待独立审查与隔离 Genesis 反事实短探针，不从文档存在推出运行通过。
+**当前 Check：**请求/结果字段、ID 和 F/投影规则可静态审查；Genesis 公开 API 支持相位重力和 checkpoint 见 [旧 API 审计](../genesis_public_api_audit.md)及当前 `worker.py`。两相数值已按 PR #43 在隔离 Metal 进程实测；组合 checkpoint/恢复、UE 解析和 UE Metal 画面仍**未执行**。技术 fixture 经独立审查可作为 G2-AUTHORITY/G2-UE 的固定输入；不从 fixture 或旧物理探针推断组合运行或产品门通过。

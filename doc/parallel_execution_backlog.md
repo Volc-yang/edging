@@ -4,7 +4,7 @@
 
 ## 抽象 Seed→Tree × Genesis 设计迭代（进行中）
 
-用户确定下一版采用 Seed→Tree 且 Genesis 物理为必需路径，并进一步明确 seed/tree 是**抽象初态与因果发展结构**，不是植物实体。G0 范围与 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)已据此修订；旧植物 Seed→Tree v0.1 仅为技术参考。S1 [单权威接口提案](seed_tree_genesis_interface_proposal.md)、S2 [UE 抽象呈现提案](seed_tree_genesis_ue_proposal.md)、S3 [独立验收提案](seed_tree_genesis_acceptance_proposal.md)的初稿 PR #36–#38 及语义修订 PR #39–#41 均已通过 CI/统筹审查，集成至本轮分支 `d607a6b`。这些是设计提案，没有新组合 worker、UE 场景或运行验收。统筹已合成 [S4 技术纵切实验契约](seed_tree_genesis_slice_contract.md)，经两次独立只读审查修正后，仅放行 G2-SCHEMA-FIXTURE：以中性 Genesis 探针和可复算 `influence_mm` 验证物理候选影响抽象发展节点；刺激不是世界法则。准确 wire/fixture 未冻结前不启动组合 worker 或 UE 实现。S0 产品拓扑/物理语义和视觉/性能阈值仍开放。
+用户确定下一版采用 Seed→Tree 且 Genesis 物理为必需路径，并进一步明确 seed/tree 是**抽象初态与因果发展结构**，不是植物实体。G0 范围与 [V-STG 方案树](seed_tree_genesis_pdca_plan.md)已据此修订；旧植物 Seed→Tree v0.1 仅为技术参考。S1 [单权威接口提案](seed_tree_genesis_interface_proposal.md)、S2 [UE 抽象呈现提案](seed_tree_genesis_ue_proposal.md)、S3 [独立验收提案](seed_tree_genesis_acceptance_proposal.md)的初稿 PR #36–#38 及语义修订 PR #39–#41 均已通过 CI/统筹审查，集成至本轮分支 `d607a6b`。这些是设计提案，没有新组合 worker、UE 场景或运行验收。统筹已合成 [S4 技术纵切实验契约](seed_tree_genesis_slice_contract.md)，经两次独立只读审查修正后，仅放行 G2-SCHEMA-FIXTURE：以中性 Genesis 探针和可复算 `influence_mm` 验证物理候选影响抽象发展节点；刺激不是世界法则。[G2 schema/fixture](fixtures/abstract_seed_genesis_v1.md) 经 PR #42 集成，消除初态哈希歧义；[Genesis 两相探针](seed_tree_genesis_counterfactual_probe.md) PR #43 在四个隔离 Metal 进程中重复得 `shaoyang=-7`、`taiyang=-35`，满足预声明差异，统筹复算原始哈希且独立 reviewer 接受有限技术门。新 [G2 实现卡](seed_tree_genesis_pdca_plan.md)据此放行组合权威 worker 与 UE 抽象投影并行开发；两者尚无代码或集成运行证据。S0 产品拓扑/物理语义和视觉/性能阈值仍开放。
 
 ## G1 接口复核与 GQ 采样可行性（进行中）
 
