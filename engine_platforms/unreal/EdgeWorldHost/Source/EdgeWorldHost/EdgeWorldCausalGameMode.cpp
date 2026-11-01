@@ -359,9 +359,11 @@ void AEdgeWorldCausalPlayerController::VisitorStatus()
 {
 	const AEdgeWorldVisitorCharacter* Visitor = Cast<AEdgeWorldVisitorCharacter>(GetPawn());
 	if (!Visitor || !Mode()) return;
-	UE_LOG(LogTemp, Display, TEXT("Visitor status position=%s rotation=%s velocity=%s grounded=%d overview=%d"),
-		*Visitor->GetActorLocation().ToString(), *GetControlRotation().ToString(), *Visitor->GetVelocity().ToString(),
-		Visitor->GetCharacterMovement()->IsMovingOnGround(), Mode()->IsOverview());
+	Visitor->LogVisitorStatus();
+}
+void AEdgeWorldCausalPlayerController::VisitorTrace(float Seconds)
+{
+	if (AEdgeWorldVisitorCharacter* Visitor = Cast<AEdgeWorldVisitorCharacter>(GetPawn())) Visitor->TraceMovement(Seconds);
 }
 void AEdgeWorldCausalPlayerController::Advance() { if (auto* M = Mode()) M->AdvanceOneTick(); }
 void AEdgeWorldCausalPlayerController::History0() { if (auto* M = Mode()) M->ObserveHistory(0); }

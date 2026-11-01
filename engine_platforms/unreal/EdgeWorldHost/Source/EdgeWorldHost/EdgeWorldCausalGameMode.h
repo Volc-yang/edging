@@ -51,6 +51,7 @@ public:
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaSeconds) override;
 	UFUNCTION(Exec) void VisitorStatus();
+	UFUNCTION(Exec) void VisitorTrace(float Seconds = 3.0f);
 private:
 	void Advance();
 	void History0();
