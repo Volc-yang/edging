@@ -6,7 +6,7 @@
 
 用户优先级：先处理 UE 打开/运行报错，H6B/H6C 暂停。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：**H-LIGHT-01 已审查集成，构建/GPU 空闲，交接 H1g。H1g [显式启动器接线卡](evidence/viewport-preflush-launch-plan.md) 的脚本/8 项定向 mock 已准备，统筹代码审查无阻塞；其 `.worktrees/g3-preflush-launch` / `codex/g3-preflush-launch` 初始基线为 `c820933`，真实运行前须更新到包含光照修复 `69cd400` 及本次上下文的准确提交，不以旧基线/mock 代替组合版本运行。使用标准脚本验证 live Genesis、默认渲染线程+显式同步、光照零计数/可见画面、只读、关窗和恢复；不并发 GPU。
+**下一动作与资源：**H1g 已从初始 `c820933` 更新到准确基线 `d1dac43`，准备提交 rebase 后为 `40d40c6`。真实标准脚本已完成主运行 tick0/1/2、光照零计数、窗口关闭和同目录恢复，UE/启动器均两次退出 0，owner 同步日志齐全、资源释放；最终运行门仍等待 PR/原始证据审查。H6B [恢复实施卡](evidence/home-visitor-implementation-plan.md) 已按既有只读方案更新，只有 H1g 审查集成后才派发，当前不创建访客实现 worktree。采用已验证的显式同步开发入口继续；默认线程原始路径与产品可靠性保持开放。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |

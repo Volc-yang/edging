@@ -35,7 +35,7 @@ V-HOME
 | H1g / 组合版本真实验证已放行 / 启动器 owner | [显式接线卡](evidence/viewport-preflush-launch-plan.md) | 启动器、定向测试、用法与真实接线报告 | 默认关闭、与无渲染线程选项互斥，真实脚本启动/只读/恢复/退出；不以 mock 代替运行门 |
 | H-LIGHT-01 / PR #64 已集成，有限光照门通过 / 呈现 owner | [运行时光照卡](evidence/home-runtime-lighting-plan.md)；H1f 释放 GPU 后实测 | 仅动态 DirectionalLight Mobility 与采证 | 交互清单与未构建数、前后 Metal 图、权威只读和恢复；不判崩溃修复或写实通过 |
 | H6A / PR #56 已集成、步行组合待验 / UE 环境 owner | H2 环境已有地面/墙/栏杆但全部禁用碰撞；与 H1b 并行，固定几何和权威接口 | `EdgeWorldCausalEnvironment.{h,cpp}`、必要时 `EdgeWorldCausalActor.{h,cpp}`；地面/墙/栏杆本地碰撞，因果代理保持无碰撞 | UE 构建、NullRHI 射线/胶囊 sweep、Metal 视图和权威 manifest 只读对照；若阻挡错误，仅返工环境 |
-| H6B / 用户要求暂停，待 UE 报错修复 / UE 访客 owner | 使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
+| H6B / 等待 H1g 审查集成 / UE 访客 owner | [恢复实施卡](evidence/home-visitor-implementation-plan.md)；使用 UE 发布版 `ACharacter`、`CharacterMovement` 和相机；Tab 在步行视角与原总览间切换；Space 仍唯一显式 Advance | `GameMode/PlayerController` 与新 `VisitorCharacter` 文件，不改 worker/因果 Actor | WASD 连续移动、方向键/鼠标转向、无穿墙；历史/相机动作不改权威状态。角色物理不代表 Genesis 世界法则 |
 | H6C / 待 H6B / 非实现集成 owner | 准确集成提交与隔离 `-UserDir`，固定进入路线 | 原始 Metal 录像/图、权威快照、重启和退出报告 | 能进入、走近结构、显式推进、回看、退出重访；保留可靠性/G0 开放门，不以一次演示代替产品验收 |
 
 **Check：**根节点以 H4 的同版本集成运行和 H5 独立试用为准，子任务的 PR/构建不能代替。最低技术检查为真实 Metal 可见、键盘可用、显式推进且 Genesis 候选进入因果发展、历史/相机纯读、重启恢复、无未处理退出崩溃。视觉质量、性能和正式世界规律待 G0 数值/参考批准后另判。
