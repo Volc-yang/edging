@@ -42,7 +42,9 @@ scripts/launch_edgeworld_ue_mac.sh --launch
 日志含本机路径，提交证据前检查内容。Saved 产品已被现有 UE gitignore 排除。
 
 脚本保持前台等待 UE 退出，记录 PID 和实际退出码，可用 ⌘Q 正常退出。
-`process_spawned` 仅表示子进程已创建；`gamemode_startplay_seen` 表示发现本轮
+`process_spawned` 仅表示子进程已创建；`engine_initialized_seen` 表示发现
+`Engine is initialized. Leaving FEngineLoop::Init()` 引擎初始化完成日志，最终状态
+独立记录 `final_engine_initialized_seen`；`gamemode_startplay_seen` 表示发现本轮
 GameMode StartPlay 日志；`validated_observation_seen` 表示发现 `stg-demo` 的有效
 Observe 日志。它们均不证明窗口可见、画面合格或运行稳定。即使已观察到状态，
 后续崩溃仍返回 UE 非零退出码；UE 退出 0 但日志含 fatal/assertion 或缺少初始化/

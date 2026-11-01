@@ -33,7 +33,7 @@ worktree：`/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch`；
   显式 Entry 地图与 Causal GameMode、有效观察与退出失败分离、空/坏参数处理。
   应用技能 code-complete-2 的需求、边界错误处理、工具验证和诚实证据检查。
 
-最终入口 SHA-256：`3ff544f6aa91e7c225b9a69f128707d0c796a87bd9eb2fa2db1a290b31031d25`。
+构建复跑时入口（`76e6f7d`）SHA-256：`3ff544f6aa91e7c225b9a69f128707d0c796a87bd9eb2fa2db1a290b31031d25`。
 首次/最终官方 build.log SHA-256 分别为
 `72f057a5b9f69645d405e084c682751815c8fe4204522b9ee47802d39ced2a66` /
 `66a43c21b309e7f14f7c31ad5eeaa4dc47936633320b044ca43ba7a0c29e3963`；
@@ -52,3 +52,14 @@ worktree：`/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch`；
 关闭 `SceneViewport.cpp:196` 运行/退出断言。GameMode 日志与有效 Observe 不代表
 画面验收通过。下一步由统筹审查 PR，待 GPU 放行后以本入口验证准确项目、
 GameMode、worker argv、有效观察、退出码及残留进程；任何视口崩溃另交诊断 owner。
+
+## 统筹审查补充：引擎初始化状态
+
+在 `76e6f7d` 上按统筹反馈补充独立日志检测：精确匹配
+`Engine is initialized. Leaving FEngineLoop::Init()`，运行中报告
+`engine_initialized_seen`，退出后再次扫描最终日志，并写
+`final_engine_initialized_seen=0/1`。只增加状态观测，不改变退出判定和其他功能。
+`/bin/bash -n` 和 `git diff --check` 通过；人工核对初始值、实时检测和快速退出
+后的最终扫描路径。未运行 `--launch`，此新增运行状态仍待 GPU 放行后验证。
+构建路径未改变，因此没有重复官方构建。补充后入口 SHA-256：
+`c72f6a96a774f2b8088c26d33c81ac59dca4710ed0a6b3b3f1ec38a6ff5781cc`。

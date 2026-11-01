@@ -92,9 +92,14 @@ ue_pid=$!
 status "process_spawned pid=$ue_pid; initialization_pending"
 # Forward interruption, then still wait for and report the child's actual exit.
 trap 'kill -TERM "$ue_pid" 2>/dev/null || true' INT TERM
+engine_initialized_seen=0
 mode_seen=0
 observation_seen=0
 while kill -0 "$ue_pid" 2>/dev/null; do
+    if ((engine_initialized_seen == 0)) && [[ -f $ue_log ]] && grep -Fq 'Engine is initialized. Leaving FEngineLoop::Init()' "$ue_log"; then
+        engine_initialized_seen=1
+        status 'engine_initialized_seen; visual_acceptance_not_tested'
+    fi
     if ((mode_seen == 0)) && [[ -f $ue_log ]] && grep -Fq 'Causal world: Space advances;' "$ue_log"; then
         mode_seen=1
         status 'gamemode_startplay_seen; visual_acceptance_not_tested'
@@ -112,9 +117,10 @@ set -e
 trap - INT TERM
 status "ue_exit_code=$ue_rc"
 # A fast process can exit between polling iterations; inspect the final log too.
+if [[ -f $ue_log ]] && grep -Fq 'Engine is initialized. Leaving FEngineLoop::Init()' "$ue_log"; then engine_initialized_seen=1; fi
 if [[ -f $ue_log ]] && grep -Fq 'Causal world: Space advances;' "$ue_log"; then mode_seen=1; fi
 if [[ -f $ue_log ]] && grep -Eq 'Causal world stg-demo observed tick [0-9]+, revision [0-9]+' "$ue_log"; then observation_seen=1; fi
-status "final_gamemode_seen=$mode_seen final_validated_observation_seen=$observation_seen"
+status "final_engine_initialized_seen=$engine_initialized_seen final_gamemode_seen=$mode_seen final_validated_observation_seen=$observation_seen"
 if ((ue_rc != 0)); then
     status 'runtime_failed; build success does not establish viewport reliability'
     exit "$ue_rc"
