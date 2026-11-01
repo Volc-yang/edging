@@ -3,6 +3,7 @@ import errno
 import json
 import os
 from pathlib import Path
+import stat
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,7 @@ _WORLD = 'ownership-fixture'
 _CHILD = '''
 import json, sys
 from pathlib import Path
+import stat
 from engine.universe_authority.codec import ContractError
 from engine.universe_authority.ownership import acquire
 try:
@@ -318,6 +320,28 @@ class OwnershipTests(unittest.TestCase):
         self.assert_descriptors_closed(descriptors)
         self.assertFalse((self.root / 'identity.json').exists())
         self.assertFalse((self.root / 'HEAD.json').exists())
+
+    def test_post_registration_directory_sync_failure_releases_lock(self):
+        self.root.mkdir()
+        descriptors = []
+        real_open, real_fsync = os.open, os.fsync
+        def tracking_open(*args, **kwargs):
+            descriptor = real_open(*args, **kwargs)
+            descriptors.append(descriptor)
+            return descriptor
+        def failing_directory_sync(descriptor):
+            if stat.S_ISDIR(os.fstat(descriptor).st_mode):
+                raise OSError(errno.EIO, 'injected post-registration directory sync')
+            return real_fsync(descriptor)
+        with mock.patch(_MODULE + '.os.open', side_effect=tracking_open), \
+                mock.patch(_MODULE + '.os.fsync', side_effect=failing_directory_sync):
+            self.expect_code('SYNC_UNSUPPORTED', acquire, self.root, _WORLD, initialize=True)
+        self.assert_descriptors_closed(descriptors)
+        self.assertTrue((self.root / 'identity.json').is_file())
+        self.assertFalse((self.root / 'HEAD.json').exists())
+        before = self.files()
+        self.assertEqual(self.child_code(), 'ACQUIRED')
+        self.assertEqual(self.files(), before)
 
     def test_short_registration_write_preserves_failure_evidence(self):
         self.root.mkdir()  # Reach identity write without a new-root parent sync.

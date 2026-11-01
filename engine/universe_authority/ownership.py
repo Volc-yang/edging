@@ -143,7 +143,7 @@ class Lease:
     _closed: bool = field(repr=False)
 
     def __init__(self) -> None:
-        raise TypeError('Lease is created only by acquire()')
+        raise ContractError('SCHEMA', 'Lease is created only by acquire()')
 
     def check(self) -> None:
         if self._closed:
