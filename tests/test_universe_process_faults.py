@@ -11,6 +11,16 @@ class UniverseProcessFaultTests(unittest.TestCase):
     def test_independent_encoder_matches_fixed_golden_bytes_and_hashes(self):
         self.assertEqual(golden_check()['records'], 24)
 
+    def test_existing_output_is_rejected_without_modifying_original_evidence(self):
+        with tempfile.TemporaryDirectory(prefix='universe-i6-preserve-') as temporary:
+            output = Path(temporary)
+            sentinel = output / 'raw-index.json'
+            sentinel.write_bytes(b'original evidence')
+            with self.assertRaises(FileExistsError):
+                run_suite(output)
+            self.assertEqual(list(output.iterdir()), [sentinel])
+            self.assertEqual(sentinel.read_bytes(), b'original evidence')
+
     @unittest.skipUnless(os.name == 'posix', 'local POSIX profile requires signals/flock')
     def test_real_process_fault_matrix(self):
         configured = os.environ.get('EDGEWORLD_I6_OUTPUT')

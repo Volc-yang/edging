@@ -801,11 +801,12 @@ class Suite:
 
 def run_suite(output):
     suite = None
+    preexisting = Path(output).exists() or Path(output).is_symlink()
     try:
         suite = Suite(output)
         return suite.run()
     except BaseException as exc:
-        if Path(output).is_dir():
+        if not preexisting and Path(output).is_dir():
             save(Path(output) / 'failed-run.json', {'passed': False, 'error': repr(exc),
                  'traceback': traceback.format_exc(), 'cases': suite.results if suite else [],
                  'cleanup_errors': suite.cleanup_errors if suite else []})
@@ -835,10 +836,11 @@ def main():
         child(args)
     else:
         parser.error('--output is required') if args.output is None else None
+        preexisting = args.output.exists() or args.output.is_symlink()
         try:
             summary = run_suite(args.output)
         finally:
-            if args.output.is_dir():
+            if not preexisting and args.output.is_dir():
                 finalize_index(args.output)
         print(json.dumps({'passed': summary['passed'], 'cases': len(summary['cases']),
                           'children': summary['children'], 'output': str(args.output)}))
