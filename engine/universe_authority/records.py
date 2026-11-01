@@ -944,9 +944,16 @@ class _CompositeValidation:
             require(all(x["place_id"] in place_ids for x in decorations), "GEOGRAPHY")
         elif k == "state":
             world = get("world")
-            binding = self.target(records, get("snapshot"), "binding")
+            snapshot = get("snapshot")
+            binding = self.target(records, snapshot, "binding")
             require(binding["refs"]["dynamic_exists"] == world["refs"]["dynamic_existence"]
                     and binding["refs"]["support_exists"] == world["refs"]["support_existence"], "REFERENCE")
+            require(b["revision"] >= b["tick"] and b["random_cursor"] == b["tick"]
+                    and snapshot["body"]["physical_step_count"] == b["tick"] * 8
+                    and (b["development_mm"] is None) == (b["tick"] == 0), "TRANSITION")
+            if b["revision"] == 0:
+                require(b == {"tick": 0, "revision": 0, "random_cursor": 0,
+                              "development_mm": None, "budget": 8}, "HEAD")
         elif k == "intent":
             require((b["action"] == "retain_snapshot" and b["tick_delta"] == 0
                      and b["case_id"] is None and b["budget"] == 0)
