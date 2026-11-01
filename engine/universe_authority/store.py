@@ -231,6 +231,14 @@ class Store:
         return self._lease.world_id
 
     @property
+    def domain_version(self) -> str:
+        return self._lease.domain_version
+
+    @property
+    def deployment_context(self) -> DeploymentContext | None:
+        return self._deployment
+
+    @property
     def trusted_receipts(self) -> Mapping[str, JSON]:
         _require(self._lease.domain_version == '0.1', 'PROFILE')
         return MappingProxyType(deepcopy(self._trusted))
