@@ -1,0 +1,222 @@
+{
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H-LIGHT-01-20261101/raw",
+  "raw_index_sha256": "1278252f5a4de80ee196c367f93ea63e1fc387a1a77ababebdb45bc35954b580",
+  "raw_file_count": 193,
+  "summary": {
+    "utc": "2026-11-01T06:50:14.473817+00:00",
+    "accepted_readonly_checks": [
+      {
+        "arm": "baseline2",
+        "label": "camera-w",
+        "pass": true
+      },
+      {
+        "arm": "baseline2",
+        "label": "camera-s",
+        "pass": true
+      },
+      {
+        "arm": "baseline-recovery",
+        "label": "verified-history0",
+        "pass": true
+      },
+      {
+        "arm": "baseline-recovery",
+        "label": "verified-head",
+        "pass": true
+      },
+      {
+        "arm": "baseline-recovery",
+        "label": "verified-camera",
+        "pass": true
+      },
+      {
+        "arm": "fixed1",
+        "label": "history0",
+        "pass": true
+      },
+      {
+        "arm": "fixed1",
+        "label": "head",
+        "pass": true
+      },
+      {
+        "arm": "fixed1",
+        "label": "camera-w",
+        "pass": true
+      },
+      {
+        "arm": "fixed1",
+        "label": "camera-s",
+        "pass": true
+      },
+      {
+        "arm": "fixed-recovery",
+        "label": "history0",
+        "pass": true
+      },
+      {
+        "arm": "fixed-recovery",
+        "label": "head",
+        "pass": true
+      },
+      {
+        "arm": "fixed-recovery",
+        "label": "camera-w",
+        "pass": true
+      }
+    ],
+    "recovery": {
+      "baseline": {
+        "all_files_match": true,
+        "files": {
+          "abstract_world.json": "ec087c73c5ae881ee5d24b8cb9fed9c960d9f58fc4fad22db10be5924c984ccd",
+          "checkpoints/16a430f5fc77221381ad9da7a30e590528ecc41906d622730728fe1b1aa0cabf.gstraj": "16a430f5fc77221381ad9da7a30e590528ecc41906d622730728fe1b1aa0cabf",
+          "checkpoints/37d640c65f73002c5beedd8f3cd92d7a57b8250ab49023c1089f2f506cd1d4cb.gstraj": "37d640c65f73002c5beedd8f3cd92d7a57b8250ab49023c1089f2f506cd1d4cb",
+          "checkpoints/41f94f3eb8f22feb6b16e901c369ad7d091b7143596b134c675bb28e716f481c.gstraj": "41f94f3eb8f22feb6b16e901c369ad7d091b7143596b134c675bb28e716f481c"
+        }
+      },
+      "fixed": {
+        "all_files_match": true,
+        "files": {
+          "abstract_world.json": "8a623e589a2fc4ea16305f060b4cd70615070ed4a9af105e6b922d803d3aadff",
+          "checkpoints/139114c51a4e7e810d81ec059080cb20665b2b8dbc2e35a58d8f9fb2a0659f5e.gstraj": "139114c51a4e7e810d81ec059080cb20665b2b8dbc2e35a58d8f9fb2a0659f5e",
+          "checkpoints/2d918a6fb2731161dcd5afa0981c9ecbf1f501d6658e59bf25ca2ce21fc482c1.gstraj": "2d918a6fb2731161dcd5afa0981c9ecbf1f501d6658e59bf25ca2ce21fc482c1",
+          "checkpoints/bcb530c40a3cb3b092fe7b2195b9ff9b6913133b07aece220e16693f506ad1b5.gstraj": "bcb530c40a3cb3b092fe7b2195b9ff9b6913133b07aece220e16693f506ad1b5"
+        }
+      }
+    },
+    "runs": {
+      "baseline1": {
+        "exit": 0,
+        "lighting_counts": [],
+        "directional_mobility": [],
+        "native_unbuilt_primitives": [],
+        "engine_initialized": "[2026.11.01-06.35.47:542][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()",
+        "first_observed": null,
+        "ue_pid": 41914,
+        "excluded": true,
+        "worker_pids": [
+          42124
+        ]
+      },
+      "baseline2": {
+        "exit": 0,
+        "lighting_counts": [
+          16
+        ],
+        "directional_mobility": [
+          "1"
+        ],
+        "native_unbuilt_primitives": [
+          16
+        ],
+        "engine_initialized": "[2026.11.01-06.36.17:098][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()",
+        "first_observed": {
+          "utc": "2026-11-01T06:36:34.168Z",
+          "state": "There has been no change in the accessibility tree for Window: \"EdgeWorldHost (64-bit Development SF_METAL_SM6) \".\nThe focused UI element is 0 standard window EdgeWorldHost (64-bit Development SF_METAL_SM6) , Secondary Actions: Raise"
+        },
+        "ue_pid": 42379,
+        "excluded": false,
+        "worker_pids": [
+          42502
+        ]
+      },
+      "baseline-recovery": {
+        "exit": 0,
+        "lighting_counts": [
+          16
+        ],
+        "directional_mobility": [
+          "1"
+        ],
+        "native_unbuilt_primitives": [
+          16
+        ],
+        "engine_initialized": "[2026.11.01-06.39.30:653][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()",
+        "first_observed": {
+          "utc": "2026-11-01T06:41:01.644Z",
+          "state": "There has been no change in the accessibility tree for Window: \"EdgeWorldHost (64-bit Development SF_METAL_SM6) \".\nThe focused UI element is 0 standard window EdgeWorldHost (64-bit Development SF_METAL_SM6) , Secondary Actions: Raise"
+        },
+        "ue_pid": 43640,
+        "excluded": false,
+        "worker_pids": [
+          43812
+        ]
+      },
+      "fixed1": {
+        "exit": 0,
+        "lighting_counts": [
+          0,
+          0
+        ],
+        "directional_mobility": [
+          "2",
+          "2"
+        ],
+        "native_unbuilt_primitives": [
+          0,
+          0
+        ],
+        "engine_initialized": "[2026.11.01-06.44.28:213][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()",
+        "first_observed": {
+          "utc": "2026-11-01T06:45:21.261Z",
+          "state": "There has been no change in the accessibility tree for Window: \"EdgeWorldHost (64-bit Development SF_METAL_SM6) \".\nThe focused UI element is 0 standard window EdgeWorldHost (64-bit Development SF_METAL_SM6) , Secondary Actions: Raise"
+        },
+        "ue_pid": 44705,
+        "excluded": false,
+        "worker_pids": [
+          44863
+        ]
+      },
+      "fixed-recovery": {
+        "exit": 0,
+        "lighting_counts": [
+          0
+        ],
+        "directional_mobility": [
+          "2"
+        ],
+        "native_unbuilt_primitives": [
+          0
+        ],
+        "engine_initialized": "[2026.11.01-06.47.18:686][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()",
+        "first_observed": {
+          "utc": "2026-11-01T06:48:58.726Z",
+          "state": "Window: \"EdgeWorldHost (64-bit Development SF_METAL_SM6) \", App: UnrealEditor.\n0 standard window EdgeWorldHost (64-bit Development SF_METAL_SM6) , Secondary Actions: Raise\n\t1 close button\n\t2 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text EdgeWorldHost (64-bit Development SF_METAL_SM6) \n5 menu bar\n\t6 UnrealEditor\n\t7 View\n\t8 Window\n\nThe focused UI element is 0 standard window EdgeWorldHost (64-bit Development SF_METAL_SM6) , Secondary Actions: Raise",
+          "pid": 45445
+        },
+        "ue_pid": 45445,
+        "excluded": false,
+        "worker_pids": [
+          45582
+        ]
+      }
+    }
+  },
+  "key_files": {
+    "baseline-recovery/launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline-recovery/recovered-tick2.png": "30a60db1740da4e3f4135155d0ab8e9e3d5c1a9d4bf485d4e832f950d50dfff8",
+    "baseline-recovery/status.log": "b7a83d41622747a37a753058da94e1ea8b8543b8c5ff8474a127755cd167ad29",
+    "baseline-recovery/ue.log": "4f6432cba350a0f0df7562c9c559b9976a9897459d42f18a862d0a83c5d1e52f",
+    "baseline-source-binary-sha256.json": "3076f8f613abe2e9d58199714950f8c10a863187fee6707f403007061b87706c",
+    "baseline1/launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline1/status.log": "3f09705ee6b2a0b5bd7443bb7053385bf67d5d1c54856520d818704eac71f661",
+    "baseline1/ue.log": "6ec7f647d73bc563f2afa5f71018f6e5d256b347a23f3ede2bca598fb270802c",
+    "baseline2/launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline2/status.log": "85a36196f1be12c5f9abad59232dacad00a679eb43aa71468ce09f4c88ed0036",
+    "baseline2/tick0.png": "b5fd2b0d2156436309bec7d43a01510f22cdebaab700fba43ea4c474b8905d51",
+    "baseline2/tick2.png": "125142d3637f0812aa9f509b265f8038b38f44674a434411a4817cdac214d675",
+    "baseline2/ue.log": "34a4ba32e0dfbc1b1012afcfba369e3bb988527450b685466b31d3782caff343",
+    "fixed-recovery/launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "fixed-recovery/recovered-tick2.png": "ae02dc7783f90e78f1e3dc097c62ab5d16872e9fed5fc4b79881f99d00ccc323",
+    "fixed-recovery/status.log": "ff7437539081c8f1529ccdf96be53692c9f2f84bd59e850a0a814918c518e3a5",
+    "fixed-recovery/ue.log": "599b5ce51a5a19a15e0ace6923e259d25a49f0a764f71b6dbc0f52735aa9fde0",
+    "fixed-source-binary-sha256.json": "dda9b8e400325cde5cbc628a3c818675448c512a948a7d98a8c05306ce4b4fba",
+    "fixed1/launcher.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "fixed1/status.log": "aa13d516778a155fe20a914db9c7d34ff49464058833040ff4e4316fbfac40a2",
+    "fixed1/tick0.png": "eaed058468bae49c4c720f96a80d742b51641b7e5aa5ec843827cd4982a53868",
+    "fixed1/tick2.png": "494d7be916244208517703f696f663707b9783121cd92b256dd2a0c9c0cc66db",
+    "fixed1/ue.log": "0583d5cfe1a5aac2a33e446e636c58608f985892e9b961d44f0f52059b02ba09"
+  }
+}
