@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## V-HOME 可访问世界纵切（规划及测量进行中）
+
+用户授权按总计划自主推进，目标是让访客可进入、移动、观察抽象 Seed→Tree 因果演化并重访持久状态；不把抽象 seed/tree 解释成植物。[PDCA 方案树](visitable_world_iteration_plan.md)以集成提交 `f5532e6` 为输入。H1 退出路径复现由 `g3-shutdown-isolation` worktree/分支 `codex/g3-shutdown-isolation` 执行；HQ CPU/GPU Metal 试采由 `gq-metal-sample` worktree/分支 `codex/gq-metal-sample` 执行，两者独占 GPU 串行，均尚未交付。H2/H3 空间呈现与说明界面先做只读方案复核，未发布实现。统筹保留接口裁决和集成；正式视觉/性能门与 4D 世界规律仍待 G0 冻结。下一步收齐 HQ/H1 证据，审定 H2/H3 文件所有权与视觉方案，再按拓扑派发实现。
+
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
 G3 [真实集成证据](evidence/stg-g3/integration-report.md)提交 `5c2190b`，PR #48/集成 `cd0283a`，CI 通过；任务 worktree 确认干净且提交已包含于集成分支后移除。原始证据保存在 `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-lxKhO5/`，索引 SHA256 为 `e6e912a3…0333b2a`。真实 Metal UE↔worker↔Genesis 的 tick 0/1/2、两相物理差异、重复命令幂等、历史/相机只读及重启恢复通过有限探针。点击窗口关闭按钮曾触发 `SceneViewport.cpp:196` 断言，第二次通过 ⌘Q 正常退出；**G3 部分完成，V-STG 总门未通过**。UE/Worker 已退出。[关窗复测](evidence/stg-g3/shutdown-recheck.md)在初始化后与因果场景稳定运行后各一次点击关闭按钮均以退出码 0 结束，未留下 UE/Worker；原失败未重现，间歇性退出门保持开放。下一步按原 tick/历史/相机序列再复现并定位关窗退出路径，再补 UE 原始传输身份记录、缺失的只读动作矩阵与 GQ CPU/GPU 采样。G0 产品规律、写实视觉及性能阈值继续开放。

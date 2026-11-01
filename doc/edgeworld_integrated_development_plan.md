@@ -1,8 +1,8 @@
 # edgeWorld 4D 数字宇宙：集成开发总图
 
-状态：2026-11-01，v0.1。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。Git 输入为远端 `feature/edge-world` 的 PR #25 合并提交 `383c72e`。
+状态：2026-11-01，v0.2。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。远端基线 `feature/edge-world` 的 PR #25 合并提交为 `383c72e`；后续有限 Seed→Tree × Genesis 纵切在集成分支 `codex/plan-consolidation`，未因此自动进入基线。
 
-设计迭代进展：G0 的[待冻结决策记录](pdca_g0_freeze_decision_record.md)已编写；G1 [接口设计提案](pdca_g1_interface_design.md)与 GQ [证据/测量设计提案](pdca_gq_evidence_baseline.md)已分别经 PR #26/#27 集成到本轮分支。两者尚未完成实际探针或产品门验收。
+当前进展：用户将本版纵切定为抽象 Seed→Tree，并要求 Genesis 为必需路径。[G0 待冻结决策](pdca_g0_freeze_decision_record.md)保留正式规律、视觉与性能阈值开放。G2 组合 worker、UE 抽象呈现及 G3 有限 Metal 运行已有证据，详见[统筹清单](parallel_execution_backlog.md)；G3 退出路径和 GQ 实测仍开放。下一轮可访问场景方案见[可访问世界 PDCA 树](visitable_world_iteration_plan.md)，其视觉体验属于呈现层提案，不批准新的世界规律。
 
 ## G：产品目标与架构边界
 
