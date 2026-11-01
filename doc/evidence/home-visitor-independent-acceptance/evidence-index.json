@@ -1,0 +1,89 @@
+{
+  "base": "f674483db3eec1f8bb71ed00f9e626928ea5de25",
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H6C-20261101/raw",
+  "raw_index": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H6C-20261101/raw/sha256-index-attempt1.json",
+  "raw_index_sha256": "049fdabc4cfdd29ddad733b67ea9decab4fa8b83a6a086635b5941442efd7104",
+  "raw_files": 455,
+  "raw_bytes": 11157255,
+  "readonly_pairs": 35,
+  "advances": [
+    {
+      "action": "overview-space-attempt1",
+      "tick": 2,
+      "view_before": "CameraActor_0"
+    },
+    {
+      "action": "walking-space-attempt1",
+      "tick": 1,
+      "view_before": "EdgeWorldVisitorCharacter_0"
+    }
+  ],
+  "sessions": [
+    {
+      "run": "primary-attempt1",
+      "pid": 63931,
+      "exit": 0
+    },
+    {
+      "run": "recovery-attempt1",
+      "pid": 66073,
+      "exit": 0
+    }
+  ],
+  "moving_samples_in_hold": 5,
+  "frozen_sources_binary": {
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosGameMode.cpp": "8fadb6dd9cfe39c08fe05f3f9b50659a08497e601c7626a6c624e29fde13c902",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosGameMode.h": "238f492d9dfa647d41bdd6fa93d3add62934919e6ae6df9ff775aec5735dec40",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservationGameMode.cpp": "be5a23a0f0ca7d0b506302d8e1fabac11f5d9cbc27150358dcb048742cda63a4",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservationGameMode.h": "b23d6d78827ca625de734701037225ab69170e768b4f8fb2d5393d749d45a436",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosObservationProtocolTest.cpp": "d125115fec69f98f458e700ee9ebe89c828d6f9152956bb13699c53d0e388071",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismEcology.cpp": "754aecbd0ac959a26f1e7c8119dd805660a37fee9909c180cb5306fb3b7320e5",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismEcology.h": "982ed158a3c59e55f3691814a06610d9de72e949a7359e85c50d590522125c2d",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismEcologyTest.cpp": "e7bac7cbe8673b771d3f66771dcadfe9ce20444c223d911f2d0ed987449c305a",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismGameMode.cpp": "4553ac0246e0f7a3011e059b590e44add06e95fdfd84ee63488c66fdd7076a1b",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismGameMode.h": "5f35813088effe1fb07ce1f84b052fad884292307bcd67089479401b7ad3f73a",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismLook.cpp": "383c058e53c69991e9b4a2a213540ae86760c62580e28960fe88d55b64db98c6",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismLook.h": "2e9bb7f099d6be3043a6bc3f7bc483bbf2b6ee7b086536e74c7254cec9b9b671",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismTerrain.cpp": "8569d06a133b33b05ef9f8fb8e9cc01eeeea88cfd39095f01407d5fa7a324d8e",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismTerrain.h": "e8f79771b21a86558d7caf1b28b90026900fb9e005758b5fdf8c7dbc78ed7bbb",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosRealismTerrainTest.cpp": "01fe9cbf08a8df4c8f9708c39796777ba1682f53436df4198f73c3e40abd7276",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosValidationControl.cpp": "639d33f1c7f9658fd3e8daa502dfe1648d74f834333a7a1ab127688c4603d499",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosValidationControl.h": "1926b0c5f57ca7204dfe8b69a29ba680f277ca5d3242b0ab1ebea0c1f4920b8f",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosWorldActor.cpp": "ec4c31ea095c5fd6cef2a21f08791454fd01e47c7285d6cbadb13688af815f73",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/ChaosWorldActor.h": "b6fcbd8d72246c2c950e3a2ed9d07bf5ab17c5767118b884ed9514692029551f",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalActor.cpp": "9b74c0109de6c35fda8af0307f27b07a4cb69c9f7def8a2378c16d61ff2d8e7a",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalActor.h": "f5e4531cbb785371c8f8e61caf25d2082e68f32667f49abd18b988b24addf46a",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalEnvironment.cpp": "873bb9198fa32d9bcc5b5892710db2d8949e80805ed9dea5742b8754e85d4f1d",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalEnvironment.h": "e6fe1922a87a8ff81e1b107b402545dea8db10256ffc5af7ea9e8939526fd505",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalGameMode.cpp": "83528d80b8a8a9b03fad18696629924d157da71d14213890aa2850aaceb566a1",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalGameMode.h": "b72320ea2818c07d1bb6dce480f9e973f843989893a2045129d2eafe0e7ee770",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalHud.cpp": "11f7443c774c0017bc804bc16c34c29b4ba09dd27b47606bad735d2c705a299a",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldCausalHud.h": "be180765bd6031062107548a7a912046b04e7be83064d379477c1e32514ad04f",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldDiagnosticViewportClient.cpp": "60e8ad338612190e2193ac7e06a6e16d245392424e96d071b7ce07857095c236",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldDiagnosticViewportClient.h": "21a6d43259238a16bc9b72cf9e9482b7b9ff1dabe05e0d09bc446083bfd55333",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldGeneratedWorldGameMode.cpp": "016047842f61a9f5c7b94ac86790f826c31a3977d1b09aa0e3aa385c770d1ba8",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldGeneratedWorldGameMode.h": "d504c7b9c20886795918c2fbac6a48abd8e0a2f64b1ff673568158c7262e68e4",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldHost.Build.cs": "4b0b90ebfce49128311ae5a8abf68eecdad57df2911699753f4ae583f3c4d4a8",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldHost.cpp": "e1dda413e830f8ba59f299c8cebe1211f9f88602e86be500957015edbb85c984",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldHost.h": "0eaa379f9256116b4c7745f51940b2ed6ca2dec1d35361cc91b34c74d955ce4b",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldViewportPreflushTest.cpp": "1d7cf5ff7765ce651a5d80c979e46c9c884daa65a30b6b29dd0a2f5ccfdc6e36",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldVisitorCharacter.cpp": "641dec3e9dd1407f0aa49f3ebb28e92de02455d650a83827d5ada651ad4802bc",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldVisitorCharacter.h": "896933cfbe940210125597fb23b81f9f19810b48de752bb40650d15c354ad035",
+    "engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldVisitorCharacterTest.cpp": "4e18f10e9d8c0380c762bab9aa819c399d8be63683ed86fe1624e799311f0c8c",
+    "engine_platforms/unreal/EdgeWorldHost/Config/DefaultEngine.ini": "5279f60aca1d715d4d2012f0903c78c5bd609175050c0a1ec92ca3756c3a551b",
+    "engine_platforms/unreal/EdgeWorldHost/Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib": "34f4567ea4580dfbf8964da170c729fa8684485230795439a2c17e98132c08e5",
+    "scripts/launch_edgeworld_ue_mac.sh": "6028e5e84e2ee7ecb9ee9bd491bbc6aa24d212290b2ac8f13e338a735ba7b67e"
+  },
+  "recovery_files": {
+    "abstract_world.json": "de767ff40ca33ead3b33828ed375e722f4f8a2d0ab4e49bd5ee1336936a9be60",
+    "checkpoints/1fcc8de1c5e6d2dd1ee21f386ffa1e5fe2d73b0b93f52f057a32ef5a6099c630.gstraj": "1fcc8de1c5e6d2dd1ee21f386ffa1e5fe2d73b0b93f52f057a32ef5a6099c630",
+    "checkpoints/2d604381a40e577b0019648e4431bcbbd55be0b22255c7e52ce261e0ee2d2e09.gstraj": "2d604381a40e577b0019648e4431bcbbd55be0b22255c7e52ce261e0ee2d2e09",
+    "checkpoints/f45b9effa28853f4d69e1e9027a6ee89be7a88723177b90b06e575e0f43f9969.gstraj": "f45b9effa28853f4d69e1e9027a6ee89be7a88723177b90b06e575e0f43f9969"
+  },
+  "checks_sha256": "e6826a8bd3a1caf0f6a786fd1b7c018c08948988f260c864e2911b955b089f18",
+  "manual_mouse_reuse_sha256": "76ef49985e1b119b1c0e9389bda9f675e2d77bbdcbed1b91d0bec8ce65866679",
+  "primary_full_head2_image": {
+    "path": "primary-attempt1/full-head2-overview-attempt1/image.jpg",
+    "sha256": "34977084218db616dd060156138c7653d6656077e2a649f8a3e89a98fc46dad6"
+  }
+}
