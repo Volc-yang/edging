@@ -338,5 +338,13 @@ class CommandsTests(unittest.TestCase):
         self.expect('SCHEMA', self.call, store=object())
 
 
+    def test_neutral_helpers_reject_composite_records_instead_of_coercing_their_bodies(self):
+        archive = json.loads((_FIXTURES.parent / 'universe_authority_v0_2/positive.json').read_bytes())
+        rows = {r['id']: r for r in archive['records']}
+        self.expect('DOMAIN', neutral_candidate, rows['state-0'], rows['command-record-1'], rows['intent-1'],
+                    candidate_id='no-neutral-coercion')
+        self.expect('DOMAIN', self.trust.base.verify_approval, rows['approval-1'], rows['proposal-1'], rows['intent-1'])
+
+
 if __name__ == '__main__':
     unittest.main()
