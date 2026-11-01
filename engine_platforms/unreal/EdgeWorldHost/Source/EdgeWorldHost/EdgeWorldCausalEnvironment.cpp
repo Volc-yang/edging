@@ -1,6 +1,7 @@
 #include "EdgeWorldCausalEnvironment.h"
 
 #include "Components/SceneComponent.h"
+#include "Components/PostProcessComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -9,6 +10,11 @@ AEdgeWorldCausalEnvironment::AEdgeWorldCausalEnvironment()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("ObservatoryRoot"));
+	Exposure = CreateDefaultSubobject<UPostProcessComponent>(TEXT("ObservatoryExposure"));
+	Exposure->SetupAttachment(RootComponent);
+	Exposure->bUnbound = true;
+	Exposure->Settings.bOverride_AutoExposureBias = true;
+	Exposure->Settings.AutoExposureBias = -3.0f;
 }
 
 void AEdgeWorldCausalEnvironment::AddShape(UStaticMesh* Mesh, UMaterialInterface* BaseMaterial,

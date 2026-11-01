@@ -7,6 +7,7 @@
 class UStaticMesh;
 class UStaticMeshComponent;
 class UMaterialInterface;
+class UPostProcessComponent;
 
 // A replaceable, read-only spatial frame for the abstract causal graph.
 UCLASS()
@@ -22,4 +23,6 @@ private:
 		const FLinearColor& Color, const FRotator& Rotation = FRotator::ZeroRotator);
 	UPROPERTY()
 	TArray<TObjectPtr<UStaticMeshComponent>> Shapes;
+	UPROPERTY()
+	TObjectPtr<UPostProcessComponent> Exposure;
 };
