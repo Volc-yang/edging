@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## G1 接口复核与 GQ 采样可行性（进行中）
+
+从远端基线 `617eb5c` 继续。G1 [独立代码审查](pdca_g1_interface_review.md)提交 `8244328`，PR #29/集成 `29facac`：共用 JSONL envelope 存在，但原通用探针不能跨单刚体、树、混沌直接复用。G1 [v0.2 设计](pdca_g1_interface_design.md)提交 `6c7b1b6`，PR #31/集成 `4d3f8d2`，补齐分领域 fixture、错误映射与 UE 身份校验责任；第二次独立只读复核和 CI 通过。树/混沌各六步 `Worker.handle` 自检通过，进程 JSONL、重启、UE 和 Genesis 未在该设计卡运行，G1 接口仍未冻结。GQ [可行性报告](pdca_gq_probe_report.md)提交 `6c16a6f`，PR #30/集成 `2cea123`：本机工具文件与计时路径存在，但用户 UE/Worker 正运行，未启动第二场景，CPU/GPU 信号导出门为 `inconclusive`。上述三任务 worktree 已核验干净并移除。下一动作：独立 G1 树/混沌进程探针正在执行；GQ 待隔离运行窗口；G0 版本场景、AI/Genesis 必需范围和运行阈值仍待裁决。
+
 ## G0/G1/GQ 设计迭代（2026-11-01）
 
 统筹基线 `5cac4a3`；集成分支 `codex/plan-consolidation`。总图见 [集成开发计划](edgeworld_integrated_development_plan.md)。G0 待决门见 [决策记录](pdca_g0_freeze_decision_record.md)，提交 `a1e14f1`：过程规划门已接受，产品范围、目标机与视觉/性能/可靠性阈值仍开放。G1 [接口设计](pdca_g1_interface_design.md)由 `codex/g1-interface-design` worktree 提交 `c742d0c`，PR #26 通过 CI 和统筹文档审查，合并 `0c22188`。GQ [证据与测量设计](pdca_gq_evidence_baseline.md)由 `codex/gq-baseline-design` worktree 提交 `631cdac`，PR #27 通过 CI 和统筹文档审查，合并 `b7a27a0`。两份设计的 Check 仅证明边界、证据字段和测量方案可审查；G1 实际探针、GQ CPU/GPU trace 和 G4 产品验收均未运行。G1/GQ 独立任务 worktree 已核验干净、确认提交包含于集成分支后移除。下一动作：裁决 G0 表中的场景/AI/Genesis 范围和目标环境，运行 GQ 短探针，独立审查 G1 共享字段后再冻结接口并发布必需 G2 叶卡。

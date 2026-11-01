@@ -26,7 +26,7 @@
 
 固定一个已批准的 world 输入和独立 state directory，单 worker、单 UE 客户端。记录准确提交、构建、依赖/配置、请求/响应 JSONL、状态 manifest、event/head 摘要及观察时间窗口。探针顺序：`status` → `observe(tick 0)` → 显式 `advance(command A, expected_revision 0, target_tick 1)` → `observe(tick 1)` → 重放 command A → 历史 `observe(tick 0)` → 关闭/重启后 `status/observe`。每一步比对 world、tick、revision、水位与摘要；每个纯观察动作前后比对权威持久摘要。
 
-错误探针另覆盖：过期 revision、同一 command ID 不同输入、未知/缺失历史、错误 world、未知协议/schema、物理适配失败（若纳入）、AI 拒绝/超时（若纳入）、worker 退出与 UE 响应超时。保存原始结果和预期错误代码映射；当前代码的领域错误名称作为实测输入，统一错误 taxonomy 待 G1 审查后冻结。不能以旧阶段 2 单刚体通过推断 AI、复杂物理或完整混沌世界通过。
+错误探针另覆盖：过期 revision、同一 command ID 不同输入、未知/缺失历史、错误 world、未知协议、各领域规则/投影版本拒绝（通用请求目前无 `schema_version` 字段）、物理适配失败（若纳入）、AI 拒绝/超时（若纳入）、worker 退出与 UE 响应超时。保存原始结果和预期错误代码映射；当前代码的领域错误名称作为实测输入，统一错误 taxonomy 待 G1 审查后冻结。不能以旧阶段 2 单刚体通过推断 AI、复杂物理或完整混沌世界通过。
 
 ## 分领域可执行探针输入（提案，尚未运行）
 
