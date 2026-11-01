@@ -249,6 +249,137 @@ def validate_owner_deployment(card, name, owner_path, expected_sha):
             'owner scratch overlaps authority/deployment/key')
 
 
+def _python_link_chain(entry, expected=None):
+    """Walk executable components, validating each authorized hop before following it.
+
+    Resolve '..' only after preceding components, matching filesystem semantics.
+    This exception is private to the interpreter pin; safe_path stays unchanged.
+    """
+    require(type(entry) is str and Path(entry).is_absolute() and str(Path(entry)) == entry
+            and '..' not in Path(entry).parts, 'canonical lexical Python entry required')
+    if expected is not None:
+        require(type(expected) is list and len(expected) <= 32 and
+                all(type(x) is dict and set(x) == {'path', 'readlink'} and
+                    type(x['path']) is str and type(x['readlink']) is str for x in expected),
+                'Python link pin shape')
+    pending = list(Path(entry).parts[1:])
+    current, links, seen = Path('/'), [], set()
+    while pending:
+        part = pending.pop(0)
+        if part in ('', '.'):
+            continue
+        if part == '..':
+            require(current != Path('/'), 'Python link escapes root')
+            current = current.parent
+            continue
+        candidate = current / part
+        info = candidate.lstat()
+        if stat.S_ISLNK(info.st_mode):
+            require(len(links) < 32 and str(candidate) not in seen, 'Python link cycle/hop limit')
+            link = {'path': str(candidate), 'readlink': os.readlink(candidate)}
+            if expected is not None:
+                require(len(links) < len(expected) and link == expected[len(links)],
+                        'unexpected Python symlink/redirection')
+            links.append(link)
+            seen.add(str(candidate))
+            target = Path(link['readlink'])
+            require(not link['readlink'].startswith('//'), 'ambiguous Python link root')
+            if target.is_absolute():
+                current = Path('/')
+                pending = list(target.parts[1:]) + pending
+            else:
+                pending = list(target.parts) + pending
+        else:
+            require(stat.S_ISDIR(info.st_mode) if pending else stat.S_ISREG(info.st_mode),
+                    'Python component is not a directory/regular executable')
+            current = candidate
+    if expected is not None:
+        require(len(links) == len(expected), 'unused Python link pins')
+    return safe_path(current), links
+
+
+def _python_venv_layout(entry, cfg_raw):
+    lexical = Path(entry)
+    require(lexical.parent.name == 'bin', 'Python entry must belong to venv/bin')
+    settings = {}
+    for line in cfg_raw.decode('utf-8').splitlines():
+        if '=' in line:
+            key, value = (x.strip() for x in line.split('=', 1))
+            require(key not in settings, 'duplicate pyvenv setting')
+            settings[key] = value
+    versions = []
+    for key in ('version_info', 'version'):
+        if key in settings:
+            found = re.fullmatch(r'([0-9]+)\.([0-9]+)(?:\.[0-9]+)?', settings[key])
+            require(found is not None, 'pyvenv version required')
+            versions.append(found.group(1) + '.' + found.group(2))
+    require(versions and len(set(versions)) == 1, 'pyvenv version inconsistent/missing')
+    version = versions[0]
+    require(lexical.name in ('python', 'python' + version.split('.')[0], 'python' + version),
+            'Python entry/pyvenv version mismatch')
+    venv = lexical.parent.parent
+    return venv / 'pyvenv.cfg', venv / 'lib' / ('python' + version) / 'site-packages'
+
+
+def _python_site_identity(path):
+    path = safe_path(path)
+    info = path.lstat()
+    require(stat.S_ISDIR(info.st_mode), 'venv site-packages directory missing')
+    return {'path': str(path), 'device': info.st_dev, 'inode': info.st_ino,
+            'uid': info.st_uid, 'mode': stat.S_IMODE(info.st_mode)}
+
+
+def collect_python_pin(entry):
+    """Read-only root helper: produces proposed metadata, never executes Python."""
+    target, links = _python_link_chain(entry)
+    cfg = safe_path(Path(entry).parent.parent / 'pyvenv.cfg')
+    cfg_raw = safe_read(cfg, 65536)
+    expected_cfg, site = _python_venv_layout(entry, cfg_raw)
+    require(cfg == expected_cfg and target.is_file() and os.access(target, os.X_OK),
+            'venv configuration/executable binding')
+    return {'entry': entry, 'links': links,
+            'target': {'path': str(target), 'sha256': file_hash(target)},
+            'pyvenv_cfg': {'path': str(cfg), 'sha256': hashlib.sha256(cfg_raw).hexdigest()},
+            'site_packages': _python_site_identity(site)}
+
+
+def validate_python_executable(card):
+    """Preserve lexical venv argv; permit only its root-card-pinned link chain."""
+    entry = card['python_executable']
+    pin = card.get('python_environment_pin')
+    if pin is None:
+        require(safe_path(entry).is_file() and os.access(entry, os.X_OK),
+                'runtime Python unavailable')
+        return entry
+    require(not os.environ.get('PYTHONHOME') and not os.environ.get('PYTHONPATH'),
+            'pinned Python requires empty PYTHONHOME/PYTHONPATH')
+    require(type(pin) is dict and set(pin) ==
+            {'entry', 'links', 'target', 'pyvenv_cfg', 'site_packages'} and pin['entry'] == entry,
+            'Python environment pin shape/entry mismatch')
+    for name in ('target', 'pyvenv_cfg'):
+        require(type(pin[name]) is dict and set(pin[name]) == {'path', 'sha256'} and
+                type(pin[name]['path']) is str and
+                type(pin[name]['sha256']) is str and re.fullmatch('[0-9a-f]{64}', pin[name]['sha256']),
+                'Python file pin shape')
+    target, _ = _python_link_chain(entry, pin['links'])
+    require(str(target) == pin['target']['path'] and target.is_file() and
+            os.access(target, os.X_OK) and file_hash(target) == pin['target']['sha256'],
+            'pinned canonical Python target changed')
+    cfg = safe_path(Path(entry).parent.parent / 'pyvenv.cfg')
+    require(str(cfg) == pin['pyvenv_cfg']['path'], 'pyvenv.cfg outside lexical venv')
+    cfg_raw = safe_read(cfg, 65536)
+    require(hashlib.sha256(cfg_raw).hexdigest() == pin['pyvenv_cfg']['sha256'], 'pyvenv.cfg changed')
+    expected_cfg, site = _python_venv_layout(entry, cfg_raw)
+    spec = pin['site_packages']
+    require(type(spec) is dict and set(spec) == {'path', 'device', 'inode', 'uid', 'mode'} and
+            type(spec['path']) is str and all(type(spec[k]) is int and spec[k] >= 0
+                for k in ('device', 'inode', 'uid', 'mode')),
+            'site-packages identity pin shape')
+    require(cfg == expected_cfg and str(site) == spec['path'] and _python_site_identity(site) == spec,
+            'site-packages outside same venv/version or changed identity')
+    return entry
+
+
 def validate_run(card_path, card_hash, accepted_source, session, execute):
     """No writes or runtime spawn. The card is honest local-owner authorization."""
     require(execute is True, 'run requires explicit --execute; no process launched')
@@ -317,9 +448,8 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
     require(card['runtime_files'], 'explicit runtime/build identity pins required')
     for spec in card['runtime_files']:
         require(file_hash(spec['path']) == spec['sha256'], 'runtime/build identity hash mismatch')
-    require(safe_path(card['python_executable']).is_file() and
-            os.access(card['python_executable'], os.X_OK) and
-            safe_path(card['ue_root']).is_dir(), 'runtime executable/environment unavailable')
+    validate_python_executable(card)
+    require(safe_path(card['ue_root']).is_dir(), 'runtime executable/environment unavailable')
     prior = None
     if session == 'existing':
         prior = read_json(storage / 'sessions/initialize/completion.json')
