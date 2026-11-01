@@ -1,0 +1,14 @@
+[launcher] project=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/EdgeWorldHost.uproject
+[launcher] evidence=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher/run-E3yXBxHN
+[launcher] build_started target=EdgeWorldHostEditor platform=Mac configuration=Development
+[launcher] build_exit_code=0
+[launcher] build_succeeded; non-Mac SDK warnings do not override Build.sh exit code 0
+[launcher] user_dir=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher/run-E3yXBxHN/user
+[launcher] worker=/Users/yangacan/edgeWorld/edge-world/.worktrees/ue-mac-launch/engine/edgeworld_worker/abstract_causal_worker.py
+[launcher] process_spawned pid=25039; initialization_pending
+[launcher] gamemode_startplay_seen; visual_acceptance_not_tested
+[launcher] engine_initialized_seen; visual_acceptance_not_tested
+[launcher] validated_observation_seen; visual_acceptance_not_tested
+[launcher] ue_exit_code=0
+[launcher] final_engine_initialized_seen=1 final_gamemode_seen=1 final_validated_observation_seen=1
+[launcher] session_exited_cleanly; visual and intermittent viewport reliability gates remain open

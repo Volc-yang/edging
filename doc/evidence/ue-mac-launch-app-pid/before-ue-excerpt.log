@@ -1,0 +1,8 @@
+[2026.11.01-04.16.59:085][  0]LogTemp: Display: Causal world: Space advances; 0/1/2 history; H latest; R reconciles head; WASD/QE and arrows move one step per keypress.
+[2026.11.01-04.16.59:970][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()
+[2026.11.01-04.17.06:212][737]LogTemp: Display: Causal world stg-demo observed tick 0, revision 0
+[2026.11.01-04.17.31:369][748]LogMac: FPlatformMisc::RequestExit(0, UGameEngine::HandleExitCommand)
+[2026.11.01-04.17.31:968][748]LogExit: Preparing to exit.
+[2026.11.01-04.17.32:066][748]LogExit: Game engine shut down
+[2026.11.01-04.17.32:100][748]LogExit: Object subsystem successfully closed.
+[2026.11.01-04.17.32:287][748]LogExit: Exiting.

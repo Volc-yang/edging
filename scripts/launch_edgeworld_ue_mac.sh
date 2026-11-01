@@ -34,7 +34,9 @@ ue_root=${UE5_ROOT:-/Users/Shared/Epic Games/UE_5.8}
 [[ $ue_root == /* && -d $ue_root ]] || fail 'UE5_ROOT must be an existing absolute directory'
 ue_root=$(cd -- "$ue_root" && pwd -P)
 build="$ue_root/Engine/Build/BatchFiles/Mac/Build.sh"
-editor="$ue_root/Engine/Binaries/Mac/UnrealEditor"
+# The sibling Binaries/Mac/UnrealEditor is a launcher that can exit while the
+# app keeps running. Execute the app binary so $! and wait own the real UE PID.
+editor="$ue_root/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor"
 [[ -f $project && -f $build && -x $editor ]] || fail 'project, official Build.sh or UnrealEditor missing'
 command -v python3 >/dev/null || fail 'python3 is required to validate Build.version'
 python3 - "$ue_root/Engine/Build/Build.version" <<'PY' || fail 'requires installed UE 5.8.3'

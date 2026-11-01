@@ -23,7 +23,11 @@ scripts/launch_edgeworld_ue_mac.sh --launch
 非 Mac SDK 提示不单独作为 Mac 构建失败；Mac SDK/编译器错误必须按退出码与
 完整 `build.log` 诊断。退出 0 的构建仍应按日志评估其中与任务有关的警告。
 
-启动使用安装版 `UnrealEditor`、本 worktree `.uproject` 绝对路径，以及明确的：
+启动直接执行安装版
+`Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor`，使记录的 PID、
+信号转发与 `wait` 退出码都属于实际 UE App。外层 `Binaries/Mac/UnrealEditor`
+可能提前退出并留下 App，不能用其退出码判断游戏会话结束。
+启动同时使用本 worktree `.uproject` 绝对路径，以及明确的：
 
 ```text
 /Engine/Maps/Entry?game=/Script/EdgeWorldHost.EdgeWorldCausalGameMode
@@ -56,3 +60,8 @@ Observe 证据时，脚本返回 70（`initialization_unconfirmed` 可包含用�
 `IsInGameThread()` 断言，不证明 PIE、打包、跨平台或间歇性退出门通过。
 当前与 GPU 诊断任务互斥，未获统筹放行前只运行 `--build-only`。
 验证记录见 [本轮证据](evidence/ue-mac-launch/report.md)。
+
+PR #58 后的真实验收发现外层 `Binaries/Mac/UnrealEditor` 会提前退出并留下 App。
+当前版本直接执行 App 内二进制；一次隔离真实启动与 ⌘Q 退出已确认实际 PID、
+引擎初始化、有效 tick0、退出 0 和无残留，见
+[App 进程修复与验证](evidence/ue-mac-launch-app-pid/report.md)。
