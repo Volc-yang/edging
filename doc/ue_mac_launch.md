@@ -65,3 +65,23 @@ PR #58 后的真实验收发现外层 `Binaries/Mac/UnrealEditor` 会提前退�
 当前版本直接执行 App 内二进制；一次隔离真实启动与 ⌘Q 退出已确认实际 PID、
 引擎初始化、有效 tick0、退出 0 和无残留，见
 [App 进程修复与验证](evidence/ue-mac-launch-app-pid/report.md)。
+
+## 临时关闭独立渲染线程
+
+排查 `SceneViewport.cpp:196` 退出断言时，可显式使用安装版 UE 的临时旁路：
+
+```sh
+export EDGEWORLD_CAUSAL_PYTHON=/absolute/path/to/genesis-env/bin/python
+scripts/launch_edgeworld_ue_mac.sh --launch --no-render-thread \
+  --user-dir /absolute/path/to/isolated-world
+```
+
+此选项只追加 `-norenderthread`，不改变默认启动方式；省略即可回到引擎默认
+线程模式。同一 `--user-dir` 只能由一个正在运行的实例使用。脚本输出会明确标记
+`experimental_workaround_not_root_fix` 和 `performance_unmeasured_may_degrade`。
+
+独立渲染线程关闭后，CPU/GPU 性能与并行度可能下降，代价尚未测量，既有 GQ
+CPU/GPU 数字不适用。有限的完整 Genesis 场景验证见
+[H1d 报告](evidence/g3-live-safe-render/report.md)；它不证明间歇性崩溃已根治，
+也不代表默认线程、PIE、打包或跨平台可靠性通过。该选项不会隐藏光照未构建等
+其他警告，也不会更改相机、HUD、Worker 或世界演化规则。
