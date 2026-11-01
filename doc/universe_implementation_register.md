@@ -30,9 +30,9 @@
 
 | E1 codec/records/trust扩展 | u7；`.worktrees/e1-universe-codec-trust` / `codex/e1-universe-codec-trust` / `3e02376` | complete / PR #87 source `4a69788`，merge `3d6c161` / 116tests、finalCI、i6 review/root raw958 pass / 干净worktree已清理 |
 | E2 ownership扩展 | u2；`.worktrees/e2-universe-ownership` / `codex/e2-universe-ownership` / `3e02376` | complete / PR #88 source `c3b02ad`，merge `accbe3b` / 首test alias错误保留，唯一12case重跑pass+finalCI/root review / 干净worktree已清理 |
-| E3 Store扩展 | u2；`.worktrees/e3-universe-blob-store` / `codex/e3-universe-blob-store` / `accbe3b` | in progress / 正式B-C / 活跃保留 |
-| E4 command/prepare/provider扩展 | 等E3 | queued / 未建worktree |
-| E5 recovery/proof builder扩展 | 等E3 | queued / 未建worktree |
+| E3 Store扩展 | u2；`.worktrees/e3-universe-blob-store` / `codex/e3-universe-blob-store` / `accbe3b` | complete / PR #89 source `2f76b75`，merge `1f95fac` / 142tests、u7review、root raw12/12、CI pass / 干净worktree已清理 |
+| E4 command/prepare/provider扩展 | u7；`.worktrees/e4-universe-commands` / `codex/e4-universe-commands` / `1f95fac` | in progress / 原7路径+codec仅ApprovalSigner协议 / 正式B-C |
+| E5 recovery/proof builder扩展 | u2；`.worktrees/e5-universe-recovery` / `codex/e5-universe-recovery` / `1f95fac` | in progress / recovery.py/tests / 正式B-C |
 | E6 独立扩展验收 | 非E1–E5作者，等E4/E5 | queued / 未建worktree |
 
 worktree均相对真实仓库固定`.worktrees/`；详细文件所有权、P/D/C/A与图见U9。I0已交付且只写 `doc/contracts/universe_authority_v0_1.md`、`doc/fixtures/universe_authority_v0_1/`、`scripts/validate_universe_authority_fixtures.py`。未提交输入不复制到子worktree；不得改旧S4领域/存档来迁就新schema。
@@ -65,8 +65,10 @@ I3补充纯内存nonblocking操作锁与按Lease身份的活跃Store登记：同
 
 ## 当前下一动作
 
-E1/E2已接受，[复核](design/universe-e1-e2-coordination-review.md)。当前E3(u2)从accbe3bb4b1c6cac442248b9f7af21958f79e0f0实施Store双profile/raw/BlobWrite/retained MAC+blob同步与未知恢复；只写store.py/专属tests，正式B-C。E4(u7)只读方案准备，E3接受后才实施；E5后续并行，E6 fresh非相关实现者。
+E3已接受，[复核](design/universe-e3-coordination-review.md)。E4(u7)与E5(u2)从同一1f95fac571cb41f15296c47d6db59ba7a1ca65ab并行，精确范围/正式B-C已发布；其后非作者E6，再真实I8/I10/I11/I12。
 
-I9(u9) PR86尚未接受：原构建/启动失败完整保留，I9R修正启动参数并用Mac系统CC_SHA256后ba8db57曾Build+NullRHI实际过；非作者i6发现UE FString默认大小写不敏感/embedded NUL比较与UTF16 vs scalar计数，I9S按原3文件修订。新R-B总5min/raw128MiB，先delta review再有界build/NullRHI；typed/currentHead/proof/F其余静态已审。6已知untracked生成物(5输出symlink+DefaultInput.ini)归档未提交，root待进程停/合并后仅清理这些，保留DevSSD数据。
+E4新增prepare/物理protocol与双profileexecute：prepare signer先authorize_read/assert_context再cached lookup（codec协议最小补充），仅ready；新prepare expiry=expectedrev，历史archive/execute一般有效expiry>=当前；cached prepare必须符合本准备策略，不重签/洗旧63。retain零provider/零raw变更，physical draft完整验证先A，provider无Store/Lease/Signer。
 
-G-C0.2/G-S1有限门pass，真实0.2持久化/物理/UE组合未过。S_records30不冒称U8 S_typed/G-Q；typed alias/actual资产/defaults/build仍须后续真实冻结。完整I树进行中，不提前关闭或合并主工作区。
+I9 PR86仍未合入；I9S source13701938e721cb2c4edb3ac36f59d1177c151d69已非作者strict文本delta接受，进入新5min/128MiB窗口，28新增组覆盖case/NUL/scalar/keysort。此前UBA/EditorInit/Core SHA stub失败与I9R ba8db57成功均保留；Mac系统CommonCrypto，不改引擎/旧parser。6生成物归档未提交，待进程停/合并再清理。
+
+G-C0.2/G-S1有限门pass，S_records与S_typed不同，后者及G-Q/实际资产/defaults/build仍须真实冻结。无新域真实Genesis/UE组合通过证据，完整I树进行中。

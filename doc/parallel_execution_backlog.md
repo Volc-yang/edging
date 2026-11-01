@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（E1/E2接受；E3持久化与I9S解析修订并行）
+## 当前入口：I 实现轮执行中（E3接受；E4/E5与I9S并行）
 
 [架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
@@ -23,7 +23,7 @@ I3已由PR #81/source `9a27207`/merge `69daec3`接受，22tests/CI、root静态r
 
 E1 PR #87/source `4a69788`/merge `3d6c161`（116tests、i6 review、finalCI、root958raw）与E2 PR #88/source `c3b02ad`/merge `accbe3b`（首alias测试错误保留、唯一12case重跑pass、finalCI/root review）已接受，干净worktree已清理；[复核](design/universe-e1-e2-coordination-review.md)。
 
-当前E3(u2)在准确accbe3b实现Store raw事务；E4(u7)只读准备，等E3后与E5推进，再非作者E6，之后I8/I10/Host/I12。I9 PR86经I9R启动入口+Mac系统SHA适配后曾Build/NullRHI过，但独立review发现大小写/Unicode scalar问题，I9S已按原3文件重开，尚未合入；原失败/成功原件保留，不改引擎。精确状态/正式资源/Goal工具限制见[I登记](universe_implementation_register.md)。目前仍无新域真实物理/UE组合证据；S_records不是U8 S_typed，G-Q/实际资产/defaults/产品门保持开放。
+E3 PR #89/source `2f76b75`/merge `1f95fac`接受，142tests/u7 review/root12raw/CI通过，[复核](design/universe-e3-coordination-review.md)，干净worktree清理。当前E4(u7) commands/prepare与E5(u2) recovery/proof从同一1f95fac并行，再非作者E6，之后I8/I10/Host/I12。I9 PR86经I9R启动入口+Mac系统SHA适配后曾Build/NullRHI过，但独立review发现大小写/Unicode scalar问题，I9S已按原3文件重开，尚未合入；原失败/成功原件保留，不改引擎。精确状态/正式资源/Goal工具限制见[I登记](universe_implementation_register.md)。目前仍无新域真实物理/UE组合证据；S_records不是U8 S_typed，G-Q/实际资产/defaults/产品门保持开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 
