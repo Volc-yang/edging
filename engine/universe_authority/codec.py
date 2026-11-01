@@ -7,9 +7,12 @@ import json
 import math
 import re
 import struct
-from typing import TypeAlias, Union
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
+from typing import Protocol, TypeAlias, Union
 
 JSON: TypeAlias = Union[None, bool, int, str, list["JSON"], dict[str, "JSON"]]
+Record: TypeAlias = dict[str, JSON]
 DOMAIN = "edgeworld.universe.authority"
 VERSION = "0.1"
 PROFILE = "neutral-transfer-v0.1"
@@ -143,6 +146,179 @@ def canonical(value: JSON) -> bytes:
 
 def digest(record: dict[str, JSON]) -> str:
     # Full record-kind validation is records.py's job; no sibling import here.
-    if type(record) is not dict or record.get("domain") != DOMAIN or record.get("version") != VERSION:
+    if type(record) is not dict or record.get("domain") != DOMAIN or record.get("version") not in ("0.1", "0.2"):
         raise ContractError("DOMAIN", "unsupported record domain/version")
-    return hashlib.sha256(_PREFIX + canonical(record)).hexdigest()
+    prefix = _PREFIX if record["version"] == "0.1" else b"edgeworld.universe.authority\x00v0.2\x00"
+    return hashlib.sha256(prefix + canonical(record)).hexdigest()
+
+
+def _id(value: str) -> None:
+    if type(value) is not str or re.fullmatch(r"[a-z][a-z0-9._-]{0,63}", value) is None:
+        raise ContractError("ID", "invalid identifier")
+
+
+def _hash(value: str) -> None:
+    if type(value) is not str or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+        raise ContractError("REFERENCE", "invalid digest")
+
+
+def _root(value: str) -> None:
+    if (type(value) is not str or not value.startswith("/") or value.startswith("//")
+            or "\x00" in value or ".." in PurePosixPath(value).parts
+            or str(PurePosixPath(value)) != value):
+        raise ContractError("ROOT_MISMATCH", "expected canonical absolute root")
+    _string(value)
+
+
+def _trust_profile(version: str, algorithm: str) -> None:
+    if type(version) is not str or type(algorithm) is not str or version != "0.2" or algorithm != "local-hmac-sha256.v0.2":
+        raise ContractError("PROFILE", "unsupported trust profile")
+
+
+@dataclass(frozen=True)
+class ProvisionSpec:
+    world_id: str
+    authority_root: Path
+    domain_version: str = "0.2"
+    trust_algorithm: str = "local-hmac-sha256.v0.2"
+
+    def __post_init__(self) -> None:
+        _id(self.world_id)
+        if not isinstance(self.authority_root, Path):
+            raise ContractError("ROOT_MISMATCH", "expected root Path")
+        _root(str(self.authority_root))
+        _trust_profile(self.domain_version, self.trust_algorithm)
+
+
+@dataclass(frozen=True)
+class TrustAnchor:
+    world_id: str
+    authority_root: str
+    domain_version: str
+    trust_algorithm: str
+    trust_anchor: str
+
+    def __post_init__(self) -> None:
+        _id(self.world_id); _root(self.authority_root); _hash(self.trust_anchor)
+        _trust_profile(self.domain_version, self.trust_algorithm)
+
+
+@dataclass(frozen=True)
+class DeploymentContext:
+    world_id: str
+    authority_root: str
+    trust_anchor: str
+    expected_build: str
+    expected_options: str
+    artifact_class: str = "genesis-runtime"
+    trust_algorithm: str = "local-hmac-sha256.v0.2"
+    domain_version: str = "0.2"
+    archive_profile: str = "composite-rigid-support.v0.2"
+    storage_profile: str = "local-posix-blob-sync-v0.2"
+
+    def __post_init__(self) -> None:
+        _id(self.world_id); _root(self.authority_root)
+        for value in (self.trust_anchor, self.expected_build, self.expected_options):
+            _hash(value)
+        _trust_profile(self.domain_version, self.trust_algorithm)
+        if (type(self.artifact_class) is not str or type(self.archive_profile) is not str
+                or type(self.storage_profile) is not str
+                or self.artifact_class not in ("genesis-runtime", "synthetic-contract-only")
+                or self.archive_profile != "composite-rigid-support.v0.2"
+                or self.storage_profile != "local-posix-blob-sync-v0.2"):
+            raise ContractError("PROFILE", "unsupported deployment profile")
+
+
+@dataclass(frozen=True)
+class HeadBinding:
+    head: str
+    world_id: str
+    authority_root: str
+    trust_algorithm: str
+    trust_anchor: str
+    expected_build: str
+    expected_options: str
+    artifact_class: str
+    domain: str
+    version: str
+    profile: str
+    storage_state: str
+
+    def __post_init__(self) -> None:
+        _hash(self.head)
+        DeploymentContext(self.world_id, self.authority_root, self.trust_anchor,
+                          self.expected_build, self.expected_options, self.artifact_class,
+                          self.trust_algorithm, self.version, self.profile)
+        if type(self.domain) is not str or type(self.storage_state) is not str or self.domain != DOMAIN or self.storage_state not in ("ready", "unconfirmed_readonly"):
+            raise ContractError("PROFILE", "unsupported head binding")
+
+
+@dataclass(frozen=True)
+class OwnerSession:
+    principal: str
+    can_initialize: bool
+    allowed_actions: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        _id(self.principal)
+        if (type(self.can_initialize) is not bool or type(self.allowed_actions) is not tuple
+                or any(type(x) is not str or x not in ("retain_snapshot", "physics_step")
+                       for x in self.allowed_actions)
+                or len(set(self.allowed_actions)) != len(self.allowed_actions)):
+            raise ContractError("AUTHORIZATION", "invalid owner session")
+
+
+class ReceiptVerifier(Protocol):
+    def assert_context(self, context: DeploymentContext) -> None: ...
+    def __call__(self, receipt: Record) -> None: ...
+
+
+class ApprovalSigner(Protocol):
+    def sign_approval(self, unsigned: Record) -> Record: ...
+
+
+class TrustVerifier(Protocol):
+    def authorize_read(self, principal: str, world_id: str) -> None: ...
+    def verify_approval(self, approval: Record, proposal: Record, intent: Record) -> None: ...
+    def admit(self, command: Record, candidate: Record, *, current_revision: int,
+              admission_id: str) -> Record: ...
+
+
+def _parse_bounded(raw: bytes, maximum: int) -> JSON:
+    """Strict parser without applying record-tree caps to packaging arrays."""
+    if type(raw) is not bytes:
+        raise ContractError("JSON", "expected bytes")
+    if len(raw) > maximum:
+        raise ContractError("LIMIT", "input byte limit")
+    try:
+        text = raw.decode("utf-8", "strict")
+        if text.startswith("\ufeff"):
+            raise ContractError("UNICODE", "BOM is forbidden")
+        return json.loads(text, object_pairs_hook=_pairs, parse_int=_integer_token,
+                          parse_float=_number_token, parse_constant=_number_token)
+    except UnicodeError as exc:
+        raise ContractError("UNICODE", "invalid UTF-8") from exc
+    except json.JSONDecodeError as exc:
+        raise ContractError("JSON", "invalid JSON") from exc
+    except RecursionError as exc:
+        raise ContractError("LIMIT", "JSON nesting exceeds parser capacity") from exc
+
+
+def decode_archive(raw: bytes, *, domain_version: str = "0.1") -> JSON:
+    if domain_version == "0.1":
+        return decode(raw)
+    if domain_version != "0.2":
+        raise ContractError("DOMAIN", "unsupported archive version")
+    archive = _parse_bounded(raw, 16 << 20)
+    if type(archive) is not dict or set(archive) != {"domain", "version", "test_profile", "artifact_class", "records", "head"}:
+        raise ContractError("SCHEMA", "invalid archive packaging")
+    if archive["domain"] != DOMAIN or archive["version"] != domain_version:
+        raise ContractError("DOMAIN", "archive version mismatch")
+    if archive["test_profile"] != "composite-rigid-support.v0.2" or archive["artifact_class"] not in ("synthetic-contract-only", "genesis-runtime"):
+        raise ContractError("PROFILE", "unsupported archive profile")
+    if type(archive["records"]) is not list or not 1 <= len(archive["records"]) <= 2048:
+        raise ContractError("LIMIT", "archive record count")
+    _hash(archive["head"])
+    for record in archive["records"]:
+        _validate_tree(record)
+    return archive

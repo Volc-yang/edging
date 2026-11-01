@@ -239,6 +239,7 @@ with patch.object(builtins, "open", forbidden), patch.object(os, "open", forbidd
     import engine.universe_authority
     import engine.universe_authority.codec
     import engine.universe_authority.records
+    import engine.universe_authority.trust
 assert before == (os.getcwd(), dict(os.environ))
 '''
         environment = dict(os.environ, PYTHONPATH=str(ROOT), PYTHONDONTWRITEBYTECODE="1")
@@ -246,6 +247,39 @@ assert before == (os.getcwd(), dict(os.environ))
             result = subprocess.run([sys.executable, "-c", code], cwd=directory, env=environment,
                                     capture_output=True, text=True, timeout=10)
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
+
+    def test_composite_shared_types_validate_in_memory_without_filesystem(self):
+        from dataclasses import replace
+        from unittest.mock import patch
+        from engine.universe_authority.codec import (
+            DeploymentContext, HeadBinding, OwnerSession, ProvisionSpec, TrustAnchor,
+            Record as SharedRecord,
+        )
+        from engine.universe_authority.records import Record as CompatibleRecord
+        self.assertIs(SharedRecord, CompatibleRecord)
+        with patch.object(os, 'open', side_effect=AssertionError('unexpected filesystem probe')), \
+             patch.object(os, 'stat', side_effect=AssertionError('unexpected stat')):
+            context = DeploymentContext('world', '/canonical/world', 'a' * 64, 'b' * 64, 'c' * 64)
+            ProvisionSpec('world', Path('/canonical/world'))
+            TrustAnchor('world', '/canonical/world', '0.2', 'local-hmac-sha256.v0.2', 'a' * 64)
+            HeadBinding('d' * 64, context.world_id, context.authority_root, context.trust_algorithm,
+                        context.trust_anchor, context.expected_build, context.expected_options,
+                        context.artifact_class, DOMAIN, '0.2', context.archive_profile, 'ready')
+            OwnerSession('owner', True, ('physics_step', 'retain_snapshot'))
+            replace(context, artifact_class='synthetic-contract-only')
+        for root in ('relative', '/a/../b', '//root', '/a//b', '/a/', '/bad\x00root'):
+            self.assert_code('ROOT_MISMATCH', replace, context, authority_root=root)
+        for field, value, code in (('world_id', True, 'ID'), ('expected_build', 'A' * 64, 'REFERENCE'),
+                                   ('artifact_class', 'unknown', 'PROFILE'), ('domain_version', True, 'PROFILE')):
+            self.assert_code(code, replace, context, **{field: value})
+        self.assert_code('AUTHORIZATION', OwnerSession, 'owner', 1, ('physics_step',))
+        self.assert_code('AUTHORIZATION', OwnerSession, 'owner', True, ('physics_step', 'physics_step'))
+        self.assert_code('SCHEMA', validate_record, None)
+        self.assert_code('SCHEMA', validate_record, {})
+        self.assertEqual('0.1', VERSION)
+        self.assertEqual({}, dict(self.closure().binary_refs))
+        self.assertIsNone(self.closure().context)
 
 
 if __name__ == "__main__":
