@@ -85,3 +85,31 @@ CPU/GPU 数字不适用。有限的完整 Genesis 场景验证见
 [H1d 报告](evidence/g3-live-safe-render/report.md)；它不证明间歇性崩溃已根治，
 也不代表默认线程、PIE、打包或跨平台可靠性通过。该选项不会隐藏光照未构建等
 其他警告，也不会更改相机、HUD、Worker 或世界演化规则。
+
+## 显式 viewport 关闭前同步
+
+H1f 接受了有限显式项目旁路，启动器提供独立参数：
+
+```sh
+export EDGEWORLD_CAUSAL_PYTHON=/absolute/path/to/genesis-env/bin/python
+scripts/launch_edgeworld_ue_mac.sh --launch --viewport-preflush \
+  --user-dir /absolute/path/to/isolated-world
+```
+
+`--viewport-preflush` 仅转发一次 `-EWDiagPreflushViewport`，重复指定也不会重复
+转发。它保留默认渲染线程，在游戏窗口销毁通知中执行项目层同步；默认关闭，
+省略此选项即保留原始默认线程关闭路径。与 `--no-render-thread` 互斥，同时
+指定会在构建或启动前返回 64，不会自动改模式或失败回退。构建失败仍返回
+原始构建退出码，不启动 UE。`--build-only` 不执行运行验收。
+
+实际启动时 `status.log` 标明 `render_mode=engine_default`、
+`viewport_preflush=enabled`、`default_rendering_threads_retained`、
+`limited_project_workaround_not_root_fix` 和 `performance_cost_unmeasured`。
+这些表示所请求的启动方式；实际执行机制仍须在 UE 日志核对
+`threaded_rendering=1`、正确游戏窗口/GameThread、非空 owner 和同步后 owner
+不变。同步可能带来等待代价，尚无性能收益或失败率改善结论。
+
+H1f 的有限证据见[复测报告](evidence/g3-preflush-followup/report.md)。本次标准
+启动器接线的真实运行、只读、关闭与恢复验收尚待资源交接，见
+[H1g 报告](evidence/g3-preflush-launch/report.md)；mock 通过不替代真实验收。
+默认线程全局可靠性、其他窗口、PIE、打包、其他平台和产品可靠性门仍开放。
