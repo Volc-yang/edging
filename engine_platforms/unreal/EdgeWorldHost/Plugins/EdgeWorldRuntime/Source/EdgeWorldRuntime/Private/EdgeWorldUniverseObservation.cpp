@@ -97,7 +97,8 @@ public:
  }
  V Parse(bool Wire)
  {
-  if(Bytes.Num()>1048576){Fail(TEXT("PROOF_LIMIT"));return {};}
+  int32 PayloadBytes=Bytes.Num()-(Wire&&Bytes.Num()>0&&Bytes.Last()=='\n'?1:0);
+  if(PayloadBytes>1048576){Fail(TEXT("PROOF_LIMIT"));return {};}
   if(Wire){for(int32 I=0;I<Bytes.Num();++I)if(Bytes[I]=='\r'||(Bytes[I]=='\n'&&I!=Bytes.Num()-1)){Fail(TEXT("WIRE"));return {};}}
   V X=Value();Ws();if(P!=Bytes.Num()){Fail(TEXT("JSON"));return {};}return X;
  }
@@ -462,7 +463,7 @@ bool FValidator::Verify(const V& Env,const FEdgeWorldUniverseExpectation& E,FEdg
 
 bool FEdgeWorldUniverseObservationParser::Verify(TArrayView<const uint8> Raw,const FEdgeWorldUniverseExpectation& E,FEdgeWorldUniverseObservation& Out,FString& Error)
 {
- Out=FEdgeWorldUniverseObservation();Error.Reset();EdgeUniverse::FReader Reader(Raw);auto Root=Reader.Parse(true);if(!Root){Error=Reader.Error;return false;}EdgeUniverse::FValidator Validator;FEdgeWorldUniverseObservation Candidate;if(!Validator.Error.IsEmpty()||!Validator.Verify(Root,E,Candidate)){Error=Validator.Error;return false;}Out=MoveTemp(Candidate);return true;
+ Out=FEdgeWorldUniverseObservation();Error.Reset();EdgeUniverse::FReader Reader(Raw);auto Root=Reader.Parse(true);if(!Root){Error=Reader.Error;return false;}EdgeUniverse::FValidator Validator;FEdgeWorldUniverseObservation Candidate;if(!Validator.Error.IsEmpty()||!Validator.Verify(Root,E,Candidate)){Error=Validator.Error;return false;}Candidate.WireBytes=Raw.Num()-(Raw.Num()>0&&Raw.Last()=='\n'?1:0);Out=MoveTemp(Candidate);return true;
 }
 bool FEdgeWorldUniverseObservationParser::CanonicalRecord(TArrayView<const uint8> Raw,FString& Canonical,FString& Digest,FString& Error)
 {

@@ -65,6 +65,7 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseRecord
 struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseObservation
 {
  FString WorldId, Manifest, State, Event, StorageState, ArtifactClass;
+ int64 WireBytes = 0;
  int64 Tick = 0, Revision = 0, Watermark = 0, Budget = 0, RandomCursor = 0, PhysicalStepCount = 0;
  TOptional<int64> DevelopmentMm;
  FVector3d OriginCm;
