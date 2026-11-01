@@ -206,6 +206,23 @@ class Worker:
                        "seed_initial_record": seed_record, "structure_hash": structure_hash,
                        "physics_candidate_hash": physics_hash, "genesis_config_hash": self.config_hash})
 
+    def _result_for_record(self, record: dict[str, Any], command_id: str) -> dict[str, Any]:
+        tick = record["logical_tick"]
+        node = record["development_structure"]["nodes"][-1]
+        edge = record["development_structure"]["edges"][-1]
+        return {"world_id": self.world_id, "schema_version": SCHEMA_VERSION,
+                "logical_tick": tick, "state_revision": tick, "seed_id": self.seed_id,
+                "physical_probe_id": self.probe_id, "head_state_hash": record["state_hash"],
+                "event_head_hash": record["event_hash"],
+                "checkpoint_sha256": record["checkpoint_sha256"],
+                "genesis_config_hash": self.config_hash, "command_id": command_id,
+                "record": {"logical_tick": tick, "state_revision": tick,
+                           "node_id": node["node_id"], "edge_id": edge["edge_id"],
+                           "influence_mm": node["influence_mm"],
+                           "physics_candidate_hash": node["physics_candidate_hash"],
+                           "checkpoint_sha256": record["checkpoint_sha256"],
+                           "state_hash": record["state_hash"], "event_hash": record["event_hash"]}}
+
     def _read_manifest(self) -> dict[str, Any]:
         try:
             data = json.loads(self.path.read_text(encoding="utf-8"))
@@ -221,6 +238,9 @@ class Worker:
             raise RuntimeError("invalid history/events/commands")
         previous_event = ZERO_HASH
         previous_checkpoint = None
+        previous_nodes = None
+        previous_edges = None
+        expected_commands: dict[str, tuple[str, dict[str, Any]]] = {}
         for index, record in enumerate(history):
             if record.get("logical_tick") != index or record.get("state_revision") != index:
                 raise RuntimeError("noncontiguous history")
@@ -238,6 +258,8 @@ class Worker:
                 raise RuntimeError("invalid causal graph size")
             if nodes[0] != {"node_id": f"{self.world_id}:node:0", "tick": 0, "influence_mm": None, "physics_candidate_hash": None}:
                 raise RuntimeError("invalid root node")
+            if index and (nodes[:-1] != previous_nodes or edges[:-1] != previous_edges):
+                raise RuntimeError("development history prefix mismatch")
             sample = record.get("physics_sample")
             if not isinstance(sample, dict):
                 raise RuntimeError("missing physics sample")
@@ -258,6 +280,8 @@ class Worker:
                     raise RuntimeError("invalid development node")
                 if edge.get("edge_id") != f"{self.world_id}:edge:{index}" or edge.get("from_node_id") != f"{self.world_id}:node:{index-1}" or edge.get("to_node_id") != node["node_id"] or edge.get("physics_candidate_hash") != sample["physics_candidate_hash"]:
                     raise RuntimeError("invalid causal edge")
+                if sample.get("phase") not in PHASES:
+                    raise RuntimeError("invalid committed phase")
                 if previous_checkpoint is None:
                     raise RuntimeError("missing previous checkpoint")
                 if node.get("influence_mm") != influence_mm(vector["position"][2], history[index - 1]["physics_sample"]["position"][2]):
@@ -268,6 +292,14 @@ class Worker:
                                   "influence_mm": node["influence_mm"], "rule_version": RULE_VERSION}
                 if event != {**expected_event, "event_hash": digest(expected_event)} or record.get("event_hash") != event["event_hash"]:
                     raise RuntimeError("causal event chain mismatch")
+                command_id = event.get("command_id")
+                if not isinstance(command_id, str) or not command_id or command_id in expected_commands:
+                    raise RuntimeError("duplicate or invalid committed command ID")
+                fingerprint = digest({"world_id": self.world_id, "command_id": command_id,
+                                      "expected_revision": index - 1, "target_tick": index,
+                                      "external_inputs": {"schema_version": INPUT_VERSION,
+                                                          "phase": sample["phase"]}})
+                expected_commands[command_id] = (fingerprint, self._result_for_record(record, command_id))
                 previous_event = event["event_hash"]
             if record.get("state_hash") != self._state_hash(index, seed_record, structure["structure_hash"], sample["physics_candidate_hash"]):
                 raise RuntimeError("state hash mismatch")
@@ -275,15 +307,16 @@ class Worker:
             if not isinstance(checkpoint, str) or not self._blob(checkpoint).is_file() or file_hash(self._blob(checkpoint)) != checkpoint:
                 raise RuntimeError("checkpoint missing or corrupt")
             previous_checkpoint = checkpoint
+            previous_nodes, previous_edges = nodes, edges
         if (data.get("head_state_hash") != history[-1]["state_hash"] or data.get("event_head_hash") != previous_event
                 or data.get("checkpoint_sha256") != history[-1]["checkpoint_sha256"]):
             raise RuntimeError("manifest head mismatch")
+        if set(commands) != set(expected_commands):
+            raise RuntimeError("command index does not match committed events")
         for command_id, item in commands.items():
-            if not isinstance(command_id, str) or not isinstance(item, dict) or not isinstance(item.get("request_fingerprint"), str):
-                raise RuntimeError("invalid command index")
-            result = item.get("result")
-            if not isinstance(result, dict) or result.get("command_id") != command_id:
-                raise RuntimeError("invalid command result")
+            fingerprint, result = expected_commands[command_id]
+            if item != {"request_fingerprint": fingerprint, "result": result}:
+                raise RuntimeError("committed command result or fingerprint mismatch")
         return data
 
     def _head(self) -> dict[str, Any]:
@@ -417,16 +450,7 @@ class Worker:
                              "checkpoint_sha256": checkpoint,
                              "history": self.manifest["history"] + [record],
                              "events": self.manifest["events"] + [event]}
-            result = {"world_id": self.world_id, "schema_version": SCHEMA_VERSION, "logical_tick": target,
-                      "state_revision": target, "seed_id": self.seed_id, "physical_probe_id": self.probe_id,
-                      "head_state_hash": state_hash, "event_head_hash": event["event_hash"],
-                      "checkpoint_sha256": checkpoint, "genesis_config_hash": self.config_hash,
-                      "command_id": command_id,
-                      "record": {"logical_tick": target, "state_revision": target, "node_id": node_id,
-                                 "edge_id": edge_id, "influence_mm": displacement,
-                                 "physics_candidate_hash": sample["physics_candidate_hash"],
-                                 "checkpoint_sha256": checkpoint, "state_hash": state_hash,
-                                 "event_hash": event["event_hash"]}}
+            result = self._result_for_record(record, command_id)
             next_manifest["commands"] = {**self.manifest["commands"], command_id: {"request_fingerprint": fingerprint, "result": result}}
             try:
                 self._write_manifest(next_manifest)

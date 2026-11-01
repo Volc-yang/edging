@@ -143,6 +143,49 @@ class AbstractCausalWorkerTests(unittest.TestCase):
         self.assertEqual("commit_status_uncertain", response["error"]["code"])
         self.assertEqual("worker_stopped", self.worker.handle(self.req("status"))["error"]["code"])
 
+    def test_restart_rejects_tampered_command_retry_result(self):
+        self.advance()
+        manifest = Path(self.temp.name) / "abstract_world.json"
+        data = json.loads(manifest.read_text())
+        data["commands"]["one"]["result"]["head_state_hash"] = "0" * 64
+        manifest.write_text(json.dumps(data))
+        with self.assertRaisesRegex(RuntimeError, "committed command result or fingerprint mismatch"):
+            Worker(Path(self.temp.name), "stg-demo", adapter_cls=FakeGenesis)
+
+    def test_restart_rejects_rewritten_history_prefix(self):
+        self.advance()
+        self.advance(command="two", revision=1, tick=2)
+        manifest = Path(self.temp.name) / "abstract_world.json"
+        data = json.loads(manifest.read_text())
+        second = data["history"][2]
+        second["development_structure"]["nodes"][1]["influence_mm"] = 42
+        structure = second["development_structure"]
+        structure["structure_hash"] = digest({k: structure[k] for k in ("root_id", "nodes", "edges")})
+        second["state_hash"] = self.worker._state_hash(2, second["seed_initial_record"],
+                                                        structure["structure_hash"],
+                                                        second["physics_sample"]["physics_candidate_hash"])
+        data["head_state_hash"] = second["state_hash"]
+        manifest.write_text(json.dumps(data))
+        with self.assertRaisesRegex(RuntimeError, "development history prefix mismatch"):
+            Worker(Path(self.temp.name), "stg-demo", adapter_cls=FakeGenesis)
+
+    def test_restart_rejects_unsupported_committed_phase(self):
+        self.advance()
+        manifest = Path(self.temp.name) / "abstract_world.json"
+        data = json.loads(manifest.read_text())
+        record = data["history"][1]
+        sample = record["physics_sample"]
+        sample["phase"] = "shaoyin"
+        sample["physics_candidate_hash"] = digest({key: sample[key] for key in
+                                                   ("physical_probe_id", "position", "velocity", "genesis_config_hash", "phase")})
+        structure = record["development_structure"]
+        structure["nodes"][-1]["physics_candidate_hash"] = sample["physics_candidate_hash"]
+        structure["edges"][-1]["physics_candidate_hash"] = sample["physics_candidate_hash"]
+        structure["structure_hash"] = digest({k: structure[k] for k in ("root_id", "nodes", "edges")})
+        manifest.write_text(json.dumps(data))
+        with self.assertRaisesRegex(RuntimeError, "invalid committed phase"):
+            Worker(Path(self.temp.name), "stg-demo", adapter_cls=FakeGenesis)
+
     def test_round_half_even_and_bounds(self):
         self.assertEqual(2, int(Decimal("2.5").to_integral_value(rounding=ROUND_HALF_EVEN)))
         self.assertEqual(4, int(Decimal("3.5").to_integral_value(rounding=ROUND_HALF_EVEN)))
