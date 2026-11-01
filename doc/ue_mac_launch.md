@@ -109,7 +109,9 @@ scripts/launch_edgeworld_ue_mac.sh --launch --viewport-preflush \
 `threaded_rendering=1`、正确游戏窗口/GameThread、非空 owner 和同步后 owner
 不变。同步可能带来等待代价，尚无性能收益或失败率改善结论。
 
-H1f 的有限证据见[复测报告](evidence/g3-preflush-followup/report.md)。本次标准
-启动器接线的真实运行、只读、关闭与恢复验收尚待资源交接，见
-[H1g 报告](evidence/g3-preflush-launch/report.md)；mock 通过不替代真实验收。
+H1f 的有限证据见[复测报告](evidence/g3-preflush-followup/report.md)。包含光照修复
+的组合版本已通过一次标准启动器真实启动及同目录恢复，UE/启动器两次均退出
+0，历史/相机只读与原生同步日志通过定向检查，见
+[H1g 报告](evidence/g3-preflush-launch/report.md)。最终独立审查仍由统筹完成，
+这些有限结果不替代整体运行验收。
 默认线程全局可靠性、其他窗口、PIE、打包、其他平台和产品可靠性门仍开放。
