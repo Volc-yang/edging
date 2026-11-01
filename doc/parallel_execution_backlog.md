@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（I0接受；I1/I2/I7并行实施）
+## 当前入口：I 实现轮执行中（I0/I1/I2/I7接受；I3与共享契约扩展并行）
 
 [架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
@@ -17,7 +17,9 @@ U9已由未参与U1–U8交付的新reviewer完成：基线 `4bb7452`，source `
 
 **当前执行：I0已接受并合入，I1/I2/I7并行实施。**I0 source `2aabfcb` / PR #77 / merge `a9506eb`；独立ASCII编码器复算24条golden字节/摘要及3个历史根，owner最终27个拒绝向量通过，最终head CI通过；[统筹审查](design/universe-i0-coordination-review.md)。G-C/G-S0仅契约门pass，G-S1/真实Genesis/UE新域仍planned。I0干净worktree已清理，分支和DevSSD原件保留。
 
-I1编码校验由`u7_projection_design`、I2进程所有权由`u9_architecture_review`、I7物理契约由`u2_physics_design`从同一`a9506eb`独立worktree实施，精确路径/正式B-C额度/Goal工具限制见[I实现登记](universe_implementation_register.md)。I2实际import/Check等待I1接受，不复制stub；I7真实checkpoint和六区schema须版本化并显式重开受影响共享门，不以fake候选充当物理。后续I3–I12按依赖/独立Check/资源门继续，无需重做U规划。产品总计划和V-HOME仍开放，世界规律/灵域时刻/载具权威性/资产与目标阈值待决；候选预算不自动授权GPU运行。
+I1 PR #78/source `ae4fd16`/merge `efba6fa`、I2 PR #79/source `232e0a7`/merge `d2b7d29`已接受；父级集成39tests通过、输入hash不变。I2首轮漏磁盘归档已披露，唯一attempt2补证24tests通过，非首轮原件。I7 PR #80/source `e005c2c`/merge `fe2176a`静态门G-P0通过；真实物理未运行。三卡干净worktree已清理，分支/证据保留，[复核](design/universe-i2-i7-coordination-review.md)。
+
+当前I3由`u9_architecture_review`实施v0.1存储；I0E由`u7_projection_design`合成新v0.2共享契约，u2准备非作者复算，准确基线/路径/正式B-C额度/Goal限制见[I实现登记](universe_implementation_register.md)。I7揭示真实checkpoint/raw blob、六区typed初态、有界Observe proof、provider/build/default身份与同tick异revision接口差距；按原U9允许局部重开I0，G-C0.2和受影响局部实现/故障复验接受前不放行I8/I9/I10接线。v0.1内核I3→I4/I5→I6继续，不把fake当物理。不重做U规划；总计划/V-HOME、世界规律/灵域时刻/载具权威性/资产及产品质量门仍开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 
