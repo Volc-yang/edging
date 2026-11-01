@@ -1,0 +1,10 @@
+test_runner_fixed_full_valid_card_two_session_protocol (__main__.RunnerPreparation.test_runner_fixed_full_valid_card_two_session_protocol) ... ok
+test_runner_fixed_stale_owner_inputs_mode_world_root_rejected (__main__.RunnerPreparation.test_runner_fixed_stale_owner_inputs_mode_world_root_rejected) ... ok
+test_runner_fixed_log_io_finally_cleans_and_preserves_original (__main__.RunnerPreparation.test_runner_fixed_log_io_finally_cleans_and_preserves_original) ... ok
+test_runner_fixed_live_counter_only_tolerates_enoent (__main__.RunnerPreparation.test_runner_fixed_live_counter_only_tolerates_enoent) ... ok
+test_runner_fixed_seal_time_bytes_prevent_existing_admission (__main__.RunnerPreparation.test_runner_fixed_seal_time_bytes_prevent_existing_admission) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.045s
+
+OK

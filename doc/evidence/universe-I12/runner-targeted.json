@@ -1,0 +1,18 @@
+{
+  "card": "I12A-RUNNER",
+  "source_commit": "b5a5851d2a03875c20f2250b87cb980e16f44696",
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py",
+    "RunnerPreparation.test_runner_fixed_full_valid_card_two_session_protocol",
+    "RunnerPreparation.test_runner_fixed_stale_owner_inputs_mode_world_root_rejected",
+    "RunnerPreparation.test_runner_fixed_log_io_finally_cleans_and_preserves_original",
+    "RunnerPreparation.test_runner_fixed_live_counter_only_tolerates_enoent",
+    "RunnerPreparation.test_runner_fixed_seal_time_bytes_prevent_existing_admission"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.12038812506943941,
+  "raw_bytes": 866,
+  "mock_only": true
+}
