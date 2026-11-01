@@ -1,0 +1,140 @@
+{
+  "decimal_rounding": "half-even-from-exact-binary64",
+  "declared_real_checks": {
+    "first_step_influence": "D_strong < D_weak <= 0 for identical initial checkpoint, IDs and all inputs except gravity",
+    "restore": "exact exported state bits before/after checkpoint load, then same next-step bits and D in same environment",
+    "support": "last 4 isolated candidate/physical checkpoint samples satisfy gap/speed bounds; dynamic-support contact present during last4; fixed support pose unchanged; world commits separately in I10/I12"
+  },
+  "label": "synthetic-stdlib-only-not-genesis-evidence",
+  "negative_cases": [
+    "wrong_world",
+    "wrong_config_or_binding",
+    "nonfinite_or_out_of_range",
+    "stale_revision",
+    "missing_or_bad_checkpoint",
+    "duplicate_or_unknown_entity_name",
+    "observed_history_runs_solver",
+    "candidate_not_affecting_D",
+    "mixed_fake_profile",
+    "checkpoint_bytes_exceed_8MiB"
+  ],
+  "rounding_vectors": [
+    {
+      "expected_mm": -10,
+      "z_new": {
+        "$f64": "3fefae147ae147ae"
+      },
+      "z_previous": {
+        "$f64": "3ff0000000000000"
+      }
+    },
+    {
+      "expected_mm": -40,
+      "z_new": {
+        "$f64": "3feeb851eb851eb8"
+      },
+      "z_previous": {
+        "$f64": "3ff0000000000000"
+      }
+    },
+    {
+      "expected_mm": 0,
+      "z_new": {
+        "$f64": "0000000000000000"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": 62,
+      "z_new": {
+        "$f64": "3fb0000000000000"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": 188,
+      "z_new": {
+        "$f64": "3fc8000000000000"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": -62,
+      "z_new": {
+        "$f64": "bfb0000000000000"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": -188,
+      "z_new": {
+        "$f64": "bfc8000000000000"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": 62,
+      "z_new": {
+        "$f64": "3fafffffffffffff"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": 63,
+      "z_new": {
+        "$f64": "3fb0000000000001"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": -62,
+      "z_new": {
+        "$f64": "bfafffffffffffff"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    },
+    {
+      "expected_mm": -63,
+      "z_new": {
+        "$f64": "bfb0000000000001"
+      },
+      "z_previous": {
+        "$f64": "0000000000000000"
+      }
+    }
+  ],
+  "scaled_half_even_vectors": [
+    {
+      "expected": 0,
+      "scaled_decimal": "0.5"
+    },
+    {
+      "expected": 2,
+      "scaled_decimal": "1.5"
+    },
+    {
+      "expected": 0,
+      "scaled_decimal": "-0.5"
+    },
+    {
+      "expected": -2,
+      "scaled_decimal": "-1.5"
+    }
+  ]
+}

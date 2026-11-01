@@ -1,0 +1,220 @@
+{
+  "canonical": "same_ascii_json_algorithm_as_kernel_0.1",
+  "domain": "edgeworld.universe.authority",
+  "limits": {
+    "archive_json_bytes": 16777216,
+    "closure_records": 2048,
+    "raw_payload_bytes_each": 8388608,
+    "raw_payload_bytes_total": 536870912,
+    "record_array_items": 256,
+    "record_bytes": 65536,
+    "record_depth": 32,
+    "record_object_keys": 64,
+    "record_string_utf8_bytes": 4096,
+    "retained_roots": 64,
+    "wire_bytes": 1048576
+  },
+  "physics_profile": "genesis-rigid-support.v0.1",
+  "raw_payload_digest": "SHA256(payload_bytes), no prefix",
+  "record_envelope": [
+    "domain",
+    "version",
+    "world_id",
+    "kind",
+    "id",
+    "body",
+    "refs"
+  ],
+  "record_prefix_hex": "65646765776f726c642e756e6976657273652e617574686f726974790076302e3200",
+  "records": {
+    "admission": {
+      "body": {
+        "evaluated_revision": "uint",
+        "principal": "ID",
+        "receipt_id": "ID"
+      },
+      "refs": {
+        "candidate": "candidate",
+        "command": "command"
+      }
+    },
+    "approval": {
+      "body": {
+        "expires_revision": "uint",
+        "principal": "ID",
+        "receipt_id": "ID"
+      },
+      "refs": {
+        "intent": "intent",
+        "proposal": "proposal"
+      }
+    },
+    "candidate": {
+      "body": {
+        "adapter_kind": "genesis",
+        "influence_mm": "sint_abs<=1000",
+        "physics_profile": "genesis-rigid-support.v0.1",
+        "revision": "uint",
+        "tick": "uint"
+      },
+      "refs": {
+        "command": "command",
+        "prior_state": "state",
+        "snapshot": "physics_snapshot"
+      }
+    },
+    "checkpoint_descriptor": {
+      "body": {
+        "byte_count": "1..8388608",
+        "format": "genesis-gstraj",
+        "genesis_version": "1.4.3",
+        "payload_sha256": "lower64hex"
+      },
+      "refs": {
+        "binding": "physics_binding",
+        "config": "physics_config"
+      }
+    },
+    "command": {
+      "body": {},
+      "refs": {
+        "approval": "approval",
+        "intent": "intent",
+        "proposal": "proposal"
+      }
+    },
+    "event": {
+      "body": {
+        "event_id": "ID"
+      },
+      "refs": {
+        "admission": "admission",
+        "prior_event": "event_except_genesis_omission",
+        "state": "state"
+      }
+    },
+    "index": {
+      "body": {
+        "command_id": "ID",
+        "fingerprint": "lower64hex"
+      },
+      "refs": {
+        "result": "result"
+      }
+    },
+    "intent": {
+      "body": {
+        "budget": "uint",
+        "case_id": "weak|strong",
+        "command_id": "ID",
+        "expected_revision": "uint",
+        "principal": "ID",
+        "random_cursor": "uint",
+        "tick_delta": "exact1"
+      },
+      "refs": {
+        "binding": "physics_binding",
+        "config": "physics_config"
+      }
+    },
+    "manifest": {
+      "body": {
+        "revision": "uint",
+        "tick": "uint",
+        "watermark": "uint"
+      },
+      "refs": {
+        "event": "event_except_genesis_omission",
+        "index": "index_except_genesis_omission",
+        "prior_manifest": "manifest_except_genesis_omission",
+        "state": "state"
+      }
+    },
+    "physics_binding": {
+      "body": {
+        "bindings": "exactly2 ordered by physical_id; {physical_id:ID,existence_id:ID,genesis_name:ID,role:dynamic|support,config_entity_index:uint}"
+      },
+      "refs": {
+        "config": "physics_config"
+      }
+    },
+    "physics_config": {
+      "body": "exact config.json object",
+      "refs": {}
+    },
+    "physics_sample": {
+      "body": {
+        "bodies": "exactly2 sorted body entries",
+        "contacts": "0..32 sorted stable pair entries",
+        "frame_id": "genesis-world-si-zup.v0.1",
+        "solver_precision": "32"
+      },
+      "refs": {
+        "binding": "physics_binding",
+        "config": "physics_config"
+      }
+    },
+    "physics_snapshot": {
+      "body": {
+        "case_id": "initial|weak|strong",
+        "physical_step_count": "uint<=512"
+      },
+      "refs": {
+        "binding": "physics_binding",
+        "checkpoint": "checkpoint_descriptor",
+        "config": "physics_config",
+        "sample": "physics_sample"
+      }
+    },
+    "proposal": {
+      "body": {
+        "output": "string<=1024scalars",
+        "principal": "ID"
+      },
+      "refs": {}
+    },
+    "result": {
+      "body": {
+        "command_id": "ID",
+        "revision": "uint",
+        "tick": "uint",
+        "watermark": "uint"
+      },
+      "refs": {
+        "checkpoint": "physics_snapshot",
+        "command": "command",
+        "event": "event",
+        "state": "state"
+      }
+    },
+    "state": {
+      "body": {
+        "budget": "uint",
+        "development_mm": "null_genesis_else_sint_abs<=1000",
+        "random_cursor": "uint",
+        "revision": "uint",
+        "tick": "uint"
+      },
+      "refs": {
+        "physics_snapshot": "physics_snapshot"
+      }
+    }
+  },
+  "status": "proposed-G-C0.2-reopen-required",
+  "types": {
+    "body_sample": [
+      "physical_id:ID",
+      "position_m:f64[3]",
+      "quaternion_wxyz:f64[4]",
+      "linear_velocity_m_s:f64[3]",
+      "angular_velocity_rad_s:f64[3]",
+      "mass_kg:f64"
+    ],
+    "contact": [
+      "pair:ID[2] sorted",
+      "position_m:f64[3]",
+      "force_on_dynamic_n:f64[3]"
+    ]
+  },
+  "version": "0.2"
+}

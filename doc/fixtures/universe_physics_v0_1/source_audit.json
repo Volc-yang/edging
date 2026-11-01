@@ -1,0 +1,93 @@
+{
+  "package_root": "/Users/yangacan/edgeWorld/edge-world/.venv-genesis/lib/python3.12/site-packages/genesis",
+  "scope": "static source only; no import, gs.init, scene build, solver or GPU",
+  "sources": [
+    {
+      "bytes": 18228,
+      "path": "__init__.py",
+      "public_definitions": {
+        "init": 57
+      },
+      "sha256": "df6af97c8d28489a7e19f31aa94b783189551abb3836acddbbbcf53adb796862"
+    },
+    {
+      "bytes": 101450,
+      "path": "options/morphs.py",
+      "public_definitions": {
+        "Box": 224,
+        "Sphere": 383
+      },
+      "sha256": "a9bd5c7a2ed6dbea62cdf3e2c4c2f71c250328b69bb089f05991f83f546340fa"
+    },
+    {
+      "bytes": 49979,
+      "path": "options/solvers.py",
+      "public_definitions": {
+        "RigidOptions": 436,
+        "SimOptions": 18
+      },
+      "sha256": "207f12b6ca35f5c9ce4347dc2a56210c0573d724124b2433b84768054bd574a4"
+    },
+    {
+      "bytes": 8227,
+      "path": "engine/materials/rigid.py",
+      "public_definitions": {
+        "Rigid": 16
+      },
+      "sha256": "4fca3e9d505e03d4496b2b8c4ef5a88a4cb6797e65f94c65f7da46b95a131704"
+    },
+    {
+      "bytes": 5742,
+      "path": "engine/entities/base_entity.py",
+      "public_definitions": {
+        "Entity": 27
+      },
+      "sha256": "6f806e2eb684b39f936e3ef3e9c6d8c54d3e11427bbd918718f1d9e09acc9eb7"
+    },
+    {
+      "bytes": 167995,
+      "path": "engine/entities/rigid_entity/rigid_entity.py",
+      "public_definitions": {
+        "get_ang": 789,
+        "get_contacts": 3162,
+        "get_links_ang": 918,
+        "get_links_mass": 2369,
+        "get_links_quat": 831,
+        "get_pos": 724,
+        "get_quat": 745,
+        "get_vel": 766
+      },
+      "sha256": "3914d4270d86e271e9696cd6a9f160e5fcf4382f7237e9daaee56e0e0dae07ef"
+    },
+    {
+      "bytes": 85900,
+      "path": "engine/solvers/kinematic_solver.py",
+      "public_definitions": {
+        "add_entity": 194,
+        "get_links_ang": 1373,
+        "get_links_quat": 1305
+      },
+      "sha256": "6926c911eeb9d910d4fee7c40e0fb63fd776f1c3129b1d3835067486310dee76"
+    },
+    {
+      "bytes": 85071,
+      "path": "engine/scene.py",
+      "public_definitions": {
+        "add_entity": 324,
+        "entities": 1932,
+        "entity_names": 1937,
+        "get_entity": 1963,
+        "load_checkpoint": 1710,
+        "save_checkpoint": 1694
+      },
+      "sha256": "b8d39d0e2cb1e3f2ca200c2b57cb86534e397f6367f9813c26aecd0da4ae02ed"
+    },
+    {
+      "bytes": 95218,
+      "path": "utils/geom.py",
+      "public_definitions": {},
+      "sha256": "b4ece36e1ee5d6364f0e7a35e3005fe68d6612d2637dda662f3c4ba0b0bd6ce2"
+    }
+  ],
+  "version_metadata_sha256": "6b99d374ff331d3668d99cebf22f1fffda2d0c4cc3ad1c22e8b119bba3844d9f"
+}
