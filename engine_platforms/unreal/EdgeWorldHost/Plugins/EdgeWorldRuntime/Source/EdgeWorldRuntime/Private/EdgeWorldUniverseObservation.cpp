@@ -534,7 +534,7 @@ bool FValidator::Verify(const V& Env,const FEdgeWorldUniverseExpectation& E,FEdg
  for(const V& X:Get(Body(Projection),TEXT("decorations"))->A){FEdgeWorldUniverseDecoration D;D.InstanceId=Str(Get(X,TEXT("instance_id")));D.PlaceId=Str(Get(X,TEXT("place_id")));D.AssetId=Str(Get(X,TEXT("asset_id")));for(int32 I=0;I<3;++I){D.PositionCm[I]=Num(Get(X,TEXT("position_cm"))->A[I]);D.ScaleMilli[I]=Num(Get(X,TEXT("scale_milli"))->A[I]);}Out.Decorations.Add(D);}
  Out.PhysicalStepCount=Num(Get(Body(Snapshot),TEXT("physical_step_count")));Out.Bodies=Bodies(Sample);Out.OriginCm=Vector(Get(Body(Transform),TEXT("origin_cm")));F64(Get(Body(Transform),TEXT("scale")),Out.Scale);F64(Get(Body(Projection),TEXT("development_cm_per_mm")),Out.DevelopmentCmPerMm);
  for(const V& Contact:Get(Body(Sample),TEXT("contacts"))->A){FEdgeWorldUniverseContact D;D.PositionM=Vector(Get(Contact,TEXT("position_m")));D.ForceOnDynamicN=Vector(Get(Contact,TEXT("force_on_dynamic_n")));Out.Contacts.Add(D);}
- if(!Previous.IsEmpty()){V PS=Target(Records[Previous],TEXT("state"));Out.PriorBodies=Bodies(Target(Target(PS,TEXT("snapshot")),TEXT("sample")));}
+ if(!Previous.IsEmpty()){V PS=Target(Records[Previous],TEXT("state"));Out.PriorSelection=FInt64Point(Num(Get(Body(PS),TEXT("tick"))),Num(Get(Body(PS),TEXT("revision"))));Out.PriorBodies=Bodies(Target(Target(PS,TEXT("snapshot")),TEXT("sample")));}
  Sorted=Needed.Array();Sorted.Sort(OrdinalLess);for(const FString& D:Sorted){V X=Records[D];FEdgeWorldUniverseRecord ROut;ROut.Digest=D;ROut.Kind=Kind(X);ROut.Id=Str(Get(X,TEXT("id")));ROut.CanonicalJson=Canon(X);Out.SelectedRecords.Add(ROut);}return Error.IsEmpty();
 }
 } // namespace EdgeUniverse
@@ -548,3 +548,117 @@ bool FEdgeWorldUniverseObservationParser::CanonicalRecord(TArrayView<const uint8
  Canonical.Reset();Digest.Reset();Error.Reset();EdgeUniverse::FReader Reader(Raw);auto Root=Reader.Parse(false);if(!Root){Error=Reader.Error;return false;}EdgeUniverse::FValidator Validator;if(!Validator.Error.IsEmpty()||!Validator.Record(Root)){Error=Validator.Error;return false;}Canonical=EdgeUniverse::Canon(Root);Digest=EdgeUniverse::Sha(Canonical,true);if(Digest.IsEmpty()){Canonical.Reset();Error=TEXT("HASH");return false;}return true;
 }
 bool FEdgeWorldUniverseObservationParser::ExactInfluence(uint64 A,uint64 B,int64& Millimetres){return EdgeUniverse::Influence(A,B,Millimetres);}
+
+namespace EdgeUniverse
+{
+static V String(const FString& S){V X=Make(FValue::String);X->S=S;return X;}
+static V Integer(int64 N){V X=Make(FValue::Int);X->I=N;return X;}
+static V ParseText(const FString& S){FTCHARToUTF8 U(*S);FReader R(MakeArrayView(reinterpret_cast<const uint8*>(U.Get()),U.Length()));return R.Parse(false);}
+static bool ValidContext(const FEdgeWorldUniverseContext& C,bool Fixture)
+{
+ return Id(C.WorldId)&&CanonicalRoot(C.AuthorityRoot)&&LowerHex(C.TrustAnchor,64)&&LowerHex(C.ExpectedBuild,64)&&LowerHex(C.ExpectedOptions,64)
+  &&SameText(C.TrustAlgorithm,TEXT("local-hmac-sha256.v0.2"))&&SameText(C.ArtifactClass,Fixture?TEXT("synthetic-contract-only"):TEXT("genesis-runtime"));
+}
+static FEdgeWorldUniverseContext Context(const V& X)
+{
+ FEdgeWorldUniverseContext C;C.WorldId=Str(Get(X,TEXT("world_id")));C.AuthorityRoot=Str(Get(X,TEXT("authority_root")));C.TrustAlgorithm=Str(Get(X,TEXT("trust_algorithm")));C.TrustAnchor=Str(Get(X,TEXT("trust_anchor")));C.ArtifactClass=Str(Get(X,TEXT("artifact_class")));C.ExpectedBuild=Str(Get(X,TEXT("expected_build")));C.ExpectedOptions=Str(Get(X,TEXT("expected_options")));return C;
+}
+static bool Head(FValidator& Vld,const V& X,const FEdgeWorldUniverseContext& Expected,FEdgeWorldUniverseHeadBinding& Out)
+{
+ if(!Vld.Keys(X,TEXT("domain,version,profile,world_id,authority_root,trust_algorithm,trust_anchor,artifact_class,expected_build,expected_options,head,storage_state")))return false;
+ Out.Context=Context(X);Out.Domain=Str(Get(X,TEXT("domain")));Out.Version=Str(Get(X,TEXT("version")));Out.Profile=Str(Get(X,TEXT("profile")));Out.Head=Str(Get(X,TEXT("head")));Out.StorageState=Str(Get(X,TEXT("storage_state")));
+ return Vld.Require(SameContext(Expected,Out.Context)&&SameText(Out.Domain,TEXT("edgeworld.universe.authority"))&&SameText(Out.Version,TEXT("0.2"))&&SameText(Out.Profile,TEXT("composite-rigid-support.v0.2"))&&LowerHex(Out.Head,64)&&(SameText(Out.StorageState,TEXT("ready"))||SameText(Out.StorageState,TEXT("unconfirmed_readonly"))),TEXT("AUTHORIZATION"));
+}
+static bool SameRecord(FValidator& Vld,const V& R,const FString& K,const FString& World)
+{return Vld.Record(R)&&Vld.Require(SameText(Kind(R),K)&&SameText(Str(Get(R,TEXT("world_id"))),World),TEXT("DOMAIN"));}
+}
+
+bool FEdgeWorldUniverseControlParser::PublicPins(TArrayView<const uint8> Raw,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error,bool Fixture)
+{
+ using namespace EdgeUniverse;Out={};Error.Reset();FReader Reader(Raw);V X=Reader.Parse(false);FValidator Vld;
+ auto Fail=[&](){Error=Reader.Error.IsEmpty()?(Vld.Error.IsEmpty()?TEXT("PUBLIC_PINS"):Vld.Error):Reader.Error;return false;};
+ if(!X||Raw.Num()>16384||!Vld.Keys(X,TEXT("domain,version,profile,world_id,authority_root,trust_algorithm,trust_anchor,artifact_class,expected_build,expected_options,principal,allowed_actions")))return Fail();
+ FString Text=Canon(X);FTCHARToUTF8 U(*Text);
+ if(!Vld.Require(U.Length()==Raw.Num()&&FMemory::Memcmp(U.Get(),Raw.GetData(),Raw.Num())==0&&LowerHex(Hash,64)&&SameText(Sha(Text),Hash),TEXT("CANONICAL")))return Fail();
+ FEdgeWorldUniversePublicPins Candidate;Candidate.Context=Context(X);Candidate.Principal=Str(Get(X,TEXT("principal")));V A=Get(X,TEXT("allowed_actions"));
+ if(!Vld.Require(ValidContext(Candidate.Context,Fixture)&&Id(Candidate.Principal)&&SameText(Str(Get(X,TEXT("domain"))),TEXT("edgeworld.universe.authority"))&&SameText(Str(Get(X,TEXT("version"))),TEXT("0.2"))&&SameText(Str(Get(X,TEXT("profile"))),TEXT("composite-rigid-support.v0.2"))&&Is(A,FValue::Array)&&A->A.Num()<=2,TEXT("PROFILE")))return Fail();
+ for(const V& Item:A->A){FString S=Str(Item);if(!Vld.Require((SameText(S,TEXT("physics_step"))||SameText(S,TEXT("retain_snapshot")))&&!HasText(Candidate.AllowedActions,S),TEXT("AUTHORIZATION")))return Fail();Candidate.AllowedActions.Add(S);}
+ Out=MoveTemp(Candidate);return true;
+}
+
+bool FEdgeWorldUniverseControlParser::Verify(TArrayView<const uint8> Raw,const FEdgeWorldUniverseControlExpectation& E,FEdgeWorldUniverseControl& Out,FString& Error)
+{
+ using namespace EdgeUniverse;Out={};Error.Reset();FReader Reader(Raw);V Env=Reader.Parse(true);FValidator Vld;FEdgeWorldUniverseControl C;
+ auto Fail=[&](){Error=Reader.Error.IsEmpty()?(Vld.Error.IsEmpty()?TEXT("CONTROL"):Vld.Error):Reader.Error;return false;};
+ if(!Env||!Vld.Require(ValidContext(E.Pins.Context,E.bFixtureOnly)&&Id(E.RequestId)&&Id(E.Pins.Principal),TEXT("PROFILE")))return Fail();
+ V OK=Get(Env,TEXT("ok"));if(!Vld.Require(Is(OK,FValue::Bool)&&Num(Get(Env,TEXT("protocol_version")))==1&&SameText(Str(Get(Env,TEXT("request_id"))),E.RequestId),TEXT("PROOF")))return Fail();
+ if(!OK->B)
+ {
+  V Err=Get(Env,TEXT("error"));if(!Vld.Keys(Env,TEXT("protocol_version,request_id,ok,error"))||!Vld.Keys(Err,TEXT("code,message,commit_status")))return Fail();
+  C.ErrorCode=Str(Get(Err,TEXT("code")));C.CommitStatus=Str(Get(Err,TEXT("commit_status")));
+  if(!Vld.Require(!C.ErrorCode.IsEmpty()&&C.ErrorCode.Len()<=64&&Is(Get(Err,TEXT("message")),FValue::String)&&(SameText(C.CommitStatus,TEXT("not_attempted"))||SameText(C.CommitStatus,TEXT("unknown"))||SameText(C.CommitStatus,TEXT("confirmed"))),TEXT("SCHEMA")))return Fail();
+  for(TCHAR Ch:C.ErrorCode)if(!Vld.Require((Ch>='A'&&Ch<='Z')||(Ch>='0'&&Ch<='9')||Ch=='_',TEXT("SCHEMA")))return Fail();
+  Out=MoveTemp(C);return true;
+ }
+ V R=Get(Env,TEXT("result"));if(!Vld.Keys(Env,TEXT("protocol_version,request_id,ok,result"))||!Vld.Keys(R,TEXT("domain,version,world_id,operation,payload")))return Fail();
+ if(!Vld.Require(SameText(Str(Get(R,TEXT("domain"))),TEXT("edgeworld.universe.authority"))&&SameText(Str(Get(R,TEXT("version"))),TEXT("0.2"))&&SameText(Str(Get(R,TEXT("world_id"))),E.Pins.Context.WorldId)&&SameText(Str(Get(R,TEXT("operation"))),E.Operation),TEXT("DOMAIN")))return Fail();
+ V P=Get(R,TEXT("payload"));if(!Head(Vld,Get(P,TEXT("head_binding")),E.Pins.Context,C.Head))return Fail();
+ if(SameText(E.Operation,TEXT("status")))
+ {
+  if(!Vld.Keys(P,TEXT("world_id,head,tick,revision,watermark,state,event,storage_state,artifact_class,head_binding"))||!Vld.Uint(Get(P,TEXT("tick")))||!Vld.Uint(Get(P,TEXT("revision")))||!Vld.Uint(Get(P,TEXT("watermark")))||!Vld.Hash(Get(P,TEXT("state"))))return Fail();
+  C.Tick=Num(Get(P,TEXT("tick")));C.Revision=Num(Get(P,TEXT("revision")));C.Watermark=Num(Get(P,TEXT("watermark")));C.State=Str(Get(P,TEXT("state")));C.Event=Str(Get(P,TEXT("event")));
+  if(!Vld.Require(C.Tick<=C.Revision&&C.Watermark==C.Revision&&SameText(Str(Get(P,TEXT("world_id"))),E.Pins.Context.WorldId)&&SameText(Str(Get(P,TEXT("head"))),C.Head.Head)&&SameText(Str(Get(P,TEXT("storage_state"))),C.Head.StorageState)&&SameText(Str(Get(P,TEXT("artifact_class"))),E.Pins.Context.ArtifactClass)&&((C.Revision==0&&Is(Get(P,TEXT("event")),FValue::Null))||(C.Revision>0&&LowerHex(C.Event,64))),TEXT("WATERMARK")))return Fail();
+ }
+ else if(SameText(E.Operation,TEXT("prepare")))
+ {
+  if(!Vld.Keys(P,TEXT("command_records,command_digest,committed_result,head_binding")))return Fail();V A=Get(P,TEXT("command_records"));
+  if(!Vld.Require(Is(A,FValue::Array)&&A->A.Num()==4,TEXT("SCHEMA")))return Fail();
+  const TCHAR* Kinds[]={TEXT("proposal"),TEXT("intent"),TEXT("approval"),TEXT("command")};for(int32 I=0;I<4;++I)if(!SameRecord(Vld,A->A[I],Kinds[I],E.Pins.Context.WorldId))return Fail();
+  V Proposal=A->A[0],Intent=A->A[1],Approval=A->A[2],Command=A->A[3];FString PH=Sha(Canon(Proposal),true),IH=Sha(Canon(Intent),true),AH=Sha(Canon(Approval),true),CH=Sha(Canon(Command),true);
+  if(!Vld.Require(Eq(Proposal,ParseText(E.ProposalJson))&&Eq(Intent,ParseText(E.IntentJson))&&SameText(Str(Get(Approval,TEXT("id"))),E.ApprovalId)&&SameText(Str(Get(Body(Approval),TEXT("receipt_id"))),E.ApprovalId)&&SameText(Str(Get(Command,TEXT("id"))),E.CommandRecordId)&&SameText(Str(Get(Body(Approval),TEXT("principal"))),E.Pins.Principal)&&SameText(Str(Get(Body(Intent),TEXT("principal"))),E.Pins.Principal)&&SameText(Str(Get(Body(Proposal),TEXT("principal"))),E.Pins.Principal)&&Eq(Get(Body(Approval),TEXT("expires_revision")),Get(Body(Intent),TEXT("expected_revision"))),TEXT("AUTHORIZATION")))return Fail();
+  V AR=Refs(Approval),CR=Refs(Command);
+  if(!Vld.Require(SameText(Str(Get(AR,TEXT("proposal"))),PH)&&SameText(Str(Get(AR,TEXT("intent"))),IH)&&SameText(Str(Get(CR,TEXT("proposal"))),PH)&&SameText(Str(Get(CR,TEXT("intent"))),IH)&&SameText(Str(Get(CR,TEXT("approval"))),AH)&&SameText(Str(Get(P,TEXT("command_digest"))),CH),TEXT("REFERENCE")))return Fail();
+  C.CommandRecordsJson=Canon(A);C.CommandDigest=CH;V Committed=Get(P,TEXT("committed_result"));
+  if(!Is(Committed,FValue::Null))
+  {
+   if(!SameRecord(Vld,Committed,TEXT("result"),E.Pins.Context.WorldId)||!Vld.Require(SameText(Str(Get(Refs(Committed),TEXT("command"))),CH)&&Eq(Get(Body(Committed),TEXT("command_id")),Get(Body(Intent),TEXT("command_id"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Committed);
+  }
+ }
+ else if(SameText(E.Operation,TEXT("advance"))||SameText(E.Operation,TEXT("initialize")))
+ {
+  if(!Vld.Keys(P,TEXT("manifest,result,commit_status,head_binding"))||!Vld.Hash(Get(P,TEXT("manifest")))||!Vld.Require(SameText(Str(Get(P,TEXT("commit_status"))),TEXT("confirmed")),TEXT("SCHEMA")))return Fail();
+  C.Manifest=Str(Get(P,TEXT("manifest")));C.CommitStatus=TEXT("confirmed");V Result=Get(P,TEXT("result"));
+  if(SameText(E.Operation,TEXT("initialize"))){if(!Vld.Require(Is(Result,FValue::Null),TEXT("SCHEMA")))return Fail();}
+  else {if(!SameRecord(Vld,Result,TEXT("result"),E.Pins.Context.WorldId)||!Vld.Require(LowerHex(E.CommandDigest,64)&&SameText(Str(Get(Refs(Result),TEXT("command"))),E.CommandDigest)&&Eq(Get(Body(Result),TEXT("revision")),Get(Body(Result),TEXT("watermark"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Result);}
+ }
+ else {Vld.Require(false,TEXT("OPERATION"));return Fail();}
+ C.bSuccess=true;Out=MoveTemp(C);return true;
+}
+
+bool FEdgeWorldUniverseControlParser::Request(const FString& Op,const FString& RequestId,const FString& PayloadJson,FString& Out,FString& Error)
+{
+ using namespace EdgeUniverse;Out.Reset();Error.Reset();FValidator Vld;V P=ParseText(PayloadJson);
+ const TCHAR* Keys=SameText(Op,TEXT("status"))?TEXT("domain,version,world_id"):SameText(Op,TEXT("observe"))?TEXT("domain,version,world_id,tick,revision,watermark"):SameText(Op,TEXT("initialize"))?TEXT("domain,version,world_id,test_profile"):SameText(Op,TEXT("prepare"))?TEXT("domain,version,world_id,principal,proposal,intent,approval_id,command_record_id"):SameText(Op,TEXT("advance"))?TEXT("domain,version,world_id,principal,command_records,command_digest"):nullptr;
+ if(!Keys||!Id(RequestId)||!Vld.Keys(P,Keys)||!SameText(Str(Get(P,TEXT("domain"))),TEXT("edgeworld.universe.authority"))||!SameText(Str(Get(P,TEXT("version"))),TEXT("0.2"))||!Id(Str(Get(P,TEXT("world_id")))){Error=TEXT("REQUEST");return false;}
+ if(SameText(Op,TEXT("observe"))&&(!Vld.Uint(Get(P,TEXT("tick")))||!Vld.Uint(Get(P,TEXT("revision")))||!Vld.Uint(Get(P,TEXT("watermark")))||!Vld.Require(Eq(Get(P,TEXT("revision")),Get(P,TEXT("watermark"))),TEXT("WATERMARK")))){Error=Vld.Error;return false;}
+ if(SameText(Op,TEXT("initialize"))&&!SameText(Str(Get(P,TEXT("test_profile"))),TEXT("composite-rigid-support.v0.2"))){Error=TEXT("PROFILE");return false;}
+ if((SameText(Op,TEXT("prepare"))||SameText(Op,TEXT("advance")))&&!Vld.Identity(Get(P,TEXT("principal")))){Error=Vld.Error;return false;}
+ if(SameText(Op,TEXT("prepare"))&&(!Vld.Record(Get(P,TEXT("proposal")))||!Vld.Record(Get(P,TEXT("intent")))||!Vld.Identity(Get(P,TEXT("approval_id")))||!Vld.Identity(Get(P,TEXT("command_record_id"))))){Error=Vld.Error;return false;}
+ if(SameText(Op,TEXT("advance")))
+ {
+  V A=Get(P,TEXT("command_records"));if(!Vld.Require(Is(A,FValue::Array)&&A->A.Num()==4,TEXT("SCHEMA"))||!Vld.Hash(Get(P,TEXT("command_digest")))){Error=Vld.Error;return false;}
+  for(const V& Item:A->A)if(!Vld.Record(Item)){Error=Vld.Error;return false;}
+ }
+ V Env=Make(FValue::Object);Env->O.Add(TEXT("protocol_version"),Integer(1));Env->O.Add(TEXT("request_id"),String(RequestId));Env->O.Add(TEXT("operation"),String(Op));Env->O.Add(TEXT("payload"),P);FString Text=Canon(Env);if(Text.Len()>1048576){Error=TEXT("LIMIT");return false;}Out=Text+TEXT("\n");return true;
+}
+
+bool FEdgeWorldUniverseControlParser::BuildPrepare(const FEdgeWorldUniversePublicPins& Pins,const FEdgeWorldUniverseObservation& Current,const FString& CommandId,const FString& Action,const FString& Case,FString& OutPayload,FString& OutProposal,FString& OutIntent,FString& Error)
+{
+ using namespace EdgeUniverse;OutPayload.Reset();OutProposal.Reset();OutIntent.Reset();Error.Reset();bool Physical=SameText(Action,TEXT("physics_step"));
+ if(!Id(CommandId)||CommandId.Len()>40||!HasText(Pins.AllowedActions,Action)||(!Physical&&!SameText(Action,TEXT("retain_snapshot")))||(Physical&&!SameText(Case,TEXT("weak"))&&!SameText(Case,TEXT("strong")))||!SameText(Current.WorldId,Pins.Context.WorldId)||Current.StorageState!=TEXT("ready")||Current.Revision>=MaxInt||Current.RandomCursor>=MaxInt||(Physical&&(Current.Tick>=MaxInt||Current.PhysicalStepCount>=256||Current.Budget<1))){Error=TEXT("NOT_READY");return false;}
+ auto Record=[&](const FString& K,const FString& IdValue,const V& B,const V& R){V X=Make(FValue::Object);X->O.Add(TEXT("domain"),String(TEXT("edgeworld.universe.authority")));X->O.Add(TEXT("version"),String(TEXT("0.2")));X->O.Add(TEXT("world_id"),String(Pins.Context.WorldId));X->O.Add(TEXT("kind"),String(K));X->O.Add(TEXT("id"),String(IdValue));X->O.Add(TEXT("body"),B);X->O.Add(TEXT("refs"),R);return X;};
+ V PB=Make(FValue::Object);PB->O.Add(TEXT("principal"),String(Pins.Principal));PB->O.Add(TEXT("output"),String(TEXT("explicit UE technical ")+Action));V Proposal=Record(TEXT("proposal"),TEXT("proposal-")+CommandId,PB,Make(FValue::Object));
+ V IB=Make(FValue::Object);IB->O.Add(TEXT("principal"),String(Pins.Principal));IB->O.Add(TEXT("command_id"),String(CommandId));IB->O.Add(TEXT("expected_revision"),Integer(Current.Revision));IB->O.Add(TEXT("random_cursor"),Integer(Current.RandomCursor));IB->O.Add(TEXT("budget"),Integer(Physical?1:0));IB->O.Add(TEXT("tick_delta"),Integer(Physical?1:0));IB->O.Add(TEXT("action"),String(Action));IB->O.Add(TEXT("case_id"),Physical?String(Case):Make(FValue::Null));V IR=Make(FValue::Object);IR->O.Add(TEXT("config"),String(Current.Config));IR->O.Add(TEXT("binding"),String(Current.Binding));V Intent=Record(TEXT("intent"),TEXT("intent-")+CommandId,IB,IR);
+ FValidator Vld;if(!Vld.Record(Proposal)||!Vld.Record(Intent)){Error=Vld.Error;return false;}
+ V P=Make(FValue::Object);P->O.Add(TEXT("domain"),String(TEXT("edgeworld.universe.authority")));P->O.Add(TEXT("version"),String(TEXT("0.2")));P->O.Add(TEXT("world_id"),String(Pins.Context.WorldId));P->O.Add(TEXT("principal"),String(Pins.Principal));P->O.Add(TEXT("proposal"),Proposal);P->O.Add(TEXT("intent"),Intent);P->O.Add(TEXT("approval_id"),String(TEXT("approval-")+CommandId));P->O.Add(TEXT("command_record_id"),String(TEXT("record-")+CommandId));OutPayload=Canon(P);OutProposal=Canon(Proposal);OutIntent=Canon(Intent);return true;
+}

@@ -14,6 +14,10 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldRequest
 
 struct EDGEWORLDRUNTIME_API FEdgeWorldResponse
 {
+ // Universe mode preserves original UTF8/framing. Legacy keeps JsonLine semantics.
+ TArray<uint8> RawJsonl;
+ uint64 ProcessGeneration = 0;
+ uint32 WorkerPid = 0;
 	bool bSuccess = false;
 	FString RequestId;
 	FString JsonLine;
@@ -42,9 +46,12 @@ public:
 	virtual void SendJsonLine(FEdgeWorldRequest Request, FEdgeWorldResponseHandler Handler) override;
 };
 
+enum class EEdgeWorldWorkerLaunchMode { Legacy, Universe };
 /** Launch configuration for the single-world Python worker process. */
 struct EDGEWORLDRUNTIME_API FEdgeWorldWorkerLaunchConfig
 {
+ EEdgeWorldWorkerLaunchMode LaunchMode = EEdgeWorldWorkerLaunchMode::Legacy;
+ FString OwnerConfigPath;
 	FString PythonExecutable;
 	FString WorkerScript;
 	FString StateDirectory;
@@ -76,6 +83,7 @@ public:
 private:
 	bool EnsureStarted(FString& OutError);
 	FEdgeWorldResponse Exchange(const FEdgeWorldRequest& Request);
+ FEdgeWorldResponse ExchangeUniverse(const FEdgeWorldRequest& Request);
 	void StopProcess(bool bTerminate);
 
 	FEdgeWorldWorkerLaunchConfig Config;
@@ -86,6 +94,10 @@ private:
 	void* StderrReadPipe = nullptr;
 	FString PendingStdout;
 	bool bShutdown = false;
+ TArray<uint8> PendingRaw;
+ uint64 Generation = 0;
+ uint32 WorkerPid = 0;
+ bool bNeedsUniverseStatus = true;
 };
 
 /** Small request builder for the prototype operations; it does not own state. */

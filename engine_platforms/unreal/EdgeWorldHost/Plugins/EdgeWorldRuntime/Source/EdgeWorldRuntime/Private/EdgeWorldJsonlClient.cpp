@@ -61,7 +61,8 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		StopProcess(false);
 	}
 	if (Config.PythonExecutable.IsEmpty() || Config.WorkerScript.IsEmpty()
-		|| Config.StateDirectory.IsEmpty() || Config.WorldId.IsEmpty())
+        || (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe
+            ? Config.OwnerConfigPath.IsEmpty() : Config.StateDirectory.IsEmpty() || Config.WorldId.IsEmpty()))
 	{
 		OutError = TEXT("PythonExecutable, WorkerScript, StateDirectory, and WorldId must be configured.");
 		return false;
@@ -70,7 +71,8 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		|| Config.StateDirectory.Contains(TEXT("\"")) || Config.WorldId.Contains(TEXT("\""))
 		|| Config.WorldId.Contains(TEXT("\n")) || Config.WorldId.Contains(TEXT("\r"))
 		|| Config.InitialWorldPath.Contains(TEXT("\""))
-		|| Config.InitialWorldPath.Contains(TEXT("\n")) || Config.InitialWorldPath.Contains(TEXT("\r")))
+		|| Config.InitialWorldPath.Contains(TEXT("\n")) || Config.InitialWorldPath.Contains(TEXT("\r"))
+        || Config.OwnerConfigPath.Contains(TEXT("\"")) || Config.OwnerConfigPath.Contains(TEXT("\n")) || Config.OwnerConfigPath.Contains(TEXT("\r")))
 	{
 		OutError = TEXT("Worker paths and world ID must not contain quotes or line breaks.");
 		return false;
@@ -82,6 +84,11 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		return false;
 	}
 
+ if(Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe)
+ {
+  for(const FString& P:{Config.PythonExecutable,Config.WorkerScript,Config.OwnerConfigPath})
+   if(FPaths::IsRelative(P)||P.Contains(TEXT("\n"))||P.Contains(TEXT("\r"))||P.Contains(TEXT("\\"))) {OutError=TEXT("Universe requires safe absolute launch paths");return false;}
+ }
 	void* StdoutChildRead = nullptr;
 	void* StdoutChildWrite = nullptr;
 	void* StdinChildRead = nullptr;
@@ -111,8 +118,11 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 		Arguments += FString::Printf(TEXT(" --initial-world \"%s\""),
 			*FPaths::ConvertRelativePathToFull(Config.InitialWorldPath));
 	}
-	ProcessHandle = FPlatformProcess::CreateProc(*PythonPath, *Arguments, false, true, true,
-		nullptr, 0, nullptr, StdoutChildWrite, StdinChildRead, StderrChildWrite);
+	if (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe)
+        Arguments = FString::Printf(TEXT("-m engine.universe_authority.worker --owner-config \"%s\""), *Config.OwnerConfigPath);
+    const FString WorkingRoot=FPaths::ConvertRelativePathToFull(FPaths::Combine(FPaths::GetPath(ScriptPath),TEXT("../..")));
+    ProcessHandle = FPlatformProcess::CreateProc(*PythonPath, *Arguments, false, true, true,
+        &WorkerPid, 0, Config.LaunchMode==EEdgeWorldWorkerLaunchMode::Universe?*WorkingRoot:nullptr, StdoutChildWrite, StdinChildRead, StderrChildWrite);
 
 	// The parent owns only stdout/stderr read ends and the stdin write end.
 	void* NullHandle = nullptr;
@@ -132,11 +142,55 @@ bool FEdgeWorldProcessTransport::EnsureStarted(FString& OutError)
 	StdinWritePipe = StdinChildWrite;
 	StderrReadPipe = StderrChildRead;
 	PendingStdout.Reset();
+ PendingRaw.Reset(); ++Generation; bNeedsUniverseStatus=true;
 	return true;
+}
+
+FEdgeWorldResponse FEdgeWorldProcessTransport::ExchangeUniverse(const FEdgeWorldRequest& Request)
+{
+ FScopeLock Lock(&RequestMutex);
+ FEdgeWorldResponse Response; Response.RequestId = Request.RequestId;
+ FString Error;
+ if (!EnsureStarted(Error)) { Response.ErrorCode=TEXT("worker_start_failed"); Response.ErrorMessage=Error; return Response; }
+ Response.ProcessGeneration=Generation; Response.WorkerPid=WorkerPid;
+ // A new owned channel must first establish a status binding. Never replay a write on lazy restart.
+ if (bNeedsUniverseStatus && Request.Operation != TEXT("status"))
+ { Response.ErrorCode=TEXT("worker_generation_changed"); return Response; }
+ FTCHARToUTF8 Input(*Request.JsonLine);
+ if (Input.Length()>1048577) { Response.ErrorCode=TEXT("LIMIT"); return Response; }
+ int32 Written=0;
+ if (!FPlatformProcess::WritePipe(StdinWritePipe,reinterpret_cast<const uint8*>(Input.Get()),Input.Length(),&Written) || Written!=Input.Length())
+ { Response.ErrorCode=TEXT("worker_write_failed"); StopProcess(true); return Response; }
+ const double Deadline=FPlatformTime::Seconds()+Config.RequestTimeoutSeconds;
+ int32 DiagnosticBytes=0;
+ while (FPlatformTime::Seconds()<Deadline)
+ {
+  TArray<uint8> Chunk; FPlatformProcess::ReadPipeToArray(StdoutReadPipe,Chunk); PendingRaw.Append(Chunk);
+  if (StderrReadPipe)
+  {
+   TArray<uint8> Diagnostic;FPlatformProcess::ReadPipeToArray(StderrReadPipe,Diagnostic);DiagnosticBytes+=Diagnostic.Num();
+   // Do not print untrusted/private diagnostics into the UI log.
+   if(DiagnosticBytes>65536){Response.ErrorCode=TEXT("worker_stderr_limit");StopProcess(true);return Response;}
+  }
+  int32 LF=PendingRaw.IndexOfByKey(uint8('\n'));
+  if((LF==INDEX_NONE && PendingRaw.Num()>1048576) || LF>1048576)
+  {Response.ErrorCode=TEXT("LIMIT");StopProcess(true);return Response;}
+  if(LF!=INDEX_NONE)
+  {
+   // One in-flight request: extra unsolicited stdout is a channel violation.
+   if(PendingRaw.Num()!=LF+1){Response.ErrorCode=TEXT("unsolicited_worker_response");StopProcess(true);return Response;}
+   Response.RawJsonl=MoveTemp(PendingRaw);PendingRaw.Reset();Response.bSuccess=true; if(Request.Operation==TEXT("status"))bNeedsUniverseStatus=false; return Response;
+  }
+  if(!FPlatformProcess::IsProcRunning(ProcessHandle))
+  {Response.ErrorCode=TEXT("worker_exited");StopProcess(false);return Response;}
+  FPlatformProcess::Sleep(.01f);
+ }
+ Response.ErrorCode=TEXT("worker_timeout");StopProcess(true);return Response;
 }
 
 FEdgeWorldResponse FEdgeWorldProcessTransport::Exchange(const FEdgeWorldRequest& Request)
 {
+ if (Config.LaunchMode == EEdgeWorldWorkerLaunchMode::Universe) return ExchangeUniverse(Request);
 	FEdgeWorldResponse Response;
 	Response.RequestId = Request.RequestId;
 	{

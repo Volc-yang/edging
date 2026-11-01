@@ -66,6 +66,7 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseObservation
 {
  FString WorldId, Manifest, State, Event, StorageState, ArtifactClass;
  int64 WireBytes = 0;
+ TOptional<FInt64Point> PriorSelection; // X=tick, Y=revision, verified immediate prior.
  int64 Tick = 0, Revision = 0, Watermark = 0, Budget = 0, RandomCursor = 0, PhysicalStepCount = 0;
  TOptional<int64> DevelopmentMm;
  FVector3d OriginCm;
@@ -90,4 +91,40 @@ public:
  // Independent strict codec entry point for golden verification; does not grant membership/trust.
  static bool CanonicalRecord(TArrayView<const uint8> RawJson, FString& Canonical, FString& Digest, FString& Error);
  static bool ExactInfluence(uint64 PreviousBits, uint64 CurrentBits, int64& Millimetres);
+};
+
+/** Public launch hints never authorize an action or initialize. */
+struct EDGEWORLDRUNTIME_API FEdgeWorldUniversePublicPins
+{
+ FEdgeWorldUniverseContext Context;
+ FString Principal;
+ TArray<FString> AllowedActions;
+};
+struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseControlExpectation
+{
+ FEdgeWorldUniversePublicPins Pins;
+ FString RequestId, Operation;
+ FString ProposalJson, IntentJson, ApprovalId, CommandRecordId, CommandDigest;
+ bool bFixtureOnly=false; // C++ test harness only; no runtime/CLI fake mode.
+};
+struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseControl
+{
+ bool bSuccess=false;
+ FEdgeWorldUniverseHeadBinding Head;
+ int64 Tick=0, Revision=0, Watermark=0;
+ FString State, Event, Manifest, CommandRecordsJson, CommandDigest, CommittedResultJson;
+ FString ErrorCode, CommitStatus;
+};
+class EDGEWORLDRUNTIME_API FEdgeWorldUniverseControlParser
+{
+public:
+ static bool PublicPins(TArrayView<const uint8> CanonicalAscii,const FString& ExpectedSha256,
+                        FEdgeWorldUniversePublicPins& Out,FString& Error,bool bFixtureOnly=false);
+ static bool Verify(TArrayView<const uint8> Raw,const FEdgeWorldUniverseControlExpectation& Expected,
+                    FEdgeWorldUniverseControl& Out,FString& Error);
+ static bool Request(const FString& Operation,const FString& RequestId,const FString& PayloadJson,
+                     FString& OutJsonl,FString& Error);
+ static bool BuildPrepare(const FEdgeWorldUniversePublicPins& Pins,const FEdgeWorldUniverseObservation& Current,
+                          const FString& CommandId,const FString& Action,const FString& Case,
+                          FString& OutPayload,FString& OutProposal,FString& OutIntent,FString& Error);
 };
