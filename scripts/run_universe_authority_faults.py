@@ -692,7 +692,7 @@ class Suite:
         alias.symlink_to(root, target_is_directory=True)
         competitors = []
         for label, path in (('direct', root), ('alias', alias)):
-            worker, terminal = self.call(case / label, path, 'try_lock')
+            worker, terminal = self.call(case / ('contender-' + label), path, 'try_lock')
             assert terminal['code'] == 'LOCKED' and worker.process.pid != holder.process.pid
             competitors.append({'pid': worker.process.pid, 'terminal': terminal})
         assert file_map(root) == before
