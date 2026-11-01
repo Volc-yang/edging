@@ -45,6 +45,7 @@ python3 scripts/run_universe_slice_acceptance.py --output /existing/evidence/bef
 python3 scripts/run_universe_slice_acceptance.py --output /existing/evidence/processes.json processes --pid 123
 python3 scripts/run_universe_slice_acceptance.py --output /existing/evidence/metadata.json metadata /private/owner-config /private/key-dir
 python3 scripts/run_universe_slice_acceptance.py wait-marker --log /existing/ue.log --initial-sha256 HASH --marker 'Universe world' --seconds 10
+python3 scripts/run_universe_slice_acceptance.py wait-marker --log /existing/ue.log --initial-sha256 BEFORE_HASH --start-offset BEFORE_BYTES --expected-device BEFORE_DEV --expected-inode BEFORE_INODE --run-id RUN --host-pid 123 --marker 'new action marker' --seconds 10
 python3 scripts/run_universe_slice_acceptance.py --output /existing/evidence/bundle.json collect --spec /existing/evidence/spec.json
 python3 scripts/verify_universe_slice_evidence.py --bundle /existing/evidence/bundle.json
 ```
@@ -53,8 +54,15 @@ Default is stdout-only plan. Output files are exclusive mode0600; no directories
 Metadata uses lstat only, never reads private bytes. Map hashes existing public authority files,
 refuses symlinks/potential key paths, creates no root and does not acquire a writer lease.
 `processes` executes only `/bin/ps` for explicitly supplied PIDs. A missing PID is not an exit code.
-`wait-marker` polls only newly appended log bytes, bounded ≤60s/16MiB, with caller-pinned initial
-log hash. It does not trigger an action; start the waiter before the externally authorized action.
+`wait-marker` is bounded ≤60s/16MiB. With explicit `--start-offset`, first capture the action-before
+log size, prefix SHA256, device and inode; pass those immutable pins. The helper verifies the hash
+of exactly that prefix, rejects truncation/replacement, and reads from the pinned offset even when
+the action has already appended its marker before the helper starts. This removes waiter-arming
+timing assumptions; no sleep can prove a waiter was armed. `--run-id`/`--host-pid` record caller
+declarations to correlate against actual owned process evidence, not authenticated identities.
+Without offset the older default remains: pin the whole log hash at invocation and read from its
+current end. Do not use that default after triggering the action. Metadata now includes device/inode;
+private metadata still does not read contents. The helper never triggers an action.
 `collect` hashes only enumerated public artifacts; private_key/owner_config content roles are refused.
 Do not put keys/config contents into evidence under another role. Keep private keys outside raw.
 Every failed marker wait is evidence, not an instruction to retry or kill.
@@ -89,6 +97,8 @@ metadata and failures; never prune old attempts to fit budget. Capture schema/to
 Trace JSON follows I11R2 source `3e8b0b8`: per-prefix contiguous serial, PID/generation, raw_file,
 byte_count, request/write-result/stdout/stderr/response-complete, stdin-eof and worker-exit payload.
 Verifier checks actual request write size and reassembles split stdout without normalizing bytes.
+Exact history Exec syntax is three integers: `UniverseObserveExact 0 1 1`,
+`UniverseObserveExact 0 0 0`, and `UniverseObserveExact 1 2 2` (tick, revision, watermark).
 
 ## What checks establish
 

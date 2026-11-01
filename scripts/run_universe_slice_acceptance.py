@@ -7,9 +7,11 @@ Actual orchestration awaits a root-issued R12 card and final integrated source.
 """
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
+import stat
 import subprocess
 import sys
 import time
@@ -23,7 +25,7 @@ PLAN = [
     ('retain', 'UniverseRetain; wait (0,1); same snapshot/tick/D/budget/cursor, no solver'),
     ('physical', 'select weak explicitly; UniverseAdvance; wait (1,2); eight solver steps, independently computed exact D'),
     ('retry', 'UniverseRetryLastCommitted; new request ID, identical closure/digest; original result, no authority change'),
-    ('history', 'UniverseObserveExact 0 1 then 0 0, then latest 1 2; exact watermark/revision and screenshot bindings'),
+    ('history', 'UniverseObserveExact 0 1 1 then UniverseObserveExact 0 0 0, then latest UniverseObserveExact 1 2 2; exact tick/revision/watermark and screenshot bindings'),
     ('history_write_rejected', 'history Space/R cannot prepare or advance; per-action map and raw request interval'),
     ('held_input', 'held Space across history/current transition cannot create hidden intent; release then inspect'),
     ('camera', 'UniverseCamera scripted local view change, verify actual changed view; no claim of human relative-mouse input'),
@@ -74,33 +76,73 @@ def metadata(paths):
         st = path.lstat()
         rows.append({'path': str(path), 'uid': st.st_uid, 'gid': st.st_gid,
                      'mode': oct(st.st_mode & 0o7777), 'nlink': st.st_nlink,
-                     'bytes': st.st_size, 'symlink': path.is_symlink()})
+                     'bytes': st.st_size, 'device': st.st_dev, 'inode': st.st_ino,
+                     'symlink': path.is_symlink()})
     return {'captured_at': utc(), 'metadata_only': True, 'entries': rows}
 
 
-def wait_marker(path, marker, seconds, expected_hash):
-    """Observe an existing log, preserving start offset and bounded wait."""
+def wait_marker(path, marker, seconds, expected_hash, start_offset=None,
+                expected_device=None, expected_inode=None, run_id=None, host_pid=None):
+    """Read from an action-before pin, including bytes already appended after it.
+
+    Explicit offset requires caller's before device/inode as well as prefix hash.
+    Without offset, preserve the old whole-file pin/current-size behavior.
+    Run/PID labels are caller declarations, not process identity authentication.
+    """
     path = safe_path(path)
     require(path.is_file() and marker and 0 < seconds <= 60, 'existing log/marker and timeout<=60 required')
-    require(file_hash(path) == expected_hash, 'initial log hash does not match caller pin')
-    start = path.stat().st_size
+    if start_offset is not None:
+        require(type(start_offset) is int and start_offset >= 0 and
+                type(expected_device) is int and type(expected_inode) is int,
+                'explicit start offset requires before device/inode pins')
     deadline = time.monotonic() + seconds
-    # Only new bytes count; a stale marker from a previous action cannot satisfy wait.
-    offset, tail = start, b''
-    while time.monotonic() <= deadline:
-        require(path.stat().st_size >= offset, 'log truncated during wait')
-        with path.open('rb') as stream:
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(fd, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        require(stat.S_ISREG(opened.st_mode), 'log is not a regular file')
+        identity = (opened.st_dev, opened.st_ino)
+        if expected_device is not None or expected_inode is not None:
+            require(identity == (expected_device, expected_inode), 'log replaced since action-before pin')
+        start = opened.st_size if start_offset is None else start_offset
+        offset, tail = start, b''
+
+        def validate_prefix():
+            current = path.lstat()
+            retained = os.fstat(stream.fileno())
+            require(stat.S_ISREG(current.st_mode) and
+                    (current.st_dev, current.st_ino) == identity, 'log replaced during wait')
+            require(retained.st_size >= offset and current.st_size >= offset,
+                    'log truncated since action-before pin')
+            stream.seek(0)
+            digest, remaining = hashlib.sha256(), start
+            while remaining:
+                block = stream.read(min(remaining, 1024**2))
+                require(block, 'log prefix truncated')
+                digest.update(block)
+                remaining -= len(block)
+            require(digest.hexdigest() == expected_hash, 'log prefix hash does not match caller before pin')
+
+        validate_prefix()
+        while time.monotonic() <= deadline:
+            # Validate path identity and prefix before accepting appended evidence.
+            validate_prefix()
             stream.seek(offset)
             block = stream.read(1024**2)
-        offset += len(block)
-        tail += block
-        require(len(tail) <= 16 * 1024**2, 'marker observation byte cap')
-        if marker.encode() in tail:
-            return {'matched': True, 'captured_at': utc(), 'path': str(path), 'marker': marker,
-                    'start_offset': start, 'end_offset': offset, 'log_sha256': file_hash(path)}
-        time.sleep(.1)
-    return {'matched': False, 'captured_at': utc(), 'path': str(path), 'marker': marker,
-            'start_offset': start, 'end_offset': offset}
+            offset += len(block)
+            tail += block
+            require(len(tail) <= 16 * 1024**2, 'marker observation byte cap')
+            if marker.encode() in tail:
+                validate_prefix()
+                return {'matched': True, 'captured_at': utc(), 'path': str(path), 'marker': marker,
+                        'start_offset': start, 'end_offset': offset, 'prefix_sha256': expected_hash,
+                        'device': identity[0], 'inode': identity[1],
+                        'run_id': run_id, 'host_pid': host_pid,
+                        'binding': 'caller-declared run/PID; correlate original process evidence'}
+            time.sleep(.1)
+        validate_prefix()
+        return {'matched': False, 'captured_at': utc(), 'path': str(path), 'marker': marker,
+                'start_offset': start, 'end_offset': offset, 'prefix_sha256': expected_hash,
+                'device': identity[0], 'inode': identity[1], 'run_id': run_id, 'host_pid': host_pid}
 
 
 def collect(spec):
@@ -136,6 +178,11 @@ def main():
     wait.add_argument('--log', type=Path, required=True)
     wait.add_argument('--marker', required=True)
     wait.add_argument('--initial-sha256', required=True)
+    wait.add_argument('--start-offset', type=int, help='action-before log byte length; hash covers exactly this prefix')
+    wait.add_argument('--expected-device', type=int, help='action-before st_dev, required with explicit offset')
+    wait.add_argument('--expected-inode', type=int, help='action-before st_ino, required with explicit offset')
+    wait.add_argument('--run-id', help='caller-bound run identity; correlate raw process evidence')
+    wait.add_argument('--host-pid', type=int, help='caller-bound UE PID; not inferred or authenticated')
     wait.add_argument('--seconds', type=float, default=10)
     collection = commands.add_parser('collect')
     collection.add_argument('--spec', type=Path, required=True)
@@ -156,7 +203,9 @@ def main():
         elif args.command == 'metadata':
             value = metadata(args.paths)
         elif args.command == 'wait-marker':
-            value = wait_marker(args.log, args.marker, args.seconds, args.initial_sha256)
+            value = wait_marker(args.log, args.marker, args.seconds, args.initial_sha256,
+                                args.start_offset, args.expected_device, args.expected_inode,
+                                args.run_id, args.host_pid)
         elif args.command == 'collect':
             value = collect(args.spec)
         else:

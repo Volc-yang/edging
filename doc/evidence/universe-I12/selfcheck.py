@@ -13,6 +13,52 @@ import run_universe_slice_acceptance as driver
 
 
 class EvidenceTools(unittest.TestCase):
+    def test_prep2_history_arity_and_post_action_marker(self):
+        history = dict(driver.PLAN)['history']
+        for selection in ('0 1 1', '0 0 0', '1 2 2'):
+            self.assertIn('UniverseObserveExact ' + selection, history)
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary).resolve() / 'ue.log'
+            prefix = b'observation before action\n'
+            path.write_bytes(prefix)
+            before = path.stat()
+            digest = oracle.hashlib.sha256(prefix).hexdigest()
+            # Actual action already completed before helper starts: no waiter-arm sleep.
+            with path.open('ab') as stream:
+                stream.write(b'new-action-marker\n')
+            result = driver.wait_marker(path, 'new-action-marker', 1, digest, len(prefix),
+                                        before.st_dev, before.st_ino, 'synthetic-run', 123)
+            self.assertTrue(result['matched'])
+            self.assertEqual(result['start_offset'], len(prefix))
+            self.assertEqual(result['end_offset'], path.stat().st_size)
+            self.assertEqual(result['run_id'], 'synthetic-run')
+            self.assertEqual(result['host_pid'], 123)
+
+    def test_prep2_prefix_changed_truncated_or_replaced(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary).resolve()
+            path = folder / 'ue.log'
+            prefix = b'action-before\n'
+            path.write_bytes(prefix)
+            before = path.stat()
+            digest = oracle.hashlib.sha256(prefix).hexdigest()
+            def wait():
+                return driver.wait_marker(path, 'marker', 1, digest, len(prefix),
+                                          before.st_dev, before.st_ino)
+            path.write_bytes(b'changed-value\nmarker\n')
+            with self.assertRaisesRegex(oracle.Invalid, 'prefix hash'):
+                wait()
+            path.write_bytes(b'x')
+            with self.assertRaisesRegex(oracle.Invalid, 'truncated'):
+                wait()
+            replacement = folder / 'replacement'
+            replacement.write_bytes(prefix + b'marker\n')
+            replacement.replace(path)
+            with self.assertRaisesRegex(oracle.Invalid, 'replaced'):
+                wait()
+            with self.assertRaisesRegex(oracle.Invalid, 'device/inode'):
+                driver.wait_marker(path, 'marker', 1, digest, len(prefix))
+
     def test_literal_contract_goldens(self):
         goldens = oracle.read_json(ROOT / 'doc/fixtures/universe_authority_v0_2/golden.json')
         for vector in goldens:
