@@ -31,6 +31,10 @@ EXPECTED_OPTIONS = 'ef8d9323a6642c84ec2c788e5b0c542a1705c9d41268bbe5fce18ef3a62f
 NATIVE_REFERENCE = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I8-20261102-options-attempt2-resolved/native-inputs-before.json')
 ASSETS = REPO/'doc/evidence/universe-I10/approved-asset-inputs'
 WORLD = 'edgeworld-universe'
+INNER_SECONDS = 230
+OUTER_SECONDS = 270
+HARD_SECONDS = 250
+PRIOR_RUNTIME = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I10B-20261102-runtime-attempt1')
 
 
 def check(value, detail):
@@ -146,8 +150,10 @@ def reap_owned(child, timeout, *, close_stdin):
 
 def aggregate_bytes(output):
     # Stat only for private keys. No key content is read, copied or hashed.
-    roots=[output]+[output.parent/(output.name+suffix) for suffix in ('-authority','-scratch','-owner','-keys')]
-    files=[output.parent/(output.name+suffix) for suffix in ('.stdout','.stderr','.inner.stdout','.inner.stderr')]
+    attempts=[output]
+    if output.name == 'I10B-20261102-runtime-attempt2-topological':attempts.append(PRIOR_RUNTIME)
+    roots=[root for attempt in attempts for root in [attempt]+[attempt.parent/(attempt.name+suffix) for suffix in ('-authority','-scratch','-owner','-keys')]]
+    files=[attempt.parent/(attempt.name+suffix) for attempt in attempts for suffix in ('.stdout','.stderr','.inner.stdout','.inner.stderr')]
     total=0
     for path in [p for root in roots for p in root.rglob('*')]+files:
         try:info=path.lstat()
@@ -168,7 +174,7 @@ def supervise_owned(child,output,*,soft_bytes,hard_bytes,seconds):
             # First ask the exact driver to execute its finally/reap path.
             try:child.terminate()
             except ProcessLookupError:pass
-        if size >= hard_bytes or (stop_at is not None and now-stop_at >= 10) or now-start >= 290:
+        if size >= hard_bytes or (stop_at is not None and now-stop_at >= 10) or now-start >= HARD_SECONDS:
             trigger=trigger or 'hard-stop'
             try:os.killpg(child.pid,signal.SIGKILL)
             except ProcessLookupError:pass
@@ -185,7 +191,7 @@ def supervised_runtime(output):
     with Path(str(output)+'.inner.stdout').open('xb') as stdout,Path(str(output)+'.inner.stderr').open('xb') as stderr:
         child=subprocess.Popen(argv,cwd=REPO,stdout=stdout,stderr=stderr,start_new_session=True)
         try:
-            outcome=supervise_owned(child,output,soft_bytes=224<<20,hard_bytes=256<<20,seconds=240)
+            outcome=supervise_owned(child,output,soft_bytes=224<<20,hard_bytes=256<<20,seconds=INNER_SECONDS)
         finally:
             if child.poll() is None:
                 try:child.terminate()
@@ -195,7 +201,7 @@ def supervised_runtime(output):
                     try:os.killpg(child.pid,signal.SIGKILL)
                     except ProcessLookupError:pass
                     child.wait(timeout=5)
-    write(output/'supervisor.json',dict(outcome,argv=argv,soft_bytes=224<<20,hard_bytes=256<<20,outer_seconds=300))
+    write(output/'supervisor.json',dict(outcome,argv=argv,soft_bytes=224<<20,hard_bytes=256<<20,outer_seconds=OUTER_SECONDS,hard_seconds=HARD_SECONDS,prior_attempt=str(PRIOR_RUNTIME),prior_elapsed_seconds=15.626512289047241))
     # The owned driver has reaped normal children; retain a process-group check.
     group=subprocess.run(['ps','-axo','pid=,pgid=,comm='],capture_output=True,text=True,check=True)
     members=[line for line in group.stdout.splitlines() if len(line.split())>=3 and line.split()[1] == str(child.pid)]
@@ -263,9 +269,8 @@ class Probe:
         self.owned = []
 
     def budget(self):
-        check(time.monotonic()-self.start < 240,'runtime budget exhausted')
-        total = sum(p.stat().st_size for root in (self.output,self.authority,self.scratch)
-                    for p in root.rglob('*') if p.is_file())
+        check(time.monotonic()-self.start < INNER_SECONDS,'runtime budget exhausted')
+        total = aggregate_bytes(self.output)
         check(total < (256<<20)-(32<<20),'raw budget reserve exhausted')
 
     def capture(self,label):
@@ -308,7 +313,7 @@ class Probe:
         with (self.output/'pins.stdout').open('xb') as out,(self.output/'pins.stderr').open('xb') as err:
             child = subprocess.Popen(argv,cwd=REPO,stdout=out,stderr=err)
             registration=dict(child=child,label='pins',reaped=False);self.owned.append(registration)
-            outcome,error=reap_owned(child,min(15,240-(time.monotonic()-self.start)),close_stdin=False)
+            outcome,error=reap_owned(child,min(15,INNER_SECONDS-(time.monotonic()-self.start)),close_stdin=False)
             registration['reaped']=outcome['reaped']
         write(self.output/'pins-process.json',dict(outcome,argv=argv))
         if error:raise error
@@ -340,7 +345,7 @@ class Probe:
     def finish(self):
         if self.child is None:return
         child=self.child
-        outcome,error=reap_owned(child,max(1,min(20,240-(time.monotonic()-self.start))),close_stdin=True)
+        outcome,error=reap_owned(child,max(1,min(20,INNER_SECONDS-(time.monotonic()-self.start))),close_stdin=True)
         registration=next(row for row in self.owned if row['child'] is child)
         registration['reaped']=outcome['reaped']
         tail=child.stdout.read()
@@ -370,7 +375,7 @@ class Probe:
         with (self.output/(prefix+'.request')).open('xb') as stream:stream.write(raw)
         self.child.stdin.write(raw);self.child.stdin.flush()
         while b'\n' not in self.buffer:
-            remaining = 240-(time.monotonic()-self.start)
+            remaining = INNER_SECONDS-(time.monotonic()-self.start)
             check(remaining > 0,'response timeout')
             check(select.select([self.child.stdout],[],[],remaining)[0],'response timeout')
             block = os.read(self.child.stdout.fileno(),65536)
@@ -496,11 +501,11 @@ def main():
         raise TimeoutError('owner watchdog signal '+str(signum))
     signal.signal(signal.SIGTERM,stop_requested)
     signal.signal(signal.SIGALRM,stop_requested)
-    signal.alarm(240 if args.operation == 'runtime-inner' else 120)
+    signal.alarm(INNER_SECONDS if args.operation == 'runtime-inner' else 120)
     write(args.output/'invocation.json',dict(argv=sys.argv,pid=os.getpid(),python=sys.version,executable=sys.executable,
         executable_sha256=sha(Path(sys.executable).resolve()),source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),
         cwd=str(REPO),operation=args.operation,start_unix=time.time(),
-        environment={k:os.environ.get(k) for k in ('PYTHONPATH','PYTHONDONTWRITEBYTECODE','VIRTUAL_ENV')},runtime_seconds=240,outer_seconds=300,raw_bytes_cap=256<<20))
+        environment={k:os.environ.get(k) for k in ('PYTHONPATH','PYTHONDONTWRITEBYTECODE','VIRTUAL_ENV')},runtime_seconds=INNER_SECONDS,outer_seconds=OUTER_SECONDS,raw_bytes_cap=256<<20))
     try:
         source_inputs(args.output)
         if args.operation == 'preflight':preflight(args.output)
