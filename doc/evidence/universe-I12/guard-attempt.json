@@ -1,0 +1,15 @@
+{
+  "card": "I12A-GUARD",
+  "source_commit": "a2b9fa27e7dcdc5c61e2419a89ef2931fc0da755",
+  "argv": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I12/selfcheck.py",
+    "EvidenceTools.test_hash_and_descriptor_path_guards",
+    "EvidenceTools.test_synthetic_archive_refs_and_development"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.07764262496493757,
+  "raw_bytes": 324,
+  "synthetic_only": true
+}
