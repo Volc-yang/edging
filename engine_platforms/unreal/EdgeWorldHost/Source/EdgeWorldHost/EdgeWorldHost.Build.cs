@@ -6,5 +6,6 @@ public class EdgeWorldHost : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "Json", "EdgeWorldRuntime", "InputCore", "ProceduralMeshComponent" });
+		PrivateDependencyModuleNames.AddRange(new[] { "Slate", "SlateCore", "RenderCore" });
 	}
 }

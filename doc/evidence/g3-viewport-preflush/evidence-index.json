@@ -1,0 +1,85 @@
+{
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/G3-H1e-20261101/raw",
+  "raw_index": {
+    "path": "sha256-index.json",
+    "sha256": "09ad773cc9bdddb8bfdeb5b28528bccbdc7b4a33c1dbc3db92e2e489128760d0",
+    "file_count": 396
+  },
+  "summary_sha256": "5211b2c872b9d43376b290f9f9f7700035af73bc19208318e470a7f50e6bc247",
+  "build_exit": 0,
+  "lifetime_test_exit": 0,
+  "readonly_count": 40,
+  "advance_count": 8,
+  "runs": {
+    "A1": {
+      "ue_pid": 30223,
+      "ue_exit": 1,
+      "ue_log_sha256": "137b60e9acfc88f32746c3fa1623415fdb679bf8b46c6c3992dd3fdfdfcb59c0",
+      "first_observed_sha256": "705f3042c7bad81aac540b0ecab0064fc95170878bcc08352472c35725d69846"
+    },
+    "A1-recovery": {
+      "ue_pid": 31986,
+      "ue_exit": 0,
+      "ue_log_sha256": "8f4a30a68fb07e4c393ed85927594483652777fef260674c5d99090fb1a5a178",
+      "first_observed_sha256": "d33c67d8b36d50a07a659b4cf1c3363fb4f5e8593b6e7c2e1218c9e5f671d47a"
+    },
+    "B1": {
+      "ue_pid": 30669,
+      "ue_exit": 0,
+      "ue_log_sha256": "0c7b67d1fd75163ed41c2bc592ce6ae80f1001a1a87634665ec13cf327be44b5",
+      "first_observed_sha256": "311b73425b1538eb2755b0f610cd749db94cce0a2717b4960ed78beff9fb9518"
+    },
+    "B1-recovery": {
+      "ue_pid": 32220,
+      "ue_exit": 0,
+      "ue_log_sha256": "63e2cbf2abede812583072513a3aaee5f4edafcd73edf00210ddfa605336b26d",
+      "first_observed_sha256": "285314aeeba1fcbe438633dee0559910427e7825f67fe2c25792e6351b72218c"
+    },
+    "A2": {
+      "ue_pid": 31076,
+      "ue_exit": 0,
+      "ue_log_sha256": "48ffc7aa16a172409b29aa1c8337fcf468c86c29d3fae76cf31c09506021b81e",
+      "first_observed_sha256": "313cdd6b3ed9fe59edc183e35b4c38ddb59ec71b79661fd1dc8a7a77fc80500f"
+    },
+    "A2-recovery": {
+      "ue_pid": 32428,
+      "ue_exit": 0,
+      "ue_log_sha256": "fa4d9d8a34040f9238f1dbdb834591fc2042c6588304909cf3a971def46eb891",
+      "first_observed_sha256": "a3f9cd1a9720ed0716fe16592d7b3c9056015cb2bd9eba70bdebf31e158cc456"
+    },
+    "B2": {
+      "ue_pid": 31560,
+      "ue_exit": 0,
+      "ue_log_sha256": "a8142f45133dbce3d1945d20e85ce09be7a707c4b35c6f419b9779f0260ab579",
+      "first_observed_sha256": "57ba8d4f64a3792b7a50bcba2b6cc6809fa80f401c72a73440f96c493a4cc3dd"
+    },
+    "B2-recovery": {
+      "ue_pid": 32665,
+      "ue_exit": 0,
+      "ue_log_sha256": "6833e67cc94b62430192c5185ead5fdb49c8e1123b4b6617caeee48c85ec3b2f",
+      "first_observed_sha256": "dafb9429e22dba63736661e68a5b3aeae827cafc0173441da728cefad9929dc0"
+    }
+  },
+  "primary_state": {
+    "A1": {
+      "manifest_sha256": "e7fbbec27c552693fd22698b21623dc6ec2fdae957de7f4c3fc602357f2baa1b",
+      "state_hash": "193c4948adde95d29e1deef4edafac63abbd61abe0fc47d75000af009bd28192",
+      "event_head_hash": "d28b52a610c723ae0538ad9a826052482fed5a649f21ca9b56d248aad3abec0b"
+    },
+    "B1": {
+      "manifest_sha256": "e77e3c465763f56c23d647aa1e688b7fba86fee84936002e23861b570d3f8936",
+      "state_hash": "193c4948adde95d29e1deef4edafac63abbd61abe0fc47d75000af009bd28192",
+      "event_head_hash": "d28b52a610c723ae0538ad9a826052482fed5a649f21ca9b56d248aad3abec0b"
+    },
+    "A2": {
+      "manifest_sha256": "f059cb9e4b094d37b37549790927529eadbf89406c2c2b991f4fd90e291dfaa7",
+      "state_hash": "193c4948adde95d29e1deef4edafac63abbd61abe0fc47d75000af009bd28192",
+      "event_head_hash": "d28b52a610c723ae0538ad9a826052482fed5a649f21ca9b56d248aad3abec0b"
+    },
+    "B2": {
+      "manifest_sha256": "90f99440a246dfb4fa316549ebadd9b59be6419ec8a0623407ebbec56e32d346",
+      "state_hash": "193c4948adde95d29e1deef4edafac63abbd61abe0fc47d75000af009bd28192",
+      "event_head_hash": "d28b52a610c723ae0538ad9a826052482fed5a649f21ca9b56d248aad3abec0b"
+    }
+  }
+}
