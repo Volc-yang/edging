@@ -6,7 +6,7 @@
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：H6B 真实采证进行中，等待一次实际鼠标确认。**Mac 已解锁；H6B 保留 `.worktrees/home-visitor-character` / `codex/home-visitor-character` / `c3a00f8`。自动键盘操作已取得连续多帧运动、实际栏/墙接触、安全阈值恢复、Tab 保位、显式tick0→1→2及历史证据；统筹直接比对23组已完成的前后权威快照一致，但未将工具未送达的鼠标动作计为功能通过。恢复会话 PID57629 已保存鼠标操作前状态，关闭console并暂停自动UI，用户mouse-only请求pending。安装Mac默认高精度路径走GCMouse；一次有界诊断确认工具只送达按钮、无MouseX/Y轴，尚不能判产品鼠标缺陷。不得切低精度路径或以方向键代替鼠标验收。收到用户完成答复后通知owner采after/原生轴/控制旋转/权威哈希与图、恢复日志等级并正常关闭；再封存PR#66供最终审查，随后发布[H6C独立验收](evidence/home-visitor-acceptance-plan.md)。原Reporter55516已由owner关联旧UE52521 ensure归档处理，不能当新产品崩溃。
+**下一动作与资源：H6B 已审查集成，发布 H6C 独立验收。**PR #66 / `a2ae0f1` 通过CI与[最终审查](evidence/home-visitor-character/independent-review.md)，417/417哈希匹配。接受有限可步行实现，真实鼠标物理动作已独立复核，局限和旧reporter干扰保留。原干净任务worktree已清理，source/binary/分支及原始证据保留。H6C按[卡](evidence/home-visitor-acceptance-plan.md)从本次准确统筹提交新建独立worktree，只写harness/报告，不改产品；源码/配置身份不变时可复用已独立审查的人工鼠标case，其余路线另开真实独立运行。旧测试Outer错误已修正，报告器自身退出SIGSEGV及当前清理另见[诊断](evidence/reporter-fixture-popup.md)，该辅助程序缺陷仍开放；不声称全局可靠性根治。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
@@ -23,9 +23,9 @@ UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路
 | H4/H5 | [组合运行](evidence/home-integration/report.md) #54 / `58362f4`；[独立复核](evidence/home-independent-review/report.md) #55 / `0c77e3d` | tick 0/1/2、Genesis 探针、HUD、只读、恢复有限通过；真人体验、UE 原始传输 JSONL 和正式视觉门未过 |
 | H6A | [碰撞](evidence/home-walkable-environment/report.md) #56 / `f848c84` | 构建/NullRHI 胶囊体支撑与阻挡通过，因果代理无碰撞，真实步行组合未验 |
 
-以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。下一活跃任务为 H6B，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 已获恢复放行。
+以上已集成任务均经 CI/审查；所属干净任务 worktree 已清理，分支与 DevSSD 原始证据保留。下一活跃任务为 H6C，迭代未关闭。可见退出可靠性子对话 `01a1952c-5012-76b2-9506-93ade84370b0`；可步行访客子对话 `01a1952c-73e3-7e13-89c1-8986048ea657` 已获恢复放行。
 
-**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。步行路径、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
+**阶段门：**V-HOME 未接受；默认线程原始路径可靠性仍 `fail/open`，当前仅有有限显式旁路。独立访客组合验收、G0 写实参考/性能阈值、H5 真人体验仍待完成。每次运行记录真实进程、构建、Engine initialized、GameMode/Worker、有效观察、首张可见画面、异常时间和退出码；旧 reporter 与工具超时须按真实进程区分，不把 UI 调用返回当成运行通过。未获授权不发送崩溃报告。
 
 ## 抽象 Seed→Tree × Genesis 实现与 G3 集成（部分完成）
 
