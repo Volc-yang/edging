@@ -1,0 +1,21 @@
+{
+  "scope": "H6B owner implementation and finite assigned runtime evidence; ready for independent review",
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H6B-20261101",
+  "index": "final-sha256-index-attempt1.json",
+  "index_sha256": "fa50243935ef59dae5964a2d7585f916bd42185f7e06fc2aef862cece65c9d23",
+  "indexed_files": 417,
+  "indexed_bytes": 13801344,
+  "product_source_commit": "c3a00f8ae400198dd5ceaf79e9e2ed2e3e1cda34",
+  "binary_sha256": "caaeae2ae465cf3e5866221210bed99296d19fd3946aa65b6b506fa145074aa8",
+  "checks": "live-checks-final-attempt1.json",
+  "checks_sha256": "905dbca6646bf755f0d969f85bdcbe05d563df3df636afb4a918ad701d5779c7",
+  "read_only_pairs": 35,
+  "separate_physical_mouse_interval_all_four_files_unchanged": true,
+  "space_commit_pairs": 2,
+  "primary_ue_and_launcher_exit_codes": [0, 0],
+  "recovery_ue_and_launcher_exit_codes": [0, 0],
+  "final_manifest_sha256": "ac1ba272ab92649134dcd3403d5436be04bec10a6a1726579b592253cd558b1c",
+  "manual_mouse_evidence": "user mouse-only completion, changed before/after image and native control rotation, identical position and authority; physical per-axis values not logged",
+  "cleanup_scope": "UE/worker exited; recurrent old UE52521 reporter investigation/cleanup handed to coordinator; no globally clean final inventory claim",
+  "limitations": "finite default-thread preflush development bypass; no root reliability fix, Genesis character physics, final realistic-world quality or H6C integrated acceptance claim"
+}

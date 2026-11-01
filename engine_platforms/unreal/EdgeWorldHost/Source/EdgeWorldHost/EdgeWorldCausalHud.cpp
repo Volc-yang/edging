@@ -42,5 +42,5 @@ void AEdgeWorldCausalHud::DrawHUD()
 		DrawText(Probe, Muted, 28.0f, 96.0f, Font);
 	}
 	DrawText(TEXT("Space advance  |  0/1/2 history  |  H head  |  R refresh"), Muted, 28.0f, 122.0f, Font);
-	DrawText(TEXT("WASD / Q E move  |  Arrow keys look"), Muted, 28.0f, 142.0f, Font);
+	DrawText(TEXT("WASD walk | Mouse / arrows look | Tab overview (Q/E rise/lower)"), Muted, 28.0f, 142.0f, Font);
 }

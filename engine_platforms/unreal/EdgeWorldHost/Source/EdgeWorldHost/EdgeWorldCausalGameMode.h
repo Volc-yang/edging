@@ -26,6 +26,8 @@ public:
 	void ObserveHistory(int64 Tick);
 	void ObserveLatest();
 	void MoveCamera(const FVector& LocalOffset, const FRotator& RotationDelta);
+	void ToggleVisitorView();
+	bool IsOverview() const { return bOverview; }
 private:
 	void StartWorker();
 	void ObserveAt(int64 Tick);
@@ -37,6 +39,7 @@ private:
 	FString WorldId = TEXT("stg-demo");
 	FEdgeWorldCausalHeadGate HeadGate;
 	bool bRequestInFlight = false;
+	bool bOverview = false;
 };
 
 UCLASS()
@@ -44,7 +47,11 @@ class EDGEWORLDHOST_API AEdgeWorldCausalPlayerController : public APlayerControl
 {
 	GENERATED_BODY()
 public:
+	AEdgeWorldCausalPlayerController();
 	virtual void SetupInputComponent() override;
+	virtual void PlayerTick(float DeltaSeconds) override;
+	UFUNCTION(Exec) void VisitorStatus();
+	UFUNCTION(Exec) void VisitorTrace(float Seconds = 3.0f);
 private:
 	void Advance();
 	void History0();
@@ -52,15 +59,6 @@ private:
 	void History2();
 	void Latest();
 	void Refresh();
-	void Forward();
-	void Backward();
-	void Left();
-	void Right();
-	void Up();
-	void Down();
-	void TurnLeft();
-	void TurnRight();
-	void LookUp();
-	void LookDown();
+	void ToggleView();
 	AEdgeWorldCausalGameMode* Mode() const;
 };

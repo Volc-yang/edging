@@ -1,0 +1,19 @@
+{
+  "status": "partial; interactive Metal gates pending Mac unlock",
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/H6B-20261101",
+  "index": "partial-sha256-index-attempt2.json",
+  "index_sha256": "8b3375db55a7e9d2b6ee3fefd3726f59995f1915358fc3f0c85ac72d37b96252",
+  "indexed_files": 36,
+  "final_no_ui_log": "nullrhi-bchkcP9v/ue.log",
+  "final_no_ui_log_sha256": "bf7945f856e52070f16dfea1ea30cbf495d24d9182de6ecf5d004fb6ea22d23d",
+  "final_report": "nullrhi-bchkcP9v/report/index.json",
+  "final_report_sha256": "e77b3978b0dc7ded61d1302e1537a8075b86946c5dc8aa5810730af20ff87f0c",
+  "test_states": ["Success", "Success"],
+  "report_succeeded": 1,
+  "report_succeeded_with_warnings": 1,
+  "report_failed": 0,
+  "process_exit_code": 0,
+  "binary_sha256": "caaeae2ae465cf3e5866221210bed99296d19fd3946aa65b6b506fa145074aa8",
+  "exit_code_record": "run-results-attempt1.json",
+  "live_ui_acceptance": "not run"
+}
