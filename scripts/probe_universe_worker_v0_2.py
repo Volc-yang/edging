@@ -90,6 +90,23 @@ def identity(output):
     return build
 
 
+
+def dependency_order(records, head):
+    """The public archive validator requires references before their users."""
+    by_digest={digest(record):record for record in records}
+    check(len(by_digest) == len(records),'duplicate object digest')
+    active,done,ordered=set(),set(),[]
+    def visit(reference):
+        check(reference in by_digest and reference not in active,'missing/cyclic archive reference')
+        if reference in done:return
+        active.add(reference)
+        for target in sorted(by_digest[reference]['refs'].values()):visit(target)
+        active.remove(reference);done.add(reference);ordered.append(by_digest[reference])
+    visit(head)
+    check(len(done) == len(records),'unreachable object in pinned archive')
+    return ordered
+
+
 def preflight(output):
     build = identity(output)
     assets = decode((ASSETS/'candidate-record.json').read_bytes())
@@ -391,7 +408,7 @@ class Probe:
         blobs = {p.stem:p.read_bytes() for p in (self.authority/'blobs').iterdir() if p.is_file()}
         for p in (self.authority/'objects').glob('*.json'):check(digest(decode(p.read_bytes())) == p.stem,'object digest')
         for h,raw in blobs.items():check(hashlib.sha256(raw).hexdigest() == h,'blob digest')
-        closure = validate_closure(records,self.binding.head,world_id=WORLD,domain_version='0.2',context=self.context,trust_verifier=self.verifier,blobs=blobs)
+        closure = validate_closure(dependency_order(records,self.binding.head),self.binding.head,world_id=WORLD,domain_version='0.2',context=self.context,trust_verifier=self.verifier,blobs=blobs)
         write(self.output/('closure-'+label+'.json'),dict(head=closure.head,records=len(records),raw_blobs={h:len(raw) for h,raw in blobs.items()}))
         return closure
 
