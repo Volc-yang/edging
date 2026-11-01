@@ -13,9 +13,11 @@ Ch.22 directed tests, Ch.29 transport integration evidence. No agent delegation 
 
 Real I12 still requires root dispatch fixing the final **normally merged** source/build, accepted
 G-P1/I10B/I11B/G-B1, trusted owner inputs and actual R12. The candidate budget is two sessions
-combined ≤1200s/2GiB including failed attempts, not actual authorization. `run` explicitly refuses
-to launch. A later dispatch must add/review real orchestration; no shell command is accepted from
-an evidence JSON file. Existing I10B CLI evidence is upstream input, not either I12 session.
+combined ≤1200s/2GiB including failed attempts, not actual authorization. `run` requires an actual
+root card/hash, exact product source, explicit session and `--execute`; without these it refuses.
+The RUNNER preparation card authorizes only mock tests, not supplying an actual card or execution.
+No shell command is accepted from evidence JSON. Existing I10B CLI evidence is upstream input,
+not either I12 session. See [runner-contract.md](runner-contract.md) for the executable boundary.
 
 Both real sessions must use one new authority on DevSSD. Session1 explicitly initializes and
 retains (0,1), then weak physical (1,2), followed by exact committed-closure retry. Both (0,0)
@@ -50,7 +52,8 @@ python3 scripts/run_universe_slice_acceptance.py --output /existing/evidence/bun
 python3 scripts/verify_universe_slice_evidence.py --bundle /existing/evidence/bundle.json
 ```
 
-Default is stdout-only plan. Output files are exclusive mode0600; no directories are created.
+Default is stdout-only plan. Passive output files are exclusive mode0600; no directories are created
+by passive commands. Explicitly authorized run creates its private session evidence directory.
 Metadata uses lstat only, never reads private bytes. Map hashes existing public authority files,
 refuses symlinks/potential key paths, creates no root and does not acquire a writer lease.
 `processes` executes only `/bin/ps` for explicitly supplied PIDs. A missing PID is not an exit code.

@@ -5,6 +5,8 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -194,6 +196,184 @@ class EvidenceTools(unittest.TestCase):
             secret.write_bytes(b'do-not-hash')
             with self.assertRaisesRegex(oracle.Invalid, 'private material'):
                 oracle.authority_map(folder)
+
+
+class RunnerPreparation(unittest.TestCase):
+    """Only mocked Popen/ps/git; never invokes a real launcher or runtime."""
+    def prepared(self, folder):
+        storage = folder / 'synthetic-storage'
+        storage.mkdir(mode=0o700)
+        launcher_output = storage / 'launcher-output'
+        launcher_output.mkdir(mode=0o700)
+        run = launcher_output / 'run-mock'
+        run.mkdir(mode=0o700)
+        slots = {name: {'max_seconds': 50,
+                       'stage_seconds': {'build': 20, 'startup': 10, 'interaction': 15, 'shutdown': 5}}
+                 for name in ('initialize', 'existing')}
+        card = {'run_id': 'synthetic-only', 'world_id': 'synthetic-world', 'product_root': str(folder / 'not-real-product'),
+                'storage_root': str(storage), 'launcher_output_root': str(launcher_output),
+                'authority_root': str(storage / 'never-created-authority'),
+                'ue_root': '/synthetic/no-ue', 'python_executable': '/synthetic/no-python',
+                'sessions': slots, 'budget': {'seconds': 100, 'bytes': 32 * 1024**2,
+                    'cleanup_seconds': 3, 'spent_seconds': 0, 'spent_bytes': 0}}
+        return {'card': card, 'session': 'initialize', 'output': storage / 'sessions/initialize',
+                'card_hash': 'b' * 64, 'source': 'a' * 40, 'prior_seconds': 0,
+                'argv': ['/bin/bash', '/synthetic/launcher', '--launch', '--viewport-preflush',
+                         '--universe', '--owner-config', '/synthetic/private-owner',
+                         '--user-dir', str(storage / 'sessions/initialize/user'), '--universe-initialize']}, run
+
+    def process(self, run, *, running=False):
+        process = mock.Mock()
+        process.pid = 201
+        process.poll.return_value = None if running else 0
+        process.wait.return_value = -15 if running else 0
+        if running:
+            process.terminate.side_effect = lambda: setattr(process.poll, 'return_value', -15)
+        def spawn(argv, **kwargs):
+            self.assertIn('--universe', argv)
+            self.assertIn('--owner-config', argv)
+            self.assertIn('--viewport-preflush', argv)
+            self.assertTrue(kwargs['start_new_session'])
+            kwargs['stdout'].write(('[launcher] evidence=' + str(run) + '\n' +
+                '[launcher] build_succeeded;\n[launcher] process_spawned pid=202; initialization_pending\n' +
+                '[launcher] validated_observation_seen;\n[launcher] ue_exit_code=0\n').encode())
+            kwargs['stdout'].flush()
+            return process
+        return process, spawn
+
+    def owned(self):
+        return {pid: {'pid': pid, 'ppid': parent, 'pgid': 201, 'start': 'synthetic-time', 'argv': argv}
+                for pid, parent, argv in ((201, 100, 'mock-launcher'), (202, 201, 'mock-UE'),
+                                          (203, 202, 'mock-worker'))}
+
+    def test_runner_default_and_authorization_refuse_before_popen(self):
+        with mock.patch.object(driver.subprocess, 'Popen') as popen:
+            for execute, card, source in ((False, None, None), (True, None, 'a' * 40)):
+                with self.assertRaises(oracle.Invalid):
+                    driver.validate_run(card, None, source, 'initialize', execute)
+            with mock.patch.object(sys, 'argv', ['driver']), mock.patch.object(driver, 'emit') as emit:
+                self.assertEqual(driver.main(), 0)
+                self.assertFalse(emit.call_args.args[0]['runtime_authorized'])
+            popen.assert_not_called()
+
+    def test_runner_mock_launcher_parent_wait_and_seal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prepared, run = self.prepared(Path(temporary).resolve())
+            process, spawn = self.process(run)
+            with mock.patch.object(driver.subprocess, 'Popen', side_effect=spawn), \
+                 mock.patch.object(driver, 'observed_processes', side_effect=[self.owned(), {}]), \
+                 mock.patch.object(driver, 'inspect_trace', return_value={
+                     'worker_exits': [{'worker_pid': 203, 'exit_code': 0}],
+                     'transport_count': 1, 'frames': [{'host_pid': 202}]}):
+                receipt = driver.supervise(prepared)
+            self.assertTrue(receipt['normal'])
+            self.assertEqual(receipt['launcher_wait_exit'], 0)
+            self.assertEqual(receipt['ue_pid'], 202)
+            process.wait.assert_called()
+            process.terminate.assert_not_called()
+            self.assertTrue((prepared['output'] / 'session-seal.json').is_file())
+            self.assertFalse(Path(prepared['card']['authority_root']).exists())
+
+    def test_runner_existing_output_refused_without_process(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prepared, _ = self.prepared(Path(temporary).resolve())
+            prepared['output'].parent.mkdir(mode=0o700)
+            prepared['output'].mkdir(mode=0o700)
+            marker = prepared['output'] / 'preserve'
+            marker.write_bytes(b'keep')
+            with mock.patch.object(driver.subprocess, 'Popen') as popen:
+                with self.assertRaises(FileExistsError):
+                    driver.supervise(prepared)
+                popen.assert_not_called()
+            self.assertEqual(marker.read_bytes(), b'keep')
+
+    def test_runner_byte_budget_failure_cleans_only_parent(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prepared, run = self.prepared(Path(temporary).resolve())
+            process, spawn = self.process(run, running=True)
+            with mock.patch.object(driver.subprocess, 'Popen', side_effect=spawn), \
+                 mock.patch.object(driver, 'observed_processes', return_value={}), \
+                 mock.patch.object(driver, 'tree_bytes', return_value=prepared['card']['budget']['bytes']), \
+                 mock.patch.object(driver, 'inspect_trace', return_value={'worker_exits': [], 'transport_count': 0, 'frames': []}), \
+                 mock.patch.object(driver.os, 'kill') as kill:
+                receipt = driver.supervise(prepared)
+            self.assertFalse(receipt['normal'])
+            self.assertIn('byte budget', receipt['failure'])
+            process.terminate.assert_called_once()
+            self.assertEqual(receipt['launcher_wait_exit'], -15)
+            kill.assert_not_called()
+
+    def test_runner_time_budget_failure_uses_actual_wait(self):
+        for elapsed, message in ((100, 'time reserve'), (30, 'stage time exhausted: build')):
+            with self.subTest(elapsed=elapsed), tempfile.TemporaryDirectory() as temporary:
+                prepared, run = self.prepared(Path(temporary).resolve())
+                process, spawn = self.process(run, running=True)
+                with mock.patch.object(driver.subprocess, 'Popen', side_effect=spawn), \
+                     mock.patch.object(driver, 'observed_processes', return_value={}), \
+                     mock.patch.object(driver.time, 'monotonic', side_effect=[0, 0] + [elapsed] * 30), \
+                     mock.patch.object(driver, 'inspect_trace', return_value={'worker_exits': [], 'transport_count': 0, 'frames': []}):
+                    receipt = driver.supervise(prepared)
+                self.assertFalse(receipt['normal'])
+                self.assertIn(message, receipt['failure'])
+                self.assertEqual(receipt['launcher_wait_exit'], -15)
+
+    def test_runner_source_exact_untracked_allowlist_and_mapping_negative(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            product = Path(temporary).resolve()
+            generated = product / 'DefaultInput.ini'
+            generated.write_bytes(b'synthetic-generated')
+            allowed = {'DefaultInput.ini': {'kind': 'file', 'sha256': oracle.file_hash(generated),
+                                            'provenance': 'synthetic source check'}}
+            def git(status):
+                return mock.patch.object(driver.subprocess, 'run', side_effect=[
+                    mock.Mock(stdout='a' * 40 + '\n'), mock.Mock(stdout=status)])
+            with git(b'?? DefaultInput.ini\0'):
+                self.assertEqual(driver.product_identity(product, allowed), 'a' * 40)
+            with git(b'?? other.py\0'), self.assertRaisesRegex(oracle.Invalid, 'unapproved untracked'):
+                driver.product_identity(product, allowed)
+            with git(b' M tracked.cpp\0'), self.assertRaisesRegex(oracle.Invalid, 'tracked product'):
+                driver.product_identity(product, allowed)
+            link = product / 'Saved'
+            link.symlink_to(product / 'unexpected-target')
+            changed = {'Saved': {'kind': 'symlink', 'readlink': '/Volumes/DevSSD/expected',
+                                 'target': '/Volumes/DevSSD/expected', 'provenance': 'synthetic'}}
+            with git(b'?? Saved\0'), self.assertRaisesRegex(oracle.Invalid, 'mapping changed'):
+                driver.product_identity(product, changed)
+            with self.assertRaisesRegex(oracle.Invalid, 'symlink'):
+                driver.tree_bytes(product)
+
+    def test_runner_cleanup_revalidates_identity_before_signaling(self):
+        process = mock.Mock(pid=201)
+        process.poll.return_value = 0
+        process.wait.return_value = 0
+        known = self.owned()
+        changed = dict(known[203], start='different-start', argv='unrelated-process')
+        with mock.patch.object(driver, 'observed_processes', return_value={203: changed}), \
+             mock.patch.object(driver.time, 'monotonic', side_effect=[0, 2]), \
+             mock.patch.object(driver.os, 'kill') as kill:
+            _, actions = driver.cleanup_owned(process, known, 1)
+        self.assertEqual(actions, [])
+        kill.assert_not_called()
+
+    def test_runner_wrong_product_sha_refuses_before_launcher(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary).resolve()
+            now = datetime.now(timezone.utc)
+            card = {'format': 'universe-i12-r12.v1', 'approved': True, 'issuer': 'root',
+                    'scope': 'two-real-ue-owned-sessions', 'allow_forced_cleanup': True,
+                    'issued_at': (now - timedelta(minutes=1)).isoformat(),
+                    'expires_at': (now + timedelta(minutes=1)).isoformat(),
+                    'product_source': 'a' * 40, 'run_id': 'synthetic', 'world_id': 'synthetic-world',
+                    'accepted_gates': {'G-P1': 'synthetic', 'I10B': 'synthetic', 'G-B1': 'synthetic'},
+                    'product_root': str(folder), 'allowed_untracked': {}}
+            path = folder / 'synthetic-card.json'
+            path.write_text(json.dumps(card))
+            path.chmod(0o600)
+            with mock.patch.object(driver, 'product_identity', return_value='b' * 40), \
+                 mock.patch.object(driver.subprocess, 'Popen') as popen:
+                with self.assertRaisesRegex(oracle.Invalid, 'product HEAD'):
+                    driver.validate_run(path, oracle.file_hash(path), 'a' * 40, 'initialize', True)
+                popen.assert_not_called()
 
 
 if __name__ == '__main__':

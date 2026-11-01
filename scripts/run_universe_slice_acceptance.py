@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""I12 passive collection driver. Default prints plan; cannot launch a runtime.
+"""I12 collection driver. Default prints plan; runtime requires an actual R12 card.
 
-Only --output writes, using exclusive creation. Never creates authority, keys,
-launcher config or requests; never sends input, signals, or talks to the worker.
-Actual orchestration awaits a root-issued R12 card and final integrated source.
+Passive commands write only with --output, using exclusive creation. Never creates authority, keys,
+launcher config or requests. Runtime supervisor owns/waits one launcher session;
+UI actions remain external CUA only. No implicit launch or trust provisioning.
 """
 import argparse
 from datetime import datetime, timezone
@@ -11,13 +11,15 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
+import signal
 import stat
 import subprocess
 import sys
 import time
 
 from verify_universe_slice_evidence import (Invalid, authority_map, file_hash,
-                                            read_json, require, safe_path)
+                                            inspect_trace, read_json, require, safe_path)
 
 PLAN = [
     ('bootstrap', 'session1: trusted launcher/worker identity and public pins; registered empty root status may be NOT_READY; no HEAD/scratch/solve before explicit initialize'),
@@ -163,6 +165,387 @@ def collect(spec):
     return value
 
 
+def private_metadata(path, directory=False):
+    """Check deployment ownership; do not read secret/key contents."""
+    path = safe_path(path)
+    info = path.stat()
+    require((path.is_dir() if directory else path.is_file()) and info.st_uid == os.getuid() and
+            stat.S_IMODE(info.st_mode) == (0o700 if directory else 0o600) and
+            (directory or info.st_nlink == 1), 'unsafe private deployment metadata: ' + str(path))
+    return path
+
+
+def product_identity(product, allowed_untracked=None):
+    head = subprocess.run(['git', '-C', str(product), 'rev-parse', 'HEAD'],
+                          capture_output=True, text=True, timeout=5, check=True).stdout.strip()
+    status = subprocess.run(['git', '-C', str(product), 'status', '--porcelain=v1', '-z',
+                             '--untracked-files=all'], capture_output=True,
+                            timeout=5, check=True).stdout
+    allowed = allowed_untracked or {}
+    for relative, spec in allowed.items():
+        parts = Path(relative)
+        require(not parts.is_absolute() and parts.parts and
+                all(p not in ('.', '..') for p in parts.parts) and spec.get('provenance'),
+                'unsafe/unexplained product allowlist entry')
+        path = product / parts
+        if spec['kind'] == 'symlink':
+            require(path.is_symlink() and os.readlink(path) == spec['readlink'] and
+                    str(path.resolve()) == spec['target'] and
+                    spec['target'].startswith('/Volumes/DevSSD/'), 'product output mapping changed')
+        else:
+            require(spec['kind'] == 'file' and file_hash(path) == spec['sha256'],
+                    'generated product artifact hash mismatch')
+    for entry in status.split(b'\0'):
+        if entry:
+            require(entry.startswith(b'?? '), 'tracked product source modification')
+            require(entry[3:].decode('utf-8') in allowed, 'unapproved untracked product path')
+    return head
+
+
+def validate_run(card_path, card_hash, accepted_source, session, execute):
+    """No writes or runtime spawn. The card is honest local-owner authorization."""
+    require(execute is True, 'run requires explicit --execute; no process launched')
+    require(card_path and card_hash and accepted_source, 'run requires R12 card/hash and accepted source')
+    require(session in ('initialize', 'existing'), 'explicit session required')
+    require(re.fullmatch('[0-9a-f]{40}', accepted_source), 'accepted source must be exact SHA40')
+    card_path = private_metadata(card_path)
+    private_metadata(card_path.parent, directory=True)
+    require(file_hash(card_path) == card_hash, 'R12 card hash mismatch')
+    card = read_json(card_path)
+    require(card['format'] == 'universe-i12-r12.v1' and card['approved'] is True and
+            card['issuer'] == 'root' and card['scope'] == 'two-real-ue-owned-sessions' and
+            card['allow_forced_cleanup'] is True, 'missing actual R12 authorization/cleanup policy')
+    now = datetime.now(timezone.utc)
+    issued, expires = (datetime.fromisoformat(card[key].replace('Z', '+00:00'))
+                       for key in ('issued_at', 'expires_at'))
+    require(issued <= now < expires, 'R12 card not currently valid')
+    require(card['product_source'] == accepted_source and
+            re.fullmatch('[a-z][a-z0-9._-]{0,63}', card['run_id']) and
+            re.fullmatch('[a-z][a-z0-9._-]{0,63}', card['world_id']), 'R12 source/run/world binding')
+    require(set(card['accepted_gates']) == {'G-P1', 'I10B', 'G-B1'} and
+            all(type(ref) is str and ref for ref in card['accepted_gates'].values()), 'accepted gate references')
+    product = safe_path(card['product_root'])
+    require(product_identity(product, card['allowed_untracked']) == accepted_source,
+            'product HEAD differs from accepted source')
+    launcher = product / 'scripts/launch_edgeworld_ue_mac.sh'
+    require(file_hash(launcher) == card['launcher_sha256'], 'accepted launcher hash mismatch')
+    storage = private_metadata(card['storage_root'], directory=True)
+    require(str(storage).startswith('/Volumes/DevSSD/'), 'runtime evidence must be on DevSSD')
+    deployment = private_metadata(card['deployment_root'], directory=True)
+    require(deployment.is_relative_to(storage), 'deployment bundle must be persistent inside storage root')
+    require(set(card['inputs']) == {'build', 'options', 'assets', 'asset_audit'}, 'exact four deployment inputs')
+    for spec in card['inputs'].values():
+        path = safe_path(spec['path'])
+        require(path.is_relative_to(deployment) and file_hash(path) == spec['sha256'],
+                'deployed input missing or hash mismatch')
+    authority = safe_path(card['authority_root'])
+    key_dir = private_metadata(card['key_directory'], directory=True)
+    require(authority.is_relative_to(storage) and not storage.is_relative_to(authority) and
+            not key_dir.is_relative_to(storage) and not storage.is_relative_to(key_dir),
+            'authority/key/evidence locations overlap')
+    expected_output = (product / 'engine_platforms/unreal/EdgeWorldHost/Saved/MacLauncher').resolve()
+    launcher_output = safe_path(card['launcher_output_root'])
+    require(expected_output == launcher_output and launcher_output.is_relative_to(storage) and
+            launcher_output.is_dir(), 'existing launcher output mapping must resolve inside DevSSD storage')
+    require(set(card['sessions']) == {'initialize', 'existing'}, 'two session resource slots required')
+    limits = card['budget']
+    require(type(limits['seconds']) is int and 0 < limits['seconds'] <= 1200 and
+            type(limits['bytes']) is int and 0 < limits['bytes'] <= 2 * 1024**3 and
+            type(limits['cleanup_seconds']) is int and 1 <= limits['cleanup_seconds'] <= 30 and
+            type(limits['spent_seconds']) is int and limits['spent_seconds'] >= 0 and
+            type(limits['spent_bytes']) is int and limits['spent_bytes'] >= 0 and
+            sum(s['max_seconds'] for s in card['sessions'].values()) + limits['spent_seconds'] <=
+            limits['seconds'], 'R12 total limits')
+    for slot in card['sessions'].values():
+        require(type(slot['max_seconds']) is int and slot['max_seconds'] > limits['cleanup_seconds'] and
+                set(slot['stage_seconds']) == {'build', 'startup', 'interaction', 'shutdown'} and
+                all(type(n) is int and n > 0 for n in slot['stage_seconds'].values()), 'session/stage limits')
+        owner = private_metadata(slot['owner_config']['path'])
+        private_metadata(owner.parent, directory=True)
+        require(owner.is_relative_to(deployment) and file_hash(owner) == slot['owner_config']['sha256'],
+                'persistent owner config hash mismatch')
+    # These public/binary hashes are input pins, never commands chosen by JSON.
+    require(card['runtime_files'], 'explicit runtime/build identity pins required')
+    for spec in card['runtime_files']:
+        require(file_hash(spec['path']) == spec['sha256'], 'runtime/build identity hash mismatch')
+    require(safe_path(card['python_executable']).is_file() and
+            os.access(card['python_executable'], os.X_OK) and
+            safe_path(card['ue_root']).is_dir(), 'runtime executable/environment unavailable')
+    prior = None
+    if session == 'existing':
+        prior = read_json(storage / 'sessions/initialize/supervisor-exit.json')
+        require(prior['card_sha256'] == card_hash and prior['accepted_source'] == accepted_source and
+                prior['normal'] is True and prior['session'] == 'initialize', 'first session not normally completed')
+        require((authority / 'HEAD.json').is_file(), 'existing revisit requires authority HEAD')
+    else:
+        require(not (authority / 'HEAD.json').exists(), 'initialize session cannot reinitialize existing HEAD')
+    destination = storage / 'sessions' / session
+    require(not destination.exists(), 'session output already exists; no overwrite or hidden retry')
+    require(tree_bytes(storage) + limits['spent_bytes'] + 1024**2 < limits['bytes'],
+            'budget already exhausted before launcher spawn')
+    argv = ['/bin/bash', str(launcher), '--launch', '--viewport-preflush', '--universe',
+            '--owner-config', card['sessions'][session]['owner_config']['path'],
+            '--user-dir', str(destination / 'user')]
+    if session == 'initialize':
+        argv.append('--universe-initialize')
+    return {'card': card, 'card_path': str(card_path), 'card_hash': card_hash,
+            'source': accepted_source, 'session': session, 'output': destination, 'argv': argv,
+            'prior_seconds': prior['cumulative_seconds'] if prior else limits['spent_seconds']}
+
+
+def tree_bytes(root):
+    total = 0
+    for path in safe_path(root).rglob('*'):
+        safe_path(path)
+        if path.is_dir():
+            continue
+        require(path.is_file(), 'nonregular runtime evidence entry')
+        total += path.stat().st_size
+    return total
+
+
+def observed_processes(launcher_pid, known=None):
+    """Keep only descendants or previously owned exact PID/start/argv identities."""
+    result = subprocess.run(['/bin/ps', '-ww', '-axo', 'pid=,ppid=,pgid=,lstart=,command='],
+                            capture_output=True, text=True, timeout=5, check=True)
+    rows = {}
+    for line in result.stdout.splitlines():
+        fields = line.split(None, 8)
+        if len(fields) == 9:
+            pid, parent, group = map(int, fields[:3])
+            rows[pid] = {'pid': pid, 'ppid': parent, 'pgid': group,
+                         'start': ' '.join(fields[3:8]), 'argv': fields[8]}
+    owned = {launcher_pid}
+    while True:
+        expanded = owned | {pid for pid, row in rows.items() if row['ppid'] in owned}
+        if expanded == owned:
+            break
+        owned = expanded
+    for pid, old in (known or {}).items():
+        row = rows.get(pid)
+        if row and (row['start'], row['argv']) == (old['start'], old['argv']):
+            owned.add(pid)
+    return {pid: rows[pid] for pid in owned if pid in rows}
+
+
+def cleanup_owned(process, known, grace):
+    """Failure only: normal launcher TERM forwarding first, exact identities next."""
+    actions = []
+    if process.poll() is None:
+        process.terminate()
+        actions.append({'pid': process.pid, 'signal': 'TERM', 'ownership': 'parent Popen handle'})
+    try:
+        process.wait(timeout=grace)
+    except subprocess.TimeoutExpired:
+        pass
+    remaining = observed_processes(process.pid, known)
+    for pid, row in remaining.items():
+        old = known.get(pid)
+        if pid == process.pid or old is None:
+            continue
+        if (row['start'], row['argv']) == (old['start'], old['argv']):
+            try:
+                os.kill(pid, signal.SIGTERM)
+                actions.append({'pid': pid, 'signal': 'TERM', 'identity': row})
+            except ProcessLookupError:
+                pass
+    if process.poll() is None:
+        process.kill()
+        actions.append({'pid': process.pid, 'signal': 'KILL', 'ownership': 'parent Popen handle'})
+    code = process.wait(timeout=max(1, grace))
+    deadline = time.monotonic() + grace
+    while time.monotonic() < deadline:
+        remaining = observed_processes(process.pid, known)
+        if not remaining:
+            return code, actions
+        time.sleep(.1)
+    for pid, row in observed_processes(process.pid, known).items():
+        old = known.get(pid)
+        if old and pid != process.pid and (row['start'], row['argv']) == (old['start'], old['argv']):
+            try:
+                os.kill(pid, signal.SIGKILL)
+                actions.append({'pid': pid, 'signal': 'KILL', 'identity': row})
+            except ProcessLookupError:
+                pass
+    return code, actions
+
+
+def supervise(prepared):
+    """One live parent owns wait(). No UI, screenshot, solver or trust operations."""
+    card, session, output = prepared['card'], prepared['session'], prepared['output']
+    slot, budget = card['sessions'][session], card['budget']
+    parent = output.parent
+    if not parent.exists():
+        parent.mkdir(mode=0o700)
+    private_metadata(parent, directory=True)
+    output.mkdir(mode=0o700)  # Exclusive: failed attempts can never be overwritten.
+    start = time.monotonic()
+    reason, process, launcher_dir, exit_code = None, None, None, None
+    known, cleanup, worker_exits = {}, [], []
+    stage, stage_started, launcher_text, ue_pid = 'build', start, '', None
+    environment = {k: v for k, v in os.environ.items() if not k.startswith('EDGEWORLD_')}
+    environment.update(UE5_ROOT=card['ue_root'], EDGEWORLD_UNIVERSE_PYTHON=card['python_executable'])
+    emit({'card_sha256': prepared['card_hash'], 'accepted_source': prepared['source'],
+          'run_id': card['run_id'], 'session': session, 'argv': prepared['argv'],
+          'captured_at': utc(), 'supervisor_pid': os.getpid(),
+          'environment': {k: environment[k] for k in ('UE5_ROOT', 'EDGEWORLD_UNIVERSE_PYTHON')}},
+         output / 'launch.json')
+    if Path(card['authority_root']).is_dir():
+        emit(authority_map(card['authority_root']), output / 'authority-before.json')
+    stdout_path = output / 'launcher-stdout.log'
+    event_path = output / 'supervisor-events.jsonl'
+    stdout_fd = os.open(stdout_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    event_fd = os.open(event_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(stdout_fd, 'wb') as stdout, os.fdopen(event_fd, 'w') as events:
+        def record(value):
+            events.write(json.dumps(dict(value, utc=utc(), monotonic_seconds=time.monotonic())) + '\n')
+            events.flush()
+        try:
+            process = subprocess.Popen(prepared['argv'], cwd=card['product_root'], env=environment,
+                                       stdin=subprocess.DEVNULL, stdout=stdout, stderr=subprocess.STDOUT,
+                                       start_new_session=True)
+            record({'event': 'spawn', 'launcher_pid': process.pid, 'supervisor_pid': os.getpid()})
+            offset = 0
+            while True:
+                now = time.monotonic()
+                elapsed = now - start
+                size = tree_bytes(card['storage_root']) + budget['spent_bytes']
+                require(size + 1024**2 <= budget['bytes'], 'raw byte budget/reserve exhausted')
+                require(elapsed + prepared['prior_seconds'] + budget['cleanup_seconds'] < budget['seconds'] and
+                        elapsed + budget['cleanup_seconds'] < slot['max_seconds'], 'session/total time reserve exhausted')
+                require(now - stage_started < slot['stage_seconds'][stage], 'stage time exhausted: ' + stage)
+                with stdout_path.open('rb') as stream:
+                    stream.seek(offset)
+                    block = stream.read(1024**2)
+                offset += len(block)
+                launcher_text += block.decode('utf-8', errors='replace')
+                require(len(launcher_text) <= 16 * 1024**2, 'launcher control-log cap')
+                found = re.search(r'\[launcher\] evidence=([^\r\n]+)', launcher_text)
+                if found:
+                    candidate = safe_path(found.group(1))
+                    require(candidate.parent == Path(card['launcher_output_root']) and candidate.is_dir(),
+                            'launcher reported unowned evidence directory')
+                    require(launcher_dir is None or launcher_dir == candidate, 'launcher evidence identity changed')
+                    launcher_dir = candidate
+                found = re.search(r'\[launcher\] process_spawned pid=([0-9]+);', launcher_text)
+                if found:
+                    ue_pid = int(found.group(1))
+                rows = observed_processes(process.pid, known)
+                known.update(rows)
+                record({'event': 'poll', 'stage': stage, 'elapsed_seconds': elapsed,
+                        'evidence_bytes': size, 'owned_processes': list(rows.values()),
+                        'launcher_evidence': str(launcher_dir) if launcher_dir else None})
+                next_stage = stage
+                if stage == 'build' and '[launcher] build_succeeded;' in launcher_text:
+                    next_stage = 'startup'
+                if stage in ('build', 'startup') and '[launcher] validated_observation_seen;' in launcher_text:
+                    next_stage = 'interaction'
+                if launcher_dir and (launcher_dir / 'ue.log').is_file():
+                    with (launcher_dir / 'ue.log').open('rb') as log:
+                        log.seek(max(0, (launcher_dir / 'ue.log').stat().st_size - 65536))
+                        if b'LogExit: Preparing to exit.' in log.read(65536):
+                            next_stage = 'shutdown'
+                if next_stage != stage:
+                    stage, stage_started = next_stage, now
+                    record({'event': 'stage', 'stage': stage})
+                if process.poll() is not None:
+                    exit_code = process.wait()  # Parent-owned actual wait result, never ps inference.
+                    with stdout_path.open('rb') as stream:
+                        stream.seek(offset)
+                        tail = stream.read(16 * 1024**2 + 1)
+                    require(len(launcher_text) + len(tail) <= 16 * 1024**2, 'launcher final log cap')
+                    launcher_text += tail.decode('utf-8', errors='replace')
+                    break
+                time.sleep(.25)
+        except BaseException as error:
+            reason = type(error).__name__ + ': ' + str(error)
+            record({'event': 'failure', 'reason': reason})
+            if process is not None:
+                try:
+                    exit_code, cleanup = cleanup_owned(process, known, max(1, budget['cleanup_seconds'] // 3))
+                except (OSError, subprocess.SubprocessError, Invalid) as cleanup_error:
+                    reason += '; cleanup error: ' + str(cleanup_error)
+                    if process.poll() is None:
+                        process.kill()  # Only our actual Popen child; no PID discovery fallback.
+                    try:
+                        exit_code = process.wait(timeout=1)
+                    except subprocess.TimeoutExpired:
+                        reason += '; parent wait incomplete'
+            record({'event': 'cleanup', 'actions': cleanup, 'launcher_wait_exit': exit_code})
+    if launcher_dir is None:
+        found = re.search(r'\[launcher\] evidence=([^\r\n]+)', launcher_text)
+        if found:
+            candidate = safe_path(found.group(1))
+            if candidate.parent == Path(card['launcher_output_root']) and candidate.is_dir():
+                launcher_dir = candidate
+            else:
+                reason = reason or 'final launcher evidence directory outside pinned root'
+    if ue_pid is None:
+        found = re.search(r'\[launcher\] process_spawned pid=([0-9]+);', launcher_text)
+        ue_pid = int(found.group(1)) if found else None
+    if launcher_dir:
+        try:
+            trace = inspect_trace(launcher_dir / 'trace')
+            worker_exits = trace['worker_exits']
+            require(len(worker_exits) == trace['transport_count'] and trace['frames'] and
+                    all(f['host_pid'] == ue_pid for f in trace['frames']), 'trace/UE ownership binding')
+        except (Invalid, OSError, ValueError, KeyError, TypeError) as error:
+            reason = reason or 'worker lifecycle: ' + str(error)
+    if ue_pid not in known or (process is not None and known[ue_pid]['ppid'] != process.pid):
+        reason = reason or 'UE child identity not observed under launcher'
+    match = re.search(r'\[launcher\] ue_exit_code=(-?[0-9]+)', launcher_text)
+    ue_exit = int(match.group(1)) if match else None
+    try:
+        remaining = observed_processes(process.pid, known) if process is not None else {}
+    except (OSError, subprocess.SubprocessError, Invalid) as error:
+        remaining = {}
+        reason = reason or 'final process observation failed: ' + str(error)
+    if remaining:
+        reason = reason or 'owned processes remain after launcher wait'
+        try:
+            _, actions = cleanup_owned(process, known, max(1, budget['cleanup_seconds'] // 3))
+            cleanup.extend(actions)
+            remaining = observed_processes(process.pid, known)
+        except (OSError, subprocess.SubprocessError, Invalid) as error:
+            reason += '; final owned cleanup failed: ' + str(error)
+    if Path(card['authority_root']).is_dir():
+        try:
+            emit(authority_map(card['authority_root']), output / 'authority-after.json')
+        except (OSError, Invalid) as error:
+            reason = reason or 'authority final map failed: ' + str(error)
+    elapsed = time.monotonic() - start
+    if elapsed + prepared['prior_seconds'] > budget['seconds'] or elapsed > slot['max_seconds']:
+        reason = reason or 'final time budget exceeded'
+    final_bytes = tree_bytes(card['storage_root']) + budget['spent_bytes']
+    if final_bytes + 1024**2 > budget['bytes']:
+        reason = reason or 'final byte budget/reserve exceeded'
+    normal = (reason is None and exit_code == 0 and ue_exit == 0 and ue_pid is not None and
+              len(worker_exits) >= 1 and all(e['exit_code'] == 0 for e in worker_exits))
+    receipt = {'format': 'universe-i12-supervisor-exit.v1', 'card_sha256': prepared['card_hash'],
+               'accepted_source': prepared['source'], 'run_id': card['run_id'], 'session': session,
+               'world_id': card['world_id'], 'authority_root': card['authority_root'],
+               'supervisor_pid': os.getpid(), 'launcher_pid': process.pid if process else None,
+               'launcher_wait_exit': exit_code, 'ue_pid': ue_pid, 'ue_exit_code': ue_exit,
+               'ue_exit_source': 'actual launcher parent wait status line; correlate pinned launcher source/raw',
+               'worker_exits': worker_exits, 'normal': normal, 'failure': reason,
+               'forced_cleanup': cleanup, 'remaining_owned': list(remaining.values()),
+               'elapsed_seconds': elapsed, 'cumulative_seconds': prepared['prior_seconds'] + elapsed,
+               'evidence_bytes_before_receipt_seal': final_bytes, 'captured_at': utc(),
+               'launcher_evidence': str(launcher_dir) if launcher_dir else None,
+               'verdict': 'supervision only; UI/G-B2 require independent evidence review'}
+    emit(receipt, output / 'supervisor-exit.json')
+    indexed = []
+    for directory in (output, launcher_dir):
+        if directory:
+            for path in sorted(directory.rglob('*')):
+                if path.is_file():
+                    indexed.append({'path': str(path), 'bytes': path.stat().st_size, 'sha256': file_hash(path)})
+    emit({'format': 'universe-i12-session-seal.v1', 'captured_at': utc(), 'files': indexed,
+          'note': 'exclusive snapshot at supervisor close; later screenshots need a new final bundle'},
+         output / 'session-seal.json')
+    return receipt
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='exclusive new evidence file; parent must exist')
@@ -186,7 +569,12 @@ def main():
     wait.add_argument('--seconds', type=float, default=10)
     collection = commands.add_parser('collect')
     collection.add_argument('--spec', type=Path, required=True)
-    commands.add_parser('run', help='reserved, disabled until actual R12 implementation dispatch')
+    run = commands.add_parser('run', help='one parent-owned session; explicit actual R12 execution only')
+    run.add_argument('--r12-card', type=Path)
+    run.add_argument('--card-sha256')
+    run.add_argument('--accepted-source')
+    run.add_argument('--session', choices=('initialize', 'existing'))
+    run.add_argument('--execute', action='store_true')
     args = parser.parse_args()
     try:
         if args.command in (None, 'plan'):
@@ -209,9 +597,12 @@ def main():
         elif args.command == 'collect':
             value = collect(args.spec)
         else:
-            raise Invalid('run disabled: requires later root dispatch, final merged tree and actual R12; no process was launched')
+            require(args.output is None, 'run uses its card-bound exclusive directory, not --output')
+            prepared = validate_run(args.r12_card, args.card_sha256, args.accepted_source,
+                                    args.session, args.execute)
+            value = supervise(prepared)
         emit(value, args.output)
-        return 2 if value.get('matched') is False else 0
+        return 2 if value.get('matched') is False or value.get('normal') is False else 0
     except (Invalid, OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         print(json.dumps({'status': 'error', 'error': str(error)}), file=sys.stderr)
         return 1
