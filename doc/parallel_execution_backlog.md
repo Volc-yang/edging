@@ -6,7 +6,7 @@
 
 UE 开发入口有限门已通过，沿明确 `--launch --viewport-preflush` 路径恢复 H6B；原默认关闭路径可靠性仍开放。总目标仍是可进入、观察抽象 Seed→Tree 因果发展、退出后重访的持久 4D 世界；Genesis 为必需路径，seed/tree 非植物。集成分支 `codex/plan-consolidation`，方案树见 [V-HOME PDCA](visitable_world_iteration_plan.md)。主工作区用户改动未触碰，UE5 发布版插件/适配优先，未改引擎源码。
 
-**下一动作与资源：H6B 已获解锁后继续通知。**用户确认 Mac 已解锁，系统锁定标志已消失。保留 `.worktrees/home-visitor-character` / `codex/home-visitor-character`、准确实现 `c3a00f8`、草稿 PR #66，不变更基线/已封存产品源码。代码审查、CI、两项定向测试及36/36部分证据哈希已完成；开始新的标准 `--launch --viewport-preflush` run/attempt，补真实键鼠/Metal、逐项权威只读、正常UI关闭及同目录恢复。现场新见 reporter PID55516，最新ensure为旧夹具 UE52521 的 LocalPlayer Outer 错误，需先精确关联并归档/清理匹配对象，不能当成新产品崩溃。原访客子对话独占构建/GPU；真实门未过前保持草稿、不合并。通过后审查H6B并发布[H6C独立验收](evidence/home-visitor-acceptance-plan.md)。
+**下一动作与资源：H6B 真实采证进行中，等待一次实际鼠标确认。**Mac 已解锁；H6B 保留 `.worktrees/home-visitor-character` / `codex/home-visitor-character` / `c3a00f8`。自动键盘操作已取得连续多帧运动、实际栏/墙接触、安全阈值恢复、Tab 保位、显式tick0→1→2及历史证据；统筹直接比对23组已完成的前后权威快照一致，但未将工具未送达的鼠标动作计为功能通过。恢复会话 PID57629 已保存鼠标操作前状态，关闭console并暂停自动UI，用户mouse-only请求pending。安装Mac默认高精度路径走GCMouse；一次有界诊断确认工具只送达按钮、无MouseX/Y轴，尚不能判产品鼠标缺陷。不得切低精度路径或以方向键代替鼠标验收。收到用户完成答复后通知owner采after/原生轴/控制旋转/权威哈希与图、恢复日志等级并正常关闭；再封存PR#66供最终审查，随后发布[H6C独立验收](evidence/home-visitor-acceptance-plan.md)。原Reporter55516已由owner关联旧UE52521 ensure归档处理，不能当新产品崩溃。
 
 | 节点 | 已审查集成 / 证据 | 当前结论与限制 |
 | --- | --- | --- |
