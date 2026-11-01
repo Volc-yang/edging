@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（I0–I7/I0E接受；v0.2核心扩展与UE解析并行）
+## 当前入口：I 实现轮执行中（E1/E2接受；E3持久化与I9S解析修订并行）
 
 [架构树](universe_architecture_design_plan.md) v0.1 的 U1–U9 已分别独立 PR、非作者审查、最终 CI 与局部集成设计门接受；仅设计门pass，所有新世界运行门planned。主工作区用户改动未触碰，任务干净worktree均已清理，分支/报告保留。
 
@@ -21,7 +21,9 @@ I1 PR #78/source `ae4fd16`/merge `efba6fa`、I2 PR #79/source `232e0a7`/merge `d
 
 I3已由PR #81/source `9a27207`/merge `69daec3`接受，22tests/CI、root静态review与375/375原始字节摘要一致，[复核](design/universe-i3-coordination-review.md)；干净worktree已清理。I5 PR #82/source `49f7b7a`/merge `09ed3bb`接受，16tests/CI与488/488原始字节摘要一致，[复核](design/universe-i5-coordination-review.md)，干净worktree已清理；I4 PR #83/source `5fcd8d3`/merge `607e550`接受，首loader失败保留、唯一attempt2共78tests通过，[复核](design/universe-i4-coordination-review.md)；干净worktree清理。I6 PR #85/source `d8636d6`/merge `3e02376`已接受：本地20cases/85child/12真SIGKILL全回收，首harness失败保留，final CI与root旧output拒绝check通过，G-S1有限pass。I0E PR #84/source `f13a73d`/merge `9ad01c3`独立67golden/6MAC/4root/5proof复算及最终CI通过，G-C0.2格式/API门接受；[复核与后继树](design/universe-i0e-i6-coordination-review.md)。干净worktree已清理、原件/分支保留。
 
-当前E1(u7) codec/records/trust、E2(u2) ownership扩展、I9(u9) UE严格parser从同一`3e02376`并行；E2静态`aaef012`等待E1接受后实际Check。I9获限定R-B 15min/256MiB build+NullRHI准入，尚未build；无真实GPU/PIE许可。E3 Store→E4/E5 commands/recovery→非作者E6扩展故障接受后才接I8真实Genesis/I10 worker/Host/I12组合。精确路径/资源/Goal工具限制见[I登记](universe_implementation_register.md)。S_records30不冒称U8 S_typed/G-Q，实际asset依赖/defaults/build与完整typed计量仍须真实冻结；目前没有新域真实物理/UE组合证据。总计划/V-HOME和产品质量门开放。
+E1 PR #87/source `4a69788`/merge `3d6c161`（116tests、i6 review、finalCI、root958raw）与E2 PR #88/source `c3b02ad`/merge `accbe3b`（首alias测试错误保留、唯一12case重跑pass、finalCI/root review）已接受，干净worktree已清理；[复核](design/universe-e1-e2-coordination-review.md)。
+
+当前E3(u2)在准确accbe3b实现Store raw事务；E4(u7)只读准备，等E3后与E5推进，再非作者E6，之后I8/I10/Host/I12。I9 PR86经I9R启动入口+Mac系统SHA适配后曾Build/NullRHI过，但独立review发现大小写/Unicode scalar问题，I9S已按原3文件重开，尚未合入；原失败/成功原件保留，不改引擎。精确状态/正式资源/Goal工具限制见[I登记](universe_implementation_register.md)。目前仍无新域真实物理/UE组合证据；S_records不是U8 S_typed，G-Q/实际资产/defaults/产品门保持开放。
 
 ## V-HOME 可访问世界纵切（进行中）
 
