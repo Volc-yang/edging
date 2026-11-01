@@ -144,7 +144,11 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.providers[0].calls,1)
         self.assertEqual(self.call('status')['revision'],3)
         self.assertEqual(one['command_records'],self.call('prepare',principal=self.session.principal,
-            proposal=one['command_records'][0],intent=one['command_records'][1],approval_id='other-approval',command_record_id='other-command')['command_records'])
+            proposal=one['command_records'][0],intent=one['command_records'][1],approval_id='approval-one',command_record_id='command-record-one')['command_records'])
+        with self.assertRaises(ContractError) as conflict:
+            self.call('prepare',principal=self.session.principal,proposal=one['command_records'][0],
+                intent=one['command_records'][1],approval_id='other-approval',command_record_id='other-command')
+        self.assertEqual(conflict.exception.code,'COMMAND_CONFLICT')
         for tick,revision in ((0,0),(0,1),(1,2),(1,3)):
             self.call('observe',tick=tick,revision=revision,watermark=revision)
         self.assertEqual(b['manifest'],self.advance(two)['manifest'])
@@ -155,6 +159,64 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(status,self.call('status'))
         self.assertEqual(b['manifest'],self.advance(two)['manifest'])
         self.assertEqual(self.providers[-1].initializes+self.providers[-1].calls,0)
+
+    def test_stale_new_intent_rejected_but_retry_survives_h64(self):
+        self.initialize()
+        stale = self.prepare('stale')
+        first = self.prepare('first')
+        original = self.advance(first)
+        with self.assertRaises(ContractError): self.advance(stale)
+        for index in range(2,64):
+            self.advance(self.prepare('retain-'+str(index)))
+        self.assertEqual(self.call('status')['revision'],63)
+        with self.assertRaises(ContractError): self.prepare('overflow')
+        self.assertEqual(self.advance(first)['manifest'],original['manifest'])
+        self.assertEqual(self.providers[0].calls,0)
+
+    def test_actual_lost_response_recovery_does_not_reexecute_physics(self):
+        self.initialize()
+        command = self.prepare('lost','physics_step')
+        def fail(phase,context):
+            if phase == 'W6_AFTER_REPLACE':
+                raise OSError('synthetic lost response')
+        self.store._fault = fail
+        request = self.request('advance',principal=self.session.principal,
+            command_records=command['command_records'],command_digest=command['command_digest'])
+        raw = json.dumps(request).encode()+b'\n'
+        out = io.BytesIO()
+        self.assertEqual(serve(self.runtime,io.BytesIO(raw+raw),out,io.StringIO()),3)
+        self.assertEqual(json.loads(out.getvalue())['error']['commit_status'],'unknown')
+        self.assertEqual(self.providers[0].calls,1)
+        self.runtime.close()
+        self.runtime = self.new_runtime(replace(self.owner,mode='existing'))
+        self.store = self.runtime.store
+        self.assertIsNone(self.runtime.startup_error)
+        recovered = self.advance(command)
+        self.assertEqual(recovered['commit_status'],'confirmed')
+        self.assertEqual(self.call('status')['tick'],1)
+        self.assertEqual(self.providers[-1].calls,0)
+
+    def test_control_fd_isolated_from_python_and_native_stdout(self):
+        code = """
+import os,sys
+from unittest import mock
+from engine.universe_authority import worker
+owner=object()
+def noisy(*args,**kwargs):
+    print('python-noise',flush=True)
+    os.write(1,b'native-noise\\n')
+    return object()
+def clean(runtime,reader,writer,diagnostics):
+    writer.write(b'{"protocol":true}\\n');return 0
+with mock.patch.object(worker,'load_owner_config',return_value=owner), mock.patch.object(worker,'load_inputs',return_value={}), mock.patch.object(worker,'open_runtime',side_effect=noisy), mock.patch.object(worker,'serve',side_effect=clean):
+    try: worker.main(['--owner-config','/unused'])
+    except AttributeError: pass
+"""
+        child = subprocess.run([sys.executable,'-c',code],capture_output=True,timeout=10)
+        self.assertEqual(child.returncode,0,child.stderr)
+        self.assertEqual(child.stdout,b'{"protocol":true}\n')
+        self.assertIn(b'python-noise',child.stderr)
+        self.assertIn(b'native-noise',child.stderr)
 
     def test_channel_errors_unknown_stops_and_no_fallback_id(self):
         self.initialize()

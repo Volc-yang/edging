@@ -353,7 +353,23 @@ def enumerate_world(closure):
             for child in records[reference]['refs'].values():
                 visit(child)
     visit(records[closure.head]['refs']['state'])
-    return dict(json_records=len(records),current_json_records=len(current),typed_slots=36,
+    typed = []
+    for reference in sorted(current):
+        r = records[reference]
+        kind, body = r['kind'], r['body']
+        paths = []
+        if kind in ('existence','place','physics_config','unit_transform','projection'):
+            paths = ['']
+        elif kind in ('route','watercourse'):
+            paths = [''] + ['/body/polyline_cm/segment/'+str(i) for i in range(len(body['polyline_cm'])-1)]
+        elif kind == 'physics_binding':
+            paths = ['/body/bindings/'+str(i) for i in range(len(body['bindings']))]
+        elif kind == 'world_manifest':
+            paths = ['', '/body/physics_rule', '/body/revision_rule']
+        elif kind == 'state':
+            paths = ['/body/development_mm','/body/budget','/body/random_cursor']
+        typed.extend(dict(record=reference,kind=kind,path=path) for path in paths)
+    return dict(json_records=len(records),current_json_records=len(current),typed_slots=len(typed),typed_locators=typed,
                 kinds=dict(sorted(counts.items())),
                 record_bytes=sum(len(canonical(r)) for r in records.values()),
                 raw_blobs=len(closure.binary_refs),
