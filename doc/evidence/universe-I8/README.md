@@ -1,6 +1,6 @@
 # I8 — explicit Genesis candidate provider and finite physical probe
 
-Status: implementation prepared; The first pre-build options export succeeded, the first physical initialization failed BUILD, and a separately approved zero-step diagnostic exposed six post-build public default differences. Physical sampling has not passed. G-P1 remains open. Base `13899a2`; task ownership is `genesis_adapter.py`, `probe_universe_genesis_v0_1.py` and this evidence directory. E7's accepted fixed-inertia-mass revision must be merged by ordinary merge before physical execution.
+Status: isolated physical matrix **PASS** at source `9270349fab51f8495cfc8d39042496ce451a2522`; see [execution report](report.md). Provider.propose/full-world/UE integration remains unexecuted. Base `13899a2`; task ownership is `genesis_adapter.py`, `probe_universe_genesis_v0_1.py` and this evidence directory. E7 fixed-inertia-mass revision was integrated by ordinary merge before physical execution.
 
 ## Owner bootstrap and identity
 
