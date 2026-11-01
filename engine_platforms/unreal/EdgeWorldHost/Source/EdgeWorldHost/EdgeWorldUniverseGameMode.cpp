@@ -89,7 +89,7 @@ void AEdgeWorldUniverseGameMode::OnControl(const FString& Op,const FUniverseRequ
  if(R.RawJsonl.IsEmpty()||!FEdgeWorldUniverseControlParser::Verify(R.RawJsonl,E,C,Error)){ChannelFailed(R.RawJsonl.IsEmpty()?R.ErrorCode:Error);return;}
  if(!C.bSuccess)
  {
-  if(Op==TEXT("status")&&C.ErrorCode==TEXT("UNINITIALIZED")&&bExplicitInitialize&&!bInitializeSent&&!Session.bUnknown)
+  if(Op==TEXT("status")&&Session.CanInitialize(C.ErrorCode,bExplicitInitialize,bInitializeSent))
   {bInitializeSent=true;SendControl(TEXT("initialize"),TEXT("{")+BasePayload()+TEXT(",\"test_profile\":\"composite-rigid-support.v0.2\"}"),EUniverseClientPhase::AwaitStatus);return;}
   bool Unknown=C.CommitStatus!=TEXT("not_attempted")||Session.bUnknown;if(!Unknown&&Op!=TEXT("status"))Session.ClearPending();Reject(C.ErrorCode,Unknown);return;
  }

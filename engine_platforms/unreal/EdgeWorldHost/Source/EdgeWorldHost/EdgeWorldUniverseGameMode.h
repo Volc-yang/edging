@@ -33,6 +33,7 @@ struct FEdgeWorldUniverseSession
   Generation=ProcessGeneration;bBusy=false;return true;
  }
  bool CanWrite() const { return !bFocusNeedsRelease&&!bBusy&&!bUnknown&&!bHistory&&bHasObservation&&bAssetsValidated&&Phase==EUniverseClientPhase::Latest&&Head.StorageState==TEXT("ready")&&Observation.Manifest==Head.Head; }
+ bool CanInitialize(const FString& Error,bool Explicit,bool AlreadySent)const{return Explicit&&!AlreadySent&&!bUnknown&&(Error==TEXT("UNINITIALIZED")||Error==TEXT("NOT_READY"));}
  bool CanRetryLast()const{return CanWrite()&&!LastCommandRecords.IsEmpty()&&!LastCommandDigest.IsEmpty();}
  bool CanSelectExact(int64 Tick,int64 Revision,int64 Watermark)const{return !bBusy&&!Head.Head.IsEmpty()&&Tick>=0&&Revision>=0&&Watermark==Revision&&Tick<=HeadTick&&Revision<=HeadRevision&&Revision<=9007199254740991LL;}
  bool SpacePressed(){if(bFocusNeedsRelease||bSpaceHeld)return false;bSpaceHeld=true;return CanWrite();}

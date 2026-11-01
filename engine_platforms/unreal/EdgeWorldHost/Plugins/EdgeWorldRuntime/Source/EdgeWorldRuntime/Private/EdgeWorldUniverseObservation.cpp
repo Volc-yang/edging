@@ -571,6 +571,14 @@ static bool Head(FValidator& Vld,const V& X,const FEdgeWorldUniverseContext& Exp
 }
 static bool SameRecord(FValidator& Vld,const V& R,const FString& K,const FString& World)
 {return Vld.Record(R)&&Vld.Require(SameText(Kind(R),K)&&SameText(Str(Get(R,TEXT("world_id"))),World),TEXT("DOMAIN"));}
+static bool ResultRecord(FValidator& Vld,const V& R,const FString& World,const FString& Command)
+{
+ return SameRecord(Vld,R,TEXT("result"),World)
+  &&Vld.Require(SameText(Str(Get(Refs(R),TEXT("command"))),Command),TEXT("REFERENCE"))
+  &&Vld.Require(Eq(Get(Body(R),TEXT("watermark")),Get(Body(R),TEXT("revision")))
+    &&Num(Get(Body(R),TEXT("tick")))<=Num(Get(Body(R),TEXT("revision"))),TEXT("WATERMARK"));
+}
+
 }
 
 bool FEdgeWorldUniverseControlParser::PublicPins(TArrayView<const uint8> Raw,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error,bool Fixture)
@@ -621,7 +629,7 @@ bool FEdgeWorldUniverseControlParser::Verify(TArrayView<const uint8> Raw,const F
   C.CommandRecordsJson=Canon(A);C.CommandDigest=CH;V Committed=Get(P,TEXT("committed_result"));
   if(!Is(Committed,FValue::Null))
   {
-   if(!SameRecord(Vld,Committed,TEXT("result"),E.Pins.Context.WorldId)||!Vld.Require(SameText(Str(Get(Refs(Committed),TEXT("command"))),CH)&&Eq(Get(Body(Committed),TEXT("command_id")),Get(Body(Intent),TEXT("command_id"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Committed);
+   if(!ResultRecord(Vld,Committed,E.Pins.Context.WorldId,CH)||!Vld.Require(SameText(Str(Get(Refs(Committed),TEXT("command"))),CH)&&Eq(Get(Body(Committed),TEXT("command_id")),Get(Body(Intent),TEXT("command_id"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Committed);
   }
  }
  else if(SameText(E.Operation,TEXT("advance"))||SameText(E.Operation,TEXT("initialize")))
@@ -629,7 +637,7 @@ bool FEdgeWorldUniverseControlParser::Verify(TArrayView<const uint8> Raw,const F
   if(!Vld.Keys(P,TEXT("manifest,result,commit_status,head_binding"))||!Vld.Hash(Get(P,TEXT("manifest")))||!Vld.Require(SameText(Str(Get(P,TEXT("commit_status"))),TEXT("confirmed")),TEXT("SCHEMA")))return Fail();
   C.Manifest=Str(Get(P,TEXT("manifest")));C.CommitStatus=TEXT("confirmed");V Result=Get(P,TEXT("result"));
   if(SameText(E.Operation,TEXT("initialize"))){if(!Vld.Require(Is(Result,FValue::Null),TEXT("SCHEMA")))return Fail();}
-  else {if(!SameRecord(Vld,Result,TEXT("result"),E.Pins.Context.WorldId)||!Vld.Require(LowerHex(E.CommandDigest,64)&&SameText(Str(Get(Refs(Result),TEXT("command"))),E.CommandDigest)&&Eq(Get(Body(Result),TEXT("revision")),Get(Body(Result),TEXT("watermark"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Result);}
+  else {if(!ResultRecord(Vld,Result,E.Pins.Context.WorldId,E.CommandDigest)||!Vld.Require(LowerHex(E.CommandDigest,64)&&SameText(Str(Get(Refs(Result),TEXT("command"))),E.CommandDigest)&&Eq(Get(Body(Result),TEXT("revision")),Get(Body(Result),TEXT("watermark"))),TEXT("REFERENCE")))return Fail();C.CommittedResultJson=Canon(Result);}
  }
  else {Vld.Require(false,TEXT("OPERATION"));return Fail();}
  C.bSuccess=true;Out=MoveTemp(C);return true;
@@ -639,16 +647,28 @@ bool FEdgeWorldUniverseControlParser::Request(const FString& Op,const FString& R
 {
  using namespace EdgeUniverse;Out.Reset();Error.Reset();FValidator Vld;V P=ParseText(PayloadJson);
  const TCHAR* Keys=SameText(Op,TEXT("status"))?TEXT("domain,version,world_id"):SameText(Op,TEXT("observe"))?TEXT("domain,version,world_id,tick,revision,watermark"):SameText(Op,TEXT("initialize"))?TEXT("domain,version,world_id,test_profile"):SameText(Op,TEXT("prepare"))?TEXT("domain,version,world_id,principal,proposal,intent,approval_id,command_record_id"):SameText(Op,TEXT("advance"))?TEXT("domain,version,world_id,principal,command_records,command_digest"):nullptr;
- if(!Keys||!Id(RequestId)||!Vld.Keys(P,Keys)||!SameText(Str(Get(P,TEXT("domain"))),TEXT("edgeworld.universe.authority"))||!SameText(Str(Get(P,TEXT("version"))),TEXT("0.2"))||!Id(Str(Get(P,TEXT("world_id")))){Error=TEXT("REQUEST");return false;}
- if(SameText(Op,TEXT("observe"))&&(!Vld.Uint(Get(P,TEXT("tick")))||!Vld.Uint(Get(P,TEXT("revision")))||!Vld.Uint(Get(P,TEXT("watermark")))||!Vld.Require(Eq(Get(P,TEXT("revision")),Get(P,TEXT("watermark"))),TEXT("WATERMARK")))){Error=Vld.Error;return false;}
+ const bool bBase=Keys&&Id(RequestId)&&Vld.Keys(P,Keys)
+  &&SameText(Str(Get(P,TEXT("domain"))),TEXT("edgeworld.universe.authority"))
+  &&SameText(Str(Get(P,TEXT("version"))),TEXT("0.2"))&&Id(Str(Get(P,TEXT("world_id"))));
+ if(!bBase){Error=TEXT("REQUEST");return false;}
+ if(SameText(Op,TEXT("observe")))
+ {
+  if(!Vld.Uint(Get(P,TEXT("tick")))||!Vld.Uint(Get(P,TEXT("revision")))||!Vld.Uint(Get(P,TEXT("watermark")))
+   ||!Vld.Require(Eq(Get(P,TEXT("revision")),Get(P,TEXT("watermark"))),TEXT("WATERMARK"))){Error=Vld.Error;return false;}
+ }
  if(SameText(Op,TEXT("initialize"))&&!SameText(Str(Get(P,TEXT("test_profile"))),TEXT("composite-rigid-support.v0.2"))){Error=TEXT("PROFILE");return false;}
  if((SameText(Op,TEXT("prepare"))||SameText(Op,TEXT("advance")))&&!Vld.Identity(Get(P,TEXT("principal")))){Error=Vld.Error;return false;}
- if(SameText(Op,TEXT("prepare"))&&(!Vld.Record(Get(P,TEXT("proposal")))||!Vld.Record(Get(P,TEXT("intent")))||!Vld.Identity(Get(P,TEXT("approval_id")))||!Vld.Identity(Get(P,TEXT("command_record_id"))))){Error=Vld.Error;return false;}
+ if(SameText(Op,TEXT("prepare")))
+ {
+  if(!Vld.Record(Get(P,TEXT("proposal")))||!Vld.Record(Get(P,TEXT("intent")))
+   ||!Vld.Identity(Get(P,TEXT("approval_id")))||!Vld.Identity(Get(P,TEXT("command_record_id")))){Error=Vld.Error;return false;}
+ }
  if(SameText(Op,TEXT("advance")))
  {
   V A=Get(P,TEXT("command_records"));if(!Vld.Require(Is(A,FValue::Array)&&A->A.Num()==4,TEXT("SCHEMA"))||!Vld.Hash(Get(P,TEXT("command_digest")))){Error=Vld.Error;return false;}
   for(const V& Item:A->A)if(!Vld.Record(Item)){Error=Vld.Error;return false;}
  }
+
  V Env=Make(FValue::Object);Env->O.Add(TEXT("protocol_version"),Integer(1));Env->O.Add(TEXT("request_id"),String(RequestId));Env->O.Add(TEXT("operation"),String(Op));Env->O.Add(TEXT("payload"),P);FString Text=Canon(Env);if(Text.Len()>1048576){Error=TEXT("LIMIT");return false;}Out=Text+TEXT("\n");return true;
 }
 
