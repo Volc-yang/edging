@@ -134,3 +134,9 @@ root已将原approved四输入逐SHA复制至DevSSD持久bundle `/Volumes/DevSSD
 I12A draftPR99最新tools sourceef17707 / evidencec14d4cd，PREP2修真实三参历史示例与action-before cursor/prefix/dev/inode marker等待；offline首因HEAD storage/archive profile混淆失败保留，改后只读真实I10B 81records/5roots/3raw及D/budget/cursor/steps全部吻合、所有maps不变。仅工具与离线子集，run仍禁用、G-B2 planned。
 
 root CUA只读getState确认Mac locked，native自动解锁不能完成；已通过异步问题请用户手动解锁且无需启动UE/Play，等待回应。不得绕过锁屏/输入凭据。I11B NullRHI可继续；I12真实Metal可见阶段需解锁与最终准确合并树/R12实际卡，未开始运行或消耗其20min/2GiB候选。
+
+## I11B接受 / I12执行器审查（最新）
+
+PR100 final1d9f42f / merge36d88ec，经root准确源码、89原件、final CI及u9独立proof/资产/maps/退出复核，有限G-B1接受；[统筹复核](design/universe-i11b-coordination-review.md)。原始失败保留，I11B生成物归档/依赖检查交u7，待root非force清理。
+
+I12 RUNNER code-only卡仍执行：精确root资源卡/产品source/显式execute后才允许监督器启动；默认不执行，父Popen实际wait，两个session聚合预算/逐阶段限制/DevSSD持久四输入与owner。root预审要求准确生成物allowlist，不能全拒实际必须的输出链接，也不能泛忽略untracked。产品必须选已集成PR97/100准确树；工具旧分支launcher不适用。未授实际UE/Genesis/新authority，G-B2未通过。fresh CUA仍锁屏，解锁问题pending。
