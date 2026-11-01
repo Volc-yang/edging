@@ -19,6 +19,10 @@ import tempfile
 import threading
 from typing import Any
 
+if __name__ == "__main__" and not __package__:
+    # UE starts this file by absolute path from the project directory.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from engine.edgeworld_worker.worker import GenesisAdapter
 
 PROTOCOL_VERSION = 1
