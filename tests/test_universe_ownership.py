@@ -371,7 +371,13 @@ class OwnershipTests(unittest.TestCase):
 
 
 class OwnershipV02Tests(unittest.TestCase):
-    setUp = OwnershipTests.setUp
+    def setUp(self):
+        OwnershipTests.setUp(self)
+        # macOS temp paths may use /var -> /private/var; v0.2 owners must
+        # explicitly register and supply the canonical spelling.
+        self.base = self.base.resolve()
+        self.root = self.base / 'authority'
+
     expect_code = OwnershipTests.expect_code
     files = OwnershipTests.files
 
