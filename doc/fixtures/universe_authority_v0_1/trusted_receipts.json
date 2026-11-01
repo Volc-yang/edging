@@ -1,0 +1,37 @@
+{
+  "approval-1": {
+    "kind": "approval",
+    "principal": "fixture-principal",
+    "proposal": "720a83f545833e3eb09e7f0089cd60eaefeac9b032eedb10a8ac28f0be37f3dd",
+    "intent": "b9b4324d49dfed598813b47620de4e146bd8a8cfcbc0080d5a82da7d06c862f9",
+    "expires_revision": 4
+  },
+  "admission-1": {
+    "kind": "admission",
+    "principal": "fixture-principal",
+    "command": "9425ae6c2f9d7c8093d85d411eefcd59302e4cbffa28592b4b8256a31a4881cb",
+    "candidate": "4e797d4464545eb63ea9566cc144cfd60955a703fb64169b1a570c62be6278a3",
+    "evaluated_revision": 0
+  },
+  "approval-2": {
+    "kind": "approval",
+    "principal": "fixture-principal",
+    "proposal": "6f056bf2e08e71844c4a2a03b621a3a088e13e7dc847618c347205660ef185e6",
+    "intent": "68f42d281aca19d5b35778ce597de89ac666d87199b2d88e413bb4e8c8e8b85b",
+    "expires_revision": 4
+  },
+  "admission-2": {
+    "kind": "admission",
+    "principal": "fixture-principal",
+    "command": "a9f540483fe3d23937892d2c62615c8fa3a53144351b984ca41e3a5d8c7ec1e1",
+    "candidate": "790511294cfa2cd5d3be3e492bbfda493da7d3384bd4c8f6fb287d19c8213fda",
+    "evaluated_revision": 1
+  },
+  "approval-conflict": {
+    "kind": "approval",
+    "principal": "fixture-principal",
+    "proposal": "cd48566b502db6f634c3fadd061aee8b6f071d46afdab16812c66da220c83e4c",
+    "intent": "a89d33aad5879f408133e4c208a0d6479c71139f665093772fcd67e3db686af2",
+    "expires_revision": 4
+  }
+}

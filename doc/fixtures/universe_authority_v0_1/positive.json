@@ -1,0 +1,397 @@
+{
+  "domain": "edgeworld.universe.authority",
+  "version": "0.1",
+  "test_profile": "neutral-transfer-v0.1",
+  "records": [
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "state",
+      "id": "s0",
+      "body": {
+        "tick": 0,
+        "revision": 0,
+        "value": {
+          "$f64": "0000000000000000"
+        },
+        "budget": 8,
+        "random_cursor": 0
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "manifest",
+      "id": "m0",
+      "body": {
+        "tick": 0,
+        "revision": 0,
+        "watermark": 0
+      },
+      "refs": {
+        "state": "760fa54cd3faf2f63e75ed913db4b627d3db874f9a5e8b6f74bcb419d558d13f"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "proposal",
+      "id": "p1",
+      "body": {
+        "principal": "fixture-principal",
+        "output": "neutral transfer \u521d"
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "intent",
+      "id": "i1",
+      "body": {
+        "command_id": "command-1",
+        "principal": "fixture-principal",
+        "expected_revision": 0,
+        "tick_delta": 0,
+        "transfer": {
+          "$f64": "3ff0000000000000"
+        },
+        "budget": 1,
+        "random_cursor": 0
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "approval",
+      "id": "a1",
+      "body": {
+        "principal": "fixture-principal",
+        "receipt_id": "approval-1",
+        "expires_revision": 4
+      },
+      "refs": {
+        "proposal": "720a83f545833e3eb09e7f0089cd60eaefeac9b032eedb10a8ac28f0be37f3dd",
+        "intent": "b9b4324d49dfed598813b47620de4e146bd8a8cfcbc0080d5a82da7d06c862f9"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "command",
+      "id": "c1",
+      "body": {},
+      "refs": {
+        "proposal": "720a83f545833e3eb09e7f0089cd60eaefeac9b032eedb10a8ac28f0be37f3dd",
+        "intent": "b9b4324d49dfed598813b47620de4e146bd8a8cfcbc0080d5a82da7d06c862f9",
+        "approval": "feb4642988624120bacd570c3e4e52aff4ae117bb8dc45424f8f5c4fa1fc9ec6"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "candidate",
+      "id": "q1",
+      "body": {
+        "adapter_kind": "fake",
+        "test_profile": "neutral-transfer-v0.1",
+        "value": {
+          "$f64": "3ff0000000000000"
+        },
+        "tick": 0,
+        "revision": 1
+      },
+      "refs": {
+        "command": "9425ae6c2f9d7c8093d85d411eefcd59302e4cbffa28592b4b8256a31a4881cb",
+        "prior_state": "760fa54cd3faf2f63e75ed913db4b627d3db874f9a5e8b6f74bcb419d558d13f"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "admission",
+      "id": "ad1",
+      "body": {
+        "receipt_id": "admission-1",
+        "principal": "fixture-principal",
+        "evaluated_revision": 0
+      },
+      "refs": {
+        "command": "9425ae6c2f9d7c8093d85d411eefcd59302e4cbffa28592b4b8256a31a4881cb",
+        "candidate": "4e797d4464545eb63ea9566cc144cfd60955a703fb64169b1a570c62be6278a3"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "state",
+      "id": "s1",
+      "body": {
+        "tick": 0,
+        "revision": 1,
+        "value": {
+          "$f64": "3ff0000000000000"
+        },
+        "budget": 7,
+        "random_cursor": 1
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "event",
+      "id": "e1",
+      "body": {
+        "event_id": "event-1"
+      },
+      "refs": {
+        "state": "eeec8aa188265617119e1c23b5f3c74d2b655f83f1100c408cb127c0b6e1baad",
+        "admission": "88894a801b53abc6830cfc8fe4f26d924b7064fe7bba915ca6247142995a44b6"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "result",
+      "id": "r1",
+      "body": {
+        "command_id": "command-1",
+        "tick": 0,
+        "revision": 1,
+        "watermark": 1
+      },
+      "refs": {
+        "command": "9425ae6c2f9d7c8093d85d411eefcd59302e4cbffa28592b4b8256a31a4881cb",
+        "state": "eeec8aa188265617119e1c23b5f3c74d2b655f83f1100c408cb127c0b6e1baad",
+        "event": "c22b547cfbad13d219b53085d9d69733325638f4bf2a4ed9660839a9e0cfbdb8",
+        "checkpoint": "4e797d4464545eb63ea9566cc144cfd60955a703fb64169b1a570c62be6278a3"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "index",
+      "id": "x1",
+      "body": {
+        "command_id": "command-1",
+        "fingerprint": "9425ae6c2f9d7c8093d85d411eefcd59302e4cbffa28592b4b8256a31a4881cb"
+      },
+      "refs": {
+        "result": "db246f37879477de4c918e6498ca606cd1b1e8ad2c917e7a42d441382af81028"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "manifest",
+      "id": "m1",
+      "body": {
+        "tick": 0,
+        "revision": 1,
+        "watermark": 1
+      },
+      "refs": {
+        "state": "eeec8aa188265617119e1c23b5f3c74d2b655f83f1100c408cb127c0b6e1baad",
+        "event": "c22b547cfbad13d219b53085d9d69733325638f4bf2a4ed9660839a9e0cfbdb8",
+        "index": "9389e440b2950a14115815805ac221c6a0b8c5e0091c189c04665ae6e0b6a6ba",
+        "prior_manifest": "80fc1f08f57eb21a458256a783c3f0bca9712fff89362e78791d6d8100652ad8"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "proposal",
+      "id": "p2",
+      "body": {
+        "principal": "fixture-principal",
+        "output": "neutral transfer \u4e8c"
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "intent",
+      "id": "i2",
+      "body": {
+        "command_id": "command-2",
+        "principal": "fixture-principal",
+        "expected_revision": 1,
+        "tick_delta": 0,
+        "transfer": {
+          "$f64": "3ff0000000000000"
+        },
+        "budget": 1,
+        "random_cursor": 1
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "approval",
+      "id": "a2",
+      "body": {
+        "principal": "fixture-principal",
+        "receipt_id": "approval-2",
+        "expires_revision": 4
+      },
+      "refs": {
+        "proposal": "6f056bf2e08e71844c4a2a03b621a3a088e13e7dc847618c347205660ef185e6",
+        "intent": "68f42d281aca19d5b35778ce597de89ac666d87199b2d88e413bb4e8c8e8b85b"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "command",
+      "id": "c2",
+      "body": {},
+      "refs": {
+        "proposal": "6f056bf2e08e71844c4a2a03b621a3a088e13e7dc847618c347205660ef185e6",
+        "intent": "68f42d281aca19d5b35778ce597de89ac666d87199b2d88e413bb4e8c8e8b85b",
+        "approval": "9217868b61eea93e4db840c222d0cc3a6100c2f3245c21c8db0aa2fe8444a519"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "candidate",
+      "id": "q2",
+      "body": {
+        "adapter_kind": "fake",
+        "test_profile": "neutral-transfer-v0.1",
+        "value": {
+          "$f64": "4000000000000000"
+        },
+        "tick": 0,
+        "revision": 2
+      },
+      "refs": {
+        "command": "a9f540483fe3d23937892d2c62615c8fa3a53144351b984ca41e3a5d8c7ec1e1",
+        "prior_state": "eeec8aa188265617119e1c23b5f3c74d2b655f83f1100c408cb127c0b6e1baad"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "admission",
+      "id": "ad2",
+      "body": {
+        "receipt_id": "admission-2",
+        "principal": "fixture-principal",
+        "evaluated_revision": 1
+      },
+      "refs": {
+        "command": "a9f540483fe3d23937892d2c62615c8fa3a53144351b984ca41e3a5d8c7ec1e1",
+        "candidate": "790511294cfa2cd5d3be3e492bbfda493da7d3384bd4c8f6fb287d19c8213fda"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "state",
+      "id": "s2",
+      "body": {
+        "tick": 0,
+        "revision": 2,
+        "value": {
+          "$f64": "4000000000000000"
+        },
+        "budget": 6,
+        "random_cursor": 2
+      },
+      "refs": {}
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "event",
+      "id": "e2",
+      "body": {
+        "event_id": "event-2"
+      },
+      "refs": {
+        "state": "3d1bd0035a8670ed4556047e4bf9a94669cd066e33c32dda2790f6eb7b765ed8",
+        "admission": "84d4100f51be6030b5de9ab712f2f33b9685d06706ba917cb3514d3416b15446",
+        "prior_event": "c22b547cfbad13d219b53085d9d69733325638f4bf2a4ed9660839a9e0cfbdb8"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "result",
+      "id": "r2",
+      "body": {
+        "command_id": "command-2",
+        "tick": 0,
+        "revision": 2,
+        "watermark": 2
+      },
+      "refs": {
+        "command": "a9f540483fe3d23937892d2c62615c8fa3a53144351b984ca41e3a5d8c7ec1e1",
+        "state": "3d1bd0035a8670ed4556047e4bf9a94669cd066e33c32dda2790f6eb7b765ed8",
+        "event": "11df3a12ad37254b6e3163fe85c9accc4ffb88cdce8d7310b85efa0984997b04",
+        "checkpoint": "790511294cfa2cd5d3be3e492bbfda493da7d3384bd4c8f6fb287d19c8213fda"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "index",
+      "id": "x2",
+      "body": {
+        "command_id": "command-2",
+        "fingerprint": "a9f540483fe3d23937892d2c62615c8fa3a53144351b984ca41e3a5d8c7ec1e1"
+      },
+      "refs": {
+        "result": "52dad663153685a44f83ad802362579937e686255459b3fdcfd94b91277e8d43"
+      }
+    },
+    {
+      "domain": "edgeworld.universe.authority",
+      "version": "0.1",
+      "world_id": "fixture-world",
+      "kind": "manifest",
+      "id": "m2",
+      "body": {
+        "tick": 0,
+        "revision": 2,
+        "watermark": 2
+      },
+      "refs": {
+        "state": "3d1bd0035a8670ed4556047e4bf9a94669cd066e33c32dda2790f6eb7b765ed8",
+        "event": "11df3a12ad37254b6e3163fe85c9accc4ffb88cdce8d7310b85efa0984997b04",
+        "index": "38f9af0c60f95514376f33e18730e2c274de37d78d53a70b557c936ed86ec279",
+        "prior_manifest": "d268bd23b4be49589d26c566419c7bcd86404a7d701570e581fbffeeda345b03"
+      }
+    }
+  ],
+  "head": "43105a05e1fb6067359a1eb4acbfa79a78119a1406574e92ded8d257c5449dff"
+}
