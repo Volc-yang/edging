@@ -293,6 +293,9 @@ class GenesisProvider:
         _require(type(context) is DeploymentContext and context.artifact_class == 'genesis-runtime', 'BUILD')
         _require(isinstance(scratch, Path) and scratch.is_absolute() and '..' not in scratch.parts,
                  'PHYSICS_INVALID', 'scratch must be an explicit absolute path')
+        authority_root = Path(context.authority_root)
+        _require(scratch != authority_root and authority_root not in scratch.parents,
+                 'PHYSICS_INVALID', 'scratch cannot be inside the registered authority root')
         for record, kind in ((config, 'physics_config'), (binding, 'physics_binding'),
                              (build, 'provider_build'), (options, 'resolved_options')):
             validate_record(record)

@@ -40,3 +40,7 @@ Illustrative commands (only `audit` is GPU-free; none implies runtime authorizat
 ```
 
 A static source/grammar result cannot establish any runtime default, Metal initialization, physical sampling, checkpoint restoration, UE, realism, durability or world-integration gate.
+
+## Static review correction
+
+Independent review required two boundary repairs before options execution. The pure constructor now rejects scratch equal to or lexically beneath the registered authority root; operation-time canonical/no-alias checks remain. Input evidence collection records missing/unreadable paths without throwing out of finalization: the original operation exception is retained, changed/unavailable inputs force a nonzero recorded exit, and exit/index files are still emitted. The earlier source audit remains an original measurement of its earlier adapter SHA; it is not eligible as the corrected adapter's build pin. E7 was integrated by ordinary merge at `52dd9646fd9871d164a30ba0c20bac3024845c85`.

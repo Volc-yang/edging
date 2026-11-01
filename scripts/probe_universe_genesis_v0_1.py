@@ -51,8 +51,19 @@ def inputs(args):
         value = getattr(args, name, None)
         if value is not None:
             paths.append(value)
-    return {str(path.resolve(strict=True)): dict(bytes=path.stat().st_size,
-                sha256=hashlib.sha256(path.read_bytes()).hexdigest()) for path in paths}
+    result = {}
+    for path in paths:
+        try:
+            key = str(path.resolve(strict=False))
+            raw = path.read_bytes()
+            result[key] = dict(status='readable', bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+        except Exception as exc:
+            # Missing/unreadable/deleted inputs remain original evidence instead
+            # of aborting finalization or masking the operation's first failure.
+            result[str(path.absolute())] = dict(status='unavailable', error_type=type(exc).__name__,
+                                                errno=getattr(exc, 'errno', None))
+    return result
+
 
 
 def budget(output, start, seconds, byte_cap):
@@ -181,15 +192,18 @@ def main():
         parser.error('missing explicit owner input: ' + ','.join(needed))
     args.output.mkdir(mode=0o700)  # Refuse reuse, aliases and original overwrite.
     start = time.monotonic()
-    before = inputs(args)
-    write(args.output / 'inputs-before.json', before)
     write(args.output / 'command.json', dict(argv=sys.argv, cwd=os.getcwd(), pid=os.getpid(),
           executable=sys.executable, python=sys.version, operation=args.operation,
           source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
           environment={k: os.environ.get(k) for k in ('PYTHONPATH','PYTHONDONTWRITEBYTECODE','VIRTUAL_ENV')},
           max_seconds=args.max_seconds, max_bytes=args.max_bytes))
     exit_code = 0
+    before = None
     try:
+        before = inputs(args)
+        write(args.output / 'inputs-before.json', before)
+        if any(row['status'] != 'readable' for row in before.values()):
+            raise FileNotFoundError('an explicit owner input is unavailable before operation')
         if args.operation == 'audit':
             build, files = measure_installed_build(world_id=args.world_id, build_id=args.build_id)
             write(args.output / 'provider-build.json', build)
@@ -208,13 +222,22 @@ def main():
     finally:
         after = inputs(args)
         write(args.output / 'inputs-after.json', after)
+        unchanged = before == after and all(row['status'] == 'readable' for row in after.values())
+        if not unchanged:
+            if exit_code == 0:
+                try:
+                    raise RuntimeError('owner input set changed or became unreadable during operation')
+                except RuntimeError:
+                    with (args.output / 'exception.txt').open('x') as stream:
+                        traceback.print_exc(file=stream)
+                    traceback.print_exc(file=sys.stderr)
+            exit_code = 1
         write(args.output / 'exit.json', dict(exit_code=exit_code,
-              elapsed_seconds=time.monotonic()-start, inputs_unchanged=before == after))
+              elapsed_seconds=time.monotonic()-start, inputs_unchanged=unchanged))
         write(args.output / 'index.json', file_map(args.output))
-    if before != after:
-        return 1
     print(json.dumps(dict(operation=args.operation, exit_code=exit_code, evidence=str(args.output))))
     return exit_code
+
 
 
 if __name__ == '__main__':
