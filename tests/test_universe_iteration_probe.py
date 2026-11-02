@@ -147,6 +147,22 @@ class PreparePureTests(unittest.TestCase):
             self.assertEqual(h.ref(original_ref['path']),original_ref)
             self.assertEqual(h.load(original_ref['path']),original)
 
+    def test_mac_real_lib_prefixed_outputs_required_without_alias(self):
+        h=self.helper
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td).resolve();project=root/'project/EdgeWorldHost.uproject'
+            host=project.parent/'Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib'
+            plugin=project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib'
+            host.parent.mkdir(parents=True);plugin.parent.mkdir(parents=True)
+            host.write_bytes(b'synthetic-host');plugin.write_bytes(b'synthetic-plugin')
+            self.assertEqual(h.built_binary_paths(project,root),(host,plugin))
+            self.assertFalse(host.with_name('UnrealEditor-EdgeWorldHost.dylib').exists())
+            host.rename(host.with_name('UnrealEditor-EdgeWorldHost.dylib'))
+            with self.assertRaises(FileNotFoundError):h.built_binary_paths(project,root)
+            host.with_name('UnrealEditor-EdgeWorldHost.dylib').rename(host)
+            plugin.rename(plugin.with_name('UnrealEditor-EdgeWorldRuntime.dylib'))
+            with self.assertRaises(FileNotFoundError):h.built_binary_paths(project,root)
+
     def test_exclusive_output_and_no_key_content_io(self):
         h=self.helper
         with tempfile.TemporaryDirectory() as td:

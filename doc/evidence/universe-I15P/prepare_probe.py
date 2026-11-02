@@ -247,6 +247,15 @@ def load_preparation(preparation_ref):
     return prep,root
 
 
+def built_binary_paths(project,root):
+    """Installed Mac UBT emits lib-prefixed dylibs; require those real outputs."""
+    host=(project.parent/'Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib').resolve(strict=True)
+    plugin=(project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib').resolve(strict=True)
+    require(host.is_file() and plugin.is_file() and host.is_relative_to(root) and
+            host.parent.parent.parent==plugin.parent.parent.parent.parent.parent,'physical Host/plugin RPATH mirror changed')
+    return host,plugin
+
+
 def freeze_prepared(*,preparation_ref,build_ref,native_source_sha,tool_root=None):
     """Part 2: pin real built binaries and current clean sources, exclusively publish."""
     prep,root=load_preparation(preparation_ref)
@@ -273,9 +282,7 @@ def freeze_prepared(*,preparation_ref,build_ref,native_source_sha,tool_root=None
         relative=str(Path(item['path']).relative_to(product))
         committed=subprocess.run(['git','-C',str(product),'show',native_source_sha+':'+relative],capture_output=True,timeout=5,check=True).stdout
         require(hashlib.sha256(committed).hexdigest()==item['sha256'],'native source differs from actual build commit')
-    project=Path(prep['project']);host=(project.parent/'Binaries/Mac/UnrealEditor-EdgeWorldHost.dylib').resolve(strict=True)
-    plugin=(project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/UnrealEditor-EdgeWorldRuntime.dylib').resolve(strict=True)
-    require(host.is_relative_to(root) and host.parent.parent.parent==plugin.parent.parent.parent.parent.parent,'physical Host/plugin RPATH mirror changed')
+    project=Path(prep['project']);host,plugin=built_binary_paths(project,root)
     loadcmd=subprocess.run(['/usr/bin/otool','-l',str(host)],capture_output=True,timeout=5,check=True)
     require(b'@loader_path/../../Plugins/EdgeWorldRuntime/Binaries/Mac' in loadcmd.stdout,'native Host plugin RPATH absent')
     binaries=dict(ue=ref(UE/'Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'),host=ref(host),plugin=ref(plugin))

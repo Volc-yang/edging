@@ -7,3 +7,9 @@ Root 已创建原 `preparation.json`，product SHA 固定失败构建源。本�
 CLI 新增 `--preparation-ref /.../prep/preparation-corrected-<sha>.json`，默认仍为原准备路径。helper 不自动生成纠正记录，不重试准备或构建；显式 root 保存新记录后，使用其独立 SHA freeze。prepared 仍精确36字段，provenance 保存在其 preparation_ref 所引用的纠正记录。
 
 实际 Check：13/13 新 probe/prepare CPU synthetic 检查 pass，其中纠正路径测试验证原件保持、protected metadata 不变、filename/source 一致、helper 精确字节、父 provenance 和旧失败的非零退出；`git diff --check` pass。原 43 checks 记录仍保留；本纠正没有实际运行官方 build、Native/UE/Genesis/UI。RHI 修复需由 root 在剩余 CPU 卡预算内实际重构建验证，不能凭本报告宣称链接通过。
+
+## 同 PR 追加：真实 Mac dylib 名称
+
+Root 核对当前插件实际输出与 I14 成功 Host 输出后确认，Mac UBT 真实名称分别为 `libUnrealEditor-EdgeWorldRuntime.dylib`、`libUnrealEditor-EdgeWorldHost.dylib`。先前 helper 错用无 `lib` 前缀路径，必在 freeze 前缺文件。现统一使用真实 `lib` 名称，不创建 alias 或 symlink 补洞；物理 Host/plugin mirror 与 RPATH 检查保持。新增 synthetic 临时文件树检查：仅真实命名可取回两产物，只有无 lib 名称时明确失败。
+
+最终定向 CPU 检查 14/14 pass（约0.23s）；没有执行重构建、UE 或修改 DevSSD 原件。Native C++/Build.cs 不受这次 Python 路径纠正影响；root须重新 pin 最新 helper，等最终 PR head CI 后集成。
