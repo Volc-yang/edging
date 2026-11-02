@@ -818,11 +818,64 @@ def supervise(prepared):
         return failure  # Caller stdout preserves original runtime error even on a full evidence disk.
 
 
+def i13_plan():
+    """Passive composition only. Existing R12 runtime behavior is unchanged."""
+    from universe_iteration import actions, capture, lifecycle
+    stages = dict(lifecycle.STAGES)
+    require(stages == {'build': 60, 'startup': 60, 'interaction': 240,
+                       'shutdown': 40, 'seal': 20}, 'I13 policy drift requires reviewed interface update')
+    plan = actions.manifest()
+    require(plan['request_counts'] == {'initialize': 20, 'existing': 5}, 'I13 request plan drift')
+    for session in ('initialize', 'existing'):
+        actual = sum(item['max_seconds'] for item in plan['items']
+                     if item['session'] == session and item['phase'] == 'interaction')
+        require(actual == plan['interaction_caps'][session] and actual <= 240,
+                'I13 interaction manifest budget mismatch')
+    return {'format': 'universe-i13-passive-plan.v1', 'runtime_authorized': False,
+            'actions': plan, 'lifecycle': {'format': lifecycle.FORMAT, 'stage_seconds': stages,
+                                         'session_seconds': sum(stages.values()), 'global_seconds': 1200},
+            'capture': {'format': capture.FORMAT, 'max_png_bytes': capture.MAX_PNG_BYTES,
+                        'max_decoded_bytes': capture.MAX_DECODED_BYTES,
+                        'timing': 'request-to-stable interval; no invented capture instant'},
+            'module_pins': {name: {'path': str(Path(module.__file__).resolve()),
+                                   'sha256': file_hash(Path(module.__file__).resolve())}
+                            for name, module in (('actions', actions), ('lifecycle', lifecycle), ('capture', capture))},
+            'live_adapter': 'deferred: no R13 dispatcher/final bundle adapter implemented'}
+
+
+def i13_readiness(path, accepted_source):
+    """Inspect reviewed public capability refs; never issue or execute a runtime card."""
+    from universe_iteration import actions
+    require(type(accepted_source) is str and re.fullmatch('[0-9a-f]{40}', accepted_source),
+            'I13 requires independently supplied exact accepted source SHA40')
+    spec = read_json(path)
+    require(type(spec) is dict and set(spec) == {'format', 'source_sha', 'capabilities'} and
+            spec['format'] == 'universe-i13-readiness-input.v1' and
+            spec['source_sha'] == accepted_source, 'I13 readiness input/source binding')
+    plan = i13_plan()
+    try:
+        capabilities = actions.readiness(spec['capabilities'], expected_source_sha=accepted_source)
+    except actions.Invalid as error:
+        raise Invalid(str(error)) from error
+    # Even complete offline capabilities are not the missing live card/observer/
+    # final-verifier adapter. Do not silently reuse an R12 subtotal as an R13 gate.
+    blockers = list(capabilities['reasons']) + [plan['live_adapter']]
+    return {'format': 'universe-i13-readiness.v1', 'status': 'no_go',
+            'accepted_source': accepted_source, 'runtime_authorized': False,
+            'g_b2_granted': False, 'capability_check': capabilities, 'blockers': blockers,
+            'plan': plan, 'disposition': 'S1/S2 skipped; preserve evidence and send to V/Act',
+            'note': 'Offline structure/review only. No launcher, worker, solver, UI or provisioning is invoked.'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='exclusive new evidence file; parent must exist')
     commands = parser.add_subparsers(dest='command')
     commands.add_parser('plan')
+    commands.add_parser('i13-plan', help='passive frozen I13 module/manifest composition')
+    readiness = commands.add_parser('i13-readiness', help='public capability review only; never launches')
+    readiness.add_argument('--spec', type=Path, required=True)
+    readiness.add_argument('--accepted-source', required=True)
     snapshot = commands.add_parser('snapshot')
     snapshot.add_argument('--authority', type=Path, required=True)
     processes = commands.add_parser('processes')
@@ -856,6 +909,10 @@ def main():
                      'lod': 'N/A for this technical proxy; record rationale, do not claim coverage',
                      'pending': ['final merged SHA/build', 'G-P1/I10B/I11B accepted evidence',
                                  'actual root-issued R12', 'trusted owner inputs', 'UI automation binding']}
+        elif args.command == 'i13-plan':
+            value = i13_plan()
+        elif args.command == 'i13-readiness':
+            value = i13_readiness(args.spec, args.accepted_source)
         elif args.command == 'snapshot':
             value = dict(authority_map(args.authority), captured_at=utc())
         elif args.command == 'processes':
@@ -874,7 +931,8 @@ def main():
                                     args.session, args.execute)
             value = supervise(prepared)
         emit(value, args.output)
-        return 2 if value.get('matched') is False or value.get('normal') is False else 0
+        return 2 if (value.get('matched') is False or value.get('normal') is False or
+                     value.get('status') == 'no_go') else 0
     except (Invalid, OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         print(json.dumps({'status': 'error', 'error': str(error)}), file=sys.stderr)
         return 1
