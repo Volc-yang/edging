@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I15 精确回放与只读能力采证
+
+[I15 登记](universe_i15_execution_register.md) / [审定树](design/universe-i15-proof-capability-plan.md)，基线 `ee138ae`。N/P/C 在原三个独立 worktree 接续，C++ 已有 `eb4c0c4` / `997eda0`；Python 配套和独立 PR 尚未交付，未集成、未新构建、未启动 UE。下一步先收齐并审查三份交付和 CI，再准备只读 owner、官方构建与准确产物冻结；实机顺序为一次 Metal → 原始响应冻结 → 一次 Native。当前 in progress，G-B2 继续开放，旧失败账保留。
+
 ## 当前结算：I14诊断/控制已集成，实机ready no-go
 
 [I14登记](universe_i14_execution_register.md)：PR111/112/113/114分别独立审查/最终CI通过并合入集成分支。真实UE诊断源码及动作v2、持久R13 backend/observer/自动wait+seal、组合verifier与共享CLI已交付。官方CPU编译同源exit6→0、累计约53s<180；首失败保留，未运行3项Native或UE。V三项既有proof语义检查仍inconclusive，真实持键/PNG/耗时/正常双会话缺证，S skipped；I14整体partial，G-B2未过，旧失败账不改。
