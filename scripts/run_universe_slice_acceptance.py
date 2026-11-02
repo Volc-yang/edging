@@ -1025,6 +1025,83 @@ def r13_controller(args):
             'note': 'Only the separate final evidence/root review can accept the run.'}
 
 
+def i15_step(controller, request):
+    """Fixed I15 metadata calls; CUA remains outside this process."""
+    require(type(request) is dict and set(request) == {'command', 'args'} and
+            type(request['args']) is dict, 'exact I15 request fields')
+    command, values = request['command'], request['args']
+    shapes = {'now': (), 'start_metal': (), 'ready': (), 'refresh': (),
+              'skip_metal': ('evidence_ref',),
+              'begin_action': ('action_id', 'step_id', 'timeout'),
+              'end_action': ('seq', 'raw_tool_ref'),
+              'quit': ('reason',), 'quit_ack': ('raw_cua_ref',),
+              'finish_metal': (),
+              'freeze_native': ('manifest_ref', 'expected_sha256'),
+              'start_native': (), 'wait_native': ('timeout',),
+              'seal': (), 'abort': ('reason',)}
+    require(command in shapes and set(values) == set(shapes[command]),
+            'unknown I15 command or argument shape')
+    if command == 'now': return controller.now()
+    if command == 'start_metal': return controller.start_metal()
+    if command == 'ready': return controller.register_metal_ready()
+    if command == 'refresh': return controller.refresh_observation()
+    if command == 'skip_metal': return controller.skip_metal(values['evidence_ref'])
+    if command == 'begin_action':
+        return controller.begin_action(values['action_id'], values['step_id'], values['timeout'])
+    if command == 'end_action': return controller.end_action(values['seq'], values['raw_tool_ref'])
+    if command == 'quit': return controller.request_quit(values['reason'])
+    if command == 'quit_ack': return controller.ack_quit(values['raw_cua_ref'])
+    if command == 'finish_metal': return controller.finish_metal()
+    if command == 'freeze_native':
+        return controller.freeze_native_manifest(values['manifest_ref'], values['expected_sha256'])
+    if command == 'start_native': return controller.start_native()
+    if command == 'wait_native':
+        require(type(values['timeout']) in (int, float) and 0 < values['timeout'] <= 180,
+                'Native wait must fit phase budget')
+        return controller.wait_native(timeout=values['timeout'])
+    if command == 'seal': return controller.seal()
+    return controller.abort(values['reason'])
+
+
+def i15_controller(args):
+    """One persistent I15 parent; EOF and protocol errors retain cleanup ownership."""
+    from universe_iteration import capability
+    validated = capability.validate_capability_card(args.i15_card,
+        expected_card_sha256=args.card_sha256,
+        expected_prepared_sha256=args.prepared_sha256,
+        expected_probe_manifest_sha256=args.manifest_sha256,
+        expected_product_source=args.accepted_source,
+        expected_tool_source=args.tool_source,
+        expected_native_source_sha=args.native_source, execute=args.execute)
+    controller = capability.CapabilityController(validated)
+    aborted = False
+    def reply(value):
+        print(json.dumps(value, sort_keys=True, allow_nan=False), flush=True)
+    controller.start_observer()
+    try:
+        reply({'format': 'universe-i15-controller-ready.v1', 'controller_pid': os.getpid(),
+               'clock': controller.clock_binding, 'session_started': False,
+               'g_b2_granted': False})
+        for line in controller_lines(sys.stdin.fileno(), deadline=controller.started + 900):
+            if controller.closed: break
+            if line is None: continue
+            try:
+                request = json.loads(line, object_pairs_hook=unique_pairs,
+                    parse_constant=lambda _: (_ for _ in ()).throw(Invalid('nonfinite request')))
+                result = i15_step(controller, request)
+                if request['command'] == 'abort': aborted = True
+                reply({'status': 'reply', 'result': result})
+            except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as error:
+                reply({'status': 'request_rejected', 'error': str(error)})
+    finally:
+        if not controller.closed:
+            aborted = True
+            reply({'status': 'aborted', 'result': controller.abort('controller input ended or deadline reached')})
+    return {'format': 'universe-i15-controller-closed.v1', 'g_b2_granted': False,
+            'status': 'aborted' if aborted else 'closed', 'normal': not aborted,
+            'note': 'Orderly controller close is not Metal, Native or G-B2 acceptance.'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='exclusive new evidence file; parent must exist')
@@ -1035,6 +1112,11 @@ def main():
     for flag in ('r13-card', 'card-sha256', 'accepted-source', 'tool-source', 'manifest-sha256', 'runner-sha256'):
         controller.add_argument('--' + flag, required=True)
     controller.add_argument('--execute', action='store_true')
+    i15 = commands.add_parser('i15-controller', help='one persistent capability-only I15 JSONL owner')
+    for flag in ('i15-card', 'card-sha256', 'prepared-sha256', 'accepted-source',
+                 'tool-source', 'manifest-sha256', 'native-source'):
+        i15.add_argument('--' + flag, required=True)
+    i15.add_argument('--execute', action='store_true')
     commands.add_parser('i13-plan', help='passive frozen I13 module/manifest composition')
     readiness = commands.add_parser('i13-readiness', help='public capability review only; never launches')
     readiness.add_argument('--spec', type=Path, required=True)
@@ -1077,6 +1159,9 @@ def main():
         elif args.command == 'r13-controller':
             require(args.output is None, 'controller streams replies and owns its card-bound journal')
             value = r13_controller(args)
+        elif args.command == 'i15-controller':
+            require(args.output is None, 'I15 controller owns its card-bound journal')
+            value = i15_controller(args)
         elif args.command == 'i13-plan':
             value = i13_plan()
         elif args.command == 'i13-readiness':
