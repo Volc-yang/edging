@@ -6,6 +6,8 @@
 #include "Dom/JsonObject.h"
 #include "Engine/Engine.h"
 #include "HAL/PlatformFileManager.h"
+#include "HAL/PlatformProperties.h"
+#include "Misc/CoreMisc.h"
 #include "HAL/FileManager.h"
 #include "Misc/EngineVersion.h"
 #include "Misc/PackageName.h"
@@ -358,11 +360,14 @@ public:
  }
 };
 }
-bool FEdgeWorldUniverseAssetAudit::Collect(const FString& WorldId, FEdgeWorldUniverseAssetAuditResult& Out, FString& Error)
+bool FEdgeWorldUniverseAssetAudit::Collect(const FString& WorldId, FEdgeWorldUniverseAssetAuditResult& Out, FString& Error, EContext Context)
 {
  Out = FEdgeWorldUniverseAssetAuditResult(); Error.Reset();
- if (!UniverseAssetAudit::Identifier(WorldId) || !IsInGameThread() || !GIsEditor || !GEngine || !GEngine->IsInitialized())
- { Error = TEXT("Explicit editor game-thread audit and valid owner world ID required"); return false; }
+ const bool ContextAllowed = Context == EContext::Editor ? GIsEditor :
+  Context == EContext::InstalledEditorStandalone && !GIsEditor && IsRunningGame() &&
+  !FPlatformProperties::RequiresCookedData() && !IsRunningCommandlet();
+ if (!UniverseAssetAudit::Identifier(WorldId) || !IsInGameThread() || !ContextAllowed || !GEngine || !GEngine->IsInitialized())
+ { Error = TEXT("Explicit initialized editor or installed-editor standalone game-thread audit and valid owner world ID required"); return false; }
  auto& Module = FModuleManager::LoadModuleChecked<FAssetRegistryModule>(TEXT("AssetRegistry"));
  UniverseAssetAudit::FCollector Collector(Module.Get());
  return Collector.Run(WorldId, Out);

@@ -1,5 +1,9 @@
 #include "EdgeWorldUniverseGameMode.h"
 #include "EdgeWorldUniverseActor.h"
+#if WITH_EDITOR
+#include "EdgeWorldUniverseAssetAudit.h"
+#include "Misc/CoreMisc.h"
+#endif
 #include "EdgeWorldJsonlClient.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/FileHelper.h"
@@ -238,6 +242,23 @@ bool FUniverseProtocolIdsTest::RunTest(const FString& Parameters)
  TestTrue(TEXT("derived proposal ID remains within64"),(FString(TEXT("proposal-"))+CommandId).Len()<=64);TestTrue(TEXT("derived approval ID remains within64"),(FString(TEXT("approval-"))+CommandId).Len()<=64);
  const FString OldCommand=FString(TEXT("c-"))+Known.ToString(EGuidFormats::Digits);
  TestFalse(TEXT("old uppercase GUID command remains forbidden"),FEdgeWorldUniverseControlParser::BuildPrepare(Pins,O,OldCommand,TEXT("physics_step"),TEXT("weak"),Payload,Proposal,Intent,Error));
+ return true;
+}
+#endif
+
+#if WITH_DEV_AUTOMATION_TESTS && WITH_EDITOR
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseStandaloneAssetAuditTest,"edgeWorld.UniverseHost.StandaloneAssetAudit",EAutomationTestFlags::EditorContext|EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
+bool FUniverseStandaloneAssetAuditTest::RunTest(const FString& Parameters)
+{
+ // This test must be selected explicitly in the actual installed-editor -game session.
+ if(!TestTrue(TEXT("installed-editor standalone game required"),!GIsEditor&&IsRunningGame()&&!IsRunningCommandlet()))return false;
+ FEdgeWorldUniverseAssetAuditResult A;FString Error;
+ TestFalse(TEXT("default remains editor-only"),FEdgeWorldUniverseAssetAudit::Collect(TEXT("standalone-audit-check"),A,Error));
+ TestFalse(TEXT("invalid world rejected before collection"),FEdgeWorldUniverseAssetAudit::Collect(TEXT("INVALID WORLD"),A,Error,FEdgeWorldUniverseAssetAudit::EContext::InstalledEditorStandalone));
+ const bool Collected=FEdgeWorldUniverseAssetAudit::Collect(TEXT("standalone-audit-check"),A,Error,FEdgeWorldUniverseAssetAudit::EContext::InstalledEditorStandalone);
+ TestTrue(*FString::Printf(TEXT("real installed graph collected: %s"),*Error),Collected);
+ TestTrue(TEXT("real graph resolved"),A.bResolved);TestEqual(TEXT("real graph has zero gaps"),A.GapCount,0);
+ TestTrue(TEXT("canonical candidate and digest present"),!A.CandidateJson.IsEmpty()&&!A.CandidateDigest.IsEmpty());
  return true;
 }
 #endif
