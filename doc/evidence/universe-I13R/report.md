@@ -27,3 +27,9 @@ A root独立16项通过，C最终23项通过；B cd0994f root19项通过，之�
 后续最小依赖：先发布只读UE诊断producer窄任务（固定B schema，实际handler计数、真实状态、默认关闭、不触碰权威写路径）与R13控制/最终verifier适配任务，路径隔离后可并行；再由独立review解决持键方法和可行性证据，重审冻结manifest及预算。耗时或输入不可行时版本化拆解任务/门而非静默降门；不把额外实机探针藏进离线准备。新运行仍须准确source/card和独立全局窗口，不追加本轮试跑。
 
 此报告是工具交付和no-go检查，不是整个I13/G-B2接受。原始CPU/CLI产物保存在DevSSD，结束后记录索引与独立review；未对网站/DNS/API或用户脏checkout操作。
+
+## 独立复核结算（2026-11-02）
+
+u9非owner逐差异审查通过，在sourcef8e0e65独立运行最终5项CLI CPU检查全部通过（0.321s）；没有扩大到实机。u7对V停止路径核查5个公共原件bytes/SHA及模块源码pin一致，index SHA `989ec5e3bd32a45c71d01f11550b0238f0feaf7a478981d949e570fdb610ebd2`；支持R partial/no-go、S1/S2 skipped、V停止路径结算完成，未授整体I13/G-B2。
+
+CLI单命令实测0.046756708s不是整个离线准备耗时、GPU窗口或全局资源门证据；本轮未建立实机全局observer账，不声称新1200s门通过。V没有从runtime_started=false推断全Mac进程静默，最终进程清单由统筹另作被动检查；消失/未见进程不冒充实际exit0。下一轮仍须原PNG/quit guard明确能力review及S1首段实际验证，不追加隐藏probe。
