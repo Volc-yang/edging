@@ -433,3 +433,56 @@ def _verify(bundle_ref, policy, authority_parser, trace_parser):
                 reasons=sorted(set(missing)),checks=checks,proof_checks=proof_checks,
                 g_b2_granted=False,runtime_authorized=False,
                 note='Known contradictions fail; remaining public proof parity and real policy/source/UI/Metal provenance require independent review')
+
+
+def verify_evidence_with_native_replay(bundle_ref, *, expected_policy, authority_parser,
+                                       trace_parser, native_review_ref, native_expected_policy):
+    """I15 opt-in branch: discharge old parity gaps ONLY for replayed exact bytes.
+
+    The legacy API/constants remain unchanged. Root still authenticates the
+    independently approved Native review, actual parser/source and UI provenance.
+    """
+    from . import native_replay
+    result=verify_evidence(bundle_ref,expected_policy=expected_policy,
+                           authority_parser=authority_parser,trace_parser=trace_parser)
+    if result['status']=='fail':return result
+    reviewed=native_replay.verify_native_replay_review(native_review_ref,expected_policy=native_expected_policy)
+    if reviewed['status']!='checks_complete_requires_review':
+        return dict(result,status=reviewed['status'] if reviewed['status']=='fail' else 'inconclusive',
+                    reasons=result.get('reasons',[])+['native replay: '+str(x) for x in reviewed.get('reasons',[])],
+                    native_replay=reviewed)
+    try:
+        require(result.get('proof_checks'),'no complete base proof/trace checks to discharge')
+        public=native_replay.Public(expected_policy['lifecycle']['public_paths'])
+        bundle=public.json(bundle_ref,8*1024**2);frames_by_session={};uncovered=[]
+        coverage=reviewed['coverage'];hashes=[x['observe_response_sha256'] for x in coverage]
+        require(len(hashes)==len(set(hashes)),'ambiguous duplicate Native response coverage')
+        for item in result['proof_checks']:
+            name=item['session'];binding=expected_policy['lifecycle']['session_bindings'][name]
+            if name not in frames_by_session:
+                frames_by_session[name]=native_replay.reassemble_trace(bundle['sessions'][name]['trace_refs'],
+                    trace_identity={k:binding[k] for k in ('host_pid','worker_pid','generation')},
+                    public_paths=expected_policy['lifecycle']['public_paths'])
+            frame=frames_by_session[name][item['frame_index']]
+            response_sha=hashlib.sha256(frame['response_bytes']).hexdigest()
+            request_sha=hashlib.sha256(frame['request_bytes']).hexdigest()
+            matches=[c for c in coverage if c['observe_response_sha256']==response_sha and c['observe_request_sha256']==request_sha]
+            if not matches:
+                uncovered.append(name+':'+str(item['frame_index'])+':'+response_sha);continue
+            covered=matches[0];pins=covered['context']
+            require(pins['world_id']==binding['world_id'] and pins['authority_root']==binding['authority_root'] and
+                    all(pins[k]==value for k,value in expected_policy['public_context'].items()),
+                    'Native exact response context differs from external bundle context')
+            require(covered['trusted_head_hash']==item['head'] and same(covered['selected_observation'],item['selected_observation']) and
+                    covered['manifest']==item['manifest'] and covered['state']==item['state'] and
+                    covered['event']==('' if item['event'] is None else item['event']),
+                    'Native exact response output detached from independent proof check')
+        reasons=[x for x in result.get('reasons',[]) if x not in PUBLIC_PROOF_GAPS]
+        if uncovered:
+            reasons.extend(PUBLIC_PROOF_GAPS);reasons.extend('unreplayed exact Observe response: '+x for x in uncovered)
+        return dict(result,status='inconclusive' if reasons else 'checks_complete_requires_review',reasons=sorted(set(reasons)),
+                    native_replay=reviewed,g_b2_granted=False,runtime_authorized=False,
+                    note='Only matched exact response bytes have accepted strict Native replay; source/authentication/UI/Metal/root verdict remains independent')
+    except (Invalid,native_replay.Invalid,capture.CaptureError,KeyError,ValueError,TypeError,OSError,IndexError) as error:
+        return dict(result,status='inconclusive' if not result.get('proof_checks') else 'fail',
+                    reasons=result.get('reasons',[])+[str(error)],native_replay=reviewed)
