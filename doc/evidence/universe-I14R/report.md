@@ -32,3 +32,5 @@ Native源31e38eb2b4367b272beda92a4b40a98212027468；最终D 1200287与该源的�
 本轮不派S，A结算no-go停止路径；工具层可接受，I14/G-B2整体未完成。I12资源2566/1200 fail及I13 partial保持原账，新增1200/2GiB提案尚未发运行卡。后续只重开实际能力采证与具体proof缺口，不重新开发已接受D/L代码；若需单独capability运行，先在新计划显式列范围/预算/原件/退出，不藏probe或补造review pass。维护UE发布版/单权威writer/抽象因果目标不变。
 
 独立代码审查发现并修正两处CLI问题：selector后readline仍可能被无LF的partial输入阻塞，现改为非阻塞os.read、有界缓冲和截止检查；public wrapper内nested ref可重定向，现先递归限制为controller公共输入副本、已记录ref或固定公共card pin，policy也不能扩充私密allowlist。新增partial-pipe/oversize及nested-private-read负例，最终8项CPU检查通过；这些不是UE运行失败。原6项独立复跑也通过，但不用于掩盖审查发现。
+
+最终独立review：u9对修正源39b8206逐差异复审无阻断，8项CPU独立复跑通过；u7对两build限定公共card/completion/stdout与Native Git差异独立复核，接受exit6→0/约53s结论及no-go边界。未将工具/编译接受升级为Native/Metal/键输入/正常双会话通过。实际被动plan输出与两build原件摘要见check-summary.json，后续文档提交不冒称工具源重跑。
