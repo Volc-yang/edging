@@ -33,6 +33,51 @@ class CapabilityTests(unittest.TestCase):
   self.assertEqual(host.parent.parent.parent,plugin.parent.parent.parent.parent.parent)
   self.assertFalse((host.parent/'UnrealEditor-EdgeWorldHost.dylib').exists())
   self.assertFalse((plugin.parent/'UnrealEditor-EdgeWorldRuntime.dylib').exists())
+ def test_actual_observer_skip_freeze_without_startup_sleep(self):
+  # Reuse N's bounded synthetic public trace fixture; run the actual manifest
+  # validator and actual ps observer, with no UE or worker dispatch.
+  import importlib.util
+  spec=importlib.util.spec_from_file_location('i15_n_fixture',ROOT/'tests/test_universe_iteration_native_replay.py')
+  module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+  fixture=module.NativeReplayTests();fixture.setUp()
+  controller=self.controller()
+  controller.card.update(run_id='test-run',legacy_sources=[fixture.source],public_paths=fixture.paths+[str(self.root/'skip.json')])
+  controller.prepared.update(product_source_sha='a'*40,tool_source_sha='b'*40)
+  skip=self.ref('skip.json',dict(format='universe-i15-capability-skip.v1',run_id='test-run',
+   reason='ui-controller-unavailable',metal_dispatched=False,decision='inconclusive'))
+  try:
+   ready=controller.start_observer()
+   self.assertTrue(controller.samples);self.assertTrue(Path(ready['sample_ref']['path']).is_file())
+   controller.skip_metal(skip)
+   result=controller.freeze_native_manifest(fixture.ref,fixture.ref['sha256'])
+   self.assertEqual(len(result['cases']),1)
+   # Force another real callback while skipped and pre-PID phase metadata exist.
+   controller.phases['pending']={'identity':None}
+   count=len(controller.samples);time.sleep(.6)
+   self.assertGreater(len(controller.samples),count)
+   self.assertIsNone(controller.observer_error);self.assertTrue(controller.observer.is_alive())
+   self.assertFalse(controller.phases['metal']['normal']);self.assertIsNone(controller.process)
+  finally:
+   controller.phases.pop('pending',None)
+   controller.abort('CPU skip/freeze fixture teardown');fixture.tearDown()
+ def test_observer_first_sample_failure_is_preserved(self):
+  controller=self.controller()
+  with patch.object(c.lc,'record_observer',side_effect=OSError('synthetic ps unavailable')):
+   with self.assertRaisesRegex(c.lc.Invalid,'first sample not ready'):controller.start_observer()
+  self.assertIn('synthetic ps unavailable',controller.observer_error)
+  self.assertTrue((controller.output/'observer-start-failure.json').is_file())
+  self.assertFalse(controller.observer.is_alive())
+  self.assertIsNone(controller.process);controller.abort('CPU first-sample fixture teardown')
+ def test_missing_observer_first_sample_stops_thread_before_raise(self):
+  controller=self.controller()
+  def delayed_observer(stop_event,directory,on_sample):
+   stop_event.wait(5) # bounded failure fixture, exits when the controller stops it
+  with patch.object(c.lc,'record_observer',side_effect=delayed_observer):
+   with self.assertRaisesRegex(c.lc.Invalid,'first sample not ready'):controller.start_observer()
+  failure=json.loads((controller.output/'observer-start-failure.json').read_bytes())
+  self.assertTrue(failure['stop_requested']);self.assertFalse(failure['thread_alive'])
+  self.assertFalse(failure['ue_dispatched']);self.assertIsNone(controller.process)
+  controller.abort('CPU missing-sample fixture teardown')
  def test_no_json_restore(self):
   with self.assertRaises(c.lc.Invalid):c.ValidatedCapability({}, {}, {}, None)
  def test_exact_public_export_keeps_original_lf(self):

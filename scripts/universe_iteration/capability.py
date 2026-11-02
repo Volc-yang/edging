@@ -246,20 +246,33 @@ class CapabilityController:
 
     def start_observer(self):
         lc.require(self.observer is None,'one continuous observer only')
+        first_sample=threading.Event()
         def sample(value):
             with self.lock:
                 prior=self.samples[-1]['monotonic'] if self.samples else self.started
                 if value['monotonic']-prior>2:self.observer_error='observer gap exceeds2s'
                 self.samples.append(value);self.public_refs[value['raw_ref']['path']]=value['raw_ref']
                 self._write(self.output/('sample-%06d.json'%len(self.samples)),value)
-                for phase in self.phases.values():
-                    if phase.get('identity') is None:
+                for phase in tuple(self.phases.values()):
+                    if not phase.get('skipped') and phase.get('pid') is not None and phase.get('identity') is None:
                         rows=[r for r in value['processes'] if r['pid']==phase['pid']]
                         if rows:phase['identity']=rows[0]
+                first_sample.set()
         def run():
             try:lc.record_observer(self.stop_event,self.output,on_sample=sample)
-            except BaseException as error:self.observer_error=str(error)
+            except BaseException as error:
+                self.observer_error=str(error);first_sample.set()
         self.observer=threading.Thread(target=run,name='i15-capability-observer',daemon=False);self.observer.start()
+        ready=first_sample.wait(2)
+        if not (ready and self.samples and not self.observer_error and self.observer.is_alive()):
+            self.stop_event.set();self.observer.join(2)
+            self._write(self.output/'observer-start-failure.json',dict(
+                format='universe-i15-observer-start-failure.v1',run_id=self.card['run_id'],
+                first_sample_signaled=ready,sample_count=len(self.samples),observer_error=self.observer_error,
+                stop_requested=True,thread_alive=self.observer.is_alive(),monotonic=self.clock(),
+                ue_dispatched=False,normal=False))
+            raise lc.Invalid('continuous observer first sample not ready within2s: '+str(self.observer_error))
+        return dict(sample_ref=self.samples[0]['raw_ref'],monotonic=self.samples[0]['monotonic'])
 
     def _private_preflight(self):
         """Pure worker public export: no Lease/open_trust/provider/scene."""
