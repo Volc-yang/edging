@@ -1,0 +1,56 @@
+{
+  "base": "60857c04fa13db7b23a1f9f2668dc22842196fe9",
+  "checks": {
+    "historical_raw_compatibility": {
+      "frames": 6,
+      "operations": [
+        "status",
+        "observe",
+        "prepare",
+        "advance",
+        "status",
+        "observe"
+      ],
+      "run": "run-oKHMYFvE",
+      "scope": "read-only replay, not I13 runtime or gate pass"
+    },
+    "history_rejection_rework": {
+      "elapsed_seconds": 0.205,
+      "passed": 5,
+      "scope": "only affected directed tests; no full suite or UE run",
+      "test_names": [
+        "test_history_idle_state_without_handled_input_is_not_rejection",
+        "test_history_requires_handled_rejected_reason_and_counter_increment",
+        "test_complete_synthetic_session_does_not_grant_acceptance",
+        "test_no_marker_and_incomplete_release_restore_rejected",
+        "test_schema_is_frozen_machine_readable_and_failures_are_typed"
+      ],
+      "tests": 5
+    },
+    "prior_implementation_targeted_unittest": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_universe_iteration_actions -v",
+      "elapsed_seconds": 0.993,
+      "passed": 17,
+      "tests": 17
+    },
+    "retain_protocol_rework": {
+      "elapsed_seconds": 0.153,
+      "passed": 3,
+      "scope": "affected directed tests only",
+      "test_names": [
+        "test_retain_rejects_nonzero_tick_delta",
+        "test_retain_rejects_nonnull_case_id",
+        "test_complete_synthetic_session_does_not_grant_acceptance"
+      ],
+      "tests": 3
+    }
+  },
+  "g_b2_granted": false,
+  "parent": "I13",
+  "private_key_contents_read": false,
+  "readiness": "no_go",
+  "runtime_launched": false,
+  "source_sha256": "c52a5d0ed1d1aba0ef616def2a0442ebc34f4058b7198ae2ca00633cb16ca991",
+  "task": "I13-B",
+  "tests_sha256": "1c7fdbc46a559d14c02a197e3a71fc6242bd0ac12d0797457cb1c66a7f50ebb3"
+}
