@@ -213,3 +213,31 @@ bool FUniverseLiveReadOnlyTest::RunTest(const FString& Parameters)
  return true;
 }
 #endif
+
+#if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseProtocolIdsTest,"edgeWorld.UniverseHost.ProtocolIds",EAutomationTestFlags::EditorContext|EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
+bool FUniverseProtocolIdsTest::RunTest(const FString& Parameters)
+{
+ // Pure in-memory typed metadata only. Never transport, owner files, actors or GS.
+ const FGuid Known(0xABCDEF12,0x3456ABCD,0xEF012345,0x6789ABCD);
+ const FString RequestId=FEdgeWorldUniverseProtocolIds::Make(FEdgeWorldUniverseProtocolIds::EKind::Request,Known);
+ const FString CommandId=FEdgeWorldUniverseProtocolIds::Make(FEdgeWorldUniverseProtocolIds::EKind::Command,Known);
+ TestEqual(TEXT("actual request factory canonical lowercase"),RequestId,FString(TEXT("u-abcdef123456abcdef0123456789abcd")));
+ TestEqual(TEXT("actual command factory canonical lowercase"),CommandId,FString(TEXT("c-abcdef123456abcdef0123456789abcd")));
+ TestEqual(TEXT("request ID fits wire boundary"),RequestId.Len(),34);TestEqual(TEXT("command ID fits wire boundary"),CommandId.Len(),34);
+ const FString Base=TEXT("\"domain\":\"edgeworld.universe.authority\",\"version\":\"0.2\",\"world_id\":\"synthetic-id-world\"");FString Line,Error;
+ TestTrue(TEXT("factory request passes strict status builder"),FEdgeWorldUniverseControlParser::Request(TEXT("status"),RequestId,TEXT("{")+Base+TEXT("}"),Line,Error));
+ TestTrue(TEXT("factory request passes strict observe builder"),FEdgeWorldUniverseControlParser::Request(TEXT("observe"),RequestId,TEXT("{")+Base+TEXT(",\"tick\":0,\"revision\":0,\"watermark\":0}"),Line,Error));
+ const FString OldRequest=FString(TEXT("u-"))+Known.ToString(EGuidFormats::Digits);
+ TestFalse(TEXT("old uppercase GUID request remains forbidden"),FEdgeWorldUniverseControlParser::Request(TEXT("status"),OldRequest,TEXT("{")+Base+TEXT("}"),Line,Error));
+ FEdgeWorldUniversePublicPins Pins;Pins.Context.WorldId=TEXT("synthetic-id-world");Pins.Context.ArtifactClass=TEXT("synthetic-contract-only");Pins.Principal=TEXT("synthetic-owner");Pins.AllowedActions={TEXT("physics_step"),TEXT("retain_snapshot")};
+ FEdgeWorldUniverseObservation O;O.WorldId=Pins.Context.WorldId;O.ArtifactClass=TEXT("synthetic-contract-only");O.StorageState=TEXT("ready");O.Budget=8;O.Config=FString::ChrN(64,'a');O.Binding=FString::ChrN(64,'b');
+ FString Payload,Proposal,Intent;
+ TestTrue(TEXT("factory command passes actual BuildPrepare"),FEdgeWorldUniverseControlParser::BuildPrepare(Pins,O,CommandId,TEXT("physics_step"),TEXT("weak"),Payload,Proposal,Intent,Error));
+ TestTrue(TEXT("factory request and derived IDs pass strict prepare builder"),FEdgeWorldUniverseControlParser::Request(TEXT("prepare"),RequestId,Payload,Line,Error));
+ TestTrue(TEXT("derived proposal ID remains within64"),(FString(TEXT("proposal-"))+CommandId).Len()<=64);TestTrue(TEXT("derived approval ID remains within64"),(FString(TEXT("approval-"))+CommandId).Len()<=64);
+ const FString OldCommand=FString(TEXT("c-"))+Known.ToString(EGuidFormats::Digits);
+ TestFalse(TEXT("old uppercase GUID command remains forbidden"),FEdgeWorldUniverseControlParser::BuildPrepare(Pins,O,OldCommand,TEXT("physics_step"),TEXT("weak"),Payload,Proposal,Intent,Error));
+ return true;
+}
+#endif
