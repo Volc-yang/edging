@@ -73,7 +73,7 @@ class ReadinessTests(unittest.TestCase):
                 value = runner.i13_readiness('unused', 'a' * 40)
             self.assertEqual(value['status'], 'no_go')
             self.assertFalse(value['runtime_authorized'])
-            self.assertTrue(any('no R13 dispatcher' in b for b in value['blockers']))
+            self.assertTrue(any('I13 passive entry cannot dispatch' in b for b in value['blockers']))
 
 
 if __name__ == '__main__':

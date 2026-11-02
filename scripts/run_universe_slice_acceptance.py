@@ -840,7 +840,7 @@ def i13_plan():
             'module_pins': {name: {'path': str(Path(module.__file__).resolve()),
                                    'sha256': file_hash(Path(module.__file__).resolve())}
                             for name, module in (('actions', actions), ('lifecycle', lifecycle), ('capture', capture))},
-            'live_adapter': 'deferred: no R13 dispatcher/final bundle adapter implemented'}
+            'live_adapter': 'blocked: I13 passive entry cannot dispatch; R13 controller/I14 verifier require separate reviewed inputs'}
 
 
 def i13_readiness(path, accepted_source):
