@@ -1,6 +1,6 @@
 # I13-C passive native Shot capture
 
-Status: implementation prepared; CPU checks pending. Base
+Status: offline implementation and focused CPU checks complete; real native Shot/UI provenance and R integration pending. Base
 `60857c04fa13db7b23a1f9f2668dc22842196fe9`. Owned capture.py, its focused test,
 and this directory only. No UE, native build, solver, UI, owner/private/key or
 production authority operations. Imports have no IO or process side effects.
@@ -115,3 +115,33 @@ command and reservation path during collection/final verification, revalidates
 prepared observation/map ordering, and validates nested binding/triple integer
 types rather than relying on Python equality (True==1). Only affected targeted
 cases will rerun after a second ordinary source commit; initial raw is retained.
+
+## Actual checks and preserved evidence
+
+Source `89bd17e80f0692933a5462dcb25a5b3cc911fe89` was committed before
+first execution. Command from task worktree:
+`python3 -m unittest discover -s tests -p test_universe_iteration_capture.py -v`.
+22 tests passed (unittest0.099s), actual PID58813 exit0 wall0.185674667s.
+Raw `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I13C-20261102-capture-attempt1`;
+index SHA256 `c6bf6b49b8c7d6d9a50dbcf59fed00e151aecedd6dbf6397e3342eb78e5395d7`.
+
+Reviewed source hardening was separately committed as
+`cbb598773cceb275aca39e1650cafd225a814996` before one justified targeted
+rerun. Command from task's tests directory:
+`python3 -m unittest test_universe_iteration_capture.CaptureTests.test_nested_bool_alias_and_forged_prepare_rejected test_universe_iteration_capture.CaptureTests.test_end_to_end_history_has_separate_current_head_and_original_bytes test_universe_iteration_capture.CaptureTests.test_command_requires_exact_receipt_times_log_and_cua_original -v`.
+3 affected cases passed (unittest0.031s), PID63453 exit0 wall0.132498875s.
+Raw `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I13C-20261102-capture-attempt2-targeted`;
+index SHA256 `4f62fc53af8bd46005a641ab8f94cd2e9bb207e5affba9e875135408fcfff212`.
+No further checks or runtime activity. Final report-only commit does not change
+the tested code. GitHub CI is separate and not implied by these results.
+
+Both attempts used PYTHONDONTWRITEBYTECODE=1; preserved raw includes runner,
+exact argv/cwd/environment override, actual PID/exit/time, source SHA and
+input hashes before/after, stdout/stderr and index excluding itself. Inputs
+include the frozen interface and untouched shared runner/verifier. All hashes
+were unchanged during each attempt. Total process wall0.319s; individual
+120s/119s caps and raw16MiB caps enforced. Tests use only synthetic temporary
+public fixtures, including in-memory clock/sleep injection. No actual native
+Shot, image provenance, UE/solver, product build, or real authority behavior
+is claimed. Root owns source/PR review and R adaptation; worktree stays retained
+until reviewed merge/handoff and dependency-safe cleanup.
