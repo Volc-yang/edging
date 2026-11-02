@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I15 精确回放与只读能力采证
+## 当前结算：I15 工具已集成，Native 未运行
 
-[I15 登记](universe_i15_execution_register.md) / [审定树](design/universe-i15-proof-capability-plan.md)，基线 `ee138ae`。N/P/C 在原三个独立 worktree 接续，C++ 已有 `eb4c0c4` / `997eda0`；Python 配套和独立 PR 尚未交付，未集成、未新构建、未启动 UE。下一步先收齐并审查三份交付和 CI，再准备只读 owner、官方构建与准确产物冻结；实机顺序为一次 Metal → 原始响应冻结 → 一次 Native。当前 in progress，G-B2 继续开放，旧失败账保留。
+[I15 登记](universe_i15_execution_register.md) / [审定树及修订](design/universe-i15-proof-capability-plan.md)：PR115–121均经独立审查、最终CI成功并集成。准确Native源`5a6cca0`官方build先exit6/RHI缺依赖，修复后exit0，两次累计39.470s<180；旧3原始proof已重组。无CUA故Metal跳过；实际控制器在UE派发前因skipped阶段缺PID中止、outer wait2，最终工具`077548e`修复并有16项CPU检查。CI结束时完整运行预留不足，Native仍skipped，未开UE/worker。连续首outer→seal771.428s<900、保守产物1.4715GB<2GiB，权威map不变；全周期observer缺口保留fail/inconclusive。**I15 partial、G-B2未过**，旧失败不覆。
+
+下一轮直接核对保留build/source，冻结新tool版本的prepared/card/manifest，执行四精确Native selectors与旧3case的actualwait/独立review；不再扩展工具框架。没有CUA不伪造Metal输入/原PNG。构建树及I12B恢复树保留，主checkout用户修改不碰；任务树清理详见登记。
 
 ## 当前结算：I14诊断/控制已集成，实机ready no-go
 

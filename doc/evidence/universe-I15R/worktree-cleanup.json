@@ -1,0 +1,52 @@
+{
+  "format": "universe-i15-worktree-cleanup.v1",
+  "retained": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build",
+      "reason": "prepared source pins, output mappings, binary/source recovery dependency"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i12b-universe-live",
+      "reason": "pre-existing approved recovery tree; untouched"
+    }
+  ],
+  "scope": "Only four settled I15 task checkouts removed; branches and all DevSSD originals retained",
+  "tasks": [
+    {
+      "branch": "codex/i15-native-replay",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "d00e243bef489c815c7383e44ab75d4a3ba5040f",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-replay",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    },
+    {
+      "branch": "codex/i15-readonly-probe",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "a29c3e521561dfcc62c017b468c5631cb3d58c68",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-readonly-probe",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    },
+    {
+      "branch": "codex/i15-controller-observer-ready",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "a6257982c30fe517de891a90f4d20bd58336f02d",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-capability",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    },
+    {
+      "branch": "codex/i15-integration",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "58f1baf012713b33fdbb1ae3323bb892bb41793f",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-integration",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    }
+  ]
+}
