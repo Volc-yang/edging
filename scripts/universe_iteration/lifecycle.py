@@ -471,3 +471,297 @@ def _validate_ledger(ledger, expected_run, clock_id, executable, launchers, expe
     return {'status': 'checks_complete_requires_review', 'reasons': [],
             'wall_seconds': end - start, 'process_union_seconds': interval_union_seconds(intervals),
             'note': 'Structure only; root must verify raw provenance, wait origins and authorization.'}
+
+
+# I14 is a separate validator: no v1 thresholds, schema or code paths change.
+FORMAT_V2 = 'universe-i14-lifecycle.v2'
+POLICY_V2 = 'universe-i14-lifecycle-policy.v1'
+SESSION_LIMITS_V2 = {
+    'initialize': {'max_seconds': 540, 'quit_after': 480, 'wait_after': 520,
+                   'stage_seconds': dict(build=60, startup=60, interaction=360, shutdown=40, seal=20)},
+    'existing': {'max_seconds': 280, 'quit_after': 220, 'wait_after': 260,
+                 'stage_seconds': dict(build=60, startup=60, interaction=100, shutdown=40, seal=20)}}
+POLICY_FIELDS_V2 = {'format', 'run_binding', 'clock_id', 'accepted_executable', 'worker_executable',
+                    'launcher_identities', 'launcher_source_ref', 'session_bindings', 'storage_root',
+                    'public_paths', 'global_limit_seconds', 'storage_limit_bytes',
+                    'observer_max_gap_seconds', 'sessions'}
+
+
+def validate_policy_v2(policy):
+    """Validate externally frozen policy, never derive it from a supplied ledger."""
+    require(type(policy) is dict and set(policy) == POLICY_FIELDS_V2, 'v2 exact policy fields')
+    require(policy['format'] == POLICY_V2, 'v2 policy version')
+    validate_binding(policy['run_binding'], policy['run_binding'])
+    require(type(policy['clock_id']) is str and policy['clock_id'], 'v2 clock domain')
+    require(policy['sessions'] == SESSION_LIMITS_V2, 'v2 session allocation differs from freeze')
+    require(type(policy['global_limit_seconds']) is int and policy['global_limit_seconds'] == 1200,
+            'v2 global 1200s freeze')
+    require(type(policy['storage_limit_bytes']) is int and policy['storage_limit_bytes'] == MAX_BYTES,
+            'v2 storage 2GiB freeze')
+    require(type(policy['observer_max_gap_seconds']) in (int, float) and
+            policy['observer_max_gap_seconds'] == 2, 'v2 observer 2s freeze')
+    for key in ('accepted_executable', 'storage_root'):
+        checked_path(policy[key])
+    worker = policy['worker_executable']
+    require(type(worker) is str and Path(worker).is_absolute() and '..' not in Path(worker).parts,
+            'v2 worker argv pin must be absolute; interpreter chain validated by legacy backend')
+    require(set(policy['session_bindings']) == set(SESSION_LIMITS_V2), 'v2 session binding names')
+    for name, binding in policy['session_bindings'].items():
+        validate_binding(binding, binding, ready=True)
+        require(binding['session'] == name and {k: binding[k] for k in RUN_FIELDS} == policy['run_binding'],
+                'v2 run/session identity')
+    require(len(policy['launcher_identities']) == 2, 'v2 exact two ordered launcher identities')
+    for row in policy['launcher_identities']:
+        validate_identity(row)
+    require(len({process_key(r) for r in policy['launcher_identities']}) == 2, 'v2 distinct launchers')
+    require(type(policy['public_paths']) is list and policy['public_paths'], 'v2 public allowlist')
+
+
+def validate_ledger_v2(ledger, *, expected_policy, actual_finalized_monotonic=None):
+    """Strict v2 structure and original-byte verification; root authenticates audit.
+
+    Unknown build descendants retain null exits, not invented success. Runtime
+    launcher/UE/worker still require actual normal parent wait receipts.
+    """
+    try:
+        return _validate_ledger_v2(ledger, expected_policy, actual_finalized_monotonic)
+    except (KeyError, FileNotFoundError) as error:
+        return {'status': 'inconclusive', 'reasons': ['missing v2 evidence: ' + str(error)]}
+    except (Invalid, ValueError, TypeError, OSError, OverflowError, IndexError) as error:
+        return {'status': 'fail', 'reasons': [str(error)]}
+
+
+def _validate_ledger_v2(ledger, policy, actual_finalized):
+    validate_policy_v2(policy)
+    root = checked_path(policy['storage_root'])
+    allowed = {str(checked_path(p)) for p in policy['public_paths']}
+    def public(ref):
+        require(type(ref) is dict and set(ref) == {'path', 'sha256'} and ref['path'] in allowed,
+                'v2 ref not independently public allowlisted')
+        # Pinned launcher source may be outside storage; no other ref may escape.
+        require(ref == policy['launcher_source_ref'] or checked_path(ref['path']).is_relative_to(root),
+                'v2 ref escapes approved storage')
+        return read_ref(ref)
+    def document(ref):
+        public(ref)
+        return json_ref(ref)
+    require(ledger['format'] == FORMAT_V2, 'v2 ledger version')
+    validate_binding(ledger['run_binding'], policy['run_binding'])
+    clock = ledger['clock']
+    require(clock['id'] == policy['clock_id'], 'v2 independent clock domain')
+    anchor = number(clock['anchor_monotonic'], 'v2 clock anchor')
+    utc_anchor = utc_seconds(clock['anchor_utc'])
+    start = number(ledger['dispatch_monotonic'], 'v2 dispatch')
+    charged = number(ledger['charged_end_monotonic'], 'v2 charged end')
+    observed = number(ledger['actual_observed_end_monotonic'], 'v2 actual observation end')
+    require(anchor <= start <= observed <= charged == ledger['end_monotonic'] and
+            ledger['limit_seconds'] == policy['global_limit_seconds'] and charged - start <= 1200,
+            'v2 continuous charged wall budget')
+    seal = ledger['seal']
+    observer_end = number(seal['observer_ended_monotonic'], 'v2 observer end')
+    require(start <= observer_end <= observed and observed - observer_end <= 2 and
+            start <= number(seal['started_monotonic'], 'seal start') <=
+            number(seal['ended_monotonic'], 'seal actual end') <= observed, 'v2 actual sealing boundaries')
+    missing = []
+    if actual_finalized is None:
+        missing.append('independent actual finalized audit')
+    else:
+        require(observed <= number(actual_finalized, 'actual finalized audit') <= charged,
+                'v2 actual finalization exceeded charged boundary')
+    gap = policy['observer_max_gap_seconds']
+    require(ledger['max_observer_gap_seconds'] == gap, 'v2 sample gap policy')
+    samples = ledger['samples']
+    require(type(samples) is list, 'v2 samples list')
+    if not samples:
+        missing.append('v2 observer samples')
+    owned = {process_key(row): row for row in policy['launcher_identities']}
+    seen, rows_by_time, previous = {}, [], start
+    last_relevant = []
+    for index, sample in enumerate(samples):
+        t = number(sample['monotonic'], 'v2 sample time')
+        require(previous <= t <= observer_end and (index == 0 or t > previous), 'v2 sample order')
+        if t - previous > gap:
+            missing.append('v2 observer gap')
+        require(abs(utc_seconds(sample['utc']) - (utc_anchor + t - anchor)) <= 2, 'v2 UTC clock anchor')
+        rows = parse_ps_snapshot(public(sample['raw_ref']).decode('utf-8'))
+        require(rows == sample['processes'], 'v2 sample differs from raw ps')
+        relevant = classify_processes(rows, list(owned.values()), policy['accepted_executable'])
+        # Detached workers are also within runtime scope, not unobserved noise.
+        known_keys = {process_key(x['identity']) for x in relevant}
+        for row in rows:
+            if _executable_matches(row['argv'], policy['worker_executable']) and process_key(row) not in known_keys:
+                # Other users' Python is not automatically ours: mark unresolved only
+                # when a frozen worker PID matches; generic Python is never killed.
+                if row['pid'] in {b['worker_pid'] for b in policy['session_bindings'].values()}:
+                    relevant.append({'identity': row, 'ownership': 'contamination'})
+        for item in relevant:
+            key = process_key(item['identity'])
+            require(item['ownership'] == 'owned', 'v2 detached/extra runtime contamination')
+            owned[key] = item['identity']
+            seen.setdefault(key, []).append(t)
+        rows_by_time.append((t, rows))
+        last_relevant, previous = relevant, t
+    if observer_end - previous > gap:
+        missing.append('v2 observer closing gap')
+    require(not last_relevant, 'v2 runtime/build processes remain after observer')
+    session_names, session_ranges, cards = [], {}, set()
+    for session in ledger['sessions']:
+        name = session['session']
+        require(name in SESSION_LIMITS_V2 and name not in session_names, 'v2 session identity/order')
+        limits = policy['sessions'][name]
+        binding = policy['session_bindings'][name]
+        validate_binding(session['binding'], binding, ready=True)
+        left = number(session['start_monotonic'], 'v2 session start')
+        right = number(session['end_monotonic'], 'v2 session end')
+        require(start <= left <= right <= observed and right - left <= limits['max_seconds'], 'v2 session wall')
+        if session_ranges:
+            require(left >= max(r[1] for r in session_ranges.values()), 'v2 overlapping sessions')
+        require([s['stage'] for s in session['stages']] == ['build', 'startup', 'interaction', 'shutdown', 'seal'], 'v2 all five phases')
+        cursor, ranges = left, {}
+        for stage in session['stages']:
+            kind = stage['stage']
+            a, b, deadline = (number(stage[k], 'v2 stage ' + k) for k in
+                              ('start_monotonic', 'end_monotonic', 'deadline_monotonic'))
+            require(a == cursor and a <= b <= deadline <=
+                    min(a + limits['stage_seconds'][kind], left + limits['max_seconds']), 'v2 stage budget')
+            if kind == 'shutdown':
+                require(a <= left + limits['quit_after'] and b <= left + limits['wait_after'], 'v2 quit/wait deadlines')
+            ranges[kind] = (a, b)
+            cursor = b
+        require(cursor == right, 'v2 unaccounted session time')
+        # Check allowlist before invoking shared completion field checks.
+        public(session['completion_ref'])
+        cards.add(_verify_completion(session['completion_ref'], binding))
+        session_names.append(name)
+        session_ranges[name] = (left, right, ranges)
+    if session_names != ['initialize', 'existing']:
+        missing.append('v2 two normal standard sessions')
+    else:
+        require(len(cards) == 1 and len({b['host_pid'] for b in policy['session_bindings'].values()}) == 2 and
+                len({b['worker_pid'] for b in policy['session_bindings'].values()}) == 2,
+                'v2 same-card/distinct runtime sessions')
+    core_expected = {}
+    for index, name in enumerate(('initialize', 'existing')):
+        binding = policy['session_bindings'][name]
+        launcher = policy['launcher_identities'][index]
+        for kind, pid in [('launcher', launcher['pid']), ('ue', binding['host_pid']), ('worker', binding['worker_pid'])]:
+            require(pid not in core_expected, 'v2 runtime core PID reuse')
+            core_expected[pid] = (name, kind, launcher)
+    declared, core_seen, intervals = set(), set(), []
+    for process in ledger['processes']:
+        identity = process['identity']
+        key = process_key(identity)
+        require(key in seen and key not in declared, 'v2 unknown/duplicate process')
+        declared.add(key)
+        first, last = min(seen[key]), max(seen[key])
+        number(process['first_seen_monotonic'], 'process first seen')
+        number(process['last_seen_monotonic'], 'process last seen')
+        require(process['first_seen_monotonic'] == first and process['last_seen_monotonic'] == last and
+                process['ownership'] == 'owned', 'v2 process extent/ownership')
+        left = number(process['start_lower_bound'], 'v2 process lower')
+        right = number(process['end_upper_bound'], 'v2 process upper')
+        preceding = [t for t, _ in rows_by_time if t < first]
+        following = [t for t, _ in rows_by_time if t > last]
+        require(start <= left <= (max(preceding) if preceding else start) and
+                (min(following) if following else observer_end) <= right <= observer_end,
+                'v2 conservative process brackets')
+        require(process['boundary_source'] in ('parent-wait', 'observer-bracket', 'conservative-upper-bound'),
+                'v2 process boundary source')
+        intervals.append((left, right))
+        expected_core = core_expected.get(identity['pid'])
+        if expected_core is not None:
+            name, kind, launcher = expected_core
+            require(process['role'] == 'runtime_core' and process['core_kind'] == kind and
+                    process['session'] == name and process['build_parent_ref'] is None, 'v2 core relabelled as build')
+            if kind == 'launcher':
+                require(same_process(identity, launcher), 'v2 exact launcher core identity')
+            else:
+                executable = policy['accepted_executable'] if kind == 'ue' else policy['worker_executable']
+                require(_executable_matches(identity['argv'], executable), 'v2 core executable pin')
+            require(type(process['exit_status']) is int and process['exit_status'] == 0, 'v2 runtime core actual exit0')
+            if process['wait_ref'] is None:
+                missing.append('v2 core actual wait')
+            else:
+                public(process['wait_ref'])
+                _verify_wait(process['wait_ref'], identity, start=last, end=right)
+                wait = document(process['wait_ref'])
+                expected_parent = launcher['ppid'] if kind == 'launcher' else (launcher['pid'] if kind == 'ue' else policy['session_bindings'][name]['host_pid'])
+                require(wait['parent_pid'] == expected_parent, 'v2 actual parent wait relation')
+            core_seen.add(identity['pid'])
+        else:
+            require(process['role'] == 'build_descendant' and not
+                    _executable_matches(identity['argv'], policy['accepted_executable']) and not
+                    _executable_matches(identity['argv'], policy['worker_executable']), 'v2 noncore runtime cannot become build')
+            _verify_build_parent_v2(process, policy, document, public, rows_by_time, session_ranges)
+            if process['wait_ref'] is None:
+                require(process['exit_status'] is None, 'v2 unknown build exit must remain null')
+            else:
+                public(process['wait_ref'])
+                _verify_wait(process['wait_ref'], identity, start=last, end=right)
+                require(type(process['exit_status']) is int and process['exit_status'] == 0, 'v2 build wait status')
+    require(declared == set(seen), 'v2 observer process omitted')
+    if core_seen != set(core_expected):
+        missing.append('v2 runtime core process coverage')
+    snapshot = document(seal['storage_snapshot_ref'])
+    require(snapshot['kind'] == 'whole-storage' and snapshot['includes_all_attempts'] is True and
+            snapshot['storage_root'] == str(root), 'v2 complete storage identity')
+    require(start <= number(snapshot['monotonic'], 'v2 storage sample') <= observed,
+            'v2 storage snapshot chronology')
+    require(seal['storage_limit_bytes'] == policy['storage_limit_bytes'], 'v2 storage bound')
+    sizes = {}
+    for entry in snapshot['files']:
+        path = checked_path(entry['path'])
+        require(path.is_relative_to(root) and str(path) not in sizes, 'v2 storage duplicate/escape')
+        sizes[str(path)] = integer(entry['bytes'], 'v2 storage file bytes')
+    actual = {}
+    for directory, dirs, files in os.walk(root, followlinks=False):
+        for name in dirs + files:
+            path = Path(directory) / name
+            metadata = path.lstat()
+            require(stat.S_ISREG(metadata.st_mode) or stat.S_ISDIR(metadata.st_mode), 'v2 storage symlink/special')
+            if stat.S_ISREG(metadata.st_mode):
+                actual[str(path)] = metadata.st_size
+    require(sizes == actual and sum(sizes.values()) == seal['storage_bytes'] <= policy['storage_limit_bytes'],
+            'v2 final whole-storage byte accounting')
+    return {'status': 'inconclusive' if missing else 'checks_complete_requires_review',
+            'reasons': missing, 'wall_seconds': charged - start,
+            'actual_observed_seconds': observed - start,
+            'process_union_seconds': interval_union_seconds(intervals),
+            'note': 'Root authenticates actual wait/audit/source/card; no runtime gate granted.'}
+
+
+def _executable_matches(argv, executable):
+    return argv == executable or argv.startswith(executable + ' ')
+
+
+def _verify_build_parent_v2(process, policy, document, public, rows_by_time, sessions):
+    wrapper = document(process['build_parent_ref'])
+    require(wrapper['format'] == 'universe-i14-build-parent.v1', 'v2 build-parent version')
+    name = wrapper['session']
+    require(name in sessions, 'v2 build session')
+    launcher = policy['launcher_identities'][('initialize', 'existing').index(name)]
+    require(same_process(wrapper['launcher_identity'], launcher), 'v2 build launcher identity')
+    require(wrapper['launcher_source_ref'] == policy['launcher_source_ref'], 'v2 independent launcher source pin')
+    source = public(policy['launcher_source_ref'])
+    require(b'build_rc=${PIPESTATUS[0]}' in source, 'v2 official build PIPESTATUS origin')
+    raw = public(wrapper['stdout_ref'])
+    a, b = wrapper['line_start'], wrapper['line_end']
+    integer(a, 'v2 build line start'); integer(b, 'v2 build line end')
+    require(0 <= a < b <= len(raw) and (a == 0 or raw[a - 1:a] == b'\n') and
+            raw[a:b].rstrip(b'\r\n') == b'[launcher] build_exit_code=0' and raw[b - 1:b] == b'\n',
+            'v2 actual build exit0 stdout line')
+    left, right = sessions[name][2]['build']
+    require(wrapper['build_start_monotonic'] == left and wrapper['build_end_monotonic'] == right,
+            'v2 build phase association')
+    identity = process['identity']
+    first = process['first_seen_monotonic']
+    require(left <= first <= right, 'v2 build descendant first seen outside build phase')
+    rows = next(rows for t, rows in rows_by_time if t == first)
+    by_pid = {r['pid']: r for r in rows}
+    require(identity['pid'] in by_pid and same_process(by_pid[identity['pid']], identity), 'v2 actual build first sample identity')
+    row, visited = by_pid[identity['pid']], set()
+    while row['pid'] != launcher['pid']:
+        require(row['pid'] not in visited and row['ppid'] in by_pid, 'v2 build same-sample ancestry missing')
+        visited.add(row['pid'])
+        row = by_pid[row['ppid']]
+    require(same_process(row, launcher), 'v2 build ancestry is not approved launcher')
