@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Misc/Guid.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
 #include "EdgeWorldUniverseObservation.h"
@@ -10,6 +11,16 @@ class AEdgeWorldUniverseActor;
 class ACameraActor;
 struct FEdgeWorldResponse;
 struct FEdgeWorldTraceBudget;
+
+/** Client nonce generation must obey the strict lowercase wire ID grammar. */
+struct FEdgeWorldUniverseProtocolIds
+{
+ enum class EKind { Request, Command };
+ static FString Make(EKind Kind,FGuid Guid=FGuid::NewGuid())
+ {
+  return FString(Kind==EKind::Request?TEXT("u-"):TEXT("c-"))+Guid.ToString(EGuidFormats::DigitsLower);
+ }
+};
 
 enum class EUniverseClientPhase { Stopped, AwaitStatus, AwaitObserve, Latest, History, Preparing, Advancing, Unknown, ReadOnly, Rejected };
 struct FUniverseRequestToken { uint64 Epoch=0, Serial=0, Generation=0; };

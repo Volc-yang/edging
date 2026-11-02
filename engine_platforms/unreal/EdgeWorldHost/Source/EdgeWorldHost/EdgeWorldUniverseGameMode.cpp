@@ -24,7 +24,6 @@
 namespace
 {
 FString Quote(const FString& S){TSharedRef<FJsonObject> X=MakeShared<FJsonObject>();X->SetStringField(TEXT("x"),S);FString T;FJsonSerializer::Serialize(X,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&T));return T.Mid(5,T.Len()-6);}
-FString RequestId(){return TEXT("u-")+FGuid::NewGuid().ToString(EGuidFormats::Digits);}
 bool ReadPins(const FString& Path,TArray<uint8>& Out)
 {
 #if PLATFORM_MAC
@@ -73,7 +72,7 @@ FEdgeWorldUniverseControlExpectation AEdgeWorldUniverseGameMode::Expectation(con
 }
 void AEdgeWorldUniverseGameMode::SendControl(const FString& Op,const FString& Payload,EUniverseClientPhase Phase)
 {
- if(!Transport||Session.bBusy)return;FString Id=RequestId(),Line,Error;if(!FEdgeWorldUniverseControlParser::Request(Op,Id,Payload,Line,Error)){Reject(Error,false);return;}
+ if(!Transport||Session.bBusy)return;FString Id=FEdgeWorldUniverseProtocolIds::Make(FEdgeWorldUniverseProtocolIds::EKind::Request),Line,Error;if(!FEdgeWorldUniverseControlParser::Request(Op,Id,Payload,Line,Error)){Reject(Error,false);return;}
  auto E=Expectation(Op,Id);auto Token=Session.Begin(Phase);TWeakObjectPtr<AEdgeWorldUniverseGameMode> Weak(this);
  Transport->SendJsonLine({Id,Op,Line},[Weak,Token,E,Op](FEdgeWorldResponse&& R){AsyncTask(ENamedThreads::GameThread,[Weak,Token,E,Op,R=MoveTemp(R)]()mutable{if(Weak.IsValid())Weak->OnControl(Op,Token,E,MoveTemp(R));});});Present();
 }
@@ -113,7 +112,7 @@ void AEdgeWorldUniverseGameMode::OnControl(const FString& Op,const FUniverseRequ
 }
 void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
 {
- if(Session.bBusy||!Transport)return;FString Id=RequestId(),Line,Error;FString Payload=TEXT("{")+BasePayload()+FString::Printf(TEXT(",\"tick\":%lld,\"revision\":%lld,\"watermark\":%lld}"),(long long)Tick,(long long)Revision,(long long)Revision);
+ if(Session.bBusy||!Transport)return;FString Id=FEdgeWorldUniverseProtocolIds::Make(FEdgeWorldUniverseProtocolIds::EKind::Request),Line,Error;FString Payload=TEXT("{")+BasePayload()+FString::Printf(TEXT(",\"tick\":%lld,\"revision\":%lld,\"watermark\":%lld}"),(long long)Tick,(long long)Revision,(long long)Revision);
  if(!FEdgeWorldUniverseControlParser::Request(TEXT("observe"),Id,Payload,Line,Error)){Reject(Error,false);return;}
  FEdgeWorldUniverseExpectation E;E.Context=Pins.Context;E.TrustedHead=Session.Head;E.RequestId=Id;E.Tick=Tick;E.Revision=Revision;E.Watermark=Revision;auto Token=Session.Begin(EUniverseClientPhase::AwaitObserve);TWeakObjectPtr<AEdgeWorldUniverseGameMode> Weak(this);
  Transport->SendJsonLine({Id,TEXT("observe"),Line},[Weak,Token,E](FEdgeWorldResponse&& R){AsyncTask(ENamedThreads::GameThread,[Weak,Token,E,R=MoveTemp(R)]()mutable
@@ -141,7 +140,7 @@ bool AEdgeWorldUniverseGameMode::VerifyInstalledAssets(const FEdgeWorldUniverseO
 }
 void AEdgeWorldUniverseGameMode::Prepare(const FString& Action)
 {
- if(!Session.CanWrite())return;FString Id=TEXT("c-")+FGuid::NewGuid().ToString(EGuidFormats::Digits),Payload,Error;
+ if(!Session.CanWrite())return;FString Id=FEdgeWorldUniverseProtocolIds::Make(FEdgeWorldUniverseProtocolIds::EKind::Command),Payload,Error;
  if(!FEdgeWorldUniverseControlParser::BuildPrepare(Pins,Session.Observation,Id,Action,Session.SelectedCase,Payload,Session.Proposal,Session.Intent,Error)){Reject(Error,false);return;}
  Session.ApprovalId=TEXT("approval-")+Id;Session.CommandRecordId=TEXT("record-")+Id;Session.PendingPrepare=Payload;SendControl(TEXT("prepare"),Payload,EUniverseClientPhase::Preparing);
 }
