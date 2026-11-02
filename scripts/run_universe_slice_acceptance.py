@@ -398,6 +398,15 @@ def _launcher_evidence_directory(raw, card):
     return resolved
 
 
+def _session_root(card):
+    """One bounded direct-child namespace for both completion lookup and output."""
+    namespace = card.get('session_namespace', 'sessions')
+    require(type(namespace) is str and len(namespace) <= 64 and
+            (namespace == 'sessions' or re.fullmatch(r'sessions-[a-z0-9-]+', namespace)),
+            'invalid session namespace')
+    return safe_path(safe_path(card['storage_root']) / namespace)
+
+
 def validate_run(card_path, card_hash, accepted_source, session, execute):
     """No writes or runtime spawn. The card is honest local-owner authorization."""
     require(execute is True, 'run requires explicit --execute; no process launched')
@@ -468,15 +477,16 @@ def validate_run(card_path, card_hash, accepted_source, session, execute):
         require(file_hash(spec['path']) == spec['sha256'], 'runtime/build identity hash mismatch')
     validate_python_executable(card)
     require(safe_path(card['ue_root']).is_dir(), 'runtime executable/environment unavailable')
+    sessions_root = _session_root(card)
     prior = None
     if session == 'existing':
-        prior = read_json(storage / 'sessions/initialize/completion.json')
+        prior = read_json(sessions_root / 'initialize/completion.json')
         require(prior['card_sha256'] == card_hash and prior['accepted_source'] == accepted_source and
                 prior['normal'] is True and prior['session'] == 'initialize', 'first session not normally completed')
         require((authority / 'HEAD.json').is_file(), 'existing revisit requires authority HEAD')
     else:
         require(not (authority / 'HEAD.json').exists(), 'initialize session cannot reinitialize existing HEAD')
-    destination = storage / 'sessions' / session
+    destination = sessions_root / session
     require(not destination.exists(), 'session output already exists; no overwrite or hidden retry')
     require(tree_bytes(storage) + limits['spent_bytes'] + 1024**2 < limits['bytes'],
             'budget already exhausted before launcher spawn')
