@@ -1,0 +1,45 @@
+{
+  "at": "2026-11-02T08:23:50.276559+00:00",
+  "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness",
+  "source": "2085635ddf557f999a906201564b577d3bfecf36",
+  "merge": "9b9c9f7920fd7aaef34bbf58cb0cd08578affae4",
+  "clean": true,
+  "ancestor": true,
+  "non_force": true,
+  "removed_generated_only": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/__pycache__/run_universe_slice_acceptance.cpython-314.pyc",
+      "bytes": 83668
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/__pycache__/verify_universe_slice_evidence.cpython-314.pyc",
+      "bytes": 38830
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+      "bytes": 371
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/universe_iteration/__pycache__/actions.cpython-314.pyc",
+      "bytes": 73654
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/universe_iteration/__pycache__/capture.cpython-314.pyc",
+      "bytes": 49574
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/scripts/universe_iteration/__pycache__/lifecycle.cpython-314.pyc",
+      "bytes": 37920
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/tests/__pycache__/__init__.cpython-314.pyc",
+      "bytes": 178
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness/tests/__pycache__/test_universe_iteration_readiness.cpython-314.pyc",
+      "bytes": 9006
+    }
+  ],
+  "runtime_dependencies": "No runtime/provision/config created. I13R raw execution cwd and module_pins are immutable historical source provenance, not launch inputs; exact source preserved in Git branch/integration. Public readiness spec contains SHA and empty capability refs, no worktree input paths. Reviewer child test process ended.",
+  "branches_raw_preserved": true
+}

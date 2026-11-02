@@ -2,7 +2,7 @@
 
 日期：2026-11-02。父节点：I0–I12 / G-B2。统筹：root。固定规划输入：集成 `5884ac9b235c03c33ccfd843d622d26de5948189`、[当前登记](../universe_implementation_register.md)、[I12 partial报告](../evidence/universe-I12B/partial-live-report.md)、既有G-B2契约及[工作流](../parallel_agent_workflow.md)。本文件调整开发过程，不新增世界规则。
 
-**状态：规划已整理，实施未发布，所有I13门均为planned；没有新UE运行或预算消耗。**两名既有subagent只读参与规划，后续实现仍须独立worktree/分支、PR、自检、非owner审查及父节点集成。任务进度、PR状态和门禁状态分别记账。新实现基线必须由统筹固定为准确集成SHA，不能用浮动HEAD替代。
+**执行结算：I13整体partial；0/A/B/C工具交付接受，R仅被动CLI部分交付、ready no-go，S1/S2 skipped，V完成停止路径结算。未启动新的UE实机窗口，G-B2未过；实际提交/检查/清理见[执行登记](../universe_i13_execution_register.md)。**两名既有subagent只读参与规划，后续实现仍须独立worktree/分支、PR、自检、非owner审查及父节点集成。任务进度、PR状态和门禁状态分别记账。新实现基线必须由统筹固定为准确集成SHA，不能用浮动HEAD替代。
 
 ## Check → Act：上一轮结算
 
@@ -41,7 +41,7 @@ flowchart TD
 
 ## 叶节点任务卡
 
-所有叶节点parent=I13；当前任务queued / PR未创建 / Check planned。下表路径为未来发布卡的排他所有权，均相对仓库。每个写任务将在 `.worktrees/i13-<slug>` / `codex/i13-<slug>` 从统筹固定SHA创建；本次未创建这些工作树。subagent是角色分配，实际派发时绑定可用agent；owner不得批准自己的门。
+以下为冻结发布卡，所有叶节点parent=I13；实际进度/PR/Check由执行登记维护，不以发布卡中的计划当结果。下表路径为未来发布卡的排他所有权，均相对仓库。每个写任务将在 `.worktrees/i13-<slug>` / `codex/i13-<slug>` 从统筹固定SHA创建；本次未创建这些工作树。subagent是角色分配，实际派发时绑定可用agent；owner不得批准自己的门。
 
 ### I13-0 / root / depends_on=[]
 
@@ -111,7 +111,7 @@ flowchart TD
 
 ## 当前下一步与恢复入口
 
-本轮只完成调整计划及只读review，不派发实现、不启动UE、不provision、不改变DNS/API，不创建新聊天。下一步发布I13-0，接口冻结后再为A/B/C创建独立worktree并行实现；R ready后才进入新实机周期。规划审查反馈和发布状态由[实施登记](../universe_implementation_register.md)维护。调整源、阈值、依赖、预算或必需证据时升级本计划版本并保留旧裁决。
+规划轮已完成；执行轮实际交付及no-go结算见执行登记。下一轮先按R/Act补真实诊断producer及R13适配，再审运行ready；本轮没有provision、DNS/API变更或新聊天。规划审查反馈和发布状态由[实施登记](../universe_implementation_register.md)维护。调整源、阈值、依赖、预算或必需证据时升级本计划版本并保留旧裁决。
 
 ## 本次规划审查结算
 

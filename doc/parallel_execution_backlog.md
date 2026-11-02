@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I13纠正PDCA，接口冻结
+## 当前结算：I13工具交付接受，实机ready no-go
 
-[纠正计划v1](design/universe-i13-corrective-pdca-plan.md)：先冻结接口，再并行修生命周期/资源、逐动作采证、原PNG验证；离线ready后串行执行两标准正常会话，最后独立裁决。root统筹；u9及i12验收agent只读规划。I13-0接口v1经独立审查冻结，A/B/C已分配独立worktree实现；当前不启动UE；新1200s资源卡仍为提案，旧I12资源失败2566/1200s保留。接口见[I13-0](design/universe-i13-interfaces.md)；执行状态见[I13登记](universe_i13_execution_register.md)；下一动作分别审查三项交付。详见[精简登记](universe_implementation_register.md)。
+[I13执行登记](universe_i13_execution_register.md)：接口60857c0；A生命周期、B逐动作采证、C原PNG工具经独立审查/最终CI分别合入PR107/109/108。R的PR110交付被动plan/readiness，实际exit2/no_go；完整R13/newverifier适配deferred，S1/S2 skipped，V停止路径独立结算完成。I13整体partial，G-B2仍未过；I12的2566/1200s资源失败保留，新实机资源卡未派发。
+
+下一轮先做默认关闭的UE只读实际诊断producer和版本化R13控制/最终验证适配，接口审定后隔离路径并行；再审持键/240s可行性、原PNG及quit guard、准确source/card，满足ready后才开标准双会话。[方案](design/universe-i13-corrective-pdca-plan.md)、[R/Act](evidence/universe-I13R/report.md)。主checkout用户改动及I12B保留输出不碰。
 
 ## 当前入口：I12部分交付已集成，G-B2与资源门未通过
 

@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-02T08:17:34.465594+00:00",
+  "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-actions",
+  "source": "42b03db7b8088ff53efaef935cf53c0ba0c54c20",
+  "merge": "5e8a81d5fb18fc87ee50178819c7d52942573df1",
+  "clean": true,
+  "ancestor": true,
+  "non_force": true,
+  "removed_generated_only": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-actions/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+      "bytes": 369
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-actions/scripts/universe_iteration/__pycache__/actions.cpython-314.pyc",
+      "bytes": 73652
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-actions/tests/__pycache__/__init__.cpython-314.pyc",
+      "bytes": 176
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-actions/tests/__pycache__/test_universe_iteration_actions.cpython-314.pyc",
+      "bytes": 62501
+    }
+  ],
+  "runtime_dependencies": "owner passive ps/CLI check no associated runtime; no new runtime configuration created; public I13B metadata has no absolute worktree dependency",
+  "branches_raw_preserved": true
+}
