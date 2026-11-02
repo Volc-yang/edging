@@ -67,7 +67,8 @@ class LegacyBackend:
                    inner['storage_root'] == card['storage_root'] and
                    str(Path(inner['ue_root']) / 'Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor') == card['accepted_executable'] and
                    inner['python_executable'] == card['worker_executable'], 'R13-to-R12 complete context mapping')
-        lc.require(inner['budget']['seconds'] == 1200 and inner['budget']['bytes'] == lc.MAX_BYTES,
+        lc.require(inner['budget']['seconds'] == 1200 and inner['budget']['bytes'] == lc.MAX_BYTES and
+                   inner['budget']['spent_seconds'] == 0 and inner['budget']['spent_bytes'] == 0,
                    'R13-to-R12 resource mapping')
         for name, policy in lc.SESSION_LIMITS_V2.items():
             slot = inner['sessions'][name]
@@ -500,13 +501,24 @@ class DispatchController:
             'launcher_source_ref': self.card['launcher_source_ref']})
         # Actual return of pinned supervisor bounds its own wait/seal. The outer
         # wrapper writes are an additional visible session seal phase.
-        seal_start = self.handle.finished_monotonic
+        preseal_ref = self._reference_public(output / 'supervisor-exit.json')
+        preseal_receipt = lc.json_ref(preseal_ref)
+        polls = [e for e in event_rows if e.get('event') == 'poll']
+        lc.require(polls, 'same-domain actual poll/elapsed origin required for seal boundary')
+        starts_upper = [lc.number(e['monotonic_seconds'], 'supervisor poll mono') -
+                        lc.number(e['elapsed_seconds'], 'supervisor poll elapsed') for e in polls]
+        # record() timestamps after the poll's elapsed calculation. The minimum
+        # remains an upper bound on true supervisor start, not an invented instant.
+        seal_start = min(starts_upper) + lc.number(preseal_receipt['elapsed_seconds'], 'actual preseal elapsed')
+        lc.require(seal_start <= self.handle.finished_monotonic, 'inconsistent preseal/actual return boundary')
         lc.require(build_start <= build_end <= stage_events['interaction'] <=
                    stage_events['shutdown'] <= seal_start <= self.clock(), 'same-process actual stage order')
         ends = [build_start, build_end, stage_events['interaction'], stage_events['shutdown'], seal_start, self.clock()]
         limits = self.card['sessions'][name]
         stages = [dict(stage=kind, start_monotonic=ends[i], end_monotonic=ends[i+1],
-                       deadline_monotonic=min(ends[i]+limits['stage_seconds'][kind], build_start+limits['max_seconds']))
+                       deadline_monotonic=min(ends[i]+limits['stage_seconds'][kind], build_start+limits['max_seconds']),
+                       timing_bound_source='preseal-poll-conservative-upper' if kind in ('shutdown','seal') else 'actual-supervisor-events',
+                       preseal_ref=preseal_ref if kind in ('shutdown','seal') else None)
                   for i, kind in enumerate(('build','startup','interaction','shutdown','seal'))]
         return {'session': dict(session=name, start_monotonic=build_start, end_monotonic=ends[-1],
                                 binding=binding, stages=stages, completion_ref=completion_ref),

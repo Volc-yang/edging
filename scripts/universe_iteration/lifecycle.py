@@ -670,6 +670,7 @@ def _validate_ledger_v2(ledger, policy, actual_finalized):
         intervals.append((left, right))
         expected_core = core_expected.get(identity['pid'])
         if expected_core is not None:
+            require(identity['pid'] not in core_seen, 'v2 runtime core PID has multiple startup identities')
             name, kind, launcher = expected_core
             require(process['role'] == 'runtime_core' and process['core_kind'] == kind and
                     process['session'] == name and process['build_parent_ref'] is None, 'v2 core relabelled as build')

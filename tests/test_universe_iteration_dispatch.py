@@ -109,6 +109,21 @@ class V2LedgerTests(unittest.TestCase):
                 old['parent_pid'] = 999
                 value['processes'][1]['wait_ref'] = replay.write('wrong-parent.json', old)
             self.assertNotEqual(replay.verify_v2(value)['status'], 'checks_complete_requires_review')
+        value = deepcopy(replay.ledger)
+        sample = value['samples'][4]
+        row = next(r for r in sample['processes'] if r['pid']==101)
+        altered = dict(row,start='Mon Nov 2 00:00:01 2026')
+        sample['processes']=[altered if r['pid']==101 else r for r in sample['processes']]
+        raw=''.join('%d %d %s %s\n'%(r['pid'],r['ppid'],r['start'],r['argv']) for r in sample['processes']).encode()
+        sample['raw_ref']=lc.exclusive_bytes(self.root/'pid-reuse.ps',raw)
+        duplicate=deepcopy(value['processes'][1]);duplicate.update(identity=altered,first_seen_monotonic=2,
+            last_seen_monotonic=2,start_lower_bound=1.5,end_upper_bound=2.5)
+        wait=lc.json_ref(duplicate['wait_ref']);wait.update(identity=altered,monotonic=2.25)
+        duplicate['wait_ref']=replay.write('pid-reuse-wait.json',wait)
+        value['processes'].append(duplicate)
+        result=replay.verify_v2(value)
+        self.assertEqual(result['status'],'fail')
+        self.assertIn('multiple startup identities',result['reasons'][0])
 
     def test_build_ancestry_and_independent_launcher_source_pin_cannot_be_faked(self):
         replay = V2Replay(self.root)
@@ -242,7 +257,7 @@ class ControllerTests(unittest.TestCase):
         inner = dict(world_id='world', authority_root=self.card['run_binding']['authority_root'],
             context={'trust_anchor': self.card['trust_anchor']}, launcher_sha256='c' * 64,
             storage_root=str(self.root), ue_root='/UE', python_executable=sys.executable,
-            budget=dict(seconds=1200, bytes=lc.MAX_BYTES),
+            budget=dict(seconds=1200, bytes=lc.MAX_BYTES,spent_seconds=0,spent_bytes=0),
             sessions={name: dict(max_seconds=slot['max_seconds'], stage_seconds={k:v for k,v in slot['stage_seconds'].items() if k != 'seal'}) for name,slot in lc.SESSION_LIMITS_V2.items()})
         self.card['accepted_executable'] = '/UE/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'
         prepared = dict(card=inner, argv=['/bin/bash', '/fixed-launcher'], prior_seconds=0)
@@ -252,6 +267,10 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(value['argv'][0], '/usr/bin/env')
         self.assertEqual(set(x.split('=',1)[0] for x in value['argv'][1:5]), set(d.DIAGNOSTIC_ENV))
         self.assertEqual(value['argv'][-2:], ['/bin/bash', '/fixed-launcher'])
+        inner['budget']['spent_seconds']=1
+        with patch.object(self.backend.runner,'validate_run',return_value=prepared):
+            with self.assertRaises(lc.Invalid): self.backend.prepare(self.card,'initialize')
+        inner['budget']['spent_seconds']=0
         with patch.object(self.backend.runner, 'validate_run', side_effect=lc.Invalid('private pin rejected')):
             with self.assertRaises(lc.Invalid):
                 self.backend.prepare(self.card, 'initialize')
@@ -313,8 +332,9 @@ class ControllerTests(unittest.TestCase):
             result.update(launcher_pid=replay.launchers[index]['pid'],launcher_evidence=str(launcher_dir))
             result['worker_exits'][0]['generation'] = '1'  # actual native FString
             (output/'completion.json').write_text(json.dumps(result))
+            (output/'supervisor-exit.json').write_text(json.dumps(dict(result,elapsed_seconds=4.5,normal=False)))
             (output/'launcher-stdout.log').write_bytes(b'[launcher] build_exit_code=0\n[launcher] ue_exit_code=0\n')
-            events = [dict(event='stage',stage=stage,monotonic_seconds=base+t) for stage,t in
+            events = [dict(event='poll',stage='build',monotonic_seconds=base+.5,elapsed_seconds=.5)] + [dict(event='stage',stage=stage,monotonic_seconds=base+t) for stage,t in
                       [('startup',1),('interaction',2),('shutdown',4)]]
             (output/'supervisor-events.jsonl').write_text(''.join(json.dumps(v)+'\n' for v in events))
             (trace/'exit.bin').write_text(json.dumps(result['worker_exits'][0]))
@@ -328,6 +348,10 @@ class ControllerTests(unittest.TestCase):
             c.assembled[name]=c._assemble_session(name,result)
             normalized=lc.json_ref(c.assembled[name]['session']['completion_ref'])
             self.assertEqual(normalized['worker_exits'][0]['generation'],1)
+            phases=c.assembled[name]['session']['stages']
+            self.assertEqual(phases[3]['end_monotonic'],base+4.5)
+            self.assertLess(phases[3]['end_monotonic'],c.handle.finished_monotonic)
+            self.assertEqual(phases[4]['timing_bound_source'],'preseal-poll-conservative-upper')
             self.assertEqual(lc.json_ref(normalized['original_completion_ref'])['worker_exits'][0]['generation'],'1')
         self.now=16
         policy=deepcopy(replay.policy)
