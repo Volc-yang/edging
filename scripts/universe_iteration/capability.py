@@ -49,6 +49,13 @@ def hash_ref(ref, *, forbidden):
     lc.require(digest.hexdigest()==ref['sha256'],'file hash mismatch')
 
 
+def mac_binary_paths(project):
+    """Installed Mac UE module filenames, with no synthetic compatibility aliases."""
+    base=Path(project).parent
+    return ((base/'Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib').resolve(),
+            (base/'Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib').resolve())
+
+
 def validate_public_export(actual, expected):
     lc.require(actual==expected and actual.endswith(b'\n') and b'\n' not in actual[:-1] and
                not actual.endswith(b'\r\n') and len(actual)<=16385,
@@ -129,8 +136,7 @@ def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sh
     version=json.loads((ue/'Engine/Build/Build.version').read_bytes())
     lc.require(tuple(version.get(k) for k in ('MajorVersion','MinorVersion','PatchVersion'))==(5,8,3) and
                (ue/'Engine/Build/InstalledBuild.txt').is_file(),'installed UE5.8.3 required')
-    host=(project.parent/'Binaries/Mac/UnrealEditor-EdgeWorldHost.dylib').resolve()
-    plugin=(project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/UnrealEditor-EdgeWorldRuntime.dylib').resolve()
+    host,plugin=mac_binary_paths(project)
     lc.require(str(host)==prepared['binary_pins']['host']['path'] and str(plugin)==prepared['binary_pins']['plugin']['path'] and
         host.parent.parent.parent==plugin.parent.parent.parent.parent.parent and host.is_relative_to(root),
         'physical Host/plugin project mirror and fixed pins required')
