@@ -58,10 +58,10 @@ I11B/I12A/I12C/I12D/I12E/I12F已核验干净/集成祖先/运行及间接部署�
 
 UE5.8.3 CL58210709安装在 `/Users/Shared/Epic Games/UE_5.8`；Genesis1.4.3使用 `.venv-genesis/bin/python3.12` 原lexical路径及精确链接链，不替换解释器。临时caffeinate均已到期/无匹配PID；额外选择器已关闭，退出后只用CLI查进程，不再刷新App。主checkout `feature/edge-world` 仍含用户改动，未reset/clean/stash/覆盖/合入；本轮只在集成分支。旧goal“继续执行计划”blocked且API不可resume，未伪造active或完成。
 
-## 下一轮第一步：I13纠正PDCA（仅规划，未启动）
+## 下一轮第一步：I13纠正PDCA（实现进行中，实机未启动）
 
-[纠正方案树与叶任务卡](design/universe-i13-corrective-pdca-plan.md)接替零散下一步：`0接口冻结 → A生命周期 / B逐动作采证 / C原PNG（并行） → R离线集成ready → S1初始化 → S2existing恢复 → V独立裁决`。root统筹，u9与i12验收agent只读参与规划；实现未发布、PR未创建、I13所有门planned。
+[纠正方案树与叶任务卡](design/universe-i13-corrective-pdca-plan.md)接替零散下一步：`0接口冻结 → A生命周期 / B逐动作采证 / C原PNG（并行） → R离线集成ready → S1初始化 → S2existing恢复 → V独立裁决`。root统筹，u9与i12验收agent只读参与规划；接口60857c0已冻结，A/B/C已在独立worktree发布；[本轮执行登记](universe_i13_execution_register.md)记录真实状态，运行门仍planned。
 
-先发布I13-0，固定接口后再从准确集成SHA创建A/B/C独立worktree。R只判断离线代码/接口ready；真实Shot和正常退出不得冒称离线通过。新预算1200s/存储2GiB为提案，R需冻结全局计量、可行性和停止条件；两会话各420s，含退出/会话封存，余量无自动重试授权。全局从dispatch/prelaunch至所有进程收尾和最终封存，控制器额外实例也计账；I12的2566s失败不重置。
+收齐并分别审查A/B/C的实现与PR，然后串行R集成。R只判断离线代码/接口ready；真实Shot和正常退出不得冒称离线通过。新预算1200s/存储2GiB为提案，R需冻结全局计量、可行性和停止条件；两会话各420s，含退出/会话封存，余量无自动重试授权。全局从dispatch/prelaunch至所有进程收尾和最终封存，控制器额外实例也计账；I12的2566s失败不重置。
 
-本轮只修改计划/上下文，不启动UE、不provision、不新增世界规则。保留I12原件、两个world及I12B六项输出；主checkout用户改动不碰。具体动作/Check/Act及所有权见任务卡，未获实证的门继续未过。
+本轮先做工具实现及CPU检查，尚未启动UE/provision，不新增世界规则。保留I12原件、两个world及I12B六项输出；主checkout用户改动不碰。具体动作/Check/Act及所有权见任务卡，未获实证的门继续未过。

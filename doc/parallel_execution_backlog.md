@@ -4,7 +4,7 @@
 
 ## 当前执行：I13纠正PDCA，接口冻结
 
-[纠正计划v1](design/universe-i13-corrective-pdca-plan.md)：先冻结接口，再并行修生命周期/资源、逐动作采证、原PNG验证；离线ready后串行执行两标准正常会话，最后独立裁决。root统筹；u9及i12验收agent只读规划。I13-0接口v1经独立审查冻结，A/B/C待派发；当前不启动UE；新1200s资源卡仍为提案，旧I12资源失败2566/1200s保留。接口见[I13-0](design/universe-i13-interfaces.md)；下一动作从冻结提交创建A/B/C实现worktree。详见[精简登记](universe_implementation_register.md)。
+[纠正计划v1](design/universe-i13-corrective-pdca-plan.md)：先冻结接口，再并行修生命周期/资源、逐动作采证、原PNG验证；离线ready后串行执行两标准正常会话，最后独立裁决。root统筹；u9及i12验收agent只读规划。I13-0接口v1经独立审查冻结，A/B/C已分配独立worktree实现；当前不启动UE；新1200s资源卡仍为提案，旧I12资源失败2566/1200s保留。接口见[I13-0](design/universe-i13-interfaces.md)；执行状态见[I13登记](universe_i13_execution_register.md)；下一动作分别审查三项交付。详见[精简登记](universe_implementation_register.md)。
 
 ## 当前入口：I12部分交付已集成，G-B2与资源门未通过
 
