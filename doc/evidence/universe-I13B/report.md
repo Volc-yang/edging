@@ -175,3 +175,12 @@ implementation. No full suite or new runtime was run for this correction.
 
 This remains a proposed diagnostic producer contract, not an implemented UE capability.
 Current readiness remains no-go; root must authenticate actual producer/readback origins.
+
+## Independent review correction: exact retain intent
+
+u9 found the initial B check only required an integer retain tick_delta, and the
+synthetic retain fixture incorrectly used case_id=weak. The validator now requires
+exact tick_delta=0 and an explicitly present case_id=null, matching the existing UE
+strict parser. The fixture now carries actual null. Separate negative tests reject
+nonzero tick_delta and non-null case_id; those tests plus the complete synthetic pair
+passed (3 affected tests,0.153s). No protocol relaxation or runtime occurred.

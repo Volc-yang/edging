@@ -32,6 +32,17 @@
       "elapsed_seconds": 0.993,
       "passed": 17,
       "tests": 17
+    },
+    "retain_protocol_rework": {
+      "elapsed_seconds": 0.153,
+      "passed": 3,
+      "scope": "affected directed tests only",
+      "test_names": [
+        "test_retain_rejects_nonzero_tick_delta",
+        "test_retain_rejects_nonnull_case_id",
+        "test_complete_synthetic_session_does_not_grant_acceptance"
+      ],
+      "tests": 3
     }
   },
   "g_b2_granted": false,
@@ -39,7 +50,7 @@
   "private_key_contents_read": false,
   "readiness": "no_go",
   "runtime_launched": false,
-  "source_sha256": "7a7bbc357fcf67dac5e27ad65a05b6f89afcbf54633d5743ddcf784b464fbeac",
+  "source_sha256": "c52a5d0ed1d1aba0ef616def2a0442ebc34f4058b7198ae2ca00633cb16ca991",
   "task": "I13-B",
-  "tests_sha256": "2e1c53444f33a17e3c101adb04b424b88dda1f59e92fdc7240665b982074bd5f"
+  "tests_sha256": "1c7fdbc46a559d14c02a197e3a71fc6242bd0ac12d0797457cb1c66a7f50ebb3"
 }

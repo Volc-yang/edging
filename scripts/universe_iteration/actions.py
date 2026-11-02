@@ -436,6 +436,9 @@ def _check_frames(item, frames, binding, context):
                     intent.get('random_cursor') == 0 and intent.get('principal') == context['principal'], 'prepare intent semantics')
             if action == 'physics_step':
                 require(intent.get('case_id') == 'weak' and intent.get('tick_delta') == 1, 'only explicit weak step')
+            else:
+                require(intent.get('tick_delta') == 0 and intent.get('case_id') is None and
+                        'case_id' in intent, 'retain requires tick_delta=0 and explicit case_id=null')
             require(payload.get('committed_result') is None and type(payload.get('command_records')) is list and
                     payload['command_records'] and SHA.fullmatch(str(payload.get('command_digest'))), 'fresh prepare closure')
             prepared = payload

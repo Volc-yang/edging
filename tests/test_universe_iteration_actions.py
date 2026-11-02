@@ -57,7 +57,7 @@ class Fixture:
                     retain = item['kind'] == 'retain'
                     req['intent'] = {'body': dict(action='retain_snapshot' if retain else 'physics_step',
                                                 expected_revision=0 if retain else 1, budget=0 if retain else 1,
-                                                random_cursor=0, principal=self.context['principal'], case_id='weak', tick_delta=0 if retain else 1)}
+                                                random_cursor=0, principal=self.context['principal'], case_id=None if retain else 'weak', tick_delta=0 if retain else 1)}
                     last_prepared = dict(command_records=[{'synthetic_closure': item['action_id']}], command_digest='e' * 64)
                     payload = dict(last_prepared, committed_result=None, head_binding=hb)
                 elif op == 'advance':
@@ -407,6 +407,18 @@ class ActionsTest(unittest.TestCase):
             diagnostics=[dict(stage=stage,selected_observation=a.H1,state=state) for stage,state in zip(item['stages'],values)]
             with self.subTest(mutation=mutate):
                 with self.assertRaises(a.Invalid):a._states(item,diagnostics)
+
+    def test_retain_rejects_nonzero_tick_delta(self):
+        frames=deepcopy(self.f.frames)
+        frames[4]['request']['payload']['intent']['body']['tick_delta']=1
+        with self.assertRaisesRegex(a.Invalid,'retain requires'):
+            a.validate_receipt(self.f.receipts[4],expected_binding=self.f.binding,frames=frames,expected_context=self.f.context)
+
+    def test_retain_rejects_nonnull_case_id(self):
+        frames=deepcopy(self.f.frames)
+        frames[4]['request']['payload']['intent']['body']['case_id']='weak'
+        with self.assertRaisesRegex(a.Invalid,'retain requires'):
+            a.validate_receipt(self.f.receipts[4],expected_binding=self.f.binding,frames=frames,expected_context=self.f.context)
 
     def test_import_has_no_runtime_side_effects(self):
         # Static boundary plus patched process/UI imports: module has no process launch facilities.
