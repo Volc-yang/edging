@@ -1,0 +1,49 @@
+{
+  "base": "729dcdcfd907fa8214d544543e413eb27e763daf",
+  "checks": [
+    {
+      "count": 31,
+      "elapsed_seconds": 1.827,
+      "name": "v1 regression and initial v2 tests",
+      "passed": 31
+    },
+    {
+      "count": 10,
+      "elapsed_seconds": 0.766,
+      "name": "affected v2 after explicit per-stage Shot calls",
+      "passed": 10
+    }
+  ],
+  "files": {
+    "scripts/universe_iteration/actions.py": "48294edf908cd40bdee20113332ed6262f479e3a87948c2e2c7257c22dc8158f",
+    "tests/test_universe_iteration_actions_v2.py": "b94832ce9657bf402fd6e261a0b2ba3fd9fb666fe94a468bde545e37572a0d85"
+  },
+  "g_b2_granted": false,
+  "key_contents_read": false,
+  "legacy_source_prefix_unchanged": true,
+  "native_source_commit": "31e38eb2b4367b272beda92a4b40a98212027468",
+  "native_tests": "source only; not executed",
+  "official_build": {
+    "attempt1": {
+      "exit_code": 6,
+      "reported_seconds": 19.565,
+      "result": "retained PCH-missing failure"
+    },
+    "attempt2": {
+      "evidence_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2",
+      "parent_wait_exit": 0,
+      "reported_seconds": 33.408
+    },
+    "both_attempts_total_seconds": 52.974,
+    "limit_seconds": 180,
+    "native_source_commit": "31e38eb2b4367b272beda92a4b40a98212027468",
+    "owner": "root",
+    "scope": "root-reported official compile only; no UE or Native test execution",
+    "uba_disabled_proved": false
+  },
+  "parent": "I14",
+  "readiness": "no_go",
+  "runtime_launched": false,
+  "task": "I14-D",
+  "ui_used": false
+}

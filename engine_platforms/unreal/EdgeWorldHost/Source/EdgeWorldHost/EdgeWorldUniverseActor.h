@@ -11,6 +11,7 @@ public:
  AEdgeWorldUniverseActor();
  bool ApplyVerified(const FEdgeWorldUniverseObservation& Observation,FString& Error);
  void SetProjectionVisible(bool Visible);
+ bool ReadProjectionHidden(TMap<FString,bool>& Out)const;
  int32 GetDerivedInstanceCount()const{return DerivedInstances;}
  static FVector Position(const FEdgeWorldUniverseObservation& O,const FVector3d& M){return FVector(O.OriginCm+FVector3d(M.X,-M.Y,M.Z)*O.Scale);}
  static FQuat Quaternion(const FVector4d& WXYZ){return FQuat(-WXYZ.Y,WXYZ.Z,-WXYZ.W,WXYZ.X);}
