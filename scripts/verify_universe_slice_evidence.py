@@ -446,11 +446,23 @@ def main():
                         'doc/fixtures/universe_authority_v0_2/schema.json')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--bundle', type=Path)
+    group.add_argument('--i14-bundle', type=Path)
+    parser.add_argument('--bundle-sha256')
+    parser.add_argument('--i14-policy', type=Path)
+    parser.add_argument('--policy-sha256')
     group.add_argument('--authority', type=Path)
     group.add_argument('--trace', type=Path)
     args = parser.parse_args()
     try:
-        if args.bundle:
+        if args.i14_bundle:
+            from universe_iteration.verification import verify_evidence
+            require(args.i14_policy and type(args.policy_sha256) is str and HASH.fullmatch(args.policy_sha256) and
+                    type(args.bundle_sha256) is str and HASH.fullmatch(args.bundle_sha256),
+                    'I14 requires independently pinned public policy and bundle')
+            require(file_hash(args.i14_policy) == args.policy_sha256, 'I14 policy hash mismatch')
+            result = verify_evidence({'path': str(args.i14_bundle.absolute()), 'sha256': args.bundle_sha256},
+                expected_policy=read_json(args.i14_policy), authority_parser=inspect_authority, trace_parser=inspect_trace)
+        elif args.bundle:
             result = verify_bundle(args.bundle, read_json(args.schema))
         elif args.authority:
             result = inspect_authority(args.authority, read_json(args.schema))
