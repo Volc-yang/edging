@@ -1,0 +1,239 @@
+{
+  "at": "2026-11-02T10:35:29.894836+00:00",
+  "worktrees": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics",
+      "source": "12002873430add221db9dcd949270f4ecfdef656",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "unlinked_only_approved_output_links": [],
+      "removed_test_pyc_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 373
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics/scripts/universe_iteration/__pycache__/actions.cpython-314.pyc",
+          "bytes": 103255
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 180
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics/tests/__pycache__/test_universe_iteration_actions.cpython-314.pyc",
+          "bytes": 62505
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-diagnostics/tests/__pycache__/test_universe_iteration_actions_v2.cpython-314.pyc",
+          "bytes": 28103
+        }
+      ],
+      "runtime_dependency_scope": "no runtime/provision/owner configs created; immutable CPU/build metadata/source provenance only; branches and targets retained"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch",
+      "source": "e157da74304bb532042fa3bf9d24517b85bb1dfe",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "unlinked_only_approved_output_links": [],
+      "removed_test_pyc_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/scripts/__pycache__/run_universe_slice_acceptance.cpython-314.pyc",
+          "bytes": 83667
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/scripts/__pycache__/verify_universe_slice_evidence.cpython-314.pyc",
+          "bytes": 38829
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 370
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/scripts/universe_iteration/__pycache__/dispatch.cpython-314.pyc",
+          "bytes": 66429
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/scripts/universe_iteration/__pycache__/lifecycle.cpython-314.pyc",
+          "bytes": 63427
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 177
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/tests/__pycache__/test_universe_iteration_dispatch.cpython-314.pyc",
+          "bytes": 44666
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-dispatch/tests/__pycache__/test_universe_iteration_lifecycle.cpython-314.pyc",
+          "bytes": 29847
+        }
+      ],
+      "runtime_dependency_scope": "no runtime/provision/owner configs created; immutable CPU/build metadata/source provenance only; branches and targets retained"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification",
+      "source": "a2115790e5452b49591b81ca836e1a7cdcb5f659",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "unlinked_only_approved_output_links": [],
+      "removed_test_pyc_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 374
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/scripts/universe_iteration/__pycache__/actions.cpython-314.pyc",
+          "bytes": 73657
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/scripts/universe_iteration/__pycache__/capture.cpython-314.pyc",
+          "bytes": 49577
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/scripts/universe_iteration/__pycache__/lifecycle.cpython-314.pyc",
+          "bytes": 37923
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/scripts/universe_iteration/__pycache__/verification.cpython-314.pyc",
+          "bytes": 48332
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 181
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-verification/tests/__pycache__/test_universe_iteration_verification.cpython-314.pyc",
+          "bytes": 44222
+        }
+      ],
+      "runtime_dependency_scope": "no runtime/provision/owner configs created; immutable CPU/build metadata/source provenance only; branches and targets retained"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build",
+      "source": "31e38eb2b4367b272beda92a4b40a98212027468",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "unlinked_only_approved_output_links": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build/engine_platforms/unreal/EdgeWorldHost/Binaries",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/project/Binaries",
+          "readlink": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/project/Binaries"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build/engine_platforms/unreal/EdgeWorldHost/Intermediate",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/host-intermediate",
+          "readlink": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/host-intermediate"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build/engine_platforms/unreal/EdgeWorldHost/Saved",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/saved",
+          "readlink": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/saved"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Binaries",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/project/Plugins/EdgeWorldRuntime/Binaries",
+          "readlink": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/project/Plugins/EdgeWorldRuntime/Binaries"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/plugin-intermediate",
+          "readlink": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/outputs/plugin-intermediate"
+        }
+      ],
+      "removed_test_pyc_only": [],
+      "runtime_dependency_scope": "no runtime/provision/owner configs created; immutable CPU/build metadata/source provenance only; branches and targets retained"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2",
+      "source": "31e38eb2b4367b272beda92a4b40a98212027468",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "unlinked_only_approved_output_links": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2/engine_platforms/unreal/EdgeWorldHost/Binaries",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/outputs/project/Binaries"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2/engine_platforms/unreal/EdgeWorldHost/Intermediate",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/outputs/host-intermediate"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2/engine_platforms/unreal/EdgeWorldHost/Saved",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/outputs/saved"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Binaries",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/outputs/project/Plugins/EdgeWorldRuntime/Binaries"
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-native-build2/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Intermediate",
+          "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/outputs/plugin-intermediate"
+        }
+      ],
+      "removed_test_pyc_only": [],
+      "runtime_dependency_scope": "no runtime/provision/owner configs created; immutable CPU/build metadata/source provenance only; branches and targets retained"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration",
+      "source": "1edfd1394ef33df164231fc0f10766348f6643a4",
+      "ancestor": true,
+      "tracked_untracked_clean_before_nonforce_remove": true,
+      "removed_test_pyc_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/__pycache__/run_universe_slice_acceptance.cpython-314.pyc",
+          "bytes": 100379
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/__pycache__/verify_universe_slice_evidence.cpython-314.pyc",
+          "bytes": 40348
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 373
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/actions.cpython-314.pyc",
+          "bytes": 103240
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/capture.cpython-314.pyc",
+          "bytes": 49576
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/dispatch.cpython-314.pyc",
+          "bytes": 66432
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/lifecycle.cpython-314.pyc",
+          "bytes": 63430
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/scripts/universe_iteration/__pycache__/verification.cpython-314.pyc",
+          "bytes": 48331
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 180
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/tests/__pycache__/test_universe_iteration_integration.cpython-314.pyc",
+          "bytes": 14973
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i14-integration/tests/__pycache__/test_universe_iteration_readiness.cpython-314.pyc",
+          "bytes": 9028
+        }
+      ],
+      "runtime_dependency_scope": "No valid card/observer/UE invocation was created; raw CLI cwd is historical provenance, public copies/branches retained."
+    }
+  ],
+  "remaining_exact_known_build_processes": [],
+  "point_inventory_ue_worker_matches": [],
+  "absence_not_exit_code_or_continuous_observer": true,
+  "all_failed_success_build_outputs_and_raw_preserved": true,
+  "old_I12B_and_other_worktrees_untouched": true,
+  "finalized_at": "2026-11-02T10:38:29.670721+00:00"
+}

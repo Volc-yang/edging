@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I14真实诊断与控制/验证适配
+## 当前结算：I14诊断/控制已集成，实机ready no-go
 
-[I14登记](universe_i14_execution_register.md)：基线729dcdc，审定[任务树](design/universe-i14-control-diagnostics-plan.md)后，D诊断/动作v2、L控制/ledger.v2、V组合验证已在独立worktree分配实现。各自PR/review后root接线并有界CPU build；未发实机卡。完整持键/耗时/proof/PNG/退出未过即no-go，旧I12失败/I13 partial不改。当前任务进行中，不提前关闭。
+[I14登记](universe_i14_execution_register.md)：PR111/112/113/114分别独立审查/最终CI通过并合入集成分支。真实UE诊断源码及动作v2、持久R13 backend/observer/自动wait+seal、组合verifier与共享CLI已交付。官方CPU编译同源exit6→0、累计约53s<180；首失败保留，未运行3项Native或UE。V三项既有proof语义检查仍inconclusive，真实持键/PNG/耗时/正常双会话缺证，S skipped；I14整体partial，G-B2未过，旧失败账不改。
+
+下一轮只重开明确公开proof缺口与有界能力采证卡，独立审源/卡/预算后才开窗口，不以虚构ready review绕过缺证。[R/Act](evidence/universe-I14R/report.md)、[任务树](design/universe-i14-control-diagnostics-plan.md)。本轮六个任务/编译树已non-force结算，分支/DevSSD原件保留；I12B及用户脏checkout不碰。
 
 ## 当前结算：I13工具交付接受，实机ready no-go
 

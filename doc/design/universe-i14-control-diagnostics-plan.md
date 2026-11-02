@@ -8,7 +8,7 @@ P：补上上轮确定的三项工程缺口：真实UE状态输出、R13控制�
 
 依赖DAG：`I14-0接口 → [I14-D诊断及动作v2 | I14-L控制及ledger.v2 | I14-V组合验证] → I14-R串行接线/编译/ready判断 → I14-S实机(仅ready后) → I14-A结算`。V验证模块开发与L并行基于冻结schema；实际验收依赖L集成，不能靠mock批准L。R no-go/S失败同样直达A，未运行下游skipped。
 
-所有写任务从本计划冻结后的同一准确集成SHA新建 `.worktrees/i14-<slug>` / `codex/i14-<slug>`；独立PR目标codex/plan-consolidation，非owner审查后root合并。任务进度/PR/门分别记录，当前均queued/planned；不能由owner自授运行门。CPU定向测试、报告/差异检查允许；子agent不占GPU、不启动UE/solver、不读key、不provision。
+执行结算为partial/no-go；D/L工具与R接线已接受、V语义部分完成、S skipped，实际PR/检查/清理见[I14登记](../universe_i14_execution_register.md)。以下冻结任务卡保留，不将计划当结果。所有写任务从本计划冻结后的同一准确集成SHA新建 `.worktrees/i14-<slug>` / `codex/i14-<slug>`；独立PR目标codex/plan-consolidation，非owner审查后root合并。任务进度/PR/门分别记录，当前均queued/planned；不能由owner自授运行门。CPU定向测试、报告/差异检查允许；子agent不占GPU、不启动UE/solver、不读key、不provision。
 
 ## I14-D（owner验收agent；root审查；depends_on=0）
 
