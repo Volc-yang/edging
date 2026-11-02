@@ -1,6 +1,6 @@
 # I14 PDCA：真实只读诊断与版本化控制/验证
 
-2026-11-02；parent I13/G-B2；root统筹。固定输入 `afb3f36ca70cfaad987f76bb44ce069a3a257de8`、[I13结算](../universe_i13_execution_register.md)、[I13接口](universe-i13-interfaces.md)。用户“继续”授权执行；本树待非owner审查后实施。保留旧I12 2566/1200 fail与I13 no-go，原件/世界/主checkout不动。UE发布版项目/插件优先，不改引擎源码或世界规则。
+2026-11-02；parent I13/G-B2；root统筹。固定输入 `afb3f36ca70cfaad987f76bb44ce069a3a257de8`、[I13结算](../universe_i13_execution_register.md)、[I13接口](universe-i13-interfaces.md)。用户“继续”授权执行；本树经三个只读方案审查及root裁决后实施；实际状态见[I14登记](../universe_i14_execution_register.md)。保留旧I12 2566/1200 fail与I13 no-go，原件/世界/主checkout不动。UE发布版项目/插件优先，不改引擎源码或世界规则。
 
 ## 父节点 P/D/C/A
 
@@ -74,6 +74,7 @@ validate_ledger_v2(ledger, *, expected_policy, actual_finalized_monotonic=None) 
   "run_binding":{"run_id":"...","source_sha":"SHA40","world_id":"...","authority_root":"ABS"},
   "clock_id":"controller-domain",
   "accepted_executable":"ABS-UE", "worker_executable":"ABS-Python",
+  "launcher_source_ref":{"path":"ABS","sha256":"SHA64"},
   "launcher_identities":[], "session_bindings":{"initialize":{},"existing":{}},
   "storage_root":"ABS", "public_paths":[],
   "global_limit_seconds":1200,"storage_limit_bytes":2147483648,"observer_max_gap_seconds":2,

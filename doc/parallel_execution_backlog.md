@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I14真实诊断与控制/验证适配
+
+[I14登记](universe_i14_execution_register.md)：基线729dcdc，审定[任务树](design/universe-i14-control-diagnostics-plan.md)后，D诊断/动作v2、L控制/ledger.v2、V组合验证已在独立worktree分配实现。各自PR/review后root接线并有界CPU build；未发实机卡。完整持键/耗时/proof/PNG/退出未过即no-go，旧I12失败/I13 partial不改。当前任务进行中，不提前关闭。
+
 ## 当前结算：I13工具交付接受，实机ready no-go
 
 [I13执行登记](universe_i13_execution_register.md)：接口60857c0；A生命周期、B逐动作采证、C原PNG工具经独立审查/最终CI分别合入PR107/109/108。R的PR110交付被动plan/readiness，实际exit2/no_go；完整R13/newverifier适配deferred，S1/S2 skipped，V停止路径独立结算完成。I13整体partial，G-B2仍未过；I12的2566/1200s资源失败保留，新实机资源卡未派发。
