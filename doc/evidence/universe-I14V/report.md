@@ -1,7 +1,7 @@
 # I14-V independent public-evidence composition
 
-Base `729dcdcfd907fa8214d544543e413eb27e763daf`; status implementation
-prepared, CPU checks pending. Owned verification.py, its test and this report.
+Base `729dcdcfd907fa8214d544543e413eb27e763daf`; status offline implementation complete with named semantic gaps;
+CPU focused checks recorded below, D/L integration and root adapter pending. Owned verification.py, its test and this report.
 No product/shared verifier/A/B/C modifications, UI, UE/native build, solver,
 provision, key or private-input reads. Public authority COPY directories are
 explicitly inventoried before fixed independent archive/trace parsers read them.
@@ -123,3 +123,30 @@ added event/index kinds but omitted their kind_bytes limits. Production code
 correctly required the bound; no production code changed for this fixture fix.
 The original attempt is preserved. Only that history case will rerun after the
 ordinary test/report commit adding the two explicit synthetic size limits.
+
+## Executed checks and raw identity
+
+First source `ad55208a072b854868a5cee71e3e5e45448d63e3` was committed before
+execution. From task root:
+`python3 -m unittest discover -s tests -p test_universe_iteration_verification.py -v`.
+21 tests:20 passed, one fixture KeyError (missing event/index kind_bytes),
+PID23223 exit1 wall0.507135084s, unittest0.391s. Raw preserved:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14V-20261102-verification-attempt1`;
+index SHA256 `742346763165f28777ba4d506a44b09c5a084fbd0206c61584374020c06248da`.
+
+Fixture fix source `72c2cc995d6d8f03401194a4143586f1e09fcb0b` committed before
+sole targeted retry (verification.py product bytes unchanged). From tests dir:
+`python3 -m unittest test_universe_iteration_verification.VerificationTests.test_history_membership_closes_selected_prior_and_exact_opaque_ancestors -v`.
+1 passed, PID24689 exit0 wall0.130080792s, unittest0.013s. Raw:
+`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14V-20261102-verification-attempt2-targeted`;
+index SHA256 `184b71c15191e1fa552e2986f2e5f28a4460d5ddf63a0cef46051c45cd93d2a1`.
+
+Both attempts PYTHONDONTWRITEBYTECODE=1, exact argv/cwd/env override and
+real PID/exit/timing captured; source/inputs hashes unchanged per attempt.
+Inputs include frozen I14 interfaces and untouched A/B/C/shared verifier.
+Raw includes runner/stdout/stderr/execution/index(excludes self); per-attempt
+120s/119s and16MiB caps. Total process wall0.637s. No further local suites.
+Root independent review and CI remain separate gates. This leaf is partial
+against complete public proof parity, complete only for explicitly documented
+known structural/hash/closure composition; no runtime source/authentication,
+normal-session or G-B2 acceptance is claimed. Worktree retained, no cleanup.
