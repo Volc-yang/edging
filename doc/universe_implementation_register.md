@@ -58,9 +58,10 @@ I11B/I12A/I12C/I12D/I12E/I12F已核验干净/集成祖先/运行及间接部署�
 
 UE5.8.3 CL58210709安装在 `/Users/Shared/Epic Games/UE_5.8`；Genesis1.4.3使用 `.venv-genesis/bin/python3.12` 原lexical路径及精确链接链，不替换解释器。临时caffeinate均已到期/无匹配PID；额外选择器已关闭，退出后只用CLI查进程，不再刷新App。主checkout `feature/edge-world` 仍含用户改动，未reset/clean/stash/覆盖/合入；本轮只在集成分支。旧goal“继续执行计划”blocked且API不可resume，未伪造active或完成。
 
-## 下一轮第一步（新的纠正周期，不覆盖本轮失败账）
+## 下一轮第一步：I13纠正PDCA（仅规划，未启动）
 
-1. 载入本登记、partial报告和[并行工作流](parallel_agent_workflow.md)；新任务从准确集成HEAD取worktree，保留两个已提交世界及所有失败，不复用过期卡或改写本轮总账。
-2. 先在无UE窗口完成并审查短批次CUA动作脚本/被动map/实际日志offset等待；每批核对受监督PID与余量，拒绝超时后app查询，批后查额外实例。不要在活跃计时中反复输出大图或长篇分析，提前正常Quit，不把watchdog当正常退出。
-3. 原PNG用稳定verified viewport经CUA原生 `Shot` 导出并核验magic/时间/视角；不启动期HighResShot，不外部截图，不转码JPEG补门。
-4. 对新的明确纠正资源卡先审查范围和全部消耗，再做精确冻结源的标准两正常会话/完整只读矩阵；fresh初始化测试用独立context，旧世界不reset。独立root审查后才能裁决G-B2。上述是queued下一步，不是已运行或已通过。
+[纠正方案树与叶任务卡](design/universe-i13-corrective-pdca-plan.md)接替零散下一步：`0接口冻结 → A生命周期 / B逐动作采证 / C原PNG（并行） → R离线集成ready → S1初始化 → S2existing恢复 → V独立裁决`。root统筹，u9与i12验收agent只读参与规划；实现未发布、PR未创建、I13所有门planned。
+
+先发布I13-0，固定接口后再从准确集成SHA创建A/B/C独立worktree。R只判断离线代码/接口ready；真实Shot和正常退出不得冒称离线通过。新预算1200s/存储2GiB为提案，R需冻结全局计量、可行性和停止条件；两会话各420s，含退出/会话封存，余量无自动重试授权。全局从dispatch/prelaunch至所有进程收尾和最终封存，控制器额外实例也计账；I12的2566s失败不重置。
+
+本轮只修改计划/上下文，不启动UE、不provision、不新增世界规则。保留I12原件、两个world及I12B六项输出；主checkout用户改动不碰。具体动作/Check/Act及所有权见任务卡，未获实证的门继续未过。
