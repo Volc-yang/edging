@@ -1,0 +1,101 @@
+{
+  "tool_source": "39b8206632fb9c9209ec634acf3cc044beca4fe3",
+  "passive_plan_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14R-20261102-offline",
+  "index_sha256": "f7c28086c9f7e7dc68b5e335c599d370d22388fca6c9924379dbbd590cb88522",
+  "runtime_authorized": false,
+  "readiness": {
+    "g_b2_granted": false,
+    "reasons": [
+      "cross_call_hold: missing independent capability evidence",
+      "png_contract: missing independent capability evidence",
+      "quit_guard: missing independent capability evidence",
+      "readback_markers: missing independent capability evidence",
+      "timings: missing independent capability evidence"
+    ],
+    "runtime_verified": false,
+    "status": "no_go"
+  },
+  "build_attempts": [
+    {
+      "root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1",
+      "completion": {
+        "at": "2026-11-02T09:58:01.612963+00:00",
+        "source": "31e38eb2b4367b272beda92a4b40a98212027468",
+        "parent_pid": 31287,
+        "build_pid": 31297,
+        "actual_parent_wait_exit": 6,
+        "wall_seconds": 19.565402624895796,
+        "bytes_before_final_receipt": 382829877,
+        "failure": null,
+        "build_only": true,
+        "native_tests_executed": false,
+        "ue_runtime_started": false,
+        "scope": "compile only; no runtime or resource gate grant"
+      },
+      "public_originals": [
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/build-card.json",
+          "bytes": 2468,
+          "sha256": "225f9f5d3ad426e78e66c52c9525064ffebd458daab3186f13bb6db48195e660"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/completion.json",
+          "bytes": 429,
+          "sha256": "47c077128ce09cc4d9ac284da1ba3192d11cf45faa6994dd57b0064b8e4ee0d6"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/build-stdout.log",
+          "bytes": 31229,
+          "sha256": "bf379c39858423c1ae15ae99e524fc5f17efe1b3214646598d7311d60e906695"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build1/process-events.jsonl",
+          "bytes": 534212,
+          "sha256": "5cb24e77f8775fdc32f007bd8b980b1c76abac7b7cf3eb8cd652d36676be862d"
+        }
+      ]
+    },
+    {
+      "root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2",
+      "completion": {
+        "at": "2026-11-02T10:03:27.735492+00:00",
+        "source": "31e38eb2b4367b272beda92a4b40a98212027468",
+        "parent_pid": 41961,
+        "build_pid": 41972,
+        "actual_parent_wait_exit": 0,
+        "wall_seconds": 33.40837016701698,
+        "combined_active_build_seconds": 52.97377349995077,
+        "failure": null,
+        "build_only": true,
+        "native_tests_executed": false,
+        "ue_runtime_started": false
+      },
+      "public_originals": [
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/build-card.json",
+          "bytes": 2042,
+          "sha256": "2a0e8fc4d029acfd59972b6099d09943662733bbf6ba54e9d105616de66e5439"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/completion.json",
+          "bytes": 377,
+          "sha256": "d1fdc0b8d6abd0634b8fea02b2c351bff04c20324b2c6e62c8f58a4e94748bbb"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/build-stdout.log",
+          "bytes": 6634,
+          "sha256": "0dee799c44798c0f4522f4b45739885449ad0a8fc8d1da0e96e587c7190664d0"
+        },
+        {
+          "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2/process-events.jsonl",
+          "bytes": 7326229,
+          "sha256": "89d12c11fe943783225313f791733a6746630ee096ca310e955a04f1e19a88f1"
+        }
+      ]
+    }
+  ],
+  "native_input": "31e38eb2b4367b272beda92a4b40a98212027468",
+  "final_D_head": "12002873430add221db9dcd949270f4ecfdef656",
+  "native_git_diff_empty": true,
+  "whole_prep_or_runtime_budget_not_claimed": true
+}

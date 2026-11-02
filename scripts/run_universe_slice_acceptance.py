@@ -840,7 +840,7 @@ def i13_plan():
             'module_pins': {name: {'path': str(Path(module.__file__).resolve()),
                                    'sha256': file_hash(Path(module.__file__).resolve())}
                             for name, module in (('actions', actions), ('lifecycle', lifecycle), ('capture', capture))},
-            'live_adapter': 'deferred: no R13 dispatcher/final bundle adapter implemented'}
+            'live_adapter': 'blocked: I13 passive entry cannot dispatch; R13 controller/I14 verifier require separate reviewed inputs'}
 
 
 def i13_readiness(path, accepted_source):
@@ -867,11 +867,174 @@ def i13_readiness(path, accepted_source):
             'note': 'Offline structure/review only. No launcher, worker, solver, UI or provisioning is invoked.'}
 
 
+def i14_plan():
+    from universe_iteration import actions, dispatch, lifecycle, verification
+    manifest = actions.manifest_v2()
+    return {'format': 'universe-i14-passive-plan.v1', 'runtime_authorized': False,
+            'manifest': manifest, 'sessions': lifecycle.SESSION_LIMITS_V2,
+            'resource_card_format': dispatch.CARD_FORMAT,
+            'verification_format': verification.FORMAT,
+            'public_proof_reviews_pending': list(verification.PUBLIC_PROOF_GAPS),
+            'readiness': actions.readiness_v2({}, expected_source_sha='0' * 40),
+            'note': 'Proposed caps and compiled producer do not prove real input/PNG/exit/timing.'}
+
+
+def r13_step(controller, request):
+    """Fixed metadata protocol. No JSON-selected code, UI operation or shell command."""
+    from universe_iteration import lifecycle
+    require(type(request) is dict and set(request) == {'command', 'args'} and
+            type(request['args']) is dict, 'exact controller request fields')
+    command, values = request['command'], request['args']
+    def shape(names):
+        require(set(values) == set(names), 'controller command argument shape')
+    def document(ref, *, json_value=True):
+        # Dynamic originals are explicit public copies. Only already recorded
+        # controller refs and fixed public card pins may refer outside that area.
+        approved = dict(controller.public_refs)
+        for name in ('launcher_source_ref', 'manifest_ref', 'runtime_review_ref'):
+            if name in controller.card:
+                pin = controller.card[name]; approved[pin['path']] = pin
+        future = {str(controller.output / name) for name in ('ledger-v2.json', 'storage-snapshot.json')}
+        def allowed(path):
+            return (path.is_relative_to(controller.output / 'controller-inputs') or
+                    str(path) in approved or str(path) in future)
+        def check_ref(value):
+            require(type(value) is dict and set(value) == {'path', 'sha256'}, 'public controller input ref')
+            path = safe_path(value['path'])
+            require(allowed(path), 'controller ref redirects outside independent public scope')
+            if str(path) in approved:
+                require(value == approved[str(path)], 'controller ref differs from approved public pin')
+        def nested(value, depth=0):
+            require(depth <= 64, 'controller input depth bound')
+            if type(value) is dict:
+                if set(value) == {'path', 'sha256'}: check_ref(value)
+                if 'public_paths' in value:
+                    require(type(value['public_paths']) is list and
+                            all(allowed(safe_path(x)) for x in value['public_paths']),
+                            'policy cannot expand the independent public allowlist')
+                for item in value.values(): nested(item, depth + 1)
+            elif type(value) is list:
+                require(len(value) <= 8192, 'controller input list bound')
+                for item in value: nested(item, depth + 1)
+        check_ref(ref)
+        value = lifecycle.json_ref(ref) if json_value else lifecycle.read_ref(ref)
+        if json_value: nested(value)
+        return value
+    if command == 'begin':
+        shape(('session',)); controller.begin_session(values['session'])
+        return {'session': values['session'], 'started': True}
+    if command == 'stage':
+        shape(('stage',)); controller.record_stage(values['stage']); return {'stage': values['stage']}
+    if command == 'ready':
+        shape(('ready_ref',)); value = document(values['ready_ref'])
+        require(set(value) == {'binding', 'expected_binding', 'identities', 'verified_ready_ref'}, 'ready input shape')
+        controller.register_ready(value['binding'], expected_binding=value['expected_binding'],
+                                  identities=value['identities'], verified_ready_ref=value['verified_ready_ref'])
+        return {'ready_registered': True, 'provenance_requires_root_review': True}
+    if command == 'permit':
+        shape(('action_id', 'timeout', 'log_path', 'log_offset'))
+        permit = controller.permit(values['action_id'], values['timeout'],
+                                    log_path=values['log_path'], log_offset=values['log_offset'])
+        return {'consumed_permit': controller.consume_permit(permit),
+                'instruction': 'Unique CUA owner must finish only this action before the deadline.'}
+    if command == 'quit':
+        shape(('reason',)); return controller.request_quit(values['reason'])
+    if command == 'quit_ack':
+        shape(('raw_cua_ref',)); document(values['raw_cua_ref'], json_value=False)
+        return controller.ack_quit(values['raw_cua_ref'])
+    if command == 'collect':
+        shape(('action_check_ref',))
+        if values['action_check_ref'] is not None: document(values['action_check_ref'])
+        return controller.collect_session(action_check_ref=values['action_check_ref'])
+    if command == 'seal':
+        shape(('policy_ref',)); return controller.finalize_run(expected_policy=document(values['policy_ref']))
+    if command == 'close':
+        shape(())
+        owned = [row for item in controller.assembled.values() for row in item['identities'].values()]
+        controller.stop_after_quiescence(expected_owned=owned)
+        return {'closed': True, 'normal_exit_not_inferred': True}
+    raise Invalid('unknown controller command; no code was invoked')
+
+
+def controller_lines(fd, *, deadline, clock=time.monotonic, max_line=1024**2):
+    """Nonblocking bounded framing; partial stdin cannot bypass the clock guard."""
+    import selectors
+    selector = selectors.DefaultSelector()
+    previous = os.get_blocking(fd); pending = bytearray()
+    os.set_blocking(fd, False)
+    try:
+        selector.register(fd, selectors.EVENT_READ)
+        while clock() < deadline:
+            if not selector.select(timeout=min(.25, max(0, deadline-clock()))):
+                yield None; continue
+            try: data = os.read(fd, min(65536, max_line + 1))
+            except BlockingIOError: continue
+            if not data:
+                require(not pending, 'controller EOF in partial JSONL frame'); return
+            pending.extend(data)
+            while b'\n' in pending:
+                line, _, tail = pending.partition(b'\n'); pending = bytearray(tail)
+                require(len(line) + 1 <= max_line, 'controller JSONL size bound')
+                yield bytes(line) + b'\n'
+            require(len(pending) <= max_line, 'controller partial JSONL size bound')
+    finally:
+        selector.close(); os.set_blocking(fd, previous)
+
+
+def r13_controller(args):
+    """One long-lived stdin JSONL owner; CLI calls never reconstruct a controller."""
+    from universe_iteration import dispatch, lifecycle
+    backend = dispatch.LegacyBackend(expected_runner_sha256=args.runner_sha256)
+    card = dispatch.validate_card(args.r13_card, expected_card_sha256=args.card_sha256,
+        expected_product_source=args.accepted_source, expected_tool_source=args.tool_source,
+        expected_manifest_sha256=args.manifest_sha256, backend=backend, execute=args.execute)
+    controller = dispatch.DispatchController(card, backend=backend)
+    def reply(value):
+        print(json.dumps(value, sort_keys=True, allow_nan=False), flush=True)
+    controller.start_observer()
+    try:
+        reply({'format': 'universe-i14-controller-ready.v1', 'controller_pid': os.getpid(),
+               'clock': controller.clock_binding, 'session_started': False})
+        for line in controller_lines(sys.stdin.fileno(), deadline=controller.dispatch_monotonic + 1200):
+            if controller.closed: break
+            if line is None: continue
+            try:
+                require(len(line) <= 1024**2 and line.endswith(b'\n'), 'bounded complete controller JSONL required')
+                request = json.loads(line, object_pairs_hook=unique_pairs,
+                                     parse_constant=lambda _: (_ for _ in ()).throw(Invalid('nonfinite request')))
+                value = r13_step(controller, request)
+                reply({'status': 'reply', 'result': value})
+            except (Invalid, lifecycle.Invalid, OSError, ValueError, KeyError, TypeError) as error:
+                reply({'status': 'request_rejected', 'error': str(error)})
+    finally:
+        # EOF/errors cannot leave a non-daemon observer running indefinitely.
+        # An active pinned old supervisor retains exact cleanup/wait ownership.
+        controller.closing, controller.permits = True, {}
+        if controller.handle is not None and not controller.handle.done.is_set():
+            reply(controller.request_quit('controller input ended; unique CUA owner must quit'))
+            try:
+                controller.handle.wait(timeout=max(1, 1200 - (time.monotonic() - controller.dispatch_monotonic)) + 30)
+            except lifecycle.Invalid as error:
+                reply({'status': 'cleanup_incomplete', 'error': str(error)})
+        if controller.observer is not None and controller.observer.is_alive():
+            controller.stop_observer.set(); controller.observer.join(timeout=2)
+            # Stopping after abort is not successful quiescence or a normal ledger.
+            reply({'status': 'aborted_observer_stopped', 'normal': False,
+                   'observer_still_alive': controller.observer.is_alive()})
+    return {'format': 'universe-i14-controller-closed.v1', 'g_b2_granted': False,
+            'note': 'Only the separate final evidence/root review can accept the run.'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='exclusive new evidence file; parent must exist')
     commands = parser.add_subparsers(dest='command')
     commands.add_parser('plan')
+    commands.add_parser('i14-plan', help='passive composed v2 diagnostics/control/evidence plan')
+    controller = commands.add_parser('r13-controller', help='one persistent explicit-card JSONL owner; no UI')
+    for flag in ('r13-card', 'card-sha256', 'accepted-source', 'tool-source', 'manifest-sha256', 'runner-sha256'):
+        controller.add_argument('--' + flag, required=True)
+    controller.add_argument('--execute', action='store_true')
     commands.add_parser('i13-plan', help='passive frozen I13 module/manifest composition')
     readiness = commands.add_parser('i13-readiness', help='public capability review only; never launches')
     readiness.add_argument('--spec', type=Path, required=True)
@@ -909,6 +1072,11 @@ def main():
                      'lod': 'N/A for this technical proxy; record rationale, do not claim coverage',
                      'pending': ['final merged SHA/build', 'G-P1/I10B/I11B accepted evidence',
                                  'actual root-issued R12', 'trusted owner inputs', 'UI automation binding']}
+        elif args.command == 'i14-plan':
+            value = i14_plan()
+        elif args.command == 'r13-controller':
+            require(args.output is None, 'controller streams replies and owns its card-bound journal')
+            value = r13_controller(args)
         elif args.command == 'i13-plan':
             value = i13_plan()
         elif args.command == 'i13-readiness':
