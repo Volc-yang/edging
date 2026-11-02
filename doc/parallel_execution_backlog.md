@@ -2,9 +2,9 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前规划：I13纠正PDCA，实施未发布
+## 当前执行：I13纠正PDCA，接口冻结
 
-[纠正计划v1](design/universe-i13-corrective-pdca-plan.md)：先冻结接口，再并行修生命周期/资源、逐动作采证、原PNG验证；离线ready后串行执行两标准正常会话，最后独立裁决。root统筹；u9及i12验收agent只读规划。所有I13门planned，当前不启动UE；新1200s资源卡仍为提案，旧I12资源失败2566/1200s保留。下一动作I13-0接口冻结，之后才创建实现worktree。详见[精简登记](universe_implementation_register.md)。
+[纠正计划v1](design/universe-i13-corrective-pdca-plan.md)：先冻结接口，再并行修生命周期/资源、逐动作采证、原PNG验证；离线ready后串行执行两标准正常会话，最后独立裁决。root统筹；u9及i12验收agent只读规划。I13-0接口v1经独立审查冻结，A/B/C待派发；当前不启动UE；新1200s资源卡仍为提案，旧I12资源失败2566/1200s保留。接口见[I13-0](design/universe-i13-interfaces.md)；下一动作从冻结提交创建A/B/C实现worktree。详见[精简登记](universe_implementation_register.md)。
 
 ## 当前入口：I12部分交付已集成，G-B2与资源门未通过
 
