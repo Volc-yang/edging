@@ -2,6 +2,8 @@
 import hashlib
 import importlib.util
 import json
+import os
+import time
 from pathlib import Path
 import subprocess
 import sys
@@ -59,7 +61,7 @@ class IntegrationTests(unittest.TestCase):
     def test_controller_public_input_scope_rejects_private_redirect_before_read(self):
         module = self.runner()
         with tempfile.TemporaryDirectory() as raw:
-            controller = Mock();controller.output = Path(raw).resolve() / 'controller'
+            controller = Mock();controller.public_refs={};controller.card={};controller.output = Path(raw).resolve() / 'controller'
             with self.assertRaises(module.Invalid):
                 module.r13_step(controller, dict(command='ready', args={'ready_ref':{
                     'path': str(Path(raw).resolve() / 'outside.json'), 'sha256':'0'*64}}))
@@ -68,12 +70,44 @@ class IntegrationTests(unittest.TestCase):
     def test_quit_ack_accepts_original_non_json_cua_bytes(self):
         module = self.runner()
         with tempfile.TemporaryDirectory() as raw:
-            controller = Mock();controller.output = Path(raw).resolve()
+            controller = Mock();controller.public_refs={};controller.card={};controller.output = Path(raw).resolve()
             inputs=controller.output/'controller-inputs';inputs.mkdir()
             path=inputs/'raw-cua.txt';data=b'original tool output, not JSON';path.write_bytes(data)
             ref={'path':str(path),'sha256':hashlib.sha256(data).hexdigest()}
             module.r13_step(controller, dict(command='quit_ack',args={'raw_cua_ref':ref}))
             controller.ack_quit.assert_called_once_with(ref)
+
+    def test_partial_jsonl_and_oversize_input_cannot_block_deadline(self):
+        module=self.runner();read_fd,write_fd=os.pipe()
+        try:
+            os.write(write_fd,b'{"command":')  # writer remains open, no LF
+            start=time.monotonic()
+            values=list(module.controller_lines(read_fd,deadline=start+.04))
+            self.assertLess(time.monotonic()-start,.7)
+            self.assertTrue(all(x is None for x in values))
+            os.write(write_fd,b'x'*64)
+            with self.assertRaises(module.Invalid):
+                list(module.controller_lines(read_fd,deadline=time.monotonic()+1,max_line=32))
+        finally:os.close(read_fd);os.close(write_fd)
+
+    def test_nested_ready_ref_cannot_read_private_file(self):
+        module=self.runner()
+        with tempfile.TemporaryDirectory() as raw:
+            root=Path(raw).resolve();controller=Mock();controller.output=root/'controller'
+            controller.public_refs={};controller.card={}
+            inputs=controller.output/'controller-inputs';inputs.mkdir(parents=True)
+            secret=root/'private.json';secret.write_text('{"private":"must not read"}')
+            wrapper=inputs/'ready.json';wrapper.write_text(json.dumps({'verified_ready_ref':{
+                'path':str(secret),'sha256':hashlib.sha256(secret.read_bytes()).hexdigest()}}))
+            ref={'path':str(wrapper),'sha256':hashlib.sha256(wrapper.read_bytes()).hexdigest()}
+            from universe_iteration import lifecycle
+            original=lifecycle.read_ref
+            def checked(ref,*args,**kwargs):
+                self.assertNotEqual(ref['path'],str(secret),'private nested ref must be rejected before read')
+                return original(ref,*args,**kwargs)
+            with patch.object(lifecycle,'read_ref',side_effect=checked),self.assertRaises(module.Invalid):
+                module.r13_step(controller,dict(command='ready',args={'ready_ref':ref}))
+            controller.register_ready.assert_not_called()
 
     def test_new_verifier_requires_external_pins_before_bundle_read(self):
         with tempfile.TemporaryDirectory() as raw:

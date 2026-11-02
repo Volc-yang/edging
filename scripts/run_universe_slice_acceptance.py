@@ -888,11 +888,38 @@ def r13_step(controller, request):
     def shape(names):
         require(set(values) == set(names), 'controller command argument shape')
     def document(ref, *, json_value=True):
-        require(type(ref) is dict and set(ref) == {'path', 'sha256'}, 'public controller input ref')
-        path = safe_path(ref['path'])
-        require(path.is_relative_to(controller.output / 'controller-inputs'),
-                'controller inputs must be explicit public originals under controller-inputs')
-        return lifecycle.json_ref(ref) if json_value else lifecycle.read_ref(ref)
+        # Dynamic originals are explicit public copies. Only already recorded
+        # controller refs and fixed public card pins may refer outside that area.
+        approved = dict(controller.public_refs)
+        for name in ('launcher_source_ref', 'manifest_ref', 'runtime_review_ref'):
+            if name in controller.card:
+                pin = controller.card[name]; approved[pin['path']] = pin
+        future = {str(controller.output / name) for name in ('ledger-v2.json', 'storage-snapshot.json')}
+        def allowed(path):
+            return (path.is_relative_to(controller.output / 'controller-inputs') or
+                    str(path) in approved or str(path) in future)
+        def check_ref(value):
+            require(type(value) is dict and set(value) == {'path', 'sha256'}, 'public controller input ref')
+            path = safe_path(value['path'])
+            require(allowed(path), 'controller ref redirects outside independent public scope')
+            if str(path) in approved:
+                require(value == approved[str(path)], 'controller ref differs from approved public pin')
+        def nested(value, depth=0):
+            require(depth <= 64, 'controller input depth bound')
+            if type(value) is dict:
+                if set(value) == {'path', 'sha256'}: check_ref(value)
+                if 'public_paths' in value:
+                    require(type(value['public_paths']) is list and
+                            all(allowed(safe_path(x)) for x in value['public_paths']),
+                            'policy cannot expand the independent public allowlist')
+                for item in value.values(): nested(item, depth + 1)
+            elif type(value) is list:
+                require(len(value) <= 8192, 'controller input list bound')
+                for item in value: nested(item, depth + 1)
+        check_ref(ref)
+        value = lifecycle.json_ref(ref) if json_value else lifecycle.read_ref(ref)
+        if json_value: nested(value)
+        return value
     if command == 'begin':
         shape(('session',)); controller.begin_session(values['session'])
         return {'session': values['session'], 'started': True}
@@ -929,29 +956,48 @@ def r13_step(controller, request):
     raise Invalid('unknown controller command; no code was invoked')
 
 
+def controller_lines(fd, *, deadline, clock=time.monotonic, max_line=1024**2):
+    """Nonblocking bounded framing; partial stdin cannot bypass the clock guard."""
+    import selectors
+    selector = selectors.DefaultSelector()
+    previous = os.get_blocking(fd); pending = bytearray()
+    os.set_blocking(fd, False)
+    try:
+        selector.register(fd, selectors.EVENT_READ)
+        while clock() < deadline:
+            if not selector.select(timeout=min(.25, max(0, deadline-clock()))):
+                yield None; continue
+            try: data = os.read(fd, min(65536, max_line + 1))
+            except BlockingIOError: continue
+            if not data:
+                require(not pending, 'controller EOF in partial JSONL frame'); return
+            pending.extend(data)
+            while b'\n' in pending:
+                line, _, tail = pending.partition(b'\n'); pending = bytearray(tail)
+                require(len(line) + 1 <= max_line, 'controller JSONL size bound')
+                yield bytes(line) + b'\n'
+            require(len(pending) <= max_line, 'controller partial JSONL size bound')
+    finally:
+        selector.close(); os.set_blocking(fd, previous)
+
+
 def r13_controller(args):
     """One long-lived stdin JSONL owner; CLI calls never reconstruct a controller."""
-    import selectors
     from universe_iteration import dispatch, lifecycle
     backend = dispatch.LegacyBackend(expected_runner_sha256=args.runner_sha256)
     card = dispatch.validate_card(args.r13_card, expected_card_sha256=args.card_sha256,
         expected_product_source=args.accepted_source, expected_tool_source=args.tool_source,
         expected_manifest_sha256=args.manifest_sha256, backend=backend, execute=args.execute)
     controller = dispatch.DispatchController(card, backend=backend)
-    selector = selectors.DefaultSelector()
     def reply(value):
         print(json.dumps(value, sort_keys=True, allow_nan=False), flush=True)
     controller.start_observer()
     try:
-        selector.register(sys.stdin, selectors.EVENT_READ)
         reply({'format': 'universe-i14-controller-ready.v1', 'controller_pid': os.getpid(),
                'clock': controller.clock_binding, 'session_started': False})
-        while not controller.closed:
-            if time.monotonic() - controller.dispatch_monotonic >= 1200:
-                reply(controller.request_quit('global deadline; no more UI actions')); break
-            if not selector.select(timeout=.25): continue
-            line = sys.stdin.buffer.readline(1024**2 + 1)
-            if not line: break
+        for line in controller_lines(sys.stdin.fileno(), deadline=controller.dispatch_monotonic + 1200):
+            if controller.closed: break
+            if line is None: continue
             try:
                 require(len(line) <= 1024**2 and line.endswith(b'\n'), 'bounded complete controller JSONL required')
                 request = json.loads(line, object_pairs_hook=unique_pairs,
@@ -961,7 +1007,6 @@ def r13_controller(args):
             except (Invalid, lifecycle.Invalid, OSError, ValueError, KeyError, TypeError) as error:
                 reply({'status': 'request_rejected', 'error': str(error)})
     finally:
-        selector.close()
         # EOF/errors cannot leave a non-daemon observer running indefinitely.
         # An active pinned old supervisor retains exact cleanup/wait ownership.
         controller.closing, controller.permits = True, {}

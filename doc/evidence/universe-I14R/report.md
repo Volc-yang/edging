@@ -30,3 +30,5 @@ Native源31e38eb2b4367b272beda92a4b40a98212027468；最终D 1200287与该源的�
 已补producer源码、实际可接的持久backend/自动wait+seal、组合verifier与CLI；真实producer来源、single-chord、原PNG、正常双会话和耗时能力仍没有新实机证据。D manifest含所有额外查询/Shot：S1 61次实际CUA调用、274s拟上限，S2 14次/100s；这些不是测量。V还明确保留既有typed-body、Static geometry/options/transform及selected Transition公开proof校验差距，结果inconclusive；不据结构相符授门。
 
 本轮不派S，A结算no-go停止路径；工具层可接受，I14/G-B2整体未完成。I12资源2566/1200 fail及I13 partial保持原账，新增1200/2GiB提案尚未发运行卡。后续只重开实际能力采证与具体proof缺口，不重新开发已接受D/L代码；若需单独capability运行，先在新计划显式列范围/预算/原件/退出，不藏probe或补造review pass。维护UE发布版/单权威writer/抽象因果目标不变。
+
+独立代码审查发现并修正两处CLI问题：selector后readline仍可能被无LF的partial输入阻塞，现改为非阻塞os.read、有界缓冲和截止检查；public wrapper内nested ref可重定向，现先递归限制为controller公共输入副本、已记录ref或固定公共card pin，policy也不能扩充私密allowlist。新增partial-pipe/oversize及nested-private-read负例，最终8项CPU检查通过；这些不是UE运行失败。原6项独立复跑也通过，但不用于掩盖审查发现。
