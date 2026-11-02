@@ -17,7 +17,7 @@ class SessionNamespaceTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(); self.addCleanup(temporary.cleanup)
         self.folder = Path(temporary.name).resolve()
-        builder = fixture.EvidenceTools('test_runner_fixed_full_valid_card_two_session_protocol')
+        builder = fixture.RunnerPreparation('test_runner_fixed_full_valid_card_two_session_protocol')
         self.card, self.path, unused = builder.valid_card(self.folder)
         self.storage = Path(self.card['storage_root'])
         for patch in (mock.patch.object(driver, 'on_devssd', return_value=True),
