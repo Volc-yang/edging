@@ -233,14 +233,23 @@ def prepare(storage):
     # Source-side output links are explicit artifacts, never rewrite an existing path.
     project = REPO / 'engine_platforms/unreal/EdgeWorldHost'
     output = storage / 'outputs'; output.mkdir(mode=0o700)
-    mappings = [('Binaries', 'host-binaries'), ('Intermediate', 'host-intermediate'), ('Saved', 'saved'),
-                ('Plugins/EdgeWorldRuntime/Binaries', 'plugin-binaries'),
+    mappings = [('Binaries', 'project/Binaries'), ('Intermediate', 'host-intermediate'), ('Saved', 'saved'),
+                ('Plugins/EdgeWorldRuntime/Binaries', 'project/Plugins/EdgeWorldRuntime/Binaries'),
                 ('Plugins/EdgeWorldRuntime/Intermediate', 'plugin-intermediate')]
+    # Preserve the native Host/Mac relative LC_RPATH to the sibling plugin.
+    binary_targets = dict(mappings)
+    host_mac = output / binary_targets['Binaries'] / 'Mac'
+    plugin_mac = output / binary_targets['Plugins/EdgeWorldRuntime/Binaries'] / 'Mac'
+    require(Path(os.path.normpath(host_mac / '../../Plugins/EdgeWorldRuntime/Binaries/Mac')) ==
+            plugin_mac, 'physical output layout breaks native relative plugin RPATH')
+    # mkdir(parents=True) does not apply mode to intermediate directories.
+    for parent in ('project', 'project/Plugins', 'project/Plugins/EdgeWorldRuntime'):
+        (output / parent).mkdir(mode=0o700)
     allowlist, links = {}, []
     for relative, target_name in mappings:
         link, target = project / relative, output / target_name
         require(not os.path.lexists(link), 'refuse existing product output path: ' + relative)
-        target.mkdir(mode=0o700); link.symlink_to(target)
+        target.mkdir(mode=0o700, parents=True); link.symlink_to(target)
         relative_repo = str(link.relative_to(REPO))
         allowlist[relative_repo] = dict(kind='symlink', readlink=str(target), target=str(target),
                                        provenance='I12B-PREP authorized exclusive output mapping')

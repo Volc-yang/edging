@@ -1,0 +1,264 @@
+{
+  "additional_untracked_selector_seconds_upper": 1417.648673,
+  "captured_unix": 1793598934.206235,
+  "ceiling_seconds": 1200,
+  "charged_total_seconds": 2566,
+  "exits": [
+    {
+      "completion_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/sessions-attempt3/initialize/completion.json",
+      "cumulative_seconds": 726,
+      "elapsed_seconds_charged": 117,
+      "failure": "Invalid: stage time exhausted: startup",
+      "launcher_wait_exit": 70,
+      "name": "initialized-old",
+      "normal": false,
+      "operations": [
+        "status",
+        "initialize",
+        "status",
+        "observe"
+      ],
+      "raw_launcher_ue_exit0": true,
+      "remaining_owned": [],
+      "scope": "standard-failed-asset-guard",
+      "supervisor_ue_exit_field": null,
+      "trace_request_count": 4,
+      "worker_exits": [
+        {
+          "exit_code": 0,
+          "generation": "1",
+          "hard_kill_sent": false,
+          "operational_failure": false,
+          "reaped": true,
+          "return_code_available": true,
+          "stop_kind": "normal",
+          "tail_bytes": 96,
+          "trace_complete": true,
+          "worker_pid": 24732
+        }
+      ]
+    },
+    {
+      "completion_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/sessions-attempt4/initialize/completion.json",
+      "cumulative_seconds": 996,
+      "elapsed_seconds_charged": 270,
+      "failure": "Invalid: stage time exhausted: interaction",
+      "launcher_wait_exit": 0,
+      "name": "r4-initialize",
+      "normal": false,
+      "operations": [
+        "status",
+        "initialize",
+        "status",
+        "observe",
+        "prepare",
+        "advance",
+        "status",
+        "observe"
+      ],
+      "raw_launcher_ue_exit0": true,
+      "remaining_owned": [],
+      "scope": "standard",
+      "supervisor_ue_exit_field": null,
+      "trace_request_count": 8,
+      "worker_exits": [
+        {
+          "exit_code": 0,
+          "generation": "1",
+          "hard_kill_sent": false,
+          "operational_failure": false,
+          "reaped": true,
+          "return_code_available": true,
+          "stop_kind": "normal",
+          "tail_bytes": 96,
+          "trace_complete": true,
+          "worker_pid": 66291
+        }
+      ]
+    },
+    {
+      "completion_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/sessions-repair-r4/existing/completion.json",
+      "cumulative_seconds": 1148,
+      "elapsed_seconds_charged": 152,
+      "failure": "Invalid: stage time exhausted: interaction",
+      "launcher_wait_exit": 0,
+      "name": "r4-repair",
+      "normal": false,
+      "operations": [
+        "status",
+        "observe",
+        "prepare",
+        "advance",
+        "status",
+        "observe"
+      ],
+      "raw_launcher_ue_exit0": true,
+      "remaining_owned": [],
+      "scope": "existing-world-repair-only",
+      "supervisor_ue_exit_field": null,
+      "trace_request_count": 6,
+      "worker_exits": [
+        {
+          "exit_code": 0,
+          "generation": "1",
+          "hard_kill_sent": false,
+          "operational_failure": false,
+          "reaped": true,
+          "return_code_available": true,
+          "stop_kind": "normal",
+          "tail_bytes": 96,
+          "trace_complete": true,
+          "worker_pid": 490
+        }
+      ]
+    }
+  ],
+  "extra_selector": {
+    "argv": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor (no project)",
+    "cause": "late CUA app-state refresh after supervised UE timeout can reopen app; exact spawning call not independently instrumented",
+    "excluded_from_world_acceptance": true,
+    "exit_code": null,
+    "extra_process_upper_bound_seconds": 1417.648673,
+    "kind": "controller-lifecycle-budget-failure",
+    "observed_absent_after_cua_quit": "2026-11-02T05:53:34.648673+00:00",
+    "old_originals_preserved": true,
+    "pid": 6050,
+    "ppid": 1,
+    "resource_gate": "failed",
+    "resource_limit_seconds": 1200,
+    "start_from_ps_lstart": "2026-11-02T05:29:57+00:00",
+    "supervised_cumulative_seconds": 1148,
+    "total_conservative_seconds": 2566,
+    "ui": "empty Unreal Engine project selector confirmed through CUA"
+  },
+  "finite_loop": "actual initialize/retain/recover/weak1,2 D-7 plus2 native Success; repair is not P1 acceptance",
+  "format": "universe-i12-final-partial-evidence.v1",
+  "g_b2_passed": false,
+  "image_format_correction": {
+    "images": [
+      {
+        "actual_mime": "image/jpeg",
+        "bytes": 267628,
+        "correct_extension_copy": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-00-initial.jpg",
+        "original_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-00-initial.png",
+        "sha256": "28159922efeac1ef4b3f8f282bed292bf8ef249f1bdc069db7d20185b8ce4488",
+        "transcoded": false
+      },
+      {
+        "actual_mime": "image/jpeg",
+        "bytes": 267419,
+        "correct_extension_copy": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-01-retain.jpg",
+        "original_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-01-retain.png",
+        "sha256": "5e46768a497745e9e5e7562dae9b6e6c4126800d4e310041cde445c2f6146713",
+        "transcoded": false
+      },
+      {
+        "actual_mime": "image/jpeg",
+        "bytes": 145713,
+        "correct_extension_copy": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-repair-physical.jpg",
+        "original_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-repair-physical.png",
+        "sha256": "1ffdb388e61e666e6623230a77814175a9fdaab755ab67b74827fba68696cdf6",
+        "transcoded": false
+      }
+    ],
+    "note": "Native CUA bytes are JPEG/JFIF. Original misnamed .png files retained unchanged; copies only, no conversion. Does not satisfy original-PNG gate."
+  },
+  "image_original_png_gate": false,
+  "images": [
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 267628,
+      "capture_time_kind": "posthoc exact-byte format label/copy; not a new capture",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-00-initial.jpg",
+      "sha256": "28159922efeac1ef4b3f8f282bed292bf8ef249f1bdc069db7d20185b8ce4488"
+    },
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 267628,
+      "capture_metadata": {
+        "capture_begin": 1793595463.189,
+        "capture_end": 1793595463.257,
+        "clock": "host UTC epoch seconds",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-00-initial.png",
+        "renderer": "Metal",
+        "revision": 0,
+        "source": "25abce1700696d33c583120ad1a336ad05753725",
+        "tick": 0,
+        "ue_pid": 65637,
+        "world_id": "edgeworld-i12b-20261102-r4"
+      },
+      "capture_time_kind": "recorded capture begin/end",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-00-initial.png",
+      "sha256": "28159922efeac1ef4b3f8f282bed292bf8ef249f1bdc069db7d20185b8ce4488"
+    },
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 267419,
+      "capture_time_kind": "posthoc exact-byte format label/copy; not a new capture",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-01-retain.jpg",
+      "sha256": "5e46768a497745e9e5e7562dae9b6e6c4126800d4e310041cde445c2f6146713"
+    },
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 267419,
+      "capture_metadata": {
+        "capture_begin": 1793595628.05,
+        "capture_end": 1793595628.122,
+        "clock": "host UTC epoch seconds",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-01-retain.png",
+        "renderer": "Metal",
+        "revision": 1,
+        "source": "25abce1700696d33c583120ad1a336ad05753725",
+        "tick": 0,
+        "ue_pid": 65637,
+        "world_id": "edgeworld-i12b-20261102-r4"
+      },
+      "capture_time_kind": "recorded capture begin/end",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-01-retain.png",
+      "sha256": "5e46768a497745e9e5e7562dae9b6e6c4126800d4e310041cde445c2f6146713"
+    },
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 145713,
+      "capture_time_kind": "posthoc exact-byte format label/copy; not a new capture",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-repair-physical.jpg",
+      "sha256": "1ffdb388e61e666e6623230a77814175a9fdaab755ab67b74827fba68696cdf6"
+    },
+    {
+      "actual_media_type": "image/jpeg",
+      "bytes": 145713,
+      "capture_interval_lower": 1793597284.531,
+      "capture_interval_upper": 1793597284.5870733,
+      "capture_time_kind": "inferred event-after to original-file creation/write interval, not exact capture time",
+      "extension_is_original_png": false,
+      "magic_hex": "ffd8ffe000104a4649460001",
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/ui/r4-repair-physical.png",
+      "sha256": "1ffdb388e61e666e6623230a77814175a9fdaab755ab67b74827fba68696cdf6"
+    }
+  ],
+  "key_contents_read": false,
+  "missing": [
+    "two normal standard sessions",
+    "same-closure retry request/response",
+    "fresh historical query after physical",
+    "per-action camera/visibility/pause/framerate/held-input readonly matrix",
+    "original PNG gate",
+    "overall runtime resource gate exceeded by extra selector process"
+  ],
+  "private_owner_contents_included": false,
+  "product_source": "25abce1700696d33c583120ad1a336ad05753725",
+  "resource_gate": "FAILED",
+  "resource_limit_seconds": 1200,
+  "statement": "real finite functional observations retained; no complete or bounded G-B2 pass",
+  "supervised_seconds": 1148
+}
