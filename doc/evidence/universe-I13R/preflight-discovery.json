@@ -1,0 +1,59 @@
+{
+  "format": "universe-i13-offline-discovery.v1",
+  "observed_at": "2026-11-02T07:34:22.410063+00:00",
+  "source_sha": "42c5880aadbc32acb7c10e29463741ae7fd9e321",
+  "runtime_started": false,
+  "keys_read": false,
+  "deployment_layout": {
+    "method": "AST strings and fixed Host-relative path arithmetic only; no import/prepare/build/runtime",
+    "helper": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I12B/prepare_deployment.py",
+      "sha256": "9d4e7022c2b457a89098aaa8ca1cc270d8a66443f63035c851d9526cedac2867"
+    },
+    "required_literals": [
+      "project/Binaries",
+      "project/Plugins/EdgeWorldRuntime/Binaries",
+      "../../Plugins/EdgeWorldRuntime/Binaries/Mac"
+    ],
+    "present": true,
+    "host_dir": "project/Binaries/Mac",
+    "resolved_plugin_dir": "project/Plugins/EdgeWorldRuntime/Binaries/Mac"
+  },
+  "ue_action_readbacks": {
+    "source": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldUniverseGameMode.cpp",
+      "sha256": "9624a9b12fb3c242e66978c6cf0528b5bd9fbb855bbf8e5b44b0793de892ab93"
+    },
+    "ue_log_sites": [
+      {
+        "line": 48,
+        "text": "OpenTransport();RefreshHead();UE_LOG(LogTemp,Display,TEXT(\"Universe world: 1 weak; 2 strong; Space physical; R retain; [ prior; H latest; UniverseRefresh/UniverseRetry explicit.\"));"
+      },
+      {
+        "line": 86,
+        "text": "Session.bBusy=false;Session.bUnknown|=Unknown;Session.Phase=Session.bUnknown?EUniverseClientPhase::Unknown:EUniverseClientPhase::Rejected;UE_LOG(LogTemp,Error,TEXT(\"Universe rejected: %s; unknown=%d\"),*Error,Session.bUnknown);Present();"
+      },
+      {
+        "line": 128,
+        "text": "Weak->Present();UE_LOG(LogTemp,Display,TEXT(\"Universe world %s observed tick %lld, revision %lld\"),*O.WorldId,(long long)O.Tick,(long long)O.Revision);"
+      }
+    ],
+    "finding": "Only generic world observation/rejection/start instructions; no dedicated structured camera/visibility/input/pause completion markers in this file. Existing alternative readbacks not demonstrated."
+  },
+  "cua_capability": {
+    "source": "mcp__cua_repl cua.rewriteDocumentation current session",
+    "documented_signature": "pressKey(key: string, options?: { durationMs?: number }): Promise<void>",
+    "independent_key_down_up_documented": false,
+    "finding": "Cross-transition held Space with fresh completion evidence is unverified. Key-combination syntax alone is not proof of event ordering/holding."
+  },
+  "passive_inventory": {
+    "ue_or_crash_reporter_matches": [],
+    "absence_is_not_exit_code": true
+  },
+  "readiness": "not_yet_assessed_pending_A_B_C",
+  "limitations": [
+    "No new deployment/UE/native Shot/normal quit run",
+    "No R13 dispatch or live budget card issued",
+    "Prior I12 failure ledger retained unchanged"
+  ]
+}

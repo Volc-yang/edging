@@ -1,0 +1,53 @@
+{
+  "at": "2026-11-02T07:52:44.164897+00:00",
+  "worktrees": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-lifecycle",
+      "source": "874e3989b12339b02488fb697b1653d9b3c2fc32",
+      "tracked_untracked_clean": true,
+      "ancestor": true,
+      "removed_generated_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-lifecycle/scripts/universe_iteration/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 371
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-lifecycle/scripts/universe_iteration/__pycache__/lifecycle.cpython-314.pyc",
+          "bytes": 37920
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-lifecycle/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 178
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-lifecycle/tests/__pycache__/test_universe_iteration_lifecycle.cpython-314.pyc",
+          "bytes": 29848
+        }
+      ],
+      "process_and_runtime_dependency_review": "owner read-only cleanup feedback; no new runtime/provision created; public DevSSD references source provenance only"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-capture",
+      "source": "ce0928a227c9d586d026b057b2928c1d1fbed54d",
+      "tracked_untracked_clean": true,
+      "ancestor": true,
+      "removed_generated_only": [
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-capture/scripts/universe_iteration/__pycache__/capture.cpython-314.pyc",
+          "bytes": 49572
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-capture/tests/__pycache__/__init__.cpython-314.pyc",
+          "bytes": 176
+        },
+        {
+          "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-capture/tests/__pycache__/test_universe_iteration_capture.cpython-314.pyc",
+          "bytes": 49647
+        }
+      ],
+      "process_and_runtime_dependency_review": "owner read-only cleanup feedback; no new runtime/provision created; public DevSSD references source provenance only"
+    }
+  ],
+  "non_force": true,
+  "branches_raw_and_old_I12B_preserved": true
+}
