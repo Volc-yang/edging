@@ -88,3 +88,5 @@ A独立审实际原件、卡/source/normalwait/完整预算、只读maps/trace�
 root 接受最小 C 纠正：观察回调忽略无 PID/跳过阶段，并校验首个样本就绪；CPU 回归与独立审查/CI 后，允许明确的新卡和 `capability-attempt2/` 控制器使用**仍未消耗的唯一 Native 窗口**。这不是自动重试已经运行的 UE。原卡/准备/中止原件不覆盖；新 prepared 仅更新准确 tool source，product/native/source/binaries 保持成功构建 `5a6cca0`，新旧 prepared 的差异与 provenance 另存公共原件，不重新构建或伪造同源。
 
 900s 从首个 dispatch `1182671.669250291` 连续计至最终 seal，包含此次纠正和两个控制器的所有实际间隔；新控制器局部时钟不能重置总账。启动前必须至少余270s，Native 仍180s上限，最后独立复算全体原件字节和进程静默；超预算/新卡未就绪则直接结算，不再派窗口。标准门和 G-B2 不变。
+
+N 独立审查补充：原观察线程中止至纠正间隔没有连续≤2s observer 证据，**全周期连续观察门保留 fail/inconclusive，不可由后续成功补回**。可分别审定 attempt2 的持续观察/真实 wait 与 exact old3 Native 语义，不能据此称整个 capability 通过；总时长最终更保守地从首 outer `1182671.312779333` 计。新 tool source 改变须独占新 Native manifest（原 case 字节不变）及新 prepared/card，保留旧版本。
