@@ -10,7 +10,7 @@ Root amendment `f8f07fe` permits an explicit no-UI skip before any UE dispatch. 
 
 ## Actual checks
 
-`python3 -m unittest discover -s doc/evidence/universe-I15C -p 'test_*.py' -v` — 11 CPU tests passed. Tests include an actual short CPU child with parent wait0 and observer PID identity, an actual CPU child killed by the watchdog and retained as forced/abnormal, one-shot skip, forbidden Native-first/manifest-freeze order, expired/old card rejection, exact public-export LF, streaming >16MiB input, changed hash, symlink and key-content refusal. No UE, worker, Genesis solver, build or DevSSD provisioning ran. Full installed-runtime admission and exact four Native tests need root integration checks.
+`python3 -m unittest discover -s doc/evidence/universe-I15C -p 'test_*.py' -v` — 12 CPU tests passed. Tests include an actual short CPU child with parent wait0 and observer PID identity, an actual CPU child killed by the watchdog and retained as forced/abnormal, one-shot skip, forbidden Native-first/manifest-freeze order, expired/old card rejection, exact public-export LF, streaming >16MiB input, changed hash, symlink and key-content refusal and unlisted/private skip evidence refusal before any read. No UE, worker, Genesis solver, build or DevSSD provisioning ran. Full installed-runtime admission and exact four Native tests need root integration checks.
 
 ## Root usage
 

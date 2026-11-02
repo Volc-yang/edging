@@ -19,7 +19,7 @@ class CapabilityTests(unittest.TestCase):
  def ref(self,name,data):return c.lc.exclusive_bytes(self.root/name,c.encoded(data))
  def controller(self):
   value=c.ValidatedCapability(dict(run_id='i15-cpu',controller_output=str(self.root/'controller'),
-    legacy_sources=[],public_paths=[]),dict(tool_root=str(ROOT),product_root=str(ROOT),output_root=str(self.root),
+    legacy_sources=[],public_paths=[str(self.root/'skip.json')]),dict(tool_root=str(ROOT),product_root=str(ROOT),output_root=str(self.root),
     key_directory=str(self.root/'private'),binary_pins={'ue':{'path':'/not-installed-test-editor'}}),{'items':[]},c._SEAL)
   return c.CapabilityController(value)
  def test_no_json_restore(self):
@@ -55,6 +55,10 @@ class CapabilityTests(unittest.TestCase):
   self.assertFalse(controller.phases['metal']['normal'])
   with self.assertRaises(c.lc.Invalid):controller.skip_metal(ref)
   with self.assertRaises(c.lc.Invalid):controller.start_native()
+ def test_unlisted_skip_ref_refused_before_read(self):
+  controller=self.controller()
+  with patch.object(c.lc,'json_ref',side_effect=AssertionError('must refuse before read')):
+   with self.assertRaises(c.lc.Invalid):controller.skip_metal({'path':str(self.root/'private/payload'),'sha256':'0'*64})
  def test_wrong_skip_cannot_look_normal(self):
   controller=self.controller()
   ref=self.ref('skip.json',dict(format='universe-i15-capability-skip.v1',run_id='i15-cpu',
@@ -91,7 +95,7 @@ class CapabilityTests(unittest.TestCase):
  def test_expired_card_refused_before_prepared_read(self):
   card=dict(format=c.FORMAT,scope=c.SCOPE,run_id='i15-cpu',issuer='root',approved=True,execute=True,
    issued_at='2000-01-01T00:00:00Z',expires_at='2000-01-02T00:00:00Z',g_b2_granted=False,standard_pair=False,
-   no_retry=True,prepared_ref={},probe_manifest_ref={},controller_output=str(self.root/'x'),policy=c.POLICY,legacy_sources=[],public_paths=[])
+   no_retry=True,prepared_ref={},probe_manifest_ref={},controller_output=str(self.root/'x'),policy=c.POLICY,legacy_sources=[],public_paths=[str(self.root/'skip.json')])
   ref=self.ref('expired.json',card)
   with self.assertRaisesRegex(c.lc.Invalid,'expired'):c.validate_capability_card(ref['path'],expected_card_sha256=ref['sha256'],
    expected_prepared_sha256='0'*64,expected_probe_manifest_sha256='0'*64,

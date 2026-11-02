@@ -474,6 +474,10 @@ class CapabilityController:
     def skip_metal(self, evidence_ref):
         """Root's explicit no-UI amendment; never a completed Metal session."""
         lc.require(not self.phases and self.process is None,'only undispatched Metal may be skipped')
+        path=lc.checked_path(evidence_ref['path'])
+        lc.require(not path.is_relative_to(Path(self.prepared['key_directory'])) and
+            (str(path) in self.card['public_paths'] or path.is_relative_to(self.output/'controller-inputs')),
+            'explicit public skip evidence required; never private/key input')
         evidence=lc.json_ref(evidence_ref)
         lc.require(evidence==dict(format='universe-i15-capability-skip.v1',run_id=self.card['run_id'],
             reason='ui-controller-unavailable',metal_dispatched=False,decision='inconclusive'),
