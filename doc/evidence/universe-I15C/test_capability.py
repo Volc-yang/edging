@@ -22,6 +22,17 @@ class CapabilityTests(unittest.TestCase):
     legacy_sources=[],public_paths=[str(self.root/'skip.json')]),dict(tool_root=str(ROOT),product_root=str(ROOT),output_root=str(self.root),
     key_directory=str(self.root/'private'),binary_pins={'ue':{'path':'/not-installed-test-editor'}}),{'items':[]},c._SEAL)
   return c.CapabilityController(value)
+ def test_mac_modules_follow_actual_lib_filenames(self):
+  project=self.root/'project/EdgeWorldHost.uproject';project.parent.mkdir();project.write_text('{}')
+  host=project.parent/'Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib'
+  plugin=project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib'
+  for path in (host,plugin):path.parent.mkdir(parents=True);path.write_bytes(b'cpu-fixture')
+  actual=c.mac_binary_paths(project)
+  self.assertEqual(actual,(host,plugin))
+  self.assertTrue(all(p.is_file() and not p.is_symlink() for p in actual))
+  self.assertEqual(host.parent.parent.parent,plugin.parent.parent.parent.parent.parent)
+  self.assertFalse((host.parent/'UnrealEditor-EdgeWorldHost.dylib').exists())
+  self.assertFalse((plugin.parent/'UnrealEditor-EdgeWorldRuntime.dylib').exists())
  def test_no_json_restore(self):
   with self.assertRaises(c.lc.Invalid):c.ValidatedCapability({}, {}, {}, None)
  def test_exact_public_export_keeps_original_lf(self):
