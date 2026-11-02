@@ -1,0 +1,19 @@
+{
+  "format": "universe-i12-offline-layout-check.v1",
+  "check": "AST/literal paths only; helper not imported or executed",
+  "passed": true,
+  "mappings": {
+    "Binaries": "project/Binaries",
+    "Intermediate": "host-intermediate",
+    "Saved": "saved",
+    "Plugins/EdgeWorldRuntime/Binaries": "project/Plugins/EdgeWorldRuntime/Binaries",
+    "Plugins/EdgeWorldRuntime/Intermediate": "plugin-intermediate"
+  },
+  "relative_rpath": "../../Plugins/EdgeWorldRuntime/Binaries/Mac",
+  "resolved_plugin_mac": "/private-output/project/Plugins/EdgeWorldRuntime/Binaries/Mac",
+  "private_parent_modes": "each explicit ancestor mkdir mode 0700; target parents=True mode 0700",
+  "helper_sha256": "9d4e7022c2b457a89098aaa8ca1cc270d8a66443f63035c851d9526cedac2867",
+  "elapsed_seconds": 0.0035945000126957893,
+  "scope": "no prepare/provision/runtime/links changed",
+  "runtime_regression_basis": "source25ab native ProtocolIds and StandaloneAssetAudit Success under corrected physical layout"
+}

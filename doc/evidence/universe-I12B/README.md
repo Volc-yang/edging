@@ -1,3 +1,9 @@
+# I12B final status: partial; G-B2 not passed
+
+See [final live partial report](partial-live-report.md), [final summary](live-final-partial-summary.json) and [public index](final-public-index.json). Resource gate FAILED at2566/1200 seconds; normal session pair, retry/history, readonly matrix and original-PNG gates remain unmet. Runtime source25abce1 is distinct from the later offline helper correction.
+
+The PREP notes below are historical scope, not a statement that later authorized runtime did not occur.
+
 # I12B-PREP — new-world deployment, no R12 execution
 
 Base `f85428128da93270b7df368e318c4b9de79887a5`. Owner paths limited to this evidence
