@@ -131,7 +131,7 @@ void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
 bool AEdgeWorldUniverseGameMode::VerifyInstalledAssets(const FEdgeWorldUniverseObservation& O,FString& Error,FString* AuditJson,FString* CandidateJson)
 {
 #if WITH_EDITOR
- Error=TEXT("installed asset graph mismatch");FEdgeWorldUniverseAssetAuditResult A;const bool Collected=FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error);
+ Error=TEXT("installed asset graph mismatch");FEdgeWorldUniverseAssetAuditResult A;const bool Collected=FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error,GIsEditor ? FEdgeWorldUniverseAssetAudit::EContext::Editor : FEdgeWorldUniverseAssetAudit::EContext::InstalledEditorStandalone);
  if(AuditJson)*AuditJson=A.AuditJson;if(CandidateJson)*CandidateJson=A.CandidateJson;
  if(!Collected||!A.bResolved||A.GapCount!=0||O.AssetDependencyStatus!=TEXT("runtime-resolved"))return false;
  for(const auto& R:O.SelectedRecords)if(R.Kind==TEXT("asset_manifest"))return R.Id==TEXT("asset-manifest-runtime")&&R.Digest==A.CandidateDigest&&R.CanonicalJson==A.CandidateJson;

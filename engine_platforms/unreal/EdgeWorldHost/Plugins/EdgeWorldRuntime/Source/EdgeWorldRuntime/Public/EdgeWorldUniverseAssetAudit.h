@@ -17,8 +17,10 @@ struct EDGEWORLDRUNTIME_API FEdgeWorldUniverseAssetAuditResult
 class EDGEWORLDRUNTIME_API FEdgeWorldUniverseAssetAudit
 {
 public:
+ enum class EContext { Editor, InstalledEditorStandalone };
  // Run explicitly after editor initialization. Reads installed content/Registry;
  // returns audit bytes in memory and never visits authority storage or loads assets.
- static bool Collect(const FString& WorldId, FEdgeWorldUniverseAssetAuditResult& Out, FString& Error);
+ // Standalone is an explicit uncooked installed-editor game path only.
+ static bool Collect(const FString& WorldId, FEdgeWorldUniverseAssetAuditResult& Out, FString& Error, EContext Context = EContext::Editor);
 };
 #endif
