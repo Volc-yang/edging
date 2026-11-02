@@ -16,6 +16,7 @@ import re
 
 FORMAT = 'universe-i13-actions.v1'
 READBACK_FORMAT = 'universe-i13-readback.v1'
+HISTORY_REJECTION_FORMAT = 'universe-i13-history-rejection.v1'
 PREFIX = b'edgeworld.universe.authority\0v0.2\0'
 CAP = 16 * 1024**2
 SHA = re.compile(r'[0-9a-f]{64}\Z')
@@ -489,6 +490,34 @@ def _diagnostic(raw, event, item, receipt):
     return value
 
 
+def _history_rejection(states):
+    """Require actual UE handler evidence; unchanged idle state is not a rejection."""
+    for state in states:
+        _keys(state, {'format', 'space_down', 'r_down', 'can_write', 'handled_input', 'handler_counts'},
+              'history rejection state')
+        require(state['format'] == HISTORY_REJECTION_FORMAT and
+                _same_json({k: state[k] for k in ('space_down', 'r_down', 'can_write')},
+                           {'space_down': False, 'r_down': False, 'can_write': False}),
+                'history rejection/release readback')
+        _keys(state['handler_counts'], {'SpacePressed', 'Retain'}, 'actual handler counters')
+        require(all(_integer(v) for v in state['handler_counts'].values()), 'integer handler counters')
+    for index, (key, handler) in enumerate((('Space', 'SpacePressed'), ('R', 'Retain'))):
+        state, event = states[index], states[index]['handled_input']
+        _keys(event, {'key', 'event', 'handler', 'handled', 'rejected', 'reason',
+                      'counter_before', 'counter_after'}, 'actual rejected input event')
+        require(event['key'] == key and event['event'] == 'pressed' and event['handler'] == handler and
+                event['handled'] is True and event['rejected'] is True and event['reason'] == 'history_read_only',
+                'input did not reach handler or was not rejected for history')
+        require(_integer(event['counter_before']) and _integer(event['counter_after'], 1) and
+                event['counter_after'] == event['counter_before'] + 1 and
+                state['handler_counts'][handler] == event['counter_after'], 'handler invocation must increment exactly once')
+    first, second, released = states
+    require(second['handler_counts']['SpacePressed'] == first['handler_counts']['SpacePressed'] and
+            second['handled_input']['counter_before'] == first['handler_counts']['Retain'] and
+            released['handled_input'] is None and released['handler_counts'] == second['handler_counts'],
+            'handler counts changed inconsistently across rejection/release')
+
+
 def _states(item, diagnostics):
     kind = item['kind']
     states = [x['state'] for x in diagnostics]
@@ -520,7 +549,7 @@ def _states(item, diagnostics):
     elif kind == 'pause':
         require(_same_json(states, [{'paused': False}, {'paused': True}, {'paused': False}]), 'actual pause/resume')
     elif kind == 'history_write_rejected':
-        require(all(_same_json(s, {'space_down': False, 'r_down': False, 'can_write': False}) for s in states), 'history rejection/release readback')
+        _history_rejection(states)
     elif kind == 'held_input':
         require(_same_json(states, [{'space_down': True, 'can_write': False},
                            {'space_down': True, 'can_write': True},
@@ -701,6 +730,18 @@ def schema():
                     'binding': {'$ref': '#/$defs/binding'}, 'action_id': text,
                     'stage': text, 'trusted_head': {'$ref': '#/$defs/head'},
                     'selected_observation': {'$ref': '#/$defs/head'}, 'state': {'type': 'object'}})
+    rejected_input = obj({'key': {'enum': ['Space', 'R']}, 'event': {'const': 'pressed'},
+                          'handler': {'enum': ['SpacePressed', 'Retain']},
+                          'handled': {'const': True}, 'rejected': {'const': True},
+                          'reason': {'const': 'history_read_only'},
+                          'counter_before': integer, 'counter_after': {'type': 'integer', 'minimum': 1}})
+    rejection_state = obj({'format': {'const': HISTORY_REJECTION_FORMAT},
+                           'space_down': {'const': False}, 'r_down': {'const': False},
+                           'can_write': {'const': False},
+                           'handled_input': {'anyOf': [{'type': 'null'}, {'$ref': '#/$defs/rejected_input'}]},
+                           'handler_counts': obj({'SpacePressed': integer, 'Retain': integer})})
+    readback['allOf'] = [{'if': {'properties': {'action_id': {'const': 's1.history_write_rejected'}}},
+                          'then': {'properties': {'state': {'$ref': '#/$defs/history_rejection_state'}}}}]
     call = obj({'command': text, 'started_monotonic': number, 'completed_monotonic': number,
                 'raw_tool_ref': {'$ref': '#/$defs/reference'}})
     cua = obj({'format': {'const': 'universe-i13-cua.v1'}, 'binding': {'$ref': '#/$defs/binding'},
@@ -708,7 +749,8 @@ def schema():
                'calls': {'type': 'array', 'items': call}})
     receipt.update({'$schema': 'https://json-schema.org/draft/2020-12/schema', 'title': FORMAT,
                     '$defs': {'reference': ref, 'head': head, 'binding': binding, 'clock': clock,
-                              'readback': readback, 'cua': cua}})
+                              'readback': readback, 'cua': cua, 'rejected_input': rejected_input,
+                              'history_rejection_state': rejection_state}})
     return deepcopy(receipt)
 
 

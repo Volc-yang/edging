@@ -124,7 +124,17 @@ class Fixture:
             'framerate': [{'max_fps': x} for x in (60, 30, 60)],
             'pause': [{'paused': x} for x in (False, True, False)],
             'held_input': [{'space_down': True, 'can_write': False}, {'space_down': True, 'can_write': True}, {'space_down': False, 'can_write': True}],
-            'history_write_rejected': [{'space_down': False, 'r_down': False, 'can_write': False}] * 3,
+            'history_write_rejected': [
+                dict(format=a.HISTORY_REJECTION_FORMAT, space_down=False, r_down=False, can_write=False,
+                     handled_input=dict(key='Space', event='pressed', handler='SpacePressed', handled=True,
+                                        rejected=True, reason='history_read_only', counter_before=1, counter_after=2),
+                     handler_counts={'SpacePressed': 2, 'Retain': 1}),
+                dict(format=a.HISTORY_REJECTION_FORMAT, space_down=False, r_down=False, can_write=False,
+                     handled_input=dict(key='R', event='pressed', handler='Retain', handled=True,
+                                        rejected=True, reason='history_read_only', counter_before=1, counter_after=2),
+                     handler_counts={'SpacePressed': 2, 'Retain': 2}),
+                dict(format=a.HISTORY_REJECTION_FORMAT, space_down=False, r_down=False, can_write=False,
+                     handled_input=None, handler_counts={'SpacePressed': 2, 'Retain': 2})],
         }.get(kind)
 
     def build_receipts(self):
@@ -361,10 +371,42 @@ class ActionsTest(unittest.TestCase):
         schema=a.schema()
         self.assertEqual(set(schema['required']),a.RECEIPT_FIELDS)
         self.assertFalse(schema['additionalProperties'])
-        self.assertEqual(set(schema['$defs']),{'reference','binding','head','clock','readback','cua'})
+        self.assertEqual(set(schema['$defs']),{'reference','binding','head','clock','readback','cua','rejected_input','history_rejection_state'})
         self.assertEqual(schema['properties']['trace_range']['maxItems'],2)
         for value in (None,{},[],{'format':a.FORMAT}):
             with self.assertRaises(a.Invalid):a.validate_receipt(value,expected_binding=self.f.binding,frames=self.f.frames,expected_context=self.f.context)
+
+    def test_history_idle_state_without_handled_input_is_not_rejection(self):
+        r=deepcopy(next(x for x in self.f.receipts if x['action_id']=='s1.history_write_rejected'))
+        self.f.check(r)
+        raw=a.reference(r['log']['ref']); prefix=raw[:r['log']['before_offset']]; lines=[]
+        for event in r['checkpoints']:
+            data=json.loads(raw[event['log_start']:event['log_end']].split(b'EW_I13_READBACK ')[1])
+            # Same released keys/can_write and no prepare, but neither key reached a handler.
+            data['state']={'space_down':False,'r_down':False,'can_write':False}
+            line=b'EW_I13_READBACK '+encoded(data);event['log_start']=len(prefix)+sum(map(len,lines))
+            event['log_end']=event['log_start']+len(line);lines.append(line)
+        new=prefix+b''.join(lines);ref=self.f.ref(new,'.log');st=Path(ref['path']).stat()
+        r['log'].update(ref=ref,device=st.st_dev,inode=st.st_ino,after_offset=len(new))
+        with self.assertRaisesRegex(a.Invalid,'history rejection state'):self.f.check(r)
+
+    def test_history_requires_handled_rejected_reason_and_counter_increment(self):
+        item=next(x for x in a.manifest()['items'] if x['kind']=='history_write_rejected')
+        states=self.f.states('history_write_rejected')
+        mutations=[lambda s:s[0]['handled_input'].update(handled=False),
+                   lambda s:s[1]['handled_input'].update(rejected=False),
+                   lambda s:s[0]['handled_input'].update(reason='focus_lost'),
+                   lambda s:s[1]['handled_input'].update(key='Space'),
+                   lambda s:s[0]['handled_input'].update(counter_after=1),
+                   lambda s:s[0]['handled_input'].update(counter_before=True),
+                   lambda s:s[1]['handler_counts'].update(SpacePressed=3),
+                   lambda s:s[2]['handler_counts'].update(Retain=3),
+                   lambda s:s[2].update(handled_input=s[1]['handled_input'])]
+        for mutate in mutations:
+            values=deepcopy(states);mutate(values)
+            diagnostics=[dict(stage=stage,selected_observation=a.H1,state=state) for stage,state in zip(item['stages'],values)]
+            with self.subTest(mutation=mutate):
+                with self.assertRaises(a.Invalid):a._states(item,diagnostics)
 
     def test_import_has_no_runtime_side_effects(self):
         # Static boundary plus patched process/UI imports: module has no process launch facilities.

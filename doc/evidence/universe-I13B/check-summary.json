@@ -14,7 +14,20 @@
       "run": "run-oKHMYFvE",
       "scope": "read-only replay, not I13 runtime or gate pass"
     },
-    "targeted_unittest": {
+    "history_rejection_rework": {
+      "elapsed_seconds": 0.205,
+      "passed": 5,
+      "scope": "only affected directed tests; no full suite or UE run",
+      "test_names": [
+        "test_history_idle_state_without_handled_input_is_not_rejection",
+        "test_history_requires_handled_rejected_reason_and_counter_increment",
+        "test_complete_synthetic_session_does_not_grant_acceptance",
+        "test_no_marker_and_incomplete_release_restore_rejected",
+        "test_schema_is_frozen_machine_readable_and_failures_are_typed"
+      ],
+      "tests": 5
+    },
+    "prior_implementation_targeted_unittest": {
       "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_universe_iteration_actions -v",
       "elapsed_seconds": 0.993,
       "passed": 17,
@@ -26,7 +39,7 @@
   "private_key_contents_read": false,
   "readiness": "no_go",
   "runtime_launched": false,
-  "source_sha256": "9ec5581ff1e008ac9c2029e9f512a6c097f292533d0fe839d45e4a944ac27fd0",
+  "source_sha256": "7a7bbc357fcf67dac5e27ad65a05b6f89afcbf54633d5743ddcf784b464fbeac",
   "task": "I13-B",
-  "tests_sha256": "e0d2b7e3e0f163985540495ea1ecf8579230b0e930ac687c505953e0c412480d"
+  "tests_sha256": "2e1c53444f33a17e3c101adb04b424b88dda1f59e92fdc7240665b982074bd5f"
 }

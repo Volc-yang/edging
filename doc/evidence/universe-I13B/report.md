@@ -113,7 +113,7 @@ Its actual origin/UI correctness still needs independent review. Required typed 
 | visibility | before/hidden/restored: exact same nonempty proxy IDs; bHidden false/true/false |
 | framerate | before/changed/restored: finite original max_fps, changed to30 and differs from original, then exact restoration |
 | pause | before/paused/restored: actual paused false/true/false |
-| history_write_rejected | space_rejected/retain_rejected/released: history01, both keys released, can_write=false; no prepare/advance in raw interval |
+| history_write_rejected | space_rejected/retain_rejected/released: history01, released keys/can_write=false plus versioned actual handled/rejected input events and continuous handler counters; no prepare/advance in raw interval |
 | held_input | held_history/held_current/released: Space true/true/false, can_write false/true/true, selected01/12/12; only one observe, no prepare/advance |
 | final | released_and_restored: Space/R released, paused=false, visibility_restored/fps_restored=true |
 
@@ -148,3 +148,30 @@ Act: root independently reviews B diff/schema/API, R composes A/B/C, emits hones
 for missing actual readback/hold/timing evidence, then opens only the smallest affected
 follow-up nodes. I12 resource FAILED2566/1200 remains unchanged. Do not launch solely
 because this tool PR merges; no run card is granted by these APIs.
+
+## Root review correction: prove actual rejected input handling
+
+Root identified that released keys/can_write=false plus an empty write trace cannot
+prove Space/R actually reached UE. The initial validator was insufficient here. The
+corrected state has `format=universe-i13-history-rejection.v1`, the three strict boolean
+flags, `handled_input`, and `handler_counts={SpacePressed,Retain}`.
+
+At space_rejected the actual marker must record key=Space/event=pressed/handler=SpacePressed;
+at retain_rejected it must record key=R/event=pressed/handler=Retain. Each has
+`handled=true,rejected=true,reason=history_read_only,counter_before,counter_after`. Counters
+are exact nonnegative integers (no bool), and after must equal before+1 and the state
+handler total. Space handler count must stay unchanged across the R action; R's before
+count equals the earlier R total. At released, handled_input=null and both totals equal
+the preceding stage, with both keys released. The bound UE log, CUA command association,
+complete per-stage readonly maps and zero write requests are still required.
+
+The schema now includes rejected_input/history_rejection_state definitions and applies
+the latter specifically to the history_write_rejected readback. Same idle key/write
+state with no actual handled event is rejected. Negative cases also reject unhandled
+or accepted events, wrong key/reason, unchanged/skipped/bool counters and inconsistent
+release totals. Five affected directed CPU tests passed in0.205s, including the complete
+synthetic pair and schema checks; the earlier17-test pass belongs to the initial
+implementation. No full suite or new runtime was run for this correction.
+
+This remains a proposed diagnostic producer contract, not an implemented UE capability.
+Current readiness remains no-go; root must authenticate actual producer/readback origins.

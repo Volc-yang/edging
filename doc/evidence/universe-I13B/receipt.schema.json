@@ -155,8 +155,80 @@
       ],
       "type": "object"
     },
+    "history_rejection_state": {
+      "additionalProperties": false,
+      "properties": {
+        "can_write": {
+          "const": false
+        },
+        "format": {
+          "const": "universe-i13-history-rejection.v1"
+        },
+        "handled_input": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/rejected_input"
+            }
+          ]
+        },
+        "handler_counts": {
+          "additionalProperties": false,
+          "properties": {
+            "Retain": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "SpacePressed": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "Retain",
+            "SpacePressed"
+          ],
+          "type": "object"
+        },
+        "r_down": {
+          "const": false
+        },
+        "space_down": {
+          "const": false
+        }
+      },
+      "required": [
+        "can_write",
+        "format",
+        "handled_input",
+        "handler_counts",
+        "r_down",
+        "space_down"
+      ],
+      "type": "object"
+    },
     "readback": {
       "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action_id": {
+                "const": "s1.history_write_rejected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state": {
+                "$ref": "#/$defs/history_rejection_state"
+              }
+            }
+          }
+        }
+      ],
       "properties": {
         "action_id": {
           "minLength": 1,
@@ -208,6 +280,54 @@
       "required": [
         "path",
         "sha256"
+      ],
+      "type": "object"
+    },
+    "rejected_input": {
+      "additionalProperties": false,
+      "properties": {
+        "counter_after": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "counter_before": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "event": {
+          "const": "pressed"
+        },
+        "handled": {
+          "const": true
+        },
+        "handler": {
+          "enum": [
+            "SpacePressed",
+            "Retain"
+          ]
+        },
+        "key": {
+          "enum": [
+            "Space",
+            "R"
+          ]
+        },
+        "reason": {
+          "const": "history_read_only"
+        },
+        "rejected": {
+          "const": true
+        }
+      },
+      "required": [
+        "counter_after",
+        "counter_before",
+        "event",
+        "handled",
+        "handler",
+        "key",
+        "reason",
+        "rejected"
       ],
       "type": "object"
     }
