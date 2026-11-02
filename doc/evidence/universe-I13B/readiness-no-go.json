@@ -1,0 +1,12 @@
+{
+  "g_b2_granted": false,
+  "reasons": [
+    "cross_call_hold: missing independent capability evidence",
+    "png_contract: missing independent capability evidence",
+    "quit_guard: missing independent capability evidence",
+    "readback_markers: missing independent capability evidence",
+    "timings: missing independent capability evidence"
+  ],
+  "runtime_verified": false,
+  "status": "no_go"
+}
