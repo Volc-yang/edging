@@ -1,0 +1,25 @@
+{
+  "raw_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I13R-20261102-offline",
+  "execution": {
+    "source_sha": "f8e0e65a1f20bdd8df1d7c1e0747675b37e55fd3",
+    "argv": [
+      "python3",
+      "scripts/run_universe_slice_acceptance.py",
+      "--output",
+      "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I13R-20261102-offline/readiness-result.json",
+      "i13-readiness",
+      "--spec",
+      "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I13R-20261102-offline/readiness-input.json",
+      "--accepted-source",
+      "5e8a81d5fb18fc87ee50178819c7d52942573df1"
+    ],
+    "cwd": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i13-readiness",
+    "exit_code": 2,
+    "wall_seconds": 0.046756708063185215,
+    "at": "2026-11-02T08:14:57.551680+00:00",
+    "runtime_started": false,
+    "scope": "offline public readiness only; missing live proofs retained"
+  },
+  "index_sha256": "989ec5e3bd32a45c71d01f11550b0238f0feaf7a478981d949e570fdb610ebd2",
+  "result_status": "no_go"
+}
