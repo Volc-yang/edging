@@ -65,7 +65,19 @@ class CapabilityTests(unittest.TestCase):
   with patch.object(c.lc,'record_observer',side_effect=OSError('synthetic ps unavailable')):
    with self.assertRaisesRegex(c.lc.Invalid,'first sample not ready'):controller.start_observer()
   self.assertIn('synthetic ps unavailable',controller.observer_error)
+  self.assertTrue((controller.output/'observer-start-failure.json').is_file())
+  self.assertFalse(controller.observer.is_alive())
   self.assertIsNone(controller.process);controller.abort('CPU first-sample fixture teardown')
+ def test_missing_observer_first_sample_stops_thread_before_raise(self):
+  controller=self.controller()
+  def delayed_observer(stop_event,directory,on_sample):
+   stop_event.wait(5) # bounded failure fixture, exits when the controller stops it
+  with patch.object(c.lc,'record_observer',side_effect=delayed_observer):
+   with self.assertRaisesRegex(c.lc.Invalid,'first sample not ready'):controller.start_observer()
+  failure=json.loads((controller.output/'observer-start-failure.json').read_bytes())
+  self.assertTrue(failure['stop_requested']);self.assertFalse(failure['thread_alive'])
+  self.assertFalse(failure['ue_dispatched']);self.assertIsNone(controller.process)
+  controller.abort('CPU missing-sample fixture teardown')
  def test_no_json_restore(self):
   with self.assertRaises(c.lc.Invalid):c.ValidatedCapability({}, {}, {}, None)
  def test_exact_public_export_keeps_original_lf(self):
