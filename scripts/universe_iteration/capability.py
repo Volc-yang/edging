@@ -579,8 +579,8 @@ class CapabilityController:
         except (lc.Invalid,ValueError,KeyError,TypeError,OSError) as error:errors.append(str(error))
         quiet=self._quiet('native')
         if not quiet:errors.append('Native or extra UE still alive')
-        p.update(if self.clock()-p['started']>420:errors.append('Metal phase exceeded420s')
-        normal=p['wait_exit']==0 and not p['forced_cleanup'] and not errors and quiet,
+        if self.clock()-p['started']>180:errors.append('Native phase exceeded180s')
+        p.update(normal=p['wait_exit']==0 and not p['forced_cleanup'] and not errors and quiet,
                  errors=errors,sealed_monotonic=self.clock())
         self.phase=None;self.closing=True
         identity=p.get('identity')
