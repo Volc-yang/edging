@@ -23,7 +23,24 @@
   "legacy_source_prefix_unchanged": true,
   "native_source_commit": "31e38eb2b4367b272beda92a4b40a98212027468",
   "native_tests": "source only; not executed",
-  "official_build": "root owned; separate receipt required",
+  "official_build": {
+    "attempt1": {
+      "exit_code": 6,
+      "reported_seconds": 19.565,
+      "result": "retained PCH-missing failure"
+    },
+    "attempt2": {
+      "evidence_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2",
+      "parent_wait_exit": 0,
+      "reported_seconds": 33.408
+    },
+    "both_attempts_total_seconds": 52.974,
+    "limit_seconds": 180,
+    "native_source_commit": "31e38eb2b4367b272beda92a4b40a98212027468",
+    "owner": "root",
+    "scope": "root-reported official compile only; no UE or Native test execution",
+    "uba_disabled_proved": false
+  },
   "parent": "I14",
   "readiness": "no_go",
   "runtime_launched": false,

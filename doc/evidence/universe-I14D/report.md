@@ -153,3 +153,15 @@ No UE, solver, worker, UI, provision or real key access occurred. Current
 chord behavior, PNG/quit evidence and timings are not established by source or CPU tests.
 Root must inspect native compilation, independently review v2/source/schema and compose
 L/V; missing evidence stays inconclusive/no-go. I12 FAILED2566/1200 and I13 no-go remain.
+
+## Root-owned official compilation receipt
+
+Root reports official build attempt2 of native source31e38eb completed with actual
+parent wait0 in33.408s. Both attempts totaled52.974s below the180s active-build cap.
+Public originals: `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I14D-20261102-native-build2`.
+Attempt1 exit6/PCH-missing evidence remains retained. Attempt2 used
+`--build-only --universe`, passing-NoUBA, but its successful log still reported an
+Unreal Build Accelerator local executor. This does not prove UBA was disabled or
+establish a unique cause for attempt1. Only compilation is accepted by this receipt.
+No UE, Native test, Metal, held-input, PNG or exit runtime gate was executed.
+Native source stayed unchanged throughout both attempts and this final report.
