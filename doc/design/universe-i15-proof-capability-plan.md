@@ -80,3 +80,11 @@ A独立审实际原件、卡/source/normalwait/完整预算、只读maps/trace�
 允许最窄新增 `skip_metal`：仅在任何 phase 尚未 dispatch 时，读取 root 冻结的 `capability-skip.v1` 公共证据，精确绑定 run_id、`reason=ui-controller-unavailable`、`metal_dispatched=false`、`decision=inconclusive`，保留 M 未执行。之后可准备并执行 **一次 Native**，仅回放已有三个原始响应；仍用准确新构建、持续 owner/observer、180s phase/900s global 与完整 actual wait/seal。不能虚构 Metal normal、PNG、输入或新响应，不能增加窗口或重试。原标准双会话和 G-B2 的验收不变。
 
 依赖变为 `R → M 环境能力检查 → [可用：原 M/X 路径 | 缺失：显式 skip + old3 冻结] → T → A`；其他任务所有权/接口与审查门不变。C 增加该 typed 分支和 CPU 拒绝测试；root 独立复核后才使用。缺少 C/N/P 交付或准确二进制时仍不开 T。
+
+## 前 dispatch 纠正 v3：观察线程须支持未运行阶段
+
+首个控制器 `capability/` 于 monotonic `1182671.669250291` 开始，skip 与 old3 freeze 已完成，但观察回调读取 skipped Metal 的不存在 PID 而中止；`start_native` 被拒绝，**没有 UE Popen/spawn 或实际 Native 窗口**。CLI 实际退出2，`capability/abort.json` 和 `prep/cli-transcript.jsonl` 保留，不算成功。
+
+root 接受最小 C 纠正：观察回调忽略无 PID/跳过阶段，并校验首个样本就绪；CPU 回归与独立审查/CI 后，允许明确的新卡和 `capability-attempt2/` 控制器使用**仍未消耗的唯一 Native 窗口**。这不是自动重试已经运行的 UE。原卡/准备/中止原件不覆盖；新 prepared 仅更新准确 tool source，product/native/source/binaries 保持成功构建 `5a6cca0`，新旧 prepared 的差异与 provenance 另存公共原件，不重新构建或伪造同源。
+
+900s 从首个 dispatch `1182671.669250291` 连续计至最终 seal，包含此次纠正和两个控制器的所有实际间隔；新控制器局部时钟不能重置总账。启动前必须至少余270s，Native 仍180s上限，最后独立复算全体原件字节和进程静默；超预算/新卡未就绪则直接结算，不再派窗口。标准门和 G-B2 不变。

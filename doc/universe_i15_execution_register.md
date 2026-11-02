@@ -22,4 +22,10 @@
 
 本轮不初始化/prepare/advance/physics/retry；派生 owner 必须 existing / can_initialize=false / allowed_actions=[]。继承 r4 权威只读，不读 key 内容、不迁移或重置。标准双会话与 G-B2 仍未通过；旧 I12 2566/1200s fail、I13/I14 partial 及全部原件继续保留。旧 blocked goal 未改状态。
 
+## 实际构建与首个控制器中止
+
+PR119 `a29c3e5` → `d648bed` / CI41441093823 success；PR120 `89f66fc` → `5a6cca0` / CI41441120674 success，经 N 非 owner 审查。修复 RHI 直接依赖与实际 Mac lib-prefixed 产物定位。官方 build2 准确 source `5a6cca0`，parent wait0、6.841072875s；两次累计39.470067s<180。`prep/build-receipt.json` SHA85988e89bce7f6f4d0327a27dde58947f970664c3b5c9c2dc19a8ed399cbc6d2，原失败与 corrected preparation 分别保留；prepared 原件152f968c、old3 manifest1c17bf1a。N 独立核真实源码/二进制/RPATH/原始trace并放行能力专用 Native 路径，不是运行通过。
+
+`capability/` 实际首 dispatch1182671.669250291；观察线程把 skipped Metal 当作有 PID 的阶段，`start_native` 被拒绝，未创建 UE Popen。原 CLI transcript/requests/outer wait2 与 abort 原件保留，不能称 Native fail 或 pass。方案 v3 只允许修复前 dispatch 缺陷后使用尚未消耗的唯一 Native 窗口；新卡/新 prepared/新 controller 目录明确版本化，900s 从此首次 dispatch 连续计，不重置。
+
 主 checkout `feature/edge-world` 的用户修改及 I12B 恢复树不碰。集成前所有任务树保留；当前无已完成任务清理。网站/DNS/API、引擎源码与 crash-report 发送不在范围内。
