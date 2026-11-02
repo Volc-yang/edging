@@ -219,11 +219,37 @@ def prepare_probe(*,product_root=REPO,tool_root=REPO,run_id='i15-20261102',execu
     return write(prep/'preparation.json',record)
 
 
-def freeze_prepared(*,preparation_ref,build_ref,native_source_sha,tool_root=None):
-    """Part 2: pin real built binaries and current clean sources, exclusively publish."""
+def load_preparation(preparation_ref):
+    """Original or one explicit corrected record; never rewrite failed preparation."""
     require(set(preparation_ref)=={'path','sha256'} and ref(preparation_ref['path'])==preparation_ref,'preparation reference changed')
     prep=load(preparation_ref['path']);root=common.private_metadata(prep['output_root'],directory=True)
-    require(root==STORAGE and Path(preparation_ref['path'])==root/'prep/preparation.json','fixed preparation scope')
+    require(root==STORAGE,'fixed preparation root')
+    path=Path(preparation_ref['path']);original_path=root/'prep/preparation.json'
+    if path==original_path:
+        require('previous_preparation_ref' not in prep and 'build_failure_ref' not in prep,'original preparation cannot impersonate correction')
+        return prep,root
+    sha=prep['product_source_sha']
+    require(type(sha) is str and len(sha)==40 and all(c in '0123456789abcdef' for c in sha) and
+            path==root/'prep'/('preparation-corrected-'+sha+'.json'),'exact corrected preparation filename/source required')
+    previous=prep['previous_preparation_ref'];failed=prep['build_failure_ref']
+    require(set(previous)=={'path','sha256'} and Path(previous['path'])==original_path and ref(original_path)==previous,'exact original preparation provenance required')
+    old=load(original_path)
+    require(set(prep)==set(old)|{'previous_preparation_ref','build_failure_ref'} and
+            'previous_preparation_ref' not in old,'one explicit correction only')
+    require(all(prep[k]==old[k] for k in old if k not in ('product_source_sha','helper_ref')) and
+            sha!=old['product_source_sha'],'correction changed protected preparation metadata')
+    require(prep['helper_ref']==ref(__file__),'corrected preparation must pin actual current helper bytes')
+    require(set(failed)=={'path','sha256'} and Path(failed['path']).parent==root/'prep' and ref(failed['path'])==failed,'pinned preserved build failure required')
+    failure=load(failed['path'])
+    require(failure.get('source_sha')==old['product_source_sha'] and
+            type(failure.get('actual_parent_wait_exit')) is int and failure['actual_parent_wait_exit']!=0 and
+            failure.get('build_only') is True and failure.get('ue_runtime_started') is False,'prior same-source failed CPU build required')
+    return prep,root
+
+
+def freeze_prepared(*,preparation_ref,build_ref,native_source_sha,tool_root=None):
+    """Part 2: pin real built binaries and current clean sources, exclusively publish."""
+    prep,root=load_preparation(preparation_ref)
     product=safe(prep['product_root']);tool=safe(tool_root or prep['tool_root'])
     product_sha=common.product_identity(product,prep['allowed_untracked']);tool_sha=common.product_identity(tool)
     require(product_sha==prep['product_source_sha'],'product source moved since preparation')
@@ -270,12 +296,12 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--product-root',type=Path,default=REPO);parser.add_argument('--tool-root',type=Path,default=REPO)
     parser.add_argument('--run-id',default='i15-20261102');parser.add_argument('--execute',action='store_true')
-    parser.add_argument('--freeze',action='store_true');parser.add_argument('--preparation-sha256');parser.add_argument('--build-ref',type=Path)
+    parser.add_argument('--freeze',action='store_true');parser.add_argument('--preparation-ref',type=Path,default=STORAGE/'prep/preparation.json');parser.add_argument('--preparation-sha256');parser.add_argument('--build-ref',type=Path)
     parser.add_argument('--build-sha256');parser.add_argument('--native-source-sha')
     args=parser.parse_args()
     if args.freeze:
         require(args.execute and args.preparation_sha256 and args.build_ref and args.build_sha256 and args.native_source_sha,'freeze requires explicit execute and independent prep/build/native-source pins')
-        result=freeze_prepared(preparation_ref=dict(path=str(STORAGE/'prep/preparation.json'),sha256=args.preparation_sha256),
+        result=freeze_prepared(preparation_ref=dict(path=str(args.preparation_ref),sha256=args.preparation_sha256),
                                build_ref=dict(path=str(args.build_ref),sha256=args.build_sha256),native_source_sha=args.native_source_sha,tool_root=args.tool_root)
     else:result=prepare_probe(product_root=args.product_root,tool_root=args.tool_root,run_id=args.run_id,execute=args.execute)
     print(json.dumps(result,sort_keys=True))
