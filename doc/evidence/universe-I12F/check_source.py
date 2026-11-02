@@ -25,7 +25,9 @@ class Guards(unittest.TestCase):
   replacement='FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error,GIsEditor ? FEdgeWorldUniverseAssetAudit::EContext::Editor : FEdgeWorldUniverseAssetAudit::EContext::InstalledEditorStandalone);'
   self.assertEqual(old,new.replace(replacement,'FEdgeWorldUniverseAssetAudit::Collect(O.WorldId,A,Error);'))
  def test_real_native_selector_has_no_authority_or_transport(self):
-  c=(ROOT/(HOST+'EdgeWorldUniverseProtocolTest.cpp')).read_text().split('bool FUniverseStandaloneAssetAuditTest::RunTest',1)[1]
+  source=(ROOT/(HOST+'EdgeWorldUniverseProtocolTest.cpp')).read_text()
+  self.assertIn('FUniverseStandaloneAssetAuditTest,"edgeWorld.UniverseHost.StandaloneAssetAudit",EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)',source)
+  c=source.split('bool FUniverseStandaloneAssetAuditTest::RunTest',1)[1]
   for s in ['default remains editor-only','invalid world rejected before collection','A.bResolved','A.GapCount,0','A.CandidateDigest']:self.assertIn(s,c)
   for s in ['SendJsonLine','SpawnActor','FileHelper','AuthorityRoot']:self.assertNotIn(s,c)
 if __name__=='__main__':unittest.main()

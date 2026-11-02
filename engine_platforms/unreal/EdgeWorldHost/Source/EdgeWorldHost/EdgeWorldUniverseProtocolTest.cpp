@@ -247,7 +247,7 @@ bool FUniverseProtocolIdsTest::RunTest(const FString& Parameters)
 #endif
 
 #if WITH_DEV_AUTOMATION_TESTS && WITH_EDITOR
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseStandaloneAssetAuditTest,"edgeWorld.UniverseHost.StandaloneAssetAudit",EAutomationTestFlags::EditorContext|EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseStandaloneAssetAuditTest,"edgeWorld.UniverseHost.StandaloneAssetAudit",EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
 bool FUniverseStandaloneAssetAuditTest::RunTest(const FString& Parameters)
 {
  // This test must be selected explicitly in the actual installed-editor -game session.
