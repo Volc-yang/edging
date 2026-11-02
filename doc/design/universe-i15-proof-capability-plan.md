@@ -72,3 +72,11 @@ A独立审实际原件、卡/source/normalwait/完整预算、只读maps/trace�
 - Native env白名单固定 `EDGEWORLD_UNIVERSE_NATIVE_REPLAY=1`、`EDGEWORLD_UNIVERSE_REPLAY_MANIFEST`、`EDGEWORLD_UNIVERSE_REPLAY_MANIFEST_SHA256`、`EDGEWORLD_UNIVERSE_REPLAY_OUTPUT`。native结果 `universe-i15-native-replay-result.v1`：manifest实际SHA、hostPID/UEversion/bridge_format/case_count/cases（每case源、实际input SHA、request IDs/triple、accepted/error、manifest/state/event/selected-record digests）。源码身份不靠echo环境自证，外层review绑定真实code/binary/argv/PID/wait及所有原件。
 - Native启动只有一次RunTests：四个精确 `^selector$` 用字面 `+` 合并成同一个argument，不能多个RunTests相互覆盖；`-TestExit=Automation Test Queue Empty`。实际found=4、四精确Success、PublicProofReplay case_count另核。参数由Python argv直接传字面 `$`，不经shell展开。默认误选但无optin/manifest不能当Success/零case通过。
 - 版本边界：新能力卡/新probe行为/精确native review均独立；旧标准R12/R13/I14记录不放宽、不更名为probe成功。C与P/N可以单向import纯数据校验，不能循环；shared CLI由root在三叶审查/CI集成后独占修改。运行前准确source/native inputs/binaries/卡/manifest/hash再冻结。
+
+## 执行修订 v2：界面控制器未连接时的独立 Native 路径
+
+2026-11-02 root 裁决；实际工具目录没有 `mcp__cua_repl`，已连接 node REPL 检查 `typeof cua` 为 `undefined`。不能执行已批准的 Metal UI 动作，也不能改用 shell/AppleScript/CGEvent 绕过界面限制。此为环境能力缺失，不是 UE 运行失败。
+
+允许最窄新增 `skip_metal`：仅在任何 phase 尚未 dispatch 时，读取 root 冻结的 `capability-skip.v1` 公共证据，精确绑定 run_id、`reason=ui-controller-unavailable`、`metal_dispatched=false`、`decision=inconclusive`，保留 M 未执行。之后可准备并执行 **一次 Native**，仅回放已有三个原始响应；仍用准确新构建、持续 owner/observer、180s phase/900s global 与完整 actual wait/seal。不能虚构 Metal normal、PNG、输入或新响应，不能增加窗口或重试。原标准双会话和 G-B2 的验收不变。
+
+依赖变为 `R → M 环境能力检查 → [可用：原 M/X 路径 | 缺失：显式 skip + old3 冻结] → T → A`；其他任务所有权/接口与审查门不变。C 增加该 typed 分支和 CPU 拒绝测试；root 独立复核后才使用。缺少 C/N/P 交付或准确二进制时仍不开 T。

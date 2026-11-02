@@ -16,6 +16,8 @@
 
 新独占准备 root `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe` 尚未创建。root 不先手工创建，待 P 的审定 helper 独占准备。CPU 官方构建累计上限 180s；运行卡连续 dispatch 至最终 seal 上限 900s、新产物 2GiB，一次 Metal 与一次 Native，无自动重试。计划分配不是实测结果。
 
+**执行环境修订 v2：**当前工具目录无 CUA，node REPL 实测 `cuaAvailable=false`。按方案新增明确 `skip_metal` 分支，M 标为环境缺证/未执行；若代码审查、构建与卡校验通过，可执行一次 Native 验证旧三个原始 proof。C 负责 typed 跳过证据与拒绝测试，root 复核；没有授权改用其他界面注入工具或将 skip 写为 pass。
+
 本轮不初始化/prepare/advance/physics/retry；派生 owner 必须 existing / can_initialize=false / allowed_actions=[]。继承 r4 权威只读，不读 key 内容、不迁移或重置。标准双会话与 G-B2 仍未通过；旧 I12 2566/1200s fail、I13/I14 partial 及全部原件继续保留。旧 blocked goal 未改状态。
 
 主 checkout `feature/edge-world` 的用户修改及 I12B 恢复树不碰。集成前所有任务树保留；当前无已完成任务清理。网站/DNS/API、引擎源码与 crash-report 发送不在范围内。
