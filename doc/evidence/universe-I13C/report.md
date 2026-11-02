@@ -109,3 +109,9 @@ receipts, changed full maps, missing/invalid exit boundary, finite clocks, and
 side-effect-free imports. Source is committed before executing these checks.
 No mock result proves native Shot availability, UI provenance or real runtime
 duration; those remain I13-S1/R independent-review gates.
+
+Self-review hardening after the first successful suite rederives the exact native
+command and reservation path during collection/final verification, revalidates
+prepared observation/map ordering, and validates nested binding/triple integer
+types rather than relying on Python equality (True==1). Only affected targeted
+cases will rerun after a second ordinary source commit; initial raw is retained.

@@ -318,6 +318,40 @@ class CaptureTests(unittest.TestCase):
         Path(self.observation['path']).write_bytes(b'{}')
         with self.assertRaises(c.CaptureError): self.finish(capture)
 
+    def test_nested_bool_alias_and_forged_prepare_rejected(self):
+        # Python dict equality alone treats True==1 and 1.0==1; all nested
+        # receipt/proof values must pass exact integer validation as well.
+        observation = self.readref(self.observation)
+        observation['binding'] = dict(self.binding, generation=True)
+        with self.assertRaises(c.CaptureError): self.prepare(observation_ref=self.newref(observation))
+        observation = self.readref(self.observation)
+        observation['selected_observation'] = dict(self.selected, revision=1.0)
+        with self.assertRaises(c.CaptureError): self.prepare(observation_ref=self.newref(observation))
+        p=self.prepare(); cmd=self.command(p); self.target.write_bytes(png())
+        command=self.readref(cmd); command['binding']=dict(self.binding,generation=True)
+        with self.assertRaises(c.CaptureError): self.collect(p,self.newref(command))
+        command=self.readref(cmd); command['selected_observation']=dict(self.selected,revision=True)
+        with self.assertRaises(c.CaptureError): self.collect(p,self.newref(command))
+        saved=self.readref(p['preparation_ref'])
+        for changes in [dict(command='HighResShot 2'),dict(before_map_monotonic=999.),dict(show_ui=1),dict(expected_width=True)]:
+            mutated=dict(saved,**changes); path=Path(p['preparation_ref']['path'])
+            # Deliberate synthetic tampering of a saved preparation; no real raw
+            # receipt is overwritten by production code.
+            data=json.dumps(mutated).encode(); path.write_bytes(data)
+            tampered=dict(p,preparation_ref={'path':str(path),'sha256':hashlib.sha256(data).hexdigest()})
+            with self.subTest(changes=changes), self.assertRaises(c.CaptureError): self.collect(tampered,cmd)
+        data=json.dumps(saved).encode(); Path(p['preparation_ref']['path']).write_bytes(data)
+        restored=dict(p,preparation_ref={'path':p['preparation_ref']['path'],'sha256':hashlib.sha256(data).hexdigest()})
+        # Original command must bind exact original preparation bytes, so restore
+        # them through the canonical module encoding used by _write_new.
+        canonical=(json.dumps(saved,sort_keys=True,indent=2)+'\n').encode()
+        Path(p['preparation_ref']['path']).write_bytes(canonical)
+        capture=self.collect(p,cmd)
+        exit_raw=self.newref({'synthetic':'actual boundary'})
+        wrong_exit=self.newref(dict(format=c.FORMAT,phase='actual-before-exit',binding=dict(self.binding,generation=True),
+            clock_id=self.clock['id'],before_exit_monotonic=104.,exit_evidence_ref=exit_raw))
+        with self.assertRaises(c.CaptureError): self.finish(capture,before_exit_ref=wrong_exit)
+
     def test_sdr_showui_explicit_command_and_safe_import(self):
         p=self.prepare(show_ui=True)
         self.assertTrue(p['command'].endswith(' nosuffix showui'))

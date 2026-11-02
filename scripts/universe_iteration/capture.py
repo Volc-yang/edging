@@ -231,7 +231,9 @@ def _context(value, expected_binding, expected_trusted_head, expected_selected_o
     _require(value['observation_ref'] == expected_observation_ref, 'observation reference mismatch')
     observation = _reference(expected_observation_ref)
     _require(isinstance(observation, dict), 'public observation wrapper required')
-    for name in ('binding', 'trusted_head', 'selected_observation'):
+    _binding(observation.get('binding'), expected_binding)
+    _selection(observation.get('trusted_head')); _selection(observation.get('selected_observation'))
+    for name in ('trusted_head', 'selected_observation'):
         _require(observation.get(name) == value[name], 'observation evidence binding mismatch')
     _require(observation.get('clock_id') == value['clock']['id'] and
              _seconds(observation.get('verified_monotonic')), 'observation clock/time missing')
@@ -253,7 +255,7 @@ def _map(reference, authority_root):
         _require(isinstance(item, dict) and set(item) == {'bytes', 'sha256'} and
                  _integer(item['bytes']) and _sha(item['sha256']), 'invalid map entry')
         total += item['bytes']
-    _require('bytes' not in value or value['bytes'] == total, 'map byte count mismatch')
+    _require('bytes' not in value or (_integer(value['bytes']) and value['bytes'] == total), 'map byte count mismatch')
     return value
 
 
@@ -432,7 +434,22 @@ def _prepared(reference, expected_binding, trusted_head, selected, observation_r
              value.get('target_absent') is True and value.get('sdr') is True, 'prepared native Shot required')
     _clock(value['clock']); _clock(expected_clock)
     _require(value['clock'] == expected_clock, 'independent clock mismatch')
-    _context(value, expected_binding, trusted_head, selected, observation_ref)
+    observation = _context(value, expected_binding, trusted_head, selected, observation_ref)
+    target = _path(value['target_path'])
+    _require(target.suffix == '.png' and not any(c in str(target) for c in '"\\\r\n;') and
+             reference['path'] == str(target) + '.prepare.json' and type(value.get('show_ui')) is bool,
+             'exact original preparation/target required')
+    command = 'Shot filename="' + str(target) + '" nosuffix' + (' showui' if value['show_ui'] else '')
+    _require(value.get('command') == command, 'native command must be derived from preparation')
+    _require(_integer(value.get('expected_width'), 1) and _integer(value.get('expected_height'), 1) and
+             value['expected_width'] * value['expected_height'] <= MAX_PIXELS and
+             (value['expected_width'] * 4 + 1) * value['expected_height'] <= MAX_DECODED_BYTES,
+             'prepared viewport limits')
+    _require(_seconds(value.get('prepared_monotonic')) and _seconds(value.get('before_map_monotonic')) and
+             value['clock']['anchor_monotonic'] <= value['before_map_monotonic'] <= value['prepared_monotonic'] and
+             value['clock']['anchor_monotonic'] <= observation['verified_monotonic'] <= value['prepared_monotonic'] <= time.monotonic(),
+             'prepared evidence interval mismatch')
+    _map(value['before_map_ref'], expected_binding['authority_root'])
     _require(_parent_identity(value['target_path']) == value['parent_identity'], 'target parent replaced')
     _log_prefix(value['log']['path'], value['log']['before_offset'], value['log'])
     return value
@@ -444,7 +461,9 @@ def _command(reference, preparation_ref, prepared):
              value.get('preparation_ref') == preparation_ref and
              value.get('command') == prepared['command'] and
              value.get('clock_id') == prepared['clock']['id'], 'actual command receipt mismatch')
-    for name in ('binding', 'trusted_head', 'selected_observation', 'observation_ref'):
+    _binding(value.get('binding'), prepared['binding'])
+    _selection(value.get('trusted_head')); _selection(value.get('selected_observation'))
+    for name in ('trusted_head', 'selected_observation', 'observation_ref'):
         _require(value.get(name) == prepared[name], 'command observation/binding mismatch')
     _reference(value.get('cua_result_ref'), as_json=False)
     start, end = value.get('start_monotonic'), value.get('end_monotonic')
@@ -453,7 +472,8 @@ def _command(reference, preparation_ref, prepared):
     log = value.get('log')
     _require(isinstance(log, dict) and set(log) == set(prepared['log']) | {'after_offset'} and
              {k: log[k] for k in prepared['log']} == prepared['log'] and
-             _integer(log['after_offset']) and log['after_offset'] >= log['before_offset'],
+             all(_integer(log[k]) for k in ('device', 'inode', 'before_offset', 'after_offset')) and
+             log['after_offset'] >= log['before_offset'],
              'command log range mismatch')
     # Ensure actual after-offset exists; the pinned prefix still binds the original log.
     _log_prefix(log['path'], log['after_offset'])
@@ -518,6 +538,8 @@ def verify_native_shot(capture_ref, *, expected_binding, expected_trusted_head,
              exit_receipt.get('clock_id') == expected_clock['id'] and
              exit_receipt.get('before_exit_monotonic') == before_exit_monotonic,
              'actual before-exit receipt mismatch')
+    _binding(exit_receipt.get('binding'), expected_binding)
+    _require(_seconds(exit_receipt.get('before_exit_monotonic')), 'actual exit time type')
     _reference(exit_receipt.get('exit_evidence_ref'), as_json=False)
     first, stable = value.get('first_read_monotonic'), value.get('stable_monotonic')
     _require(all(_seconds(x) for x in (first, stable, after_map_monotonic, before_exit_monotonic)) and
