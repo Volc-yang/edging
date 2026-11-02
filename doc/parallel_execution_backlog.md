@@ -2,7 +2,7 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前入口：I 实现轮执行中（I10真实worker接受；I11B只读入口接受；I12可见门待验收）
+## 当前入口：I12部分交付已集成，G-B2与资源门未通过
 
 总目标仍为持久AI 4D数字宇宙；Seed→Tree是抽象初态的因果发展。用户已批准I0–I12树并要求分配实现。集成branch `codex/plan-consolidation` / `.worktrees/plan-consolidation`，本地主工作区用户改动不碰。Goal旧“继续执行计划”blocked且API无resume，未冒称active。
 
@@ -23,7 +23,7 @@
 - I8已接受PR95 / merge51b95de：source9270349的post-build B/O与两臂/恢复/真实exit及root292raw+逐步FractionD核对通过，G-P1有限pass；首默认解析失败及全部原件保留。[I8/I10A复核](design/universe-i8-i10a-coordination-review.md)。
 - I10完整接受：I10A PR96 / mergedcfd3bc；I10B PR98 / mergeb1c0371，真实初始化/retain/weak/strong/历史/幂等与worker双PID正常恢复通过，D−7/−48；root131+445raw/81records5roots3raw/32readonlypairs及finalCI复核，[最新审查](design/universe-i10b-i11a-coordination-review.md)。
 - I11A PR97 / merge96466b5已接受CPU/build/Protocol/Strict/TransportRaw/实际synthetic exit evidence，finalCI/root审查；I11B PR100 / merge36d88ec已接受有限G-B1：真实五次只读往返/三proof与资产图/一次LookAt/UE与worker正常退出，root和u9独立核对89原件及全量不变maps；首次失败保留。[复核](design/universe-i11b-coordination-review.md)。legacy默认不改。
-- I12：I12A工具准备已独立审查/CI接受并合入PR99 / merge971ed03（finalb3902be，sourceb5a5851）；首8mock及5定向、真实I10B离线子集通过，仅工具准备。[报告](evidence/universe-I12/runner-report.md)。实际运行未派卡；等解锁/R12与准确合并树后执行两UE会话/动作map/Metal原图/历史/恢复/真实退出，G-B2未通过。用户已解锁，root确认native可用且UE未运行；I12B-PREP PR101及I12C修复PR102已审查/CI合并；准确product01b16d1的实际R12卡及完整预检已通过。预检后Mac再次自动锁屏，已请求再次解锁，实机尚未启动。
+- I12：PR99–106工具/部署及产品兼容修复已审查/CI集成；真实 `(0,0)→(0,1)→(1,2)`、8步/D−7、两Native测试和有限Metal图有独立证据。**G-B2未过**：正常双会话/只读矩阵/原PNG缺证，资源门2566>1200失败；partial PR106 merge089ed649已接受，绝非整体通过。[当前精简登记](universe_implementation_register.md)、[报告](evidence/universe-I12B/partial-live-report.md)。I12B树保留恢复；下轮先审短批次CUA/PID/退出与截图方案，再另开明确纠正周期，原失败账不覆。
 
 owner-config/public-pins接口与typed36的明确分类、原件/资源总账见[I登记](universe_implementation_register.md)。S_records30、S_typed36、H≤64及资产A独立计量；旧U8初态≤32和G-Q不称通过。没有新域真实组合或写实产品门通过结论。默认网站/DNS与api.edging.cloud路由不变。
 
