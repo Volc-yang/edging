@@ -45,5 +45,14 @@ comparison; native and runtime acceptance remain **pending**.
 
 Root review narrowed StandaloneAssetAudit registration to ClientContext only,
 avoiding intentional standalone precondition failure in normal editor suites.
-ProtocolIds remains Editor|Client. One authorized targeted static rerun will
-check only the affected native-selector source guard after this source commit.
+ProtocolIds remains Editor|Client. One authorized targeted static rerun checked
+only the affected native-selector source guard after this source commit.
+
+Targeted rerun source: `3e7fbfff55a8d9868b0fe4c27379ee1423352c3a`.
+Command: `python3 -m unittest check_source.Guards.test_real_native_selector_has_no_authority_or_transport -v`,
+cwd this task's `doc/evidence/universe-I12F`, PYTHONDONTWRITEBYTECODE=1.
+1 affected guard passed, PID42246 exit0 wall0.040905833 seconds; no further
+checks. Source/input hashes unchanged. Both attempts total0.118s.
+Raw: `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12F-20261102-standalone-audit-attempt2-targeted`.
+Index SHA256: `ce69a3f2d837438475ac3c5f2dc3f3a19c481015f6feb26f11083f2628af9293`.
+First attempt remains preserved. Actual native/run gates remain pending.
