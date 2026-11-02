@@ -252,6 +252,7 @@ class VerificationTests(unittest.TestCase):
         schema['body'].update(event={'event_id':'id'},index={})
         schema['refs'].update(event={'prior_event?':'event'},index={})
         schema['proof_kind_max'].update(event=3,index=3)
+        schema['kind_bytes'].update(event=2048,index=2048)
         records=copy.deepcopy(self.records);m0=records[self.head]
         def add(record):records[v.digest(record)]=record;return record
         s1=add(self.record('state','state-1',dict(tick=0,revision=1,budget=2,random_cursor=0,development_mm=None),{}))

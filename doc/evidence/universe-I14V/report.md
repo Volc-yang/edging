@@ -116,3 +116,10 @@ against synthetic public tempfiles. Such mocks do NOT accept D/L, real archive
 physics, actual parent waits, real UI/Metal or a runtime card. D/L integration
 and final shared-verifier adapter are root follow-ups. Source commits precede
 CPU checks; raw original attempts/limits are retained separately on DevSSD.
+
+First focused suite executed source `ad55208a072b854868a5cee71e3e5e45448d63e3`:
+20 tests passed, one history-proof synthetic fixture errored because its schema
+added event/index kinds but omitted their kind_bytes limits. Production code
+correctly required the bound; no production code changed for this fixture fix.
+The original attempt is preserved. Only that history case will rerun after the
+ordinary test/report commit adding the two explicit synthetic size limits.
