@@ -1,5 +1,11 @@
 #include "EdgeWorldUniverseGameMode.h"
 #include "EdgeWorldUniverseActor.h"
+#include "EdgeWorldDiagnosticViewportClient.h"
+#include "Engine/Engine.h"
+#include "Kismet/GameplayStatics.h"
+#include "HAL/PlatformProcess.h"
+#include "Misc/Parse.h"
+#include "Misc/CommandLine.h"
 #include "EdgeWorldUniverseHud.h"
 #include "EdgeWorldJsonlClient.h"
 #include "EdgeWorldUniverseAssetAudit.h"
@@ -47,13 +53,16 @@ void AEdgeWorldUniverseGameMode::StartPlay()
  if(APlayerController* C=GetWorld()->GetFirstPlayerController()){C->SetViewTarget(Camera);C->SetInputMode(FInputModeGameOnly());}
  OpenTransport();RefreshHead();UE_LOG(LogTemp,Display,TEXT("Universe world: 1 weak; 2 strong; Space physical; R retain; [ prior; H latest; UniverseRefresh/UniverseRetry explicit."));
 }
-void AEdgeWorldUniverseGameMode::EndPlay(const EEndPlayReason::Type Reason){Session.Invalidate();if(Transport)Transport->Shutdown();Transport.Reset();Super::EndPlay(Reason);}
+void AEdgeWorldUniverseGameMode::EndPlay(const EEndPlayReason::Type Reason){Session.Invalidate();Diagnostics.Invalidate(Session.Epoch);if(Transport)Transport->Shutdown();Transport.Reset();Super::EndPlay(Reason);}
 bool AEdgeWorldUniverseGameMode::Configure()
 {
  Python=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PYTHON"));Worker=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_WORKER"));OwnerConfig=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_OWNER_CONFIG"));
  FString PinsPath=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS")),Hash=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_PINS_SHA256"));FString Error;
  TraceDirectory=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_TRACE"));TraceBudget=MakeShared<FEdgeWorldTraceBudget,ESPMode::ThreadSafe>();
+ Diagnostics.Config=FEdgeWorldUniverseDiagnosticConfig::Environment();
  bExplicitInitialize=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_INITIALIZE"))==TEXT("1");
+ if(Diagnostics.Config.bEnabled&&((Diagnostics.Config.Session==TEXT("initialize"))!=bExplicitInitialize))Diagnostics.Config={};
+ Diagnostics.Invalidate(Session.Epoch);
  return !FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadLaunchPins(PinsPath,Hash,Pins,Error);
 }
 bool AEdgeWorldUniverseGameMode::ReadLaunchPins(const FString& Path,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error)
@@ -79,10 +88,11 @@ void AEdgeWorldUniverseGameMode::SendControl(const FString& Op,const FString& Pa
 void AEdgeWorldUniverseGameMode::RefreshHead(){SendControl(TEXT("status"),TEXT("{")+BasePayload()+TEXT("}"),EUniverseClientPhase::AwaitStatus);}
 void AEdgeWorldUniverseGameMode::ChannelFailed(const FString& Error)
 {
- bool Unknown=!Session.PendingPrepare.IsEmpty()||!Session.CommandRecords.IsEmpty();Session.Invalidate();if(Transport)Transport->Shutdown();Transport.Reset();Reject(Error,Unknown);
+ bool Unknown=!Session.PendingPrepare.IsEmpty()||!Session.CommandRecords.IsEmpty();Session.Invalidate();Diagnostics.Invalidate(Session.Epoch);if(Transport)Transport->Shutdown();Transport.Reset();Reject(Error,Unknown);
 }
 void AEdgeWorldUniverseGameMode::Reject(const FString& Error,bool Unknown)
 {
+ if(Unknown)Diagnostics.Invalidate(Session.Epoch);
  Session.bBusy=false;Session.bUnknown|=Unknown;Session.Phase=Session.bUnknown?EUniverseClientPhase::Unknown:EUniverseClientPhase::Rejected;UE_LOG(LogTemp,Error,TEXT("Universe rejected: %s; unknown=%d"),*Error,Session.bUnknown);Present();
 }
 void AEdgeWorldUniverseGameMode::OnControl(const FString& Op,const FUniverseRequestToken& Token,const FEdgeWorldUniverseControlExpectation& E,FEdgeWorldResponse&& R)
@@ -125,7 +135,9 @@ void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
   if(Weak->Projection&&!Weak->Projection->ApplyVerified(O,Error)){Weak->Session.bAssetsValidated=false;Weak->Reject(Error,false);return;}
   FTransform InitialCamera;if(Weak->Camera&&Weak->CameraPlacement.TryPlace(O,InitialCamera))Weak->Camera->SetActorTransform(InitialCamera);
   if(Weak->Projection)Weak->Session.DerivedInstances=Weak->Projection->GetDerivedInstanceCount();
+  Weak->Diagnostics.ConfirmVerified(Weak->Session.Epoch,R.WorkerPid,R.ProcessGeneration);
   Weak->Present();UE_LOG(LogTemp,Display,TEXT("Universe world %s observed tick %lld, revision %lld"),*O.WorldId,(long long)O.Tick,(long long)O.Revision);
+  if(Weak->Diagnostics.Action==TEXT("s1.held_input")&&Weak->Diagnostics.bHeldLatestRequested&&O.Manifest==Weak->Session.Head.Head)Weak->EmitDiagnostic(TEXT("held_current"),TEXT("verified_observation"));
  });});Present();
 }
 bool AEdgeWorldUniverseGameMode::VerifyInstalledAssets(const FEdgeWorldUniverseObservation& O,FString& Error,FString* AuditJson,FString* CandidateJson)
@@ -160,11 +172,11 @@ void AEdgeWorldUniverseGameMode::ObserveExact(int64 Tick,int64 Revision,int64 Wa
 }
 void AEdgeWorldUniverseGameMode::ProjectionVisible(bool Visible){if(Projection)Projection->SetProjectionVisible(Visible);}
 void AEdgeWorldUniverseGameMode::SelectCase(const FString& C){if(C==TEXT("weak")||C==TEXT("strong"))Session.SelectedCase=C;Present();}
-void AEdgeWorldUniverseGameMode::SpacePressed(){if(Session.SpacePressed())Advance();}
+void AEdgeWorldUniverseGameMode::SpacePressed(){ProcessSpacePressed(false);}
 void AEdgeWorldUniverseGameMode::Retain(){Prepare(TEXT("retain_snapshot"));}
 void AEdgeWorldUniverseGameMode::Previous(){if(!Session.bBusy&&Session.bHasObservation&&Session.Observation.PriorSelection.IsSet()){auto P=Session.Observation.PriorSelection.GetValue();Observe(P.X,P.Y);}}
 void AEdgeWorldUniverseGameMode::Latest(){if(!Session.bBusy&&!Session.Head.Head.IsEmpty())Observe(Session.HeadTick,Session.HeadRevision);}
-void AEdgeWorldUniverseGameMode::Reconnect(){if(Session.bBusy)return;Session.Invalidate();if(Transport)Transport->Shutdown();OpenTransport();RefreshHead();}
+void AEdgeWorldUniverseGameMode::Reconnect(){if(Session.bBusy)return;Session.Invalidate();Diagnostics.Invalidate(Session.Epoch);if(Transport)Transport->Shutdown();OpenTransport();RefreshHead();}
 void AEdgeWorldUniverseGameMode::RetryExact()
 {
  if(Session.bBusy||Session.bHistory||!Session.bUnknown||!Session.bHasObservation||Session.Generation==0||Session.Head.StorageState!=TEXT("ready"))return;
@@ -175,17 +187,23 @@ void AEdgeWorldUniverseGameMode::MoveCamera(const FVector& Offset,const FRotator
 AEdgeWorldUniverseController::AEdgeWorldUniverseController(){bAutoManageActiveCameraTarget=false;}
 AEdgeWorldUniverseGameMode* AEdgeWorldUniverseController::Mode()const{return GetWorld()?Cast<AEdgeWorldUniverseGameMode>(GetWorld()->GetAuthGameMode()):nullptr;}
 void AEdgeWorldUniverseController::Weak(){if(auto* M=Mode())M->SelectCase(TEXT("weak"));}void AEdgeWorldUniverseController::Strong(){if(auto* M=Mode())M->SelectCase(TEXT("strong"));}
-void AEdgeWorldUniverseController::Advance(){if(auto* M=Mode())M->SpacePressed();}void AEdgeWorldUniverseController::Release(){if(auto* M=Mode())M->SpaceReleased();}void AEdgeWorldUniverseController::Retain(){if(auto* M=Mode())M->Retain();}
-void AEdgeWorldUniverseController::Previous(){if(auto* M=Mode())M->Previous();}void AEdgeWorldUniverseController::Latest(){if(auto* M=Mode())M->Latest();}void AEdgeWorldUniverseController::UniverseRetry(){if(auto* M=Mode())M->RetryExact();}void AEdgeWorldUniverseController::UniverseRefresh(){if(auto* M=Mode())M->Reconnect();}
+void AEdgeWorldUniverseController::Advance(){if(auto* M=Mode())M->SpacePressedFromInput();}void AEdgeWorldUniverseController::Release(){if(auto* M=Mode())M->SpaceReleasedFromInput();}void AEdgeWorldUniverseController::Retain(){if(auto* M=Mode())M->RetainFromInput();}
+void AEdgeWorldUniverseController::Previous(){if(auto* M=Mode())M->Previous();}void AEdgeWorldUniverseController::Latest(){if(auto* M=Mode())M->LatestFromInput();}void AEdgeWorldUniverseController::UniverseRetry(){if(auto* M=Mode())M->RetryExact();}void AEdgeWorldUniverseController::UniverseRefresh(){if(auto* M=Mode())M->Reconnect();}
 void AEdgeWorldUniverseController::UniverseRetryLastCommitted(){if(auto* M=Mode())M->RetryLastCommitted();}
 void AEdgeWorldUniverseController::UniverseObserveExact(int64 Tick,int64 Revision,int64 Watermark){if(auto* M=Mode())M->ObserveExact(Tick,Revision,Watermark);}
 void AEdgeWorldUniverseController::UniverseRetain(){if(auto* M=Mode())M->Retain();}
 void AEdgeWorldUniverseController::UniverseAdvance(){if(auto* M=Mode())M->Advance();}
 void AEdgeWorldUniverseController::UniverseProjectionVisible(bool Visible){if(auto* M=Mode())M->ProjectionVisible(Visible);}
 void AEdgeWorldUniverseController::UniverseCamera(float Yaw,float Pitch){if(FMath::IsFinite(Yaw)&&FMath::IsFinite(Pitch)&&FMath::Abs(Yaw)<=360&&FMath::Abs(Pitch)<=90)if(auto* M=Mode())M->MoveCamera(FVector::ZeroVector,FRotator(Pitch,Yaw,0));}
+void AEdgeWorldUniverseController::RetainRelease(){if(auto* M=Mode())M->RetainReleasedFromInput();}
+void AEdgeWorldUniverseController::UniverseDiagArm(const FString& Id){if(auto* M=Mode())M->DiagnosticArm(Id);}
+void AEdgeWorldUniverseController::UniverseDiagReadback(const FString& Id,const FString& Stage){if(auto* M=Mode())M->DiagnosticReadback(Id,Stage);}
+void AEdgeWorldUniverseController::UniverseDiagDisarm(){if(auto* M=Mode())M->DiagnosticDisarm();}
 void AEdgeWorldUniverseController::SetupInputComponent()
 {
- Super::SetupInputComponent();InputComponent->BindKey(EKeys::One,IE_Pressed,this,&AEdgeWorldUniverseController::Weak);InputComponent->BindKey(EKeys::Two,IE_Pressed,this,&AEdgeWorldUniverseController::Strong);InputComponent->BindKey(EKeys::SpaceBar,IE_Pressed,this,&AEdgeWorldUniverseController::Advance);InputComponent->BindKey(EKeys::SpaceBar,IE_Released,this,&AEdgeWorldUniverseController::Release);InputComponent->BindKey(EKeys::R,IE_Pressed,this,&AEdgeWorldUniverseController::Retain);InputComponent->BindKey(EKeys::LeftBracket,IE_Pressed,this,&AEdgeWorldUniverseController::Previous);InputComponent->BindKey(EKeys::H,IE_Pressed,this,&AEdgeWorldUniverseController::Latest);
+ Super::SetupInputComponent();
+ if(FEdgeWorldUniverseDiagnosticConfig::Environment().bEnabled)InputComponent->BindKey(EKeys::R,IE_Released,this,&AEdgeWorldUniverseController::RetainRelease);
+ InputComponent->BindKey(EKeys::One,IE_Pressed,this,&AEdgeWorldUniverseController::Weak);InputComponent->BindKey(EKeys::Two,IE_Pressed,this,&AEdgeWorldUniverseController::Strong);InputComponent->BindKey(EKeys::SpaceBar,IE_Pressed,this,&AEdgeWorldUniverseController::Advance);InputComponent->BindKey(EKeys::SpaceBar,IE_Released,this,&AEdgeWorldUniverseController::Release);InputComponent->BindKey(EKeys::R,IE_Pressed,this,&AEdgeWorldUniverseController::Retain);InputComponent->BindKey(EKeys::LeftBracket,IE_Pressed,this,&AEdgeWorldUniverseController::Previous);InputComponent->BindKey(EKeys::H,IE_Pressed,this,&AEdgeWorldUniverseController::Latest);
 }
 void AEdgeWorldUniverseController::PlayerTick(float Delta)
 {
@@ -195,4 +213,123 @@ void AEdgeWorldUniverseController::PlayerTick(float Delta)
  if(!IsInputKeyDown(EKeys::SpaceBar))M->SpaceReleased();
  FVector Move(float(IsInputKeyDown(EKeys::W))-float(IsInputKeyDown(EKeys::S)),float(IsInputKeyDown(EKeys::D))-float(IsInputKeyDown(EKeys::A)),float(IsInputKeyDown(EKeys::E))-float(IsInputKeyDown(EKeys::Q)));
  FRotator Turn((float(IsInputKeyDown(EKeys::Up))-float(IsInputKeyDown(EKeys::Down)))*60*Delta,(float(IsInputKeyDown(EKeys::Right))-float(IsInputKeyDown(EKeys::Left)))*60*Delta,0);M->MoveCamera(Move*500*Delta,Turn);
+}
+
+bool AEdgeWorldUniverseGameMode::DiagnosticReady()const
+{
+ return Diagnostics.Ready(Session.Epoch)&&!Session.bBusy&&!Session.bUnknown&&Session.bHasObservation&&
+        Session.bAssetsValidated&&Session.Head.StorageState==TEXT("ready")&&
+        (Session.Phase==EUniverseClientPhase::Latest||Session.Phase==EUniverseClientPhase::History);
+}
+FString AEdgeWorldUniverseGameMode::DiagnosticRejectReason()const
+{
+ if(Session.bFocusNeedsRelease)return TEXT("focus_needs_release");
+ if(Session.bBusy)return TEXT("busy");if(Session.bUnknown)return TEXT("unknown");
+ if(Session.bHistory)return TEXT("history_read_only");
+ return Session.CanWrite()?TEXT("accepted"):TEXT("not_ready");
+}
+void AEdgeWorldUniverseGameMode::ProcessSpacePressed(bool Actual)
+{
+ FString Reason=DiagnosticRejectReason();if(Session.bSpaceHeld)Reason=TEXT("already_held");
+ const bool Allowed=Session.SpacePressed();
+ if(Actual)Diagnostics.RecordInput(true,!Allowed,Allowed?TEXT("accepted"):Reason);
+ if(Allowed)Advance();
+ if(Actual&&Diagnostics.Action==TEXT("s1.held_input")&&!Allowed&&Reason==TEXT("history_read_only"))
+  EmitDiagnostic(TEXT("held_history"),TEXT("input"));
+}
+void AEdgeWorldUniverseGameMode::SpacePressedFromInput(){ProcessSpacePressed(true);}
+void AEdgeWorldUniverseGameMode::SpaceReleasedFromInput()
+{
+ Session.SpaceReleased();
+ if(Diagnostics.Action==TEXT("s1.history_write_rejected"))EmitDiagnostic(TEXT("space_rejected"),TEXT("release"));
+ if(Diagnostics.Action==TEXT("s1.held_input"))EmitDiagnostic(TEXT("released"),TEXT("release"));
+}
+void AEdgeWorldUniverseGameMode::RetainFromInput()
+{
+ const bool Allowed=Session.CanWrite();const FString Reason=DiagnosticRejectReason();
+ Diagnostics.RecordInput(false,!Allowed,Reason);Retain();
+}
+void AEdgeWorldUniverseGameMode::RetainReleasedFromInput()
+{
+ if(Diagnostics.Action==TEXT("s1.history_write_rejected"))EmitDiagnostic(TEXT("retain_rejected"),TEXT("release"));
+}
+void AEdgeWorldUniverseGameMode::LatestFromInput()
+{
+ if(DiagnosticReady()&&Diagnostics.Action==TEXT("s1.held_input")&&Diagnostics.StageIndex==1&&Session.bHistory)
+  if(auto* C=GetWorld()->GetFirstPlayerController();C&&C->IsInputKeyDown(EKeys::SpaceBar))Diagnostics.bHeldLatestRequested=true;
+ Latest();
+}
+void AEdgeWorldUniverseGameMode::DiagnosticArm(const FString& Id)
+{
+ if(!DiagnosticReady()||!Diagnostics.Arm(Id))return;
+ if(!DiagnosticInitialFps.IsSet()&&GEngine)DiagnosticInitialFps=GEngine->GetMaxFPS();
+ if(Id==TEXT("s1.camera")||Id==TEXT("s1.visibility")||Id==TEXT("s1.framerate")||Id==TEXT("s1.pause"))
+  EmitDiagnostic(TEXT("before"),TEXT("query"));
+}
+void AEdgeWorldUniverseGameMode::DiagnosticReadback(const FString& Id,const FString& Stage)
+{
+ if(Id!=Diagnostics.Action||Id==TEXT("s1.held_input"))return;
+ if(Id==TEXT("s1.history_write_rejected")&&Stage!=TEXT("released"))return;
+ EmitDiagnostic(Stage,TEXT("query"));
+}
+void AEdgeWorldUniverseGameMode::DiagnosticDisarm(){Diagnostics.Disarm();}
+bool AEdgeWorldUniverseGameMode::EmitDiagnostic(const FString& Stage,const FString& Origin)
+{
+ if(!DiagnosticReady()||!Diagnostics.IsNext(Stage)||!GetWorld()||!GEngine)return false;
+ APlayerController* C=GetWorld()->GetFirstPlayerController();if(!C||!C->IsLocalController())return false;
+ const bool Space=C->IsInputKeyDown(EKeys::SpaceBar),R=C->IsInputKeyDown(EKeys::R);
+ auto S=MakeShared<FJsonObject>();const FString& Id=Diagnostics.Action;
+ if(Id==TEXT("s1.camera"))
+ {
+  if(!Camera||!C->GetViewTarget())return false;
+  S->SetStringField(TEXT("camera_id"),Camera->GetPathName());S->SetStringField(TEXT("view_target_id"),C->GetViewTarget()->GetPathName());
+  const FRotator Rot=Camera->GetActorRotation();if(Rot.ContainsNaN())return false;
+  S->SetArrayField(TEXT("rotation"),{MakeShared<FJsonValueNumber>(Rot.Pitch),MakeShared<FJsonValueNumber>(Rot.Yaw),MakeShared<FJsonValueNumber>(Rot.Roll)});
+ }
+ else if(Id==TEXT("s1.visibility"))
+ {
+  TMap<FString,bool> Hidden;if(!Projection||!Projection->ReadProjectionHidden(Hidden))return false;
+  auto Proxies=MakeShared<FJsonObject>();for(const auto& Pair:Hidden)Proxies->SetBoolField(Pair.Key,Pair.Value);
+  S->SetObjectField(TEXT("proxies"),Proxies);
+ }
+ else if(Id==TEXT("s1.framerate"))S->SetNumberField(TEXT("max_fps"),GEngine->GetMaxFPS());
+ else if(Id==TEXT("s1.pause"))S->SetBoolField(TEXT("paused"),UGameplayStatics::IsGamePaused(GetWorld()));
+ else if(Id==TEXT("s1.history_write_rejected"))
+ {
+  if(Space||R||!Session.bHistory)return false;
+  S->SetStringField(TEXT("format"),TEXT("universe-i13-history-rejection.v1"));
+  S->SetBoolField(TEXT("space_down"),Space);S->SetBoolField(TEXT("r_down"),R);S->SetBoolField(TEXT("can_write"),Session.CanWrite());
+  auto Counts=MakeShared<FJsonObject>();Counts->SetNumberField(TEXT("SpacePressed"),double(Diagnostics.SpaceCount));Counts->SetNumberField(TEXT("Retain"),double(Diagnostics.RetainCount));S->SetObjectField(TEXT("handler_counts"),Counts);
+  const auto Event=Stage==TEXT("space_rejected")?Diagnostics.LastSpaceInput:Diagnostics.LastRetainInput;
+  if(Stage==TEXT("released"))S->SetField(TEXT("handled_input"),MakeShared<FJsonValueNull>());
+  else {if(!Event)return false;S->SetObjectField(TEXT("handled_input"),Event.ToSharedRef());}
+ }
+ else if(Id==TEXT("s1.held_input"))
+ {
+  if((Stage==TEXT("released"))==Space)return false;
+  if(Stage==TEXT("held_current")&&(!Diagnostics.bHeldLatestRequested||Session.bHistory))return false;
+  S->SetBoolField(TEXT("space_down"),Space);S->SetBoolField(TEXT("can_write"),Session.CanWrite());
+ }
+ else if(Id==TEXT("s1.probe")||Id==TEXT("s2.probe"))
+ {
+  auto* V=GetWorld()->GetGameViewport();const bool Preflush=FParse::Param(FCommandLine::Get(),TEXT("EWDiagPreflushViewport"));
+  const bool Guard=V&&V->IsA<UEdgeWorldDiagnosticViewportClient>()&&V->GetWindow().IsValid()&&
+   FSlateApplication::IsInitialized()&&FSlateApplication::Get().OnWindowBeingDestroyed().IsBoundToObject(V)&&Preflush;
+  S->SetBoolField(TEXT("quit_guard_ready"),Guard);S->SetBoolField(TEXT("preflush"),Preflush);
+ }
+ else if(Id==TEXT("s1.final")||Id==TEXT("s2.final"))
+ {
+  TMap<FString,bool> Hidden;if(!Projection||!Projection->ReadProjectionHidden(Hidden)||!DiagnosticInitialFps.IsSet())return false;
+  bool Visible=true;for(const auto& Pair:Hidden)Visible&=!Pair.Value;
+  S->SetBoolField(TEXT("space_down"),Space);S->SetBoolField(TEXT("r_down"),R);S->SetBoolField(TEXT("paused"),UGameplayStatics::IsGamePaused(GetWorld()));
+  S->SetBoolField(TEXT("visibility_restored"),Visible);S->SetBoolField(TEXT("fps_restored"),GEngine->GetMaxFPS()==DiagnosticInitialFps.GetValue());
+ }
+ else return false;
+ auto B=MakeShared<FJsonObject>();B->SetStringField(TEXT("run_id"),Diagnostics.Config.RunId);B->SetStringField(TEXT("source_sha"),Diagnostics.Config.SourceSha);B->SetStringField(TEXT("session"),Diagnostics.Config.Session);
+ B->SetStringField(TEXT("world_id"),Pins.Context.WorldId);B->SetStringField(TEXT("authority_root"),Pins.Context.AuthorityRoot);
+ B->SetNumberField(TEXT("host_pid"),FPlatformProcess::GetCurrentProcessId());B->SetNumberField(TEXT("worker_pid"),Diagnostics.WorkerPid);B->SetNumberField(TEXT("generation"),double(Diagnostics.Generation));
+ auto Head=[](int64 Tick,int64 Revision,int64 Watermark){auto H=MakeShared<FJsonObject>();H->SetNumberField(TEXT("tick"),double(Tick));H->SetNumberField(TEXT("revision"),double(Revision));H->SetNumberField(TEXT("watermark"),double(Watermark));return H;};
+ const FString Json=Diagnostics.Marker(Stage,Origin,B,Head(Session.HeadTick,Session.HeadRevision,Session.HeadRevision),Head(Session.Observation.Tick,Session.Observation.Revision,Session.Observation.Watermark),S);
+ if(Json.IsEmpty())return false;
+ UE_LOG(LogTemp,Display,TEXT("EW_I13_READBACK %s"),*Json);return true;
 }

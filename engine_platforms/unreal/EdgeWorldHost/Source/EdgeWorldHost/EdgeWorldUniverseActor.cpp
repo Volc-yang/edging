@@ -59,3 +59,16 @@ bool AEdgeWorldUniverseActor::ApplyVerified(const FEdgeWorldUniverseObservation&
 }
 
 void AEdgeWorldUniverseActor::SetProjectionVisible(bool Visible){bProjectionVisible=Visible;for(AActor* A:Proxies)if(IsValid(A))A->SetActorHiddenInGame(!Visible);}
+
+// Read actual owned proxies only; never scan or mutate the scene for diagnostics.
+bool AEdgeWorldUniverseActor::ReadProjectionHidden(TMap<FString,bool>& Out)const
+{
+ Out.Reset();if(Proxies.IsEmpty())return false;
+ for(const AActor* A:Proxies)
+ {
+  if(!IsValid(A))return false;
+  const FString Id=A->GetPathName();if(Out.Contains(Id))return false;
+  Out.Add(Id,A->IsHidden());
+ }
+ return true;
+}

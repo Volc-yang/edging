@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
 #include "EdgeWorldUniverseObservation.h"
+#include "EdgeWorldUniverseDiagnostics.h"
 #include "EdgeWorldUniverseGameMode.generated.h"
 
 class FEdgeWorldProcessTransport;
@@ -83,6 +84,15 @@ public:
  void SelectCase(const FString& Case);
  void SpacePressed();
  void SpaceReleased(){Session.SpaceReleased();}
+ void SpacePressedFromInput();
+ void SpaceReleasedFromInput();
+ void RetainFromInput();
+ void RetainReleasedFromInput();
+ void LatestFromInput();
+ bool DiagnosticsEnabled()const{return Diagnostics.Config.bEnabled;}
+ void DiagnosticArm(const FString& Id);
+ void DiagnosticReadback(const FString& Id,const FString& Stage);
+ void DiagnosticDisarm();
  void FocusLost(){Session.FocusLost();}
  bool FocusNeedsRelease()const{return Session.bFocusNeedsRelease;}
  void ResumeReleased(){Session.ResumeReleased();}
@@ -102,6 +112,12 @@ public:
                                   FString* AuditJson=nullptr,FString* CandidateJson=nullptr);
 private:
  bool Configure();
+ bool DiagnosticReady()const;
+ bool EmitDiagnostic(const FString& Stage,const FString& Origin);
+ FString DiagnosticRejectReason()const;
+ void ProcessSpacePressed(bool bActualInput);
+ FEdgeWorldUniverseDiagnostics Diagnostics;
+ TOptional<float> DiagnosticInitialFps;
  void OpenTransport();
  void RefreshHead();
  void Observe(int64 Tick,int64 Revision);
@@ -141,7 +157,10 @@ public:
  UFUNCTION(Exec) void UniverseAdvance();
  UFUNCTION(Exec) void UniverseProjectionVisible(bool Visible=true);
  UFUNCTION(Exec) void UniverseCamera(float Yaw=0,float Pitch=0);
+ UFUNCTION(Exec) void UniverseDiagArm(const FString& ActionId);
+ UFUNCTION(Exec) void UniverseDiagReadback(const FString& ActionId,const FString& Stage);
+ UFUNCTION(Exec) void UniverseDiagDisarm();
 private:
  AEdgeWorldUniverseGameMode* Mode()const;
- void Weak();void Strong();void Advance();void Release();void Retain();void Previous();void Latest();
+ void Weak();void Strong();void Advance();void Release();void Retain();void RetainRelease();void Previous();void Latest();
 };
