@@ -4,17 +4,19 @@
 
 | 节点 | worktree / branch | 当前交付 / Check | 下一步 |
 | --- | --- | --- | --- |
-| N / i15_native | `.worktrees/i15-native-replay` / `codex/i15-native-replay` | C++ `eb4c0c4`；Python 回放与 review 适配尚未交付 | 完成 CPU 负例、自检、独立 PR，root 审查 |
-| P / i15_probe | `.worktrees/i15-readonly-probe` / `codex/i15-readonly-probe` | C++ `997eda0`；probe_actions 与两阶段准备 helper 尚未交付 | 完成 CPU 自检与独立 PR；root 审查后才执行准备 |
-| C / i15_controller | `.worktrees/i15-capability` / `codex/i15-capability` | capability.py 未提交，持续 owner/observer 尚未交付 | 与 N/P 对齐 schema，CPU 自检与独立 PR |
-| R / root | `.worktrees/plan-consolidation` / `codex/plan-consolidation` | 方案已提交；实现未集成 | 审查三份交付/CI，再官方 CPU build，冻结真实 source/binaries |
+| N / i15_native | `.worktrees/i15-native-replay` / `codex/i15-native-replay` | PR115 `1872a91` → `274d090`，CI41439049209 success；root 13新+21旧 CPU 通过 | 实际 Native 与独立结算待执行 |
+| P / i15_probe | `.worktrees/i15-readonly-probe` / `codex/i15-readonly-probe` | PR116 `48ba395` → `e51dcf8`，CI41439556996 success；root 12新 CPU 通过（owner43含旧回归） | 构建发现 RHI link 缺口，单独纠正卡处理中 |
+| C / i15_controller | `.worktrees/i15-capability` / `codex/i15-capability` | PR117 `f50d627` → `6825f04`，CI41439782359 success；root最终12 CPU含真实child/timeout通过，N独立审查 | 准确卡准入与实机 Native 待执行 |
+| R / root | `.worktrees/i15-integration` / `codex/i15-integration` | PR118 `58f1baf` → `e52e4b8`，CI41439859086 success；N独立审查；root6新+8旧检查通过 | 成功构建后冻结并执行 |
 | M/X/T/A | 同方案，root 唯一运行资源 owner | **尚未执行**；没有新 UE/solver/UI/Native 运行 | 依次一次 Metal → 原始响应冻结 → 一次 Native → 独立结算 |
 
 上下文恢复时，旧三个 agent 已不在运行列表；原 worktree 与未提交文件均保留。已按原路径/所有权重新派给三个接续 agent，未另起重复实现分支。任何未提交文件不能称为完成、审查通过或已集成。
 
 ## 资源与验收边界
 
-新独占准备 root `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe` 尚未创建。root 不先手工创建，待 P 的审定 helper 独占准备。CPU 官方构建累计上限 180s；运行卡连续 dispatch 至最终 seal 上限 900s、新产物 2GiB，一次 Metal 与一次 Native，无自动重试。计划分配不是实测结果。
+新独占准备 root `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe` 已由审定 P helper 完成默认 audit 后显式独占创建；preparation SHA `0a3eadac82a5b9152e2310b37c206db97efc3e5a1ff61553a4f3bdd841215f49`。产品构建树 `.worktrees/i15-native-build` 固定初始 source `e51dcf8`；工具树与产品树分离。
+
+首次官方 CPU build 实际 parent wait **exit6**，32.628994125s，无强制清理、未启动 UE。原件 `prep/build-console.log`、`prep/build-raw.json`；arm64 链接明确缺 `_GDynamicRHI`。只重开 P 的 Host Build.cs RHI 模块依赖；允许保留原准备/失败，独占发布绑定修正准确 source 的 corrected preparation 后重构建。不得修改旧原件或假装同源成功。CPU 累计上限180s，尚余约147s；运行卡还未 dispatch，global900s/新产物2GiB规则不变。
 
 **执行环境修订 v2：**当前工具目录无 CUA，node REPL 实测 `cuaAvailable=false`。按方案新增明确 `skip_metal` 分支，M 标为环境缺证/未执行；若代码审查、构建与卡校验通过，可执行一次 Native 验证旧三个原始 proof。C 负责 typed 跳过证据与拒绝测试，root 复核；没有授权改用其他界面注入工具或将 skip 写为 pass。
 
