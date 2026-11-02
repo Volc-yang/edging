@@ -64,6 +64,21 @@ bool FUniverseDiagnosticsInputTest::RunTest(const FString& Parameters)
  TestTrue(TEXT("early release cannot skip held stages"),D.Marker(TEXT("released"),TEXT("release"),SyntheticBinding(),SyntheticHead(),SyntheticHead(),State).IsEmpty());
  return true;
 }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseReadonlyProbeScopeTest,"edgeWorld.UniverseHost.Diagnostics.ReadonlyProbeScope",
+ EAutomationTestFlags::EditorContext|EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
+bool FUniverseReadonlyProbeScopeTest::RunTest(const FString& Parameters)
+{
+ auto Existing=[](){FEdgeWorldUniverseDiagnostics D;D.Config=FEdgeWorldUniverseDiagnosticConfig::Parse(TEXT("1"),TEXT("synthetic-probe-only"),FString::ChrN(40,'a'),TEXT("existing"),TEXT("readonly-probe"));D.ConfirmVerified(1,123,1);return D;};
+ auto NoPins=Existing();TestFalse(TEXT("probe not armed without validated empty grants"),NoPins.Arm(TEXT("p1.camera")));
+ auto Writes=Existing();Writes.AuthorizeReadonlyProbe(false,false);TestFalse(TEXT("nonempty grants disable probe"),Writes.Arm(TEXT("p1.camera")));
+ auto Init=Existing();Init.AuthorizeReadonlyProbe(true,true);TestFalse(TEXT("initialize flag disables probe"),Init.Arm(TEXT("p1.camera")));
+ TestFalse(TEXT("initialize session cannot request scope"),FEdgeWorldUniverseDiagnosticConfig::Parse(TEXT("1"),TEXT("run"),FString::ChrN(40,'a'),TEXT("initialize"),TEXT("readonly-probe")).bEnabled);
+ auto D=Existing();D.AuthorizeReadonlyProbe(false,true);TestTrue(TEXT("actual existing empty grants permit alias"),D.Arm(TEXT("p1.camera")));
+ TestTrue(TEXT("alias maps readonly getter only"),D.IsAction(TEXT("s1.camera")));TestEqual(TEXT("original session remains existing"),D.Config.Session,FString(TEXT("existing")));
+ D.Disarm();TestFalse(TEXT("standard names not smuggled into probe"),D.Arm(TEXT("s1.camera")));
+ auto Standard=SyntheticDiagnostics();TestFalse(TEXT("default scope never permits p1"),Standard.Arm(TEXT("p1.camera")));
+ return true;
+}
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUniverseDiagnosticsPauseTest,"edgeWorld.UniverseHost.Diagnostics.PauseReadWithoutTick",
  EAutomationTestFlags::EditorContext|EAutomationTestFlags::ClientContext|EAutomationTestFlags::EngineFilter)
 bool FUniverseDiagnosticsPauseTest::RunTest(const FString& Parameters)

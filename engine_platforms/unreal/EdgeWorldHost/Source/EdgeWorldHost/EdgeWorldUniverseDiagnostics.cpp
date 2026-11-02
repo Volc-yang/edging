@@ -10,19 +10,34 @@ bool Token(const FString& S,int32 Max)
  return true;
 }
 }
-FEdgeWorldUniverseDiagnosticConfig FEdgeWorldUniverseDiagnosticConfig::Parse(const FString& Enable,const FString& Run,const FString& Source,const FString& Mode)
+FEdgeWorldUniverseDiagnosticConfig FEdgeWorldUniverseDiagnosticConfig::Parse(const FString& Enable,const FString& Run,const FString& Source,const FString& Mode,const FString& Scope)
 {
  FEdgeWorldUniverseDiagnosticConfig C;
  if(Enable!=TEXT("1")||!Token(Run,128)||Source.Len()!=40||(Mode!=TEXT("initialize")&&Mode!=TEXT("existing")))return C;
  for(TCHAR X:Source)if(!((X>='0'&&X<='9')||(X>='a'&&X<='f')))return C;
- C.bEnabled=true;C.RunId=Run;C.SourceSha=Source;C.Session=Mode;return C;
+ if(!Scope.IsEmpty()&&(Scope!=TEXT("readonly-probe")||Mode!=TEXT("existing")))return C;
+ C.Scope=Scope;C.bEnabled=true;C.RunId=Run;C.SourceSha=Source;C.Session=Mode;return C;
 }
 FEdgeWorldUniverseDiagnosticConfig FEdgeWorldUniverseDiagnosticConfig::Environment()
 {
  return Parse(FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTICS_V1")),
               FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTIC_RUN_ID")),
               FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTIC_SOURCE_SHA")),
-              FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTIC_SESSION")));
+              FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTIC_SESSION")),
+              FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_DIAGNOSTIC_SCOPE")));
+}
+void FEdgeWorldUniverseDiagnostics::AuthorizeReadonlyProbe(bool Initialize,bool EmptyActions)
+{
+ bReadonlyProbeAuthorized=Config.bEnabled&&Config.Scope==TEXT("readonly-probe")&&Config.Session==TEXT("existing")&&!Initialize&&EmptyActions;
+ if(Config.Scope==TEXT("readonly-probe")&&!bReadonlyProbeAuthorized)Config.bEnabled=false;
+}
+FString FEdgeWorldUniverseDiagnostics::LogicalAction()const
+{
+ return Action.StartsWith(TEXT("p1."))?TEXT("s1.")+Action.Mid(3):Action;
+}
+bool FEdgeWorldUniverseDiagnostics::IsAction(const FString& StandardId)const
+{
+ return Action==StandardId||(bReadonlyProbeAuthorized&&LogicalAction()==StandardId);
 }
 void FEdgeWorldUniverseDiagnostics::Invalidate(uint64 NewEpoch)
 {
@@ -43,6 +58,7 @@ bool FEdgeWorldUniverseDiagnostics::Ready(uint64 ActualEpoch)const
 }
 TArray<FString> FEdgeWorldUniverseDiagnostics::Stages(const FString& Id)
 {
+ if(Id.StartsWith(TEXT("p1.")))return Stages(TEXT("s1.")+Id.Mid(3));
  if(Id==TEXT("s1.probe")||Id==TEXT("s2.probe"))return {TEXT("png_and_guard")};
  if(Id==TEXT("s1.camera"))return {TEXT("before"),TEXT("moved"),TEXT("restored")};
  if(Id==TEXT("s1.visibility"))return {TEXT("before"),TEXT("hidden"),TEXT("restored")};
@@ -56,7 +72,9 @@ TArray<FString> FEdgeWorldUniverseDiagnostics::Stages(const FString& Id)
 bool FEdgeWorldUniverseDiagnostics::Arm(const FString& Id)
 {
  const bool Initial=Config.Session==TEXT("initialize");
- if(!Ready(Epoch)||!Action.IsEmpty()||Stages(Id).IsEmpty()||!(Id.StartsWith(Initial?TEXT("s1."):TEXT("s2."))))return false;
+ const bool ScopeMatches=Config.Scope==TEXT("readonly-probe")?
+  (bReadonlyProbeAuthorized&&Id.StartsWith(TEXT("p1."))):Id.StartsWith(Initial?TEXT("s1."):TEXT("s2."));
+ if(!Ready(Epoch)||!Action.IsEmpty()||Stages(Id).IsEmpty()||!ScopeMatches)return false;
  Action=Id;StageIndex=0;bHeldLatestRequested=false;LastSpaceInput.Reset();LastRetainInput.Reset();return true;
 }
 void FEdgeWorldUniverseDiagnostics::Disarm(){Action.Reset();StageIndex=0;bHeldLatestRequested=false;}
@@ -81,7 +99,7 @@ FString FEdgeWorldUniverseDiagnostics::Marker(const FString& Stage,const FString
                                              const TSharedRef<FJsonObject>& State)
 {
  if(!Ready(Epoch)||!IsNext(Stage)||EventSerial>=256||!(Origin==TEXT("query")||Origin==TEXT("input")||Origin==TEXT("verified_observation")||Origin==TEXT("release")))return {};
- auto V=MakeShared<FJsonObject>();V->SetStringField(TEXT("format"),TEXT("universe-i14-readback.v1"));
+ auto V=MakeShared<FJsonObject>();V->SetStringField(TEXT("format"),Config.Scope==TEXT("readonly-probe")?TEXT("universe-i15-probe-readback.v1"):TEXT("universe-i14-readback.v1"));
  V->SetObjectField(TEXT("binding"),Binding);V->SetStringField(TEXT("action_id"),Action);V->SetStringField(TEXT("stage"),Stage);
  V->SetObjectField(TEXT("trusted_head"),Trusted);V->SetObjectField(TEXT("selected_observation"),Selected);V->SetObjectField(TEXT("state"),State);
  V->SetNumberField(TEXT("event_serial"),double(EventSerial+1));V->SetStringField(TEXT("origin"),Origin);

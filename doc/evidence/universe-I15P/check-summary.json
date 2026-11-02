@@ -1,0 +1,22 @@
+{
+  "base": "ee138aea8178f7d09082caf7448f6e1090719b11",
+  "checks": {
+    "legacy_actions_regressions": 31,
+    "new_synthetic_cpu": 12,
+    "total_passed": 43
+  },
+  "files": {
+    "doc/evidence/universe-I15P/prepare_probe.py": "fbf27433164fb641c31cd9f99c57b303b4200a2dbbf7409baca839bc3862b645",
+    "scripts/universe_iteration/probe_actions.py": "1b0c2f53c8c7dc5d13d4a30545522dd28d106efaa5e3e29b6ec0f2fc7fb6f805",
+    "tests/test_universe_iteration_probe.py": "b5391168719d06a6a109a8865903b0ba6b9bdc43838bce10eff880abc6157562"
+  },
+  "g_b2_granted": false,
+  "key_contents_read": false,
+  "native_source_commit": "997eda058d545b87889681871cc01c2cf68f1637",
+  "native_tests_executed": false,
+  "parent": "I15",
+  "preparation_executed": false,
+  "runtime_started": false,
+  "task": "I15-P",
+  "ue_built": false
+}

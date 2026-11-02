@@ -2,6 +2,8 @@
 #include "EdgeWorldUniverseActor.h"
 #include "EdgeWorldDiagnosticViewportClient.h"
 #include "Engine/Engine.h"
+#include "UnrealClient.h"
+#include "DynamicRHI.h"
 #include "Kismet/GameplayStatics.h"
 #include "HAL/PlatformProcess.h"
 #include "Misc/Parse.h"
@@ -63,7 +65,9 @@ bool AEdgeWorldUniverseGameMode::Configure()
  bExplicitInitialize=FPlatformMisc::GetEnvironmentVariable(TEXT("EDGEWORLD_UNIVERSE_INITIALIZE"))==TEXT("1");
  if(Diagnostics.Config.bEnabled&&((Diagnostics.Config.Session==TEXT("initialize"))!=bExplicitInitialize))Diagnostics.Config={};
  Diagnostics.Invalidate(Session.Epoch);
- return !FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadLaunchPins(PinsPath,Hash,Pins,Error);
+ const bool Valid=!FPaths::IsRelative(Python)&&!FPaths::IsRelative(Worker)&&!FPaths::IsRelative(OwnerConfig)&&FPaths::FileExists(Python)&&FPaths::FileExists(Worker)&&ReadLaunchPins(PinsPath,Hash,Pins,Error);
+ Diagnostics.AuthorizeReadonlyProbe(bExplicitInitialize,Valid&&Pins.AllowedActions.IsEmpty());
+ return Valid;
 }
 bool AEdgeWorldUniverseGameMode::ReadLaunchPins(const FString& Path,const FString& Hash,FEdgeWorldUniversePublicPins& Out,FString& Error)
 {
@@ -137,7 +141,7 @@ void AEdgeWorldUniverseGameMode::Observe(int64 Tick,int64 Revision)
   if(Weak->Projection)Weak->Session.DerivedInstances=Weak->Projection->GetDerivedInstanceCount();
   Weak->Diagnostics.ConfirmVerified(Weak->Session.Epoch,R.WorkerPid,R.ProcessGeneration);
   Weak->Present();UE_LOG(LogTemp,Display,TEXT("Universe world %s observed tick %lld, revision %lld"),*O.WorldId,(long long)O.Tick,(long long)O.Revision);
-  if(Weak->Diagnostics.Action==TEXT("s1.held_input")&&Weak->Diagnostics.bHeldLatestRequested&&O.Manifest==Weak->Session.Head.Head)Weak->EmitDiagnostic(TEXT("held_current"),TEXT("verified_observation"));
+  if(Weak->Diagnostics.IsAction(TEXT("s1.held_input"))&&Weak->Diagnostics.bHeldLatestRequested&&O.Manifest==Weak->Session.Head.Head)Weak->EmitDiagnostic(TEXT("held_current"),TEXT("verified_observation"));
  });});Present();
 }
 bool AEdgeWorldUniverseGameMode::VerifyInstalledAssets(const FEdgeWorldUniverseObservation& O,FString& Error,FString* AuditJson,FString* CandidateJson)
@@ -234,15 +238,15 @@ void AEdgeWorldUniverseGameMode::ProcessSpacePressed(bool Actual)
  const bool Allowed=Session.SpacePressed();
  if(Actual)Diagnostics.RecordInput(true,!Allowed,Allowed?TEXT("accepted"):Reason);
  if(Allowed)Advance();
- if(Actual&&Diagnostics.Action==TEXT("s1.held_input")&&!Allowed&&Reason==TEXT("history_read_only"))
+ if(Actual&&Diagnostics.IsAction(TEXT("s1.held_input"))&&!Allowed&&Reason==TEXT("history_read_only"))
   EmitDiagnostic(TEXT("held_history"),TEXT("input"));
 }
 void AEdgeWorldUniverseGameMode::SpacePressedFromInput(){ProcessSpacePressed(true);}
 void AEdgeWorldUniverseGameMode::SpaceReleasedFromInput()
 {
  Session.SpaceReleased();
- if(Diagnostics.Action==TEXT("s1.history_write_rejected"))EmitDiagnostic(TEXT("space_rejected"),TEXT("release"));
- if(Diagnostics.Action==TEXT("s1.held_input"))EmitDiagnostic(TEXT("released"),TEXT("release"));
+ if(Diagnostics.IsAction(TEXT("s1.history_write_rejected")))EmitDiagnostic(TEXT("space_rejected"),TEXT("release"));
+ if(Diagnostics.IsAction(TEXT("s1.held_input")))EmitDiagnostic(TEXT("released"),TEXT("release"));
 }
 void AEdgeWorldUniverseGameMode::RetainFromInput()
 {
@@ -251,11 +255,11 @@ void AEdgeWorldUniverseGameMode::RetainFromInput()
 }
 void AEdgeWorldUniverseGameMode::RetainReleasedFromInput()
 {
- if(Diagnostics.Action==TEXT("s1.history_write_rejected"))EmitDiagnostic(TEXT("retain_rejected"),TEXT("release"));
+ if(Diagnostics.IsAction(TEXT("s1.history_write_rejected")))EmitDiagnostic(TEXT("retain_rejected"),TEXT("release"));
 }
 void AEdgeWorldUniverseGameMode::LatestFromInput()
 {
- if(DiagnosticReady()&&Diagnostics.Action==TEXT("s1.held_input")&&Diagnostics.StageIndex==1&&Session.bHistory)
+ if(DiagnosticReady()&&Diagnostics.IsAction(TEXT("s1.held_input"))&&Diagnostics.StageIndex==1&&Session.bHistory)
   if(auto* C=GetWorld()->GetFirstPlayerController();C&&C->IsInputKeyDown(EKeys::SpaceBar))Diagnostics.bHeldLatestRequested=true;
  Latest();
 }
@@ -263,13 +267,14 @@ void AEdgeWorldUniverseGameMode::DiagnosticArm(const FString& Id)
 {
  if(!DiagnosticReady()||!Diagnostics.Arm(Id))return;
  if(!DiagnosticInitialFps.IsSet()&&GEngine)DiagnosticInitialFps=GEngine->GetMaxFPS();
- if(Id==TEXT("s1.camera")||Id==TEXT("s1.visibility")||Id==TEXT("s1.framerate")||Id==TEXT("s1.pause"))
+ const FString Logical=Diagnostics.LogicalAction();
+ if(Logical==TEXT("s1.camera")||Logical==TEXT("s1.visibility")||Logical==TEXT("s1.framerate")||Logical==TEXT("s1.pause"))
   EmitDiagnostic(TEXT("before"),TEXT("query"));
 }
 void AEdgeWorldUniverseGameMode::DiagnosticReadback(const FString& Id,const FString& Stage)
 {
- if(Id!=Diagnostics.Action||Id==TEXT("s1.held_input"))return;
- if(Id==TEXT("s1.history_write_rejected")&&Stage!=TEXT("released"))return;
+ if(Id!=Diagnostics.Action||Diagnostics.IsAction(TEXT("s1.held_input")))return;
+ if(Diagnostics.IsAction(TEXT("s1.history_write_rejected"))&&Stage!=TEXT("released"))return;
  EmitDiagnostic(Stage,TEXT("query"));
 }
 void AEdgeWorldUniverseGameMode::DiagnosticDisarm(){Diagnostics.Disarm();}
@@ -278,7 +283,7 @@ bool AEdgeWorldUniverseGameMode::EmitDiagnostic(const FString& Stage,const FStri
  if(!DiagnosticReady()||!Diagnostics.IsNext(Stage)||!GetWorld()||!GEngine)return false;
  APlayerController* C=GetWorld()->GetFirstPlayerController();if(!C||!C->IsLocalController())return false;
  const bool Space=C->IsInputKeyDown(EKeys::SpaceBar),R=C->IsInputKeyDown(EKeys::R);
- auto S=MakeShared<FJsonObject>();const FString& Id=Diagnostics.Action;
+ auto S=MakeShared<FJsonObject>();const FString Id=Diagnostics.LogicalAction();
  if(Id==TEXT("s1.camera"))
  {
   if(!Camera||!C->GetViewTarget())return false;
@@ -316,6 +321,15 @@ bool AEdgeWorldUniverseGameMode::EmitDiagnostic(const FString& Stage,const FStri
   const bool Guard=V&&V->IsA<UEdgeWorldDiagnosticViewportClient>()&&V->GetWindow().IsValid()&&
    FSlateApplication::IsInitialized()&&FSlateApplication::Get().OnWindowBeingDestroyed().IsBoundToObject(V)&&Preflush;
   S->SetBoolField(TEXT("quit_guard_ready"),Guard);S->SetBoolField(TEXT("preflush"),Preflush);
+  if(Diagnostics.bReadonlyProbeAuthorized)
+  {
+   if(!V||!V->Viewport||!GDynamicRHI)return false;
+   const FIntPoint Size=V->Viewport->GetSizeXY();if(Size.X<=0||Size.Y<=0)return false;
+   S->SetNumberField(TEXT("viewport_width"),Size.X);S->SetNumberField(TEXT("viewport_height"),Size.Y);
+   S->SetStringField(TEXT("renderer"),GDynamicRHI->GetName());
+   S->SetBoolField(TEXT("hdr"),V->Viewport->GetSceneHDREnabled());
+  }
+
  }
  else if(Id==TEXT("s1.final")||Id==TEXT("s2.final"))
  {

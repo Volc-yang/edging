@@ -1,0 +1,833 @@
+{
+  "call_count": 48,
+  "cost_status": "proposal_not_measured",
+  "expected_operations": [
+    "status",
+    "observe",
+    "observe",
+    "observe"
+  ],
+  "format": "universe-i15-probe-actions.v1",
+  "g_b2_granted": false,
+  "image_count": 8,
+  "interaction_limit_seconds": 300,
+  "interaction_seconds": 210,
+  "items": [
+    {
+      "action_id": "p1.startup",
+      "charged_budget": "startup",
+      "checkpoint_commands": [
+        -1
+      ],
+      "checkpoint_origins": [
+        null
+      ],
+      "commands": [],
+      "expected_operations": [
+        "status",
+        "observe"
+      ],
+      "image_stages": [],
+      "kind": "recover",
+      "max_seconds": 60,
+      "observation_heads": [
+        {
+          "revision": 2,
+          "tick": 1,
+          "watermark": 2
+        }
+      ],
+      "passive_costs": {
+        "image_restore_seconds": 20.0,
+        "maps_seconds": 20.0,
+        "marker_seconds": 20.0
+      },
+      "phase": "startup",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "completed"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.probe",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        1
+      ],
+      "checkpoint_origins": [
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.probe/00",
+          "text": "UniverseDiagArm p1.probe"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.probe/01",
+          "text": "UniverseDiagReadback p1.probe png_and_guard"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.probe/02",
+          "text": "native Shot via C prepare p1.probe/png_and_guard"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.probe/03",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [
+        "png_and_guard"
+      ],
+      "kind": "probe",
+      "max_seconds": 20,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 4.0,
+        "maps_seconds": 4.0,
+        "marker_seconds": 4.0
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints",
+        "image_checks"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "png_and_guard"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.camera",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        0,
+        3,
+        6
+      ],
+      "checkpoint_origins": [
+        "query",
+        "query",
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/00",
+          "text": "UniverseDiagArm p1.camera"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/01",
+          "text": "native Shot via C prepare p1.camera/before"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/02",
+          "text": "UniverseCamera 15 0"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/03",
+          "text": "UniverseDiagReadback p1.camera moved"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/04",
+          "text": "native Shot via C prepare p1.camera/moved"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/05",
+          "text": "UniverseCamera -15 0"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/06",
+          "text": "UniverseDiagReadback p1.camera restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/07",
+          "text": "native Shot via C prepare p1.camera/restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.camera/08",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [
+        "before",
+        "moved",
+        "restored"
+      ],
+      "kind": "camera",
+      "max_seconds": 35,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 5.666666666666667,
+        "maps_seconds": 5.666666666666667,
+        "marker_seconds": 5.666666666666667
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints",
+        "image_checks"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "before",
+        "moved",
+        "restored"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.visibility",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        0,
+        3,
+        6
+      ],
+      "checkpoint_origins": [
+        "query",
+        "query",
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/00",
+          "text": "UniverseDiagArm p1.visibility"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/01",
+          "text": "native Shot via C prepare p1.visibility/before"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/02",
+          "text": "UniverseProjectionVisible false"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/03",
+          "text": "UniverseDiagReadback p1.visibility hidden"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/04",
+          "text": "native Shot via C prepare p1.visibility/hidden"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/05",
+          "text": "UniverseProjectionVisible true"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/06",
+          "text": "UniverseDiagReadback p1.visibility restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/07",
+          "text": "native Shot via C prepare p1.visibility/restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.visibility/08",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [
+        "before",
+        "hidden",
+        "restored"
+      ],
+      "kind": "visibility",
+      "max_seconds": 35,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 5.666666666666667,
+        "maps_seconds": 5.666666666666667,
+        "marker_seconds": 5.666666666666667
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints",
+        "image_checks"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "before",
+        "hidden",
+        "restored"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.framerate",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        0,
+        2,
+        4
+      ],
+      "checkpoint_origins": [
+        "query",
+        "query",
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/00",
+          "text": "UniverseDiagArm p1.framerate"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/01",
+          "text": "t.MaxFPS 30 (or 60 only if original=30)"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/02",
+          "text": "UniverseDiagReadback p1.framerate changed"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/03",
+          "text": "t.MaxFPS <original>"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/04",
+          "text": "UniverseDiagReadback p1.framerate restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.framerate/05",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [],
+      "kind": "framerate",
+      "max_seconds": 20,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 2.6666666666666665,
+        "maps_seconds": 2.6666666666666665,
+        "marker_seconds": 2.6666666666666665
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "before",
+        "changed",
+        "restored"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.pause",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        0,
+        2,
+        4
+      ],
+      "checkpoint_origins": [
+        "query",
+        "query",
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/00",
+          "text": "UniverseDiagArm p1.pause"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/01",
+          "text": "pause"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/02",
+          "text": "UniverseDiagReadback p1.pause paused"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/03",
+          "text": "pause"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/04",
+          "text": "UniverseDiagReadback p1.pause restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.pause/05",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [],
+      "kind": "pause",
+      "max_seconds": 20,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 2.6666666666666665,
+        "maps_seconds": 2.6666666666666665,
+        "marker_seconds": 2.6666666666666665
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "before",
+        "paused",
+        "restored"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.history",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        0
+      ],
+      "checkpoint_origins": [
+        null
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history/00",
+          "text": "UniverseObserveExact 0 1 1"
+        }
+      ],
+      "expected_operations": [
+        "observe"
+      ],
+      "image_stages": [],
+      "kind": "history",
+      "max_seconds": 10,
+      "observation_heads": [
+        {
+          "revision": 1,
+          "tick": 0,
+          "watermark": 1
+        }
+      ],
+      "passive_costs": {
+        "image_restore_seconds": 2.6666666666666665,
+        "maps_seconds": 2.6666666666666665,
+        "marker_seconds": 2.6666666666666665
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 1,
+        "tick": 0,
+        "watermark": 1
+      },
+      "session": "existing",
+      "stages": [
+        "history01"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.history_write_rejected",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        1,
+        2,
+        3
+      ],
+      "checkpoint_origins": [
+        "release",
+        "release",
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history_write_rejected/00",
+          "text": "UniverseDiagArm p1.history_write_rejected"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history_write_rejected/01",
+          "text": "viewport Space press/release in history"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history_write_rejected/02",
+          "text": "viewport R press/release in history"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history_write_rejected/03",
+          "text": "UniverseDiagReadback p1.history_write_rejected released"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.history_write_rejected/04",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [],
+      "kind": "history_write_rejected",
+      "max_seconds": 25,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 5.0,
+        "maps_seconds": 5.0,
+        "marker_seconds": 5.0
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 1,
+        "tick": 0,
+        "watermark": 1
+      },
+      "session": "existing",
+      "stages": [
+        "space_rejected",
+        "retain_rejected",
+        "released"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.held_input",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        1,
+        1,
+        1
+      ],
+      "checkpoint_origins": [
+        "input",
+        "verified_observation",
+        "release"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.held_input/00",
+          "text": "UniverseDiagArm p1.held_input"
+        },
+        {
+          "max_seconds": 10,
+          "step_id": "p1.held_input/01",
+          "text": "viewport chord Space+H durationMs=2000"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.held_input/02",
+          "text": "native Shot via C prepare p1.held_input/released"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.held_input/03",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [
+        "observe"
+      ],
+      "image_stages": [
+        "released"
+      ],
+      "kind": "held_input",
+      "max_seconds": 30,
+      "observation_heads": [
+        {
+          "revision": 2,
+          "tick": 1,
+          "watermark": 2
+        }
+      ],
+      "passive_costs": {
+        "image_restore_seconds": 4.666666666666667,
+        "maps_seconds": 4.666666666666667,
+        "marker_seconds": 4.666666666666667
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints",
+        "image_checks"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "held_history",
+        "held_current",
+        "released"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.final",
+      "charged_budget": "interaction",
+      "checkpoint_commands": [
+        1
+      ],
+      "checkpoint_origins": [
+        "query"
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.final/00",
+          "text": "UniverseDiagArm p1.final"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.final/01",
+          "text": "UniverseDiagReadback p1.final released_and_restored"
+        },
+        {
+          "max_seconds": 2,
+          "step_id": "p1.final/02",
+          "text": "UniverseDiagDisarm"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [],
+      "kind": "final",
+      "max_seconds": 15,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 3.0,
+        "maps_seconds": 3.0,
+        "marker_seconds": 3.0
+      },
+      "phase": "interaction",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "released_and_restored"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    },
+    {
+      "action_id": "p1.exit",
+      "charged_budget": "shutdown",
+      "checkpoint_commands": [
+        0
+      ],
+      "checkpoint_origins": [
+        null
+      ],
+      "commands": [
+        {
+          "max_seconds": 2,
+          "step_id": "p1.exit/00",
+          "text": "normal quit via CUA"
+        }
+      ],
+      "expected_operations": [],
+      "image_stages": [],
+      "kind": "exit",
+      "max_seconds": 40,
+      "observation_heads": [],
+      "passive_costs": {
+        "image_restore_seconds": 12.666666666666666,
+        "maps_seconds": 12.666666666666666,
+        "marker_seconds": 12.666666666666666
+      },
+      "phase": "shutdown",
+      "required_evidence": [
+        "before",
+        "after",
+        "log",
+        "trace",
+        "cua",
+        "checkpoints"
+      ],
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "session": "existing",
+      "stages": [
+        "completed"
+      ],
+      "trusted_head": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      }
+    }
+  ],
+  "optional_actions": [],
+  "request_count": 4,
+  "scope": "existing-readonly-capabilities",
+  "session": "existing",
+  "standard_pair": false
+}

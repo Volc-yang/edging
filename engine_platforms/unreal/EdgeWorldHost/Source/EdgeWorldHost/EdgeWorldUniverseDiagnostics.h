@@ -6,9 +6,9 @@
 struct FEdgeWorldUniverseDiagnosticConfig
 {
  bool bEnabled=false;
- FString RunId,SourceSha,Session;
+ FString RunId,SourceSha,Session,Scope;
  static FEdgeWorldUniverseDiagnosticConfig Parse(const FString& Enable,const FString& Run,
-                                                 const FString& Source,const FString& Mode);
+                                                 const FString& Source,const FString& Mode,const FString& Scope=FString());
  static FEdgeWorldUniverseDiagnosticConfig Environment();
 };
 
@@ -20,9 +20,12 @@ struct FEdgeWorldUniverseDiagnostics
  uint32 WorkerPid=0;
  FString Action;
  int32 StageIndex=0;
- bool bHeldLatestRequested=false,bIdentityFaulted=false;
+ bool bHeldLatestRequested=false,bIdentityFaulted=false,bReadonlyProbeAuthorized=false;
  TSharedPtr<FJsonObject> LastSpaceInput,LastRetainInput;
 
+ void AuthorizeReadonlyProbe(bool bExplicitInitialize,bool bEmptyAllowedActions);
+ FString LogicalAction()const;
+ bool IsAction(const FString& StandardId)const;
  void Invalidate(uint64 NewEpoch);
  bool ConfirmVerified(uint64 ActualEpoch,uint32 ActualWorker,uint64 ActualGeneration);
  bool Ready(uint64 ActualEpoch)const;
