@@ -121,6 +121,48 @@ class PreparePureTests(unittest.TestCase):
             root=Path(td).resolve();product=root/'product';tool=root/'tool';product.mkdir();tool.mkdir()
             with patch.object(h,'audit',return_value={'audit_only':True}) as audit,patch.object(h,'write',side_effect=AssertionError('unexpected write')):
                 self.assertEqual(h.prepare_probe(product_root=product,tool_root=tool),{'audit_only':True});audit.assert_called_once_with(product)
+    def test_corrected_preparation_preserves_original_and_protected_inputs(self):
+        h=self.helper
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td).resolve();prepdir=root/'prep';prepdir.mkdir()
+            original=dict(output_root=str(root),product_source_sha='a'*40,helper_ref={'path':'/historical/helper','sha256':'b'*64},
+                          context={'world':'preserved'},inputs={'public':'preserved'},allowed_untracked={'links':'preserved'})
+            original_ref=h.write(prepdir/'preparation.json',original)
+            failure_ref=h.write(prepdir/'build-raw.json',dict(source_sha='a'*40,actual_parent_wait_exit=6,build_only=True,ue_runtime_started=False))
+            changed=dict(original,product_source_sha='c'*40,helper_ref=h.ref(h.__file__),previous_preparation_ref=original_ref,build_failure_ref=failure_ref)
+            path=prepdir/('preparation-corrected-'+('c'*40)+'.json');changed_ref=h.write(path,changed)
+            with patch.object(h,'STORAGE',root):
+                self.assertEqual(h.load_preparation(changed_ref)[0],changed)
+                self.assertEqual(h.load_preparation(original_ref)[0],original)
+                # The exact filename remains fixed; mutate only this synthetic test copy.
+                for field,value in (('context',{'world':'tampered'}),('product_source_sha','d'*40),
+                                    ('helper_ref',original['helper_ref']),('previous_preparation_ref',failure_ref)):
+                    bad=deepcopy(changed);bad[field]=value;path.write_bytes(h.pack(bad))
+                    with self.assertRaises(Exception):h.load_preparation(h.ref(path))
+                path.write_bytes(h.pack(changed))
+                failure=h.load(failure_ref['path']);failure['actual_parent_wait_exit']=0
+                Path(failure_ref['path']).write_bytes(h.pack(failure));changed['build_failure_ref']=h.ref(failure_ref['path'])
+                path.write_bytes(h.pack(changed))
+                with self.assertRaises(Exception):h.load_preparation(h.ref(path))
+            self.assertEqual(h.ref(original_ref['path']),original_ref)
+            self.assertEqual(h.load(original_ref['path']),original)
+
+    def test_mac_real_lib_prefixed_outputs_required_without_alias(self):
+        h=self.helper
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td).resolve();project=root/'project/EdgeWorldHost.uproject'
+            host=project.parent/'Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib'
+            plugin=project.parent/'Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib'
+            host.parent.mkdir(parents=True);plugin.parent.mkdir(parents=True)
+            host.write_bytes(b'synthetic-host');plugin.write_bytes(b'synthetic-plugin')
+            self.assertEqual(h.built_binary_paths(project,root),(host,plugin))
+            self.assertFalse(host.with_name('UnrealEditor-EdgeWorldHost.dylib').exists())
+            host.rename(host.with_name('UnrealEditor-EdgeWorldHost.dylib'))
+            with self.assertRaises(FileNotFoundError):h.built_binary_paths(project,root)
+            host.with_name('UnrealEditor-EdgeWorldHost.dylib').rename(host)
+            plugin.rename(plugin.with_name('UnrealEditor-EdgeWorldRuntime.dylib'))
+            with self.assertRaises(FileNotFoundError):h.built_binary_paths(project,root)
+
     def test_exclusive_output_and_no_key_content_io(self):
         h=self.helper
         with tempfile.TemporaryDirectory() as td:
