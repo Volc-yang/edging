@@ -33,6 +33,8 @@ The installed source `/Users/Shared/Epic Games/UE_5.8/Engine/Source/Runtime/Laun
 
 Actual UE log885 records launching detached Zen with `--owner-pid 64536`, external Common/Zen/Data and `--detach`. Independent observer snapshots confirm the same PID/start crossing child→detached status. The post-seal console append is consistent with an inherited output stream, but the captured data alone does not attribute every appended byte to a particular writer. The failed original quiet/console gates remain visible.
 
+UE raw log1258/1260 also reports an uninitialized `FDataflowToolNodeSnapshot::Date` property from engine DataflowNodes during startup (LogClass/Automation). This is a retained engine-log risk, separate from the later PublicProofReplay case event; the current evidence does not diagnose a plugin cause or justify engine-source edits.
+
 ## Immutable public evidence
 
 All paths are relative to the run root above unless stated otherwise; originals were independently read, not recreated:
