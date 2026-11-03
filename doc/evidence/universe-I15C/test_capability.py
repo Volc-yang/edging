@@ -103,6 +103,28 @@ class CapabilityTests(unittest.TestCase):
   with self.assertRaises(c.lc.Invalid):c.validate_capability_card(card['path'],expected_card_sha256=card['sha256'],
    expected_prepared_sha256='0'*64,expected_probe_manifest_sha256='0'*64,
    expected_product_source='0'*40,expected_tool_source='0'*40,expected_native_source_sha='0'*40,execute=True)
+ def test_approved_native_only_skip_preserves_inconclusive_and_once(self):
+  controller=self.controller()
+  ref=self.ref('skip.json',dict(format='universe-i15-capability-skip.v1',run_id='i15-cpu',
+   reason='approved-native-only-iteration',metal_dispatched=False,decision='inconclusive'))
+  controller.skip_metal(ref)
+  phase=controller.phases['metal']
+  self.assertTrue(phase['skipped']);self.assertFalse(phase['normal'])
+  self.assertEqual(phase['decision'],'inconclusive');self.assertNotIn('pid',phase)
+  self.assertIsNone(controller.process)
+  with self.assertRaises(c.lc.Invalid):controller.skip_metal(ref)
+ def test_native_only_skip_rejects_unknown_reason_or_weakened_schema(self):
+  controller=self.controller()
+  expected=dict(format='universe-i15-capability-skip.v1',run_id='i15-cpu',
+   reason='approved-native-only-iteration',metal_dispatched=False,decision='inconclusive')
+  updates=[dict(reason='arbitrary-skip'),dict(reason=None),dict(metal_dispatched=True),
+           dict(decision='pass'),dict(run_id='another-run'),dict(extra=True)]
+  for i,update in enumerate(updates):
+   with self.subTest(update=update):
+    ref=self.ref('rejected-skip-%d.json'%i,dict(expected,**update))
+    controller.card['public_paths'].append(ref['path'])
+    with self.assertRaises(c.lc.Invalid):controller.skip_metal(ref)
+    self.assertFalse(controller.phases);self.assertIsNone(controller.process)
  def test_skip_is_inconclusive_and_once(self):
   controller=self.controller()
   ref=self.ref('skip.json',dict(format='universe-i15-capability-skip.v1',run_id='i15-cpu',

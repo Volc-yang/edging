@@ -491,16 +491,18 @@ class CapabilityController:
         return self._event('quit_ack',raw_cua_ref=raw_cua_ref,actual_exit_proven=False)
 
     def skip_metal(self, evidence_ref):
-        """Root's explicit no-UI amendment; never a completed Metal session."""
+        """Root's explicit undispatched-Metal exclusion; never a completed session."""
         lc.require(not self.phases and self.process is None,'only undispatched Metal may be skipped')
         path=lc.checked_path(evidence_ref['path'])
         lc.require(not path.is_relative_to(Path(self.prepared['key_directory'])) and
             (str(path) in self.card['public_paths'] or path.is_relative_to(self.output/'controller-inputs')),
             'explicit public skip evidence required; never private/key input')
         evidence=lc.json_ref(evidence_ref)
-        lc.require(evidence==dict(format='universe-i15-capability-skip.v1',run_id=self.card['run_id'],
-            reason='ui-controller-unavailable',metal_dispatched=False,decision='inconclusive'),
-            'explicit root unavailable-UI skip evidence required')
+        reason=evidence.get('reason') if type(evidence) is dict else None
+        lc.require(reason in ('ui-controller-unavailable','approved-native-only-iteration') and
+            evidence==dict(format='universe-i15-capability-skip.v1',run_id=self.card['run_id'],
+            reason=reason,metal_dispatched=False,decision='inconclusive'),
+            'explicit root approved undispatched-Metal skip evidence required')
         self.phases['metal']=dict(skipped=True,normal=False,decision='inconclusive',evidence_ref=evidence_ref,
                                   started=self.clock(),sealed_monotonic=self.clock())
         return self._event('metal_not_dispatched',evidence_ref=evidence_ref)

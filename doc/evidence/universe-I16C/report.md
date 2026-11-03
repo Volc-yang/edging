@@ -1,0 +1,9 @@
+# I16 C — honest Native-only scope
+
+Status: implementation complete, awaiting independent review, CI and root integration. Input/base `53cd344ea633b5d8f00fd33af58f096d3babc872`; branch `codex/i16-native-scope`; worktree `.worktrees/i16-native-scope`. Parent plan: `doc/design/universe-i16-native-execution-plan.md`.
+
+Plan/Do: extend only `CapabilityController.skip_metal`'s explicit reason whitelist with `approved-native-only-iteration`, preserving `ui-controller-unavailable` for previous cards. CUA availability is not falsely described: I16 excludes Metal by approved scope. The exact evidence dictionary, run binding, public allowlist/private-path refusal, undispatched/one-shot checks and `inconclusive`/`normal=false` outcome remain. Unknown reasons, changed decision, dispatched Metal, extra fields and another run remain refused. No Native/CLI/UE/P files or other runtime gates changed.
+
+Check actually run: `python3 -m unittest discover -s doc/evidence/universe-I15C -p 'test_*.py' -v` — 18 CPU tests passed (16 preserved regressions plus approved Native-only outcome and unknown/weakened-schema refusal checks). CPU fixtures exercised existing observer/short-child tests; no UE, worker, owner/key material, UI, build, Genesis solver or DevSSD provisioning was accessed. Native product code/binaries did not change, so this task requires no rebuild.
+
+Act: send this scoped commit/PR to N and root for non-owner review. Root alone prepares and freezes the new tool identities, verifies retained actual Native source/binary hashes, completes offline CI and readiness checks, then starts the single new runtime clock. This tool change proves no actual Native replay, Metal capability, standard pair or G-B2 gate. Prior I15 failure evidence remains unchanged. Keep this worktree until its reviewed PR and test handoff are settled.
