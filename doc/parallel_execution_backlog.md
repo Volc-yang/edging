@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I16 直接运行 Native old3
+
+[I16登记](universe_i16_execution_register.md) / [方案](design/universe-i16-native-execution-plan.md)：N方案审查接受；root已核对保留5a6cca0构建所有关键source/binary SHA及Native源无diff，不重build。仅补诚实Native-only跳过理由后离线审查/CI/冻结新输入，再开始单次Native180s；准备和CI不消耗运行clock。CUA目前可用，Metal本轮未安排。实际Native证据与独立结果审查尚待执行，G-B2仍open。
+
 ## 当前结算：I15 工具已集成，Native 未运行
 
 [I15 登记](universe_i15_execution_register.md) / [审定树及修订](design/universe-i15-proof-capability-plan.md)：PR115–121均经独立审查、最终CI成功并集成。准确Native源`5a6cca0`官方build先exit6/RHI缺依赖，修复后exit0，两次累计39.470s<180；旧3原始proof已重组。无CUA故Metal跳过；实际控制器在UE派发前因skipped阶段缺PID中止、outer wait2，最终工具`077548e`修复并有16项CPU检查。CI结束时完整运行预留不足，Native仍skipped，未开UE/worker。连续首outer→seal771.428s<900、保守产物1.4715GB<2GiB，权威map不变；全周期observer缺口保留fail/inconclusive。**I15 partial、G-B2未过**，旧失败不覆。
