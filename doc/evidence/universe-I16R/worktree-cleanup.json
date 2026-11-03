@@ -1,0 +1,35 @@
+{
+  "branches_retained": true,
+  "devssd_originals_retained": true,
+  "format": "universe-i16-worktree-cleanup.v1",
+  "retained": [
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build",
+      "reason": "retained built source/binaries and approved outputs referenced by recovery/prepared"
+    },
+    {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i12b-universe-live",
+      "reason": "pre-existing recovery dependency untouched"
+    }
+  ],
+  "tasks": [
+    {
+      "branch": "codex/i16-native-scope",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "56461243dcbc4dcbe203928d41fc2bd03ffc43a4",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i16-native-scope",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    },
+    {
+      "branch": "codex/i16-independent-review",
+      "clean": true,
+      "commits_preserved": true,
+      "head": "16a2c4571b12820f010b3b82aca48863c2439225",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i16-independent-review",
+      "removed_nonforce": true,
+      "runtime_ref_matches": []
+    }
+  ]
+}
