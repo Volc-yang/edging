@@ -71,6 +71,28 @@ class CompletionTests(unittest.TestCase):
   path.write_bytes(b'changed');self.assertNotEqual(c.file_fingerprint(path),before)
   link=self.root/'alias';link.symlink_to(path)
   with self.assertRaises(c.lc.Invalid):c.file_fingerprint(link)
+ def test_detached_trace_server_requires_exact_executable_and_sponsor(self):
+  actual=dict(pid=91,ppid=1,start='Fri Nov 7 12:00:00 2026',
+              argv='../../../Engine/Binaries/Mac/UnrealTraceServer fork --sponsor=42')
+  self.assertTrue(c.sponsored_trace_server(actual,42))
+  for argv in ('UnrealTraceServer fork --sponsor=43','UnrealTraceServer fork --sponsor=420',
+               'echo UnrealTraceServer fork --sponsor=42','UnrealTraceServer fork --sponsor=42 --sponsor=43'):
+   self.assertFalse(c.sponsored_trace_server(dict(actual,argv=argv),42))
+  controller=self.controller();seed=dict(pid=42,ppid=1,start=actual['start'],argv='/test/editor')
+  controller.phases['native']=dict(pid=42,started=10,identity=seed)
+  controller.samples=[dict(monotonic=9,processes=[]),dict(monotonic=11,processes=[actual])]
+  self.assertEqual(controller._phase_owned('native'),[actual])
+  controller.samples.insert(0,dict(monotonic=8,processes=[actual]))
+  self.assertEqual(controller._phase_owned('native'),[]) # preexisting PID/start/argv is not ours
+ def test_native_launch_disables_trace_service_and_auto_start(self):
+  controller=self.controller();pins,product=self.registrations();controller.prepared.update(
+      native_source_pins=pins,product_root=str(product),project=str(product/'Host.uproject'))
+  controller.native_manifest=dict(path='/synthetic/manifest',sha256='0'*64)
+  def spawn(name,argv,environment,directory):
+   controller.phases[name]={};return argv
+  with patch.object(controller,'_spawn_reserved',side_effect=spawn):argv=controller.start_native()
+  self.assertIn('-notraceserver',argv);self.assertIn('-traceautostart=0',argv)
+  self.assertEqual(sum(arg.startswith('-ExecCmds=') for arg in argv),1)
  def spawn_writer(self,controller,child_seconds):
   directory=controller.output/'native';directory.mkdir()
   (directory/'ue.log').write_text('CPU synthetic log\n');(directory/'replay-result.json').write_text('{}\n')
