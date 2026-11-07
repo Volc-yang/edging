@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I17 修复四项调度与缓存/封存
+
+[I17登记](universe_i17_execution_register.md) / [审定方案](design/universe-i17-native-completion-plan.md)：C实现、N独立审查并行；只修Mac无$筛选、源码前缀唯一性、独占Mac短路径FileSystem DDC和写者结束后稳定封存。已复核5a6cca0构建source/binary可复用，无新C++/engine修改；代码CPU/PR/CI及新输入ready后才启动运行clock。尚未新dispatch，原I16三proof成功与组合门失败均保留。G-B2仍open。
+
 ## 当前结算：I16 三份proof实际接受，组合门未过
 
 [I16登记](universe_i16_execution_register.md) / [独立报告](evidence/universe-I16A/report.md)：PR122 final5646124 / merge4e7a58a、CI41568506690 success、独立18 CPU通过。复用5a6cca0准确构建，唯一Native实际parentwait0/25.246s；PublicProofReplay Success且三个原响应全部accepted（selected31/42/45），独立输入/输出digests通过。**I16 partial**：Mac把`$`转换引号使实际Found1，另3tests未执行；Zen在seal时残留、随后自退出且原console被追加，原normalfalse/resourcefail不覆。61-file map一致，49样本maxgap0.564s；本地root/time有界，外部Zen字节无baseline仍inconclusive。没有pass Native review/旧gap解除，G-B2仍open；Metal本轮明确未安排。
