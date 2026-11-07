@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I18 直接复测 NoTrace 封存
+## 当前结算：I18 有限 Native 门通过
 
-[I18登记](universe_i18_execution_register.md) / [方案](design/universe-i18-native-seal-plan.md)：不再开发/CI，直接复用已合入修复；N已接受固定driver审查。所有准备/权限/ready在clock前，同一driver自动一次Native与结束采证/seal；源码/二进制hash匹配，无新Native diff。尚未dispatch，旧I17失败与G-B2 open不变。
+[I18登记](universe_i18_execution_register.md) / [独立报告](evidence/universe-I18A/report.md)：复用5a6cca0构建、tool ecc2f3d，一次真实Native **Found4/四完整Success、三原proof接受、正常wait0、全owned后代静默、封存及后验三原件不变、61-file map一致**；NoTrace/独占DDC实际生效。完整driver21.290s、保守1.587GB、observer maxgap0.567s，声明六外域仅UBT三项/651B，Trace/Zen/全局DDC未变。独立机器review/policy已接受，root按稳定路径实际verifier返回checks_complete_requires_review/coverage3；仅这三份精确response SHA有限pass，不放宽其他响应或旧API/常量，旧I17失败不覆。
+
+下一轮转向真实existing只读Metal呈现/输入/原PNG/正常退出：先审定新范围、动作、预算、NoTrace-DDC与写域边界。无需继续Native封存工具排查；新请求响应不能套用当前exact3授权。G-B2/标准双会话和原UE启动日志风险仍open，用户改动/构建/恢复树与全部原件保留。
 
 ## 当前结算：I17 四项实测通过，Trace封存纠正待复测
 

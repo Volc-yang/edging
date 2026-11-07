@@ -1,0 +1,103 @@
+{
+  "coverage": [
+    {
+      "case_id": "old-initial-0-0",
+      "context": {
+        "allowed_actions": [
+          "retain_snapshot",
+          "physics_step"
+        ],
+        "artifact_class": "genesis-runtime",
+        "authority_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/authority-attempt4",
+        "domain": "edgeworld.universe.authority",
+        "expected_build": "25cb7679d02efad755a7b55d651e17c1249ca3bb0494e23540ae5b9cd2fbe18a",
+        "expected_options": "77cca49a81a5b4fbb46395053dbe79ccd95982706599ebdc7a4a218d01cb6c26",
+        "principal": "owner-i12b",
+        "profile": "composite-rigid-support.v0.2",
+        "trust_algorithm": "local-hmac-sha256.v0.2",
+        "trust_anchor": "09e05549e823a6c6119c27fa6c528d20ae71112cfd8020a0af5214e2a7b687ad",
+        "version": "0.2",
+        "world_id": "edgeworld-i12b-20261102-r4"
+      },
+      "event": "",
+      "manifest": "e401321f1efb0d9da31764b28a8fc27feaa867ec4a54d0cdb7a2296bfbc16fb7",
+      "observe_request_sha256": "0e566b19fedd4c05f290f99dd20f0ff27ebec4f6f836ed803b68032a1b7631dd",
+      "observe_response_sha256": "04e9324381ffb4ef0598bdb06d23ae88fe742f458b56d3b8252509461953eac9",
+      "pins_sha256": "4469a83a61f8c29cd87715732c63f217d2ee9c55f05cc29929007877497af5c3",
+      "selected_observation": {
+        "revision": 0,
+        "tick": 0,
+        "watermark": 0
+      },
+      "state": "a43f744357bf3511d4f4f9555c9a5ba18b1b3c2c792c87f626e7ef60add68f97",
+      "trusted_head_hash": "e401321f1efb0d9da31764b28a8fc27feaa867ec4a54d0cdb7a2296bfbc16fb7"
+    },
+    {
+      "case_id": "old-retain-0-1",
+      "context": {
+        "allowed_actions": [
+          "retain_snapshot",
+          "physics_step"
+        ],
+        "artifact_class": "genesis-runtime",
+        "authority_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/authority-attempt4",
+        "domain": "edgeworld.universe.authority",
+        "expected_build": "25cb7679d02efad755a7b55d651e17c1249ca3bb0494e23540ae5b9cd2fbe18a",
+        "expected_options": "77cca49a81a5b4fbb46395053dbe79ccd95982706599ebdc7a4a218d01cb6c26",
+        "principal": "owner-i12b",
+        "profile": "composite-rigid-support.v0.2",
+        "trust_algorithm": "local-hmac-sha256.v0.2",
+        "trust_anchor": "09e05549e823a6c6119c27fa6c528d20ae71112cfd8020a0af5214e2a7b687ad",
+        "version": "0.2",
+        "world_id": "edgeworld-i12b-20261102-r4"
+      },
+      "event": "37f6b8f5813b88ac2a9c04638454f5fde331e1b5a76e36c07daf5a9eb4d58a1c",
+      "manifest": "9b933b1a11362284138a75d960da29a5ba3a5d07c8db5843348fabbb6411a950",
+      "observe_request_sha256": "51a9feb2745591188c44200a5110d3b511d6f5566951468528eae650098dc7a8",
+      "observe_response_sha256": "ef5236f07df3f419f96eb00c0a57b9c50a09149cee4866ae299faad2a92b38ad",
+      "pins_sha256": "4469a83a61f8c29cd87715732c63f217d2ee9c55f05cc29929007877497af5c3",
+      "selected_observation": {
+        "revision": 1,
+        "tick": 0,
+        "watermark": 1
+      },
+      "state": "e05f8a32a169f8eafdd633af6329b5dfa2e89219022003f26b1d1b539dbcfffa",
+      "trusted_head_hash": "9b933b1a11362284138a75d960da29a5ba3a5d07c8db5843348fabbb6411a950"
+    },
+    {
+      "case_id": "old-physics-1-2",
+      "context": {
+        "allowed_actions": [
+          "retain_snapshot",
+          "physics_step"
+        ],
+        "artifact_class": "genesis-runtime",
+        "authority_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I12B-20261102-world/authority-attempt4",
+        "domain": "edgeworld.universe.authority",
+        "expected_build": "25cb7679d02efad755a7b55d651e17c1249ca3bb0494e23540ae5b9cd2fbe18a",
+        "expected_options": "77cca49a81a5b4fbb46395053dbe79ccd95982706599ebdc7a4a218d01cb6c26",
+        "principal": "owner-i12b",
+        "profile": "composite-rigid-support.v0.2",
+        "trust_algorithm": "local-hmac-sha256.v0.2",
+        "trust_anchor": "09e05549e823a6c6119c27fa6c528d20ae71112cfd8020a0af5214e2a7b687ad",
+        "version": "0.2",
+        "world_id": "edgeworld-i12b-20261102-r4"
+      },
+      "event": "71515cc95f320e7def1e183dd90084fd96912884a4a5a2b31e257449e15288b9",
+      "manifest": "b82c63a952346132337ac929dbcf334e56e097d2338a4b3ef10410a12e878363",
+      "observe_request_sha256": "47953a000f990d3e67257a9dd55501be32b7736225360ab1adc54d85e71acea0",
+      "observe_response_sha256": "aef86fa59995326737f9b3982c4cdb8b35c0da3742ebf06260b7efe97d98be9c",
+      "pins_sha256": "4469a83a61f8c29cd87715732c63f217d2ee9c55f05cc29929007877497af5c3",
+      "selected_observation": {
+        "revision": 2,
+        "tick": 1,
+        "watermark": 2
+      },
+      "state": "2d120c588d6441c792394fe672f3d95c2ddbbed30e7c17d72c167ce3127216f5",
+      "trusted_head_hash": "b82c63a952346132337ac929dbcf334e56e097d2338a4b3ef10410a12e878363"
+    }
+  ],
+  "g_b2_granted": false,
+  "note": "Only these exact responses ran the pinned strict Native parser; no Metal/input/runtime-pair/provision authorization is granted",
+  "status": "checks_complete_requires_review"
+}

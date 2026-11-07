@@ -1,0 +1,26 @@
+{
+  "task": "I18A",
+  "status": "removed_non_force",
+  "worktree": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i18-independent-review",
+  "branch": "codex/i18-independent-review",
+  "source_commit": "43243691fca8572a0d728eaba30ddd2b01f47e95",
+  "equivalent_integration_commit": "49f35c8",
+  "branch_retained": true,
+  "checks": {
+    "clean_before_removal": true,
+    "four_review_files_byte_identical": true,
+    "stable_verifier": "checks_complete_requires_review",
+    "coverage": 3,
+    "g_b2_granted": false,
+    "runtime_index_files_rehashed": 244,
+    "runtime_public_text_dependencies_checked": 81,
+    "review_policy_and_runtime_dependency_on_removed_path": false
+  },
+  "retained": [
+    "plan-consolidation",
+    "i15-native-build",
+    "i12b-universe-live"
+  ],
+  "runtime_originals_retained": true,
+  "recorded_at": "2026-11-07T13:09:56.729002+00:00"
+}
