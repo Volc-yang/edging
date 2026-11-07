@@ -1,0 +1,63 @@
+{
+  "automation_log_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I18-20261107-native-seal/capability/native/ue.log",
+    "sha256": "94a1db88d7494149c29347c2037da8edce08feb9092161ee631d69f182d30736"
+  },
+  "binary_refs": {
+    "executable": {
+      "path": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor",
+      "sha256": "92a29c07430a88ee50ca6d343a81d83e92ec433619dff99ac12995dac26c2612"
+    },
+    "host": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/outputs/project/Binaries/Mac/libUnrealEditor-EdgeWorldHost.dylib",
+      "sha256": "b2567e2bf234aea30d45bdf17ebd93cbfa873bcbd833297c1410fafd48f21bc4"
+    },
+    "plugin": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/outputs/project/Plugins/EdgeWorldRuntime/Binaries/Mac/libUnrealEditor-EdgeWorldRuntime.dylib",
+      "sha256": "05fdcbd06dc75f7f6f5a7ab8351c64d6fb26e09896c058684c84f133802b3a47"
+    }
+  },
+  "build_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/prep/build-receipt.json",
+    "sha256": "85988e89bce7f6f4d0327a27dde58947f970664c3b5c9c2dc19a8ed399cbc6d2"
+  },
+  "coverage": [
+    "04e9324381ffb4ef0598bdb06d23ae88fe742f458b56d3b8252509461953eac9",
+    "ef5236f07df3f419f96eb00c0a57b9c50a09149cee4866ae299faad2a92b38ad",
+    "aef86fa59995326737f9b3982c4cdb8b35c0da3742ebf06260b7efe97d98be9c"
+  ],
+  "decision": "pass",
+  "execution_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I18-20261107-native-seal/capability/native-execution.json",
+    "sha256": "1996c9ff3eeead803bb8d792404e907f2591deb7b3d103fde2bb3f6c5e586338"
+  },
+  "format": "universe-i15-native-replay-review.v1",
+  "manifest_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I18-20261107-native-seal/replay-old3/manifest.json",
+    "sha256": "d798c9c850137964193c88572ffdb1936201e83d5225bb65124249a30cb50c8c"
+  },
+  "owner": "root",
+  "resource_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I18-20261107-native-seal/prep/resource-review.json",
+    "sha256": "ea63325746854e868c06ceae3eb5e1a53dfbf583edf711cfa4290cf52ef80ca8"
+  },
+  "result_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I18-20261107-native-seal/capability/native/replay-result.json",
+    "sha256": "d3b1bab7a3880efc81f6523f9469c3858e9e3e1200610b985120da3bc01fb2cd"
+  },
+  "reviewer": "/root/i17_review",
+  "source_refs": {
+    "bridge_cpp": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build/engine_platforms/unreal/EdgeWorldHost/Source/EdgeWorldHost/EdgeWorldUniverseProofReplayTest.cpp",
+      "sha256": "fa740147828f65eaa5e4dcc9d2530a8f2ab1a72b9b02b2b32c0298bdcfebe57d"
+    },
+    "parser_cpp": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Source/EdgeWorldRuntime/Private/EdgeWorldUniverseObservation.cpp",
+      "sha256": "c2554cbb9b024f195222ea6223a5122b4c29e9207c8f67ac09cb085bd86805a1"
+    },
+    "parser_h": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build/engine_platforms/unreal/EdgeWorldHost/Plugins/EdgeWorldRuntime/Source/EdgeWorldRuntime/Public/EdgeWorldUniverseObservation.h",
+      "sha256": "fa8229bf0207ea4e0c4d551e8673d32afaa5bcc99fd2dc8fd5e312607621c5d9"
+    }
+  }
+}
