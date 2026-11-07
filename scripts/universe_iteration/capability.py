@@ -12,6 +12,7 @@ import math
 import os
 from pathlib import Path
 import re
+import shlex
 import signal
 import stat
 import subprocess
@@ -121,6 +122,20 @@ def file_fingerprint(path):
     lc.require(stat.S_ISREG(before.st_mode) and identity(before)==identity(after)==identity(current),'evidence changed during fingerprint')
     return dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw),
                 device=before.st_dev,inode=before.st_ino,mtime_ns=before.st_mtime_ns,ctime_ns=before.st_ctime_ns)
+
+
+def sponsored_trace_server(row, sponsor_pid, ue_root=None):
+    """Identify only the actual TraceServer executable and one exact sponsor."""
+    raw=row.get('argv','')
+    if type(raw) is not str or type(sponsor_pid) is not int or sponsor_pid<=0:return False
+    try:
+        absolute=str(Path(ue_root)/'Engine/Binaries/Mac/UnrealTraceServer') if ue_root else None
+        if absolute and raw.startswith(absolute+' '):
+            arguments=[absolute]+shlex.split(raw[len(absolute)+1:])
+        else:arguments=shlex.split(raw)
+    except (TypeError,ValueError):return False
+    return bool(arguments and Path(arguments[0]).name=='UnrealTraceServer' and
+                [arg for arg in arguments[1:] if arg.startswith('--sponsor=')]==['--sponsor='+str(sponsor_pid)])
 
 
 def encoded(value):
@@ -571,12 +586,18 @@ class CapabilityController:
     def _phase_owned(self, name):
         phase=self.phases[name]
         identities={}
+        baseline={lc.process_key(row) for sample in self.samples if sample['monotonic']<=phase.get('started',0)
+                  for row in sample['processes']}
         for sample in self.samples:
             rows=sample['processes']
             seed=phase.get('identity')
             if seed is None:continue
             for item in lc.classify_processes(rows,[seed],self.prepared['binary_pins']['ue']['path']):
                 if item['ownership']=='owned':identities[lc.process_key(item['identity'])]=item['identity']
+            for row in rows:
+                if (lc.process_key(row) not in baseline and sample['monotonic']>=phase['started'] and
+                    sponsored_trace_server(row,phase['pid'],self.prepared.get('ue_root'))):
+                    identities[lc.process_key(row)]=row
         return list(identities.values())
 
     def _quiet(self, name):
@@ -646,6 +667,7 @@ class CapabilityController:
         env.update(dict(zip(REPLAY_ENV,('1',self.native_manifest['path'],self.native_manifest['sha256'],str(result_path)))))
         argv=[self.prepared['binary_pins']['ue']['path'],self.prepared['project'],
             '/Engine/Maps/Entry?game=/Script/Engine.GameModeBase','-game','-NullRHI','-unattended','-NoSplash','-NoSound','-NoCrashDialog',
+            '-notraceserver','-traceautostart=0',
             '-ExecCmds=Automation RunTests '+ '+'.join('^'+s for s in SELECTORS),
             '-TestExit=Automation Test Queue Empty','-UserDir='+str(directory/'user'),'-abslog='+str(directory/'ue.log')]+ddc_argv
         value=self._spawn_reserved('native',argv,env,directory)
