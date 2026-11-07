@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I18 直接复测 NoTrace 封存
+
+[I18登记](universe_i18_execution_register.md) / [方案](design/universe-i18-native-seal-plan.md)：不再开发/CI，直接复用已合入修复；N已接受固定driver审查。所有准备/权限/ready在clock前，同一driver自动一次Native与结束采证/seal；源码/二进制hash匹配，无新Native diff。尚未dispatch，旧I17失败与G-B2 open不变。
+
 ## 当前结算：I17 四项实测通过，Trace封存纠正待复测
 
 [I17登记](universe_i17_execution_register.md) / [方案v2](design/universe-i17-native-completion-plan.md)：PR123/218504d→cd6d1c6、CI42369719523 success，独立9新+18旧CPU通过。唯一真实Native **Found4/四完整Success、三proof accepted、wait0**；独占97字符Isolated DDC Writable且无Zen。但后验TraceServer双fork/sponsor51581未被父子链覆盖，console追加使原引用失配，完整监督/封存不能pass。PR124/58fcab7→6d184d8最终CI42371060080 success、独立2CPU已补真实NoTrace参数与exact sponsor归属；root029defe合并代码与v2裁决，**第二卡未运行**。
