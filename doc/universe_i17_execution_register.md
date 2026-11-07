@@ -17,3 +17,9 @@
 本轮sandbox限制写workspace、DevSSD写/ps/联网需正式升级。独占DevSSD mkdir及metadata baseline/ps已分别获自动审批允许。第一次git push升级被拒，理由remote ownership/trust和payload发布授权未建立；没有改用其它渠道绕过。随后GitHub只读连接get_user_login返回Volc-yang/56686828，owner列表确认同用户拥有公开Volc-yang/edging/1291093087、admin/push true且origin匹配；附此新增证据重提同一git push获批准，f8d4822/61a05b1已成功推送。后续权限仍按具体操作审查，不把此次批准当无限授权。
 
 用户主checkout、I12B恢复树与既有构建树保留；旧blocked goal状态不改。未安排网站/DNS/API、crash report发送或UE引擎源码修改。
+
+## 首卡实际与v2裁决（第二卡前持久记录）
+
+PR123/218504d经N独立9+18 CPU及CI42369719523 success，merge/tool cd6d1c6。真实首UE51581/parent51564、parentwait0，四完整测试Success、case3接受；controller43.195s/outer43.561s。DDC实际Isolated短路径Writable、无Zen启动、barrier报告complete。但后验console1815→2665B，旧SHA只匹配明确derived prefix：TraceServer52541 ppid1且--sponsor=51581，原parent-chain-only quiet漏报；首原resource/receipt不可覆盖，first-attempt-postseal-review ca38244a保留。61-file map不变；五已知外域UBT3项rotation/656B，新增Trace域当前13files/11790B须加入完整账。
+
+唯一纠正58fcab7的两个真实Trace关闭参数与exact sponsor归属经N独立审查/affected2CPU，CI42371060080 success后集成。原900s的270s完整预留已不足，v1门不称通过；按root提议/N明确接受的方案v2，本轮整体首dispatch连续wall上限只增加至1200s(+300)，不重置起点、不加两次窗口/每次180s或2GiB、不再延期。第二独立卡沿用旧900政策，最终同时报告两卡整体v1/v2账与第二有限门；不得用第二结果补第一console/observer缺口。
