@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I17 修复四项调度与缓存/封存
+## 当前结算：I17 四项实测通过，Trace封存纠正待复测
 
-[I17登记](universe_i17_execution_register.md) / [审定方案](design/universe-i17-native-completion-plan.md)：C实现、N独立审查并行；只修Mac无$筛选、源码前缀唯一性、独占Mac短路径FileSystem DDC和写者结束后稳定封存。已复核5a6cca0构建source/binary可复用，无新C++/engine修改；代码CPU/PR/CI及新输入ready后才启动运行clock。尚未新dispatch，原I16三proof成功与组合门失败均保留。G-B2仍open。
+[I17登记](universe_i17_execution_register.md) / [方案v2](design/universe-i17-native-completion-plan.md)：PR123/218504d→cd6d1c6、CI42369719523 success，独立9新+18旧CPU通过。唯一真实Native **Found4/四完整Success、三proof accepted、wait0**；独占97字符Isolated DDC Writable且无Zen。但后验TraceServer双fork/sponsor51581未被父子链覆盖，console追加使原引用失配，完整监督/封存不能pass。PR124/58fcab7→6d184d8最终CI42371060080 success、独立2CPU已补真实NoTrace参数与exact sponsor归属；root029defe合并代码与v2裁决，**第二卡未运行**。
+
+I17 partial；61-file map不变，最终自有进程静默。整体1206.800s超过原900和显式v2的1200，均记wall fail；保守root/Trace/已知外部增量1.559GB<2GiB但首Trace基线/actor缺口不覆。G-B2/正式Native coverage仍open。下一轮只复核保留build、冻结已纠正工具源，直接新独立Native-only卡复测，不再工具实现/CI研究；全部离线准备在新clock前完成。旧失败、用户改动、构建/恢复树保留，原件/独立结算/清理见登记。
 
 ## 当前结算：I16 三份proof实际接受，组合门未过
 
