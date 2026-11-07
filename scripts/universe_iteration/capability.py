@@ -62,6 +62,67 @@ def validate_public_export(actual, expected):
                'trusted pure public pins export differs from pinned canonical LF bytes')
 
 
+def native_test_inventory(source_pins, product_root):
+    """Fail closed on ambiguous project registrations; runtime still requires exact four."""
+    product=lc.checked_path(str(product_root));rows=[];sources=[]
+    registration=re.compile(r'\b(IMPLEMENT_[A-Z_]*AUTOMATION_TEST)\s*\(\s*([A-Za-z_][A-Za-z_0-9]*)\s*,\s*(?:TEXT\s*\(\s*)?"([^"\\]+)"\s*\)?\s*,')
+    for pin in source_pins:
+        path=lc.checked_path(pin['path'])
+        lc.require(path.is_relative_to(product/'engine_platforms/unreal'),'inventory must use pinned project native source')
+        if path.suffix not in ('.cpp','.cc','.h','.hpp'):continue
+        text=lc.read_ref(pin).decode('utf-8')
+        # Retain quoted strings while removing comments, so commented examples
+        # cannot create false registrations. Nonliteral macro names fail closed.
+        text=re.sub(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|//[^\n]*|/\*.*?\*/',
+                    lambda m:'' if m.group().startswith(('/',)) else m.group(),text,flags=re.S)
+        matches=list(registration.finditer(text))
+        lc.require(len(matches)==len(re.findall(r'\bIMPLEMENT_[A-Z_]*AUTOMATION_TEST\s*\(',text)),
+                   'nonliteral or unsupported project test registration')
+        for match in matches:
+            kind,class_name,name=match.groups()
+            lc.require(kind=='IMPLEMENT_SIMPLE_AUTOMATION_TEST' or not any(
+                name.casefold().startswith(s.casefold()) or s.casefold().startswith(name.casefold()) for s in SELECTORS),
+                'dynamic/complex test inventory cannot prove selected prefix unique')
+            rows.append(dict(name=name,kind=kind,class_name=class_name,source_ref=pin))
+        sources.append(pin)
+    lc.require(rows and sources,'complete pinned native test inventory missing')
+    for selector in SELECTORS:
+        lc.require([r['name'] for r in rows if r['name'].casefold().startswith(selector.casefold())]==[selector],
+                   'selected native test prefix missing or ambiguous: '+selector)
+    return dict(format='universe-i17-native-test-inventory.v1',sources=sources,
+                registrations=sorted(rows,key=lambda r:r['name']),selectors=list(SELECTORS),
+                selection='project prefixes proven unique; runtime exact Found4/Path set required')
+
+
+def native_cache_arguments(output_root, run_id, controller_output):
+    """Fixed isolated FileSystem graph; Mac rejects cache roots >=119 chars."""
+    root=lc.checked_path(str(output_root))
+    lc.require(type(run_id) is str and re.fullmatch('[A-Za-z0-9._-]{1,128}',run_id),'bounded run identity for DDC')
+    controller=lc.checked_path(str(controller_output))
+    lc.require(controller.is_relative_to(root) and controller!=root,'DDC controller must belong to counted output root')
+    binding=(run_id+'\0'+str(controller)).encode()
+    path=lc.checked_path(str(root/('ddc-i17-'+hashlib.sha256(binding).hexdigest()[:16])))
+    lc.require(len(str(path))<119 and re.fullmatch(r'[A-Za-z0-9_./-]+',str(path)) is not None,
+               'DDC path must fit installed Mac limit and literal graph syntax')
+    graph='-DDC=(Isolated=(Type=FileSystem,Path='+str(path)+',PromptIfMissing=false,Clean=false,DeleteUnused=false))'
+    return path,[graph,'-DDC-NoDefaultGraph']
+
+
+def file_fingerprint(path):
+    """Exact stable bytes for final writer checks, without publishing a false ref."""
+    path=lc.checked_path(str(path))
+    fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+    with os.fdopen(fd,'rb') as stream:
+        before=os.fstat(stream.fileno())
+        lc.require(stat.S_ISREG(before.st_mode) and before.st_size<=16*1024**2,'bounded regular evidence required')
+        raw=stream.read(16*1024**2+1);after=os.fstat(stream.fileno())
+    current=path.stat()
+    identity=lambda st:(st.st_dev,st.st_ino,st.st_size,st.st_mtime_ns,st.st_ctime_ns)
+    lc.require(stat.S_ISREG(before.st_mode) and identity(before)==identity(after)==identity(current),'evidence changed during fingerprint')
+    return dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw),
+                device=before.st_dev,inode=before.st_ino,mtime_ns=before.st_mtime_ns,ctime_ns=before.st_ctime_ns)
+
+
 def encoded(value):
     return (json.dumps(value, sort_keys=True, indent=2, allow_nan=False)+'\n').encode()
 
@@ -575,28 +636,75 @@ class CapabilityController:
     def start_native(self):
         lc.require(self.native_manifest is not None and 'native' not in self.phases and self.phase is None,
                    'one frozen Native phase only')
+        inventory=native_test_inventory(self.prepared['native_source_pins'],self.prepared['product_root'])
+        inventory_ref=self._write(self.output/'native-test-inventory.json',inventory)
+        ddc,ddc_argv=native_cache_arguments(self.prepared['output_root'],self.card['run_id'],self.output)
+        ddc.mkdir(mode=0o700) # exclusive, never reuse another run's cache
         directory=self.output/'native';directory.mkdir(mode=0o700);(directory/'user').mkdir(mode=0o700)
         result_path=directory/'replay-result.json'
         env={k:v for k,v in os.environ.items() if not k.startswith('EDGEWORLD_') and k not in ('PYTHONHOME','PYTHONPATH')}
         env.update(dict(zip(REPLAY_ENV,('1',self.native_manifest['path'],self.native_manifest['sha256'],str(result_path)))))
         argv=[self.prepared['binary_pins']['ue']['path'],self.prepared['project'],
             '/Engine/Maps/Entry?game=/Script/Engine.GameModeBase','-game','-NullRHI','-unattended','-NoSplash','-NoSound','-NoCrashDialog',
-            '-ExecCmds=Automation RunTests '+ '+'.join('^'+s+'$' for s in SELECTORS),
-            '-TestExit=Automation Test Queue Empty','-UserDir='+str(directory/'user'),'-abslog='+str(directory/'ue.log')]
-        return self._spawn_reserved('native',argv,env,directory)
+            '-ExecCmds=Automation RunTests '+ '+'.join('^'+s for s in SELECTORS),
+            '-TestExit=Automation Test Queue Empty','-UserDir='+str(directory/'user'),'-abslog='+str(directory/'ue.log')]+ddc_argv
+        value=self._spawn_reserved('native',argv,env,directory)
+        self.phases['native'].update(inventory_ref=inventory_ref,ddc_path=str(ddc),ddc_arguments=ddc_argv)
+        return value
+
+    def _native_writer_barrier(self, deadline):
+        """Three fresh quiet samples and unchanged logs before any final reference."""
+        phase=self.phases['native'];paths=[Path(phase['directory'])/name for name in ('console.log','ue.log','replay-result.json')]
+        previous=None;quiet_since=None;consecutive=0;last_sample=None;observations=[]
+        while self.clock()<deadline:
+            lc.require(not self.observer_error and self.observer is not None and self.observer.is_alive(),
+                       'continuous observer required through native writer completion')
+            with self.lock:sample=deepcopy(self.samples[-1]) if self.samples else None
+            if sample and sample['monotonic']>=phase['wait_monotonic'] and sample['monotonic']!=last_sample:
+                last_sample=sample['monotonic'];quiet=self._quiet('native')
+                try:fingerprints=[file_fingerprint(path) for path in paths]
+                except (OSError,lc.Invalid):fingerprints=None
+                observations.append(dict(sample_ref=sample['raw_ref'],monotonic=last_sample,
+                                         all_owned_quiet=quiet,files=fingerprints))
+                if quiet and fingerprints is not None:
+                    if fingerprints==previous:
+                        consecutive+=1
+                    else:quiet_since=last_sample;consecutive=1
+                    if consecutive>=3 and last_sample-quiet_since>=.75:
+                        return dict(format='universe-i17-native-writer-barrier.v1',complete=True,
+                            confirmed_monotonic=self.clock(),stable_since_monotonic=quiet_since,
+                            observations=observations,files=fingerprints)
+                    previous=fingerprints
+                else:previous=None;quiet_since=None;consecutive=0
+            time.sleep(.05)
+        return dict(format='universe-i17-native-writer-barrier.v1',complete=False,
+                    confirmed_monotonic=self.clock(),observations=observations,files=previous or [])
+
+    def _verify_native_frozen_files(self):
+        phase=self.phases['native'];frozen=phase.get('frozen_files',[])
+        lc.require(frozen,'native evidence was not frozen after writer completion')
+        for expected in frozen:
+            lc.require(file_fingerprint(expected['path'])==expected,'native evidence mutated after writer completion')
 
     def wait_native(self, timeout=180):
         lc.require(self.phase=='native' and 0<=timeout<=180,'one bounded actual Native wait')
         p=self.phases['native'];p['thread'].join(timeout)
         lc.require(not p['thread'].is_alive(),'Native actual parent wait incomplete')
-        time.sleep(.6)
+        deadline=min(p['started']+178,self.started+810)
+        barrier=self._native_writer_barrier(deadline)
+        p['writer_barrier_ref']=self._write(self.output/'native-writer-barrier.json',barrier)
+        p['frozen_files']=barrier['files'] if barrier['complete'] else []
         result_path=self.output/'native/replay-result.json';log_path=self.output/'native/ue.log'
         errors=[]
+        if not barrier['complete']:errors.append('native writers did not become quiet and stable within phase budget')
         try:
             log=log_path.read_text();found=re.findall(r'Found\s+(\d+)\s+automation tests',log,re.I)
             completed=re.findall(r'Test Completed\. Result=\{([^}]+)\} Name=\{[^}]*\} Path=\{([^}]+)\}',log)
             lc.require(found and found[-1]=='4' and len(completed)==4 and
                 {s for _,s in completed}==set(SELECTORS) and all(r=='Success' for r,_ in completed),'four exact Native tests not successful')
+            ddc_pattern=r'Isolated:\s+Using data cache path\s+'+re.escape(p['ddc_path'])+r'/?\s*:\s*Writable'
+            lc.require(re.search(ddc_pattern,log) is not None,'actual isolated writable filesystem DDC path not confirmed')
+            lc.require(re.search(r'LogZenServiceInstance[^\n]*Launching',log) is None,'unexpected Zen service launch in native run')
             result=json.loads(result_path.read_bytes());manifest=lc.json_ref(self.native_manifest)
             lc.require(result['format']=='universe-i15-native-replay-result.v1' and result['host_pid']==p['pid'] and
                 result['manifest_sha256']==self.native_manifest['sha256'] and result['case_count']==len(manifest['cases']) and
@@ -604,20 +712,30 @@ class CapabilityController:
         except (lc.Invalid,ValueError,KeyError,TypeError,OSError) as error:errors.append(str(error))
         quiet=self._quiet('native')
         if not quiet:errors.append('Native or extra UE still alive')
+        evidence_frozen=barrier['complete']
+        if evidence_frozen:
+            try:self._verify_native_frozen_files()
+            except (lc.Invalid,OSError) as error:errors.append(str(error));evidence_frozen=False
         if self.clock()-p['started']>180:errors.append('Native phase exceeded180s')
         p.update(normal=p['wait_exit']==0 and not p['forced_cleanup'] and not errors and quiet,
                  errors=errors,sealed_monotonic=self.clock())
         self.phase=None;self.closing=True
         identity=p.get('identity')
         lc.require(identity is not None,'actual observed Native identity missing')
+        def frozen_ref(name):
+            if not evidence_frozen:return None
+            row=next(item for item in p['frozen_files'] if Path(item['path']).name==name)
+            ref=dict(path=row['path'],sha256=row['sha256']);self.public_refs[ref['path']]=ref;return ref
         base=self._phase_report('native')
         value=dict(base,format='universe-i15-native-execution.v1',host_pid=p['pid'],process_start=identity['start'],
             parent_pid=p['parent_pid'],cwd=self.prepared['product_root'],environment={k:p['environment'][k] for k in REPLAY_ENV},
-            selectors=list(SELECTORS),manifest_ref=self.native_manifest,result_ref=self._ref(result_path) if result_path.is_file() else None,
+            selectors=list(SELECTORS),manifest_ref=self.native_manifest,result_ref=frozen_ref('replay-result.json'),
             parent_wait=dict(observed=True,exit_code=p['wait_exit'],host_pid=p['pid'],process_start=identity['start'],parent_pid=p['parent_pid']),
             forced_cleanup=bool(p['forced_cleanup']),started_monotonic=p['started'],ended_monotonic=p['wait_monotonic'],
-            controller_run_id=self.card['run_id'],clock_id=self.clock_binding['id'],log_ref=self._ref(log_path) if log_path.is_file() else None,
-            console_ref=self._ref(self.output/'native/console.log'),resource_elapsed_seconds=self.clock()-self.started,
+            controller_run_id=self.card['run_id'],clock_id=self.clock_binding['id'],log_ref=frozen_ref('ue.log'),
+            console_ref=frozen_ref('console.log'),evidence_frozen=evidence_frozen,
+            deferred_evidence_paths=[] if evidence_frozen else [str(result_path),str(log_path),str(self.output/'native/console.log')],
+            resource_elapsed_seconds=self.clock()-self.started,
             time_kind='controller-monotonic-actual-wait')
         return self._write(self.output/'native-execution.json',value)
 
@@ -638,9 +756,11 @@ class CapabilityController:
         lc.require(not self.closed and self.phase is None and 'native' in self.phases and
                    'sealed_monotonic' in self.phases['native'],'completed phase wait required before seal')
         lc.require(self.clock()-self.phases['native']['sealed_monotonic']<=90,'final seal exceeded90s')
+        if self.phases['native'].get('frozen_files'):self._verify_native_frozen_files()
         self.stop_event.set();self.observer.join(3)
         lc.require(not self.observer.is_alive(),'observer final sample not sealed')
         quiet=all(p.get('skipped') or self._quiet(n) for n,p in self.phases.items())
+        if self.phases['native'].get('frozen_files'):self._verify_native_frozen_files()
         elapsed=self.clock()-self.started;size=self._storage_bytes()
         value=dict(format='universe-i15-capability-resource.v1',run_id=self.card['run_id'],clock=self.clock_binding,
             elapsed_seconds=elapsed,storage_bytes=size,all_processes_quiet=quiet,observer_error=self.observer_error,

@@ -1,0 +1,13 @@
+{
+  "format": "universe-i17-cpu-check-summary.v1",
+  "new_suite": {"command": "python3 -B -m unittest discover -s tests -p test_universe_native_completion.py -v", "tests": 9, "result": "pass", "elapsed_seconds": 5.906},
+  "legacy_suite": {"command": "python3 -B doc/evidence/universe-I15C/test_capability.py -v", "tests": 18, "result": "pass", "elapsed_seconds": 6.061},
+  "affected_casefold_followup": {"tests": 2, "result": "pass", "elapsed_seconds": 0.025},
+  "native_project_inventory": {"source_files": 63, "registered_tests": 23, "selected_unique_prefixes": 4, "runtime_evidence": false},
+  "actual_cpu_children": true,
+  "actual_ps_observer": true,
+  "ue_or_build_or_solver_started": false,
+  "devssd_written": false,
+  "owner_or_key_contents_read": false,
+  "g_b2_granted": false
+}
