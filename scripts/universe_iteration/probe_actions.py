@@ -8,6 +8,10 @@ from . import actions as a
 
 FORMAT = 'universe-i15-probe-actions.v1'
 READBACK_FORMAT = 'universe-i15-probe-readback.v1'
+# Explicit I19 slice. The old full-matrix entrypoints and caps stay unchanged.
+FORMAT_V2 = 'universe-i19-probe-actions.v2'
+CUA_FORMAT_V2 = 'universe-i19-probe-cua.v2'
+STEP_LIMIT_V2 = 20
 Invalid = a.Invalid
 _keys, require, _head, _binding = a._keys, a.require, a._head, a._binding
 _integer, _seconds, _utc = a._integer, a._seconds, a._utc
@@ -64,6 +68,38 @@ def _probe_item(action_id):
     return found[0]
 
 
+def probe_manifest_v2():
+    """One fixed readonly slice; these costs are proposals, never timing evidence."""
+    old = {item['action_id']: item for item in probe_manifest()['items']}
+    items = []
+    for action_id, cap in (('p1.startup', 60), ('p1.probe', 90), ('p1.history', 25),
+                           ('p1.history_write_rejected', 110), ('p1.final', 70), ('p1.exit', 40)):
+        item = deepcopy(old[action_id])
+        item['max_seconds'] = cap
+        for command in item['commands']:
+            command['max_seconds'] = STEP_LIMIT_V2
+        if action_id in ('p1.final', 'p1.exit'):
+            item['selected_observation'] = deepcopy(a.H1)
+        remaining = cap - sum(command['max_seconds'] for command in item['commands'])
+        item['passive_costs'] = {name: remaining / 3 for name in
+                                ('maps_seconds', 'marker_seconds', 'image_restore_seconds')}
+        items.append(item)
+    return {'format': FORMAT_V2, 'scope': 'existing-readonly-history-input-slice', 'session': 'existing',
+            'items': items, 'request_count': 3, 'expected_operations': ['status', 'observe', 'observe'],
+            'image_count': 1, 'logical_step_count': 14, 'new_observe_response_count': 2,
+            'physical_operation_count': 'recorded_per_actual_call', 'step_limit_seconds': STEP_LIMIT_V2,
+            'interaction_seconds': 295, 'interaction_limit_seconds': 300,
+            'deferred_actions': ['camera', 'visibility', 'framerate', 'pause', 'held_input'],
+            'optional_actions': [], 'cost_status': 'proposal_not_measured',
+            'standard_pair': False, 'g_b2_granted': False}
+
+
+def _probe_item_v2(action_id):
+    found = [item for item in probe_manifest_v2()['items'] if item['action_id'] == action_id]
+    require(len(found) == 1, 'unknown fixed I19 slice action')
+    return found[0]
+
+
 def _diagnostic(raw,event,item,receipt):
     line=raw[event['log_start']:event['log_end']];marker=b'EW_I13_READBACK '
     require(line.count(marker)==1 and line.endswith(b'\n'),'actual complete probe readback required')
@@ -96,13 +132,12 @@ def _states(item,diagnostics):
         require(value['selected_observation']==selected,'probe selected observation')
 
 
-@a._boundary
-def validate_probe_receipt(receipt, *, expected_binding, frames, expected_context):
-    """I14 event order is native serial/log offset; checkpoint time is controller observation only."""
+def _validate_probe_receipt(receipt, *, expected_binding, frames, expected_context,
+                            item, receipt_format, cua_format, step_limit, physical_details=False):
     _keys(receipt, RECEIPT_FIELDS, 'v2 receipt')
-    require(receipt['format'] == FORMAT, 'v2 receipt format')
+    require(receipt['format'] == receipt_format, 'v2 receipt format')
     _binding(receipt['binding'], expected_binding)
-    item = _probe_item(receipt['action_id'])
+    require(receipt['action_id'] == item['action_id'], 'fixed slice action identity')
     require(item['session'] == expected_binding['session'], 'v2 action/session')
     _head(receipt['trusted_head']); _head(receipt['selected_observation'])
     require(receipt['trusted_head'] == item['trusted_head'] and receipt['selected_observation'] == item['selected_observation'],
@@ -122,17 +157,29 @@ def validate_probe_receipt(receipt, *, expected_binding, frames, expected_contex
     raw, pin = _log(receipt)
     cua = _json(reference(receipt['cua']))
     _keys(cua, {'format', 'binding', 'action_id', 'clock', 'calls'}, 'v2 CUA')
-    require(cua['format'] == 'universe-i15-probe-cua.v1' and cua['action_id'] == item['action_id'] and
+    require(cua['format'] == cua_format and cua['action_id'] == item['action_id'] and
             cua['clock'] == receipt['clock'], 'v2 CUA binding')
     _binding(cua['binding'], expected_binding)
     require(type(cua['calls']) is list and len(cua['calls']) == len(item['commands']), 'all v2 queries/calls required')
     call_end, log_end = start, pin['before_offset']
     for call, command in zip(cua['calls'], item['commands']):
-        _keys(call, {'command', 'started_monotonic', 'completed_monotonic', 'raw_tool_ref',
-                     'log_before_offset', 'log_after_offset', 'step_id'}, 'v2 CUA call')
+        fields = {'command', 'started_monotonic', 'completed_monotonic', 'raw_tool_ref',
+                  'log_before_offset', 'log_after_offset', 'step_id'}
+        if physical_details:
+            fields |= {'physical_operations', 'physical_operation_count'}
+        _keys(call, fields, 'v2 CUA call')
         call_start, call_stop = call['started_monotonic'], call['completed_monotonic']
         require(call['step_id']==command['step_id'] and call['command'] == command['text'] and _seconds(call_start) and _seconds(call_stop) and
-                call_end <= call_start <= call_stop <= end and call_stop-call_start <= min(10, command['max_seconds']), 'v2 call order/deadline')
+                call_end <= call_start <= call_stop <= end and call_stop-call_start <= min(step_limit, command['max_seconds']), 'v2 call order/deadline')
+        if physical_details:
+            operations = call['physical_operations']
+            require(type(operations) is list and 1 <= len(operations) <= 32 and
+                    type(call['physical_operation_count']) is int and
+                    call['physical_operation_count'] == len(operations), 'actual physical operation list/count required')
+            for operation in operations:
+                _keys(operation, {'operation', 'arguments'}, 'physical operation')
+                require(type(operation['operation']) is str and 0 < len(operation['operation']) <= 128 and
+                        type(operation['arguments']) is dict, 'actual operation and argument object required')
         require(_integer(call['log_before_offset']) and _integer(call['log_after_offset']) and
                 log_end <= call['log_before_offset'] <= call['log_after_offset'] <= pin['after_offset'], 'v2 call log brackets')
         require(reference(call['raw_tool_ref']), 'actual raw CUA call evidence required')
@@ -190,25 +237,45 @@ def validate_probe_receipt(receipt, *, expected_binding, frames, expected_contex
         _keys(image, {'capture_id', 'stage', 'capture_ref'}, 'v2 stage capture')
         require(image['capture_id'] == item['action_id']+'/'+image['stage'], 'v2 globally stable capture_id')
         reference(image['capture_ref'])  # V invokes C; no success inferred from arbitrary bytes.
-    return {'action_id': item['action_id'], 'kind': item['kind'], 'trace_range': [first,last],
+    result = {'action_id': item['action_id'], 'kind': item['kind'], 'trace_range': [first,last],
             'event_serials': [d['event_serial'] for d in diagnostics],
             'status': 'consistent_requires_R_and_independent_review', 'g_b2_granted': False}
-
+    if physical_details:
+        result.update(logical_step_count=len(cua['calls']),
+                      physical_operation_count=sum(call['physical_operation_count'] for call in cua['calls']))
+    return result
 
 
 @a._boundary
-def validate_probe_evidence(receipts,trace_refs,*,expected_binding,expected_context,
-                            expected_before_map_ref,expected_after_map_ref):
+def validate_probe_receipt(receipt, *, expected_binding, frames, expected_context):
+    """Old full probe; its 2/10-second per-call contract is unchanged."""
+    return _validate_probe_receipt(receipt, expected_binding=expected_binding, frames=frames,
+                                  expected_context=expected_context, item=_probe_item(receipt['action_id']),
+                                  receipt_format=FORMAT, cua_format='universe-i15-probe-cua.v1', step_limit=10)
+
+
+@a._boundary
+def validate_probe_receipt_v2(receipt, *, expected_binding, frames, expected_context):
+    """I19 slice only: full controller bracket includes CUA round trips and maps."""
+    return _validate_probe_receipt(receipt, expected_binding=expected_binding, frames=frames,
+                                  expected_context=expected_context, item=_probe_item_v2(receipt['action_id']),
+                                  receipt_format=FORMAT_V2, cua_format=CUA_FORMAT_V2,
+                                  step_limit=STEP_LIMIT_V2, physical_details=True)
+
+
+
+def _validate_probe_evidence(receipts,trace_refs,*,expected_binding,expected_context,
+                             expected_before_map_ref,expected_after_map_ref,manifest,validator):
     """Consistency only; C/R authenticates actual UI, source, captures, waits and full resource ledger."""
     require(expected_binding['session']=='existing','probe never impersonates initialize')
     frames=a.load_trace(trace_refs,expected_binding=expected_binding)
-    require([f['request']['operation'] for f in frames]==probe_manifest()['expected_operations'],'probe forbids every write/retry/extra request')
+    require([f['request']['operation'] for f in frames]==manifest['expected_operations'],'probe forbids every write/retry/extra request')
     _keys(expected_context,{'principal','trust_anchor','expected_build','expected_options'},'independent public context')
     require(type(expected_context['principal']) is str and expected_context['principal'] and
             all(type(expected_context[k]) is str and a.SHA.fullmatch(expected_context[k]) for k in ('trust_anchor','expected_build','expected_options')),'public context pins')
     baseline=_map(expected_before_map_ref,expected_binding['authority_root'])
     require(baseline==_map(expected_after_map_ref,expected_binding['authority_root']),'inherited authority changed during probe')
-    require(type(receipts) is list and [r['action_id'] for r in receipts]==[x['action_id'] for x in probe_manifest()['items']],'complete exact probe action order')
+    require(type(receipts) is list and [r['action_id'] for r in receipts]==[x['action_id'] for x in manifest['items']],'complete exact probe action order')
     cursor,serial,last_time,clock,paths,results=0,0,-1,None,set(),[]
     for receipt in receipts:
         require(receipt['trace_range'][0]==cursor and receipt['started_monotonic']>=last_time,'probe action time/frame gap or overlap')
@@ -217,13 +284,46 @@ def validate_probe_evidence(receipts,trace_refs,*,expected_binding,expected_cont
         for ref in [receipt['before'],receipt['after']]+[e['map'] for e in receipt['checkpoints']]:
             require(ref['path'] not in paths and _map(ref,expected_binding['authority_root'])==baseline,'probe map reused or inherited bytes changed')
             paths.add(ref['path'])
-        result=validate_probe_receipt(receipt,expected_binding=expected_binding,frames=frames,expected_context=expected_context)
+        result=validator(receipt,expected_binding=expected_binding,frames=frames,expected_context=expected_context)
         for value in result['event_serials']:
             require(value==serial+1,'missing/replayed native diagnostic event');serial=value
         cursor,last_time=receipt['trace_range'][1],receipt['completed_monotonic'];results.append(result)
-    require(cursor==4,'unclaimed probe trace frames')
-    return {'status':'checks_complete_requires_independent_review','checks':results,'request_count':4,
+    require(cursor==manifest['request_count'],'unclaimed probe trace frames')
+    return {'status':'checks_complete_requires_independent_review','checks':results,'request_count':manifest['request_count'],
             'standard_pair':False,'g_b2_granted':False,'runtime_authenticity_verified':False}
+
+
+@a._boundary
+def validate_probe_evidence(receipts,trace_refs,*,expected_binding,expected_context,
+                            expected_before_map_ref,expected_after_map_ref):
+    """Old full probe; not fulfilled by the I19 subset."""
+    return _validate_probe_evidence(receipts, trace_refs, expected_binding=expected_binding,
+                                    expected_context=expected_context,
+                                    expected_before_map_ref=expected_before_map_ref,
+                                    expected_after_map_ref=expected_after_map_ref,
+                                    manifest=probe_manifest(), validator=validate_probe_receipt)
+
+
+@a._boundary
+def validate_probe_evidence_v2(receipts,trace_refs,*,expected_binding,expected_context,
+                               expected_before_map_ref,expected_after_map_ref):
+    """Finite slice consistency; full matrix/Metal/PNG/Native acceptance stays external."""
+    manifest = probe_manifest_v2()
+    result = _validate_probe_evidence(receipts, trace_refs, expected_binding=expected_binding,
+                                      expected_context=expected_context,
+                                      expected_before_map_ref=expected_before_map_ref,
+                                      expected_after_map_ref=expected_after_map_ref,
+                                      manifest=manifest, validator=validate_probe_receipt_v2)
+    interaction = receipts[1:-1]
+    elapsed = interaction[-1]['completed_monotonic'] - interaction[0]['started_monotonic']
+    require(elapsed <= manifest['interaction_limit_seconds'], 'slice interaction wall interval exceeds300s')
+    require(sum(check['logical_step_count'] for check in result['checks']) == manifest['logical_step_count'],
+            'all fourteen logical steps required')
+    result.update(scope=manifest['scope'], logical_step_count=manifest['logical_step_count'],
+                  physical_operation_count=sum(check['physical_operation_count'] for check in result['checks']),
+                  new_observe_response_count=2, image_count=1, interaction_wall_seconds=elapsed,
+                  deferred_actions=manifest['deferred_actions'])
+    return result
 
 
 def probe_schema():
@@ -233,4 +333,23 @@ def probe_schema():
     readback['allOf'][0]['if']['properties']['action_id']['const']='p1.history_write_rejected'
     call=value['$defs']['cua']['properties']['calls']['items'];call['properties']['step_id']={'type':'string','minLength':1};call['required']=sorted(call['properties'])
     value['$defs']['cua']['properties']['format']={'const':'universe-i15-probe-cua.v1'}
+    return value
+
+
+def probe_schema_v2():
+    """Distinct slice receipt schema; UE producer readbacks retain their original version."""
+    value = probe_schema()
+    value['title'] = FORMAT_V2
+    value['properties']['format'] = {'const': FORMAT_V2}
+    value['properties']['action_id'] = {'enum': [item['action_id'] for item in probe_manifest_v2()['items']]}
+    cua = value['$defs']['cua']
+    cua['properties']['format'] = {'const': CUA_FORMAT_V2}
+    call = cua['properties']['calls']['items']
+    call['properties'].update(
+        physical_operation_count={'type': 'integer', 'minimum': 1, 'maximum': 32},
+        physical_operations={'type': 'array', 'minItems': 1, 'maxItems': 32, 'items': {
+            'type': 'object', 'additionalProperties': False, 'required': ['operation', 'arguments'],
+            'properties': {'operation': {'type': 'string', 'minLength': 1, 'maxLength': 128},
+                           'arguments': {'type': 'object'}}}})
+    call['required'] = sorted(call['properties'])
     return value
