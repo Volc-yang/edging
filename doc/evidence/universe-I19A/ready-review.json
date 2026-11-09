@@ -1,0 +1,56 @@
+{
+  "authority_files": 61,
+  "authority_fresh_equal": true,
+  "build_receipt_normal_cpu_only": true,
+  "card_sha256": "783abdf237eff57670bd59183bce9c9af30b1c2f19acba70eb934050561a905f",
+  "controller_output_absent": true,
+  "distinct_absent_ddc_paths": [
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-689b496e65b7ef95",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-8d73c9b6f0bfb78f"
+  ],
+  "driver_sha256": "6e30bc814c6306d499a543f59e3ace3b4258a15cf3d98d88b3bbf11683fc440d",
+  "empty_grants_public_pins": true,
+  "inputs_sha256": "6ae0c9decb0757218856e0662d69f7b8c0def14c336c379b494285e68de9eea0",
+  "interaction_caps_sum": 295,
+  "key_directory_metadata_equal": true,
+  "logical_steps": 14,
+  "manifest_sha256": "00ed0f3ebdf10bd8f8ec7770060ab2b1c4d8d4dc82a31f71493bf9a7576487e0",
+  "native_source": "5a6cca0c36b7dc89997d1a0bf35f154346f86e99",
+  "new_observe_responses": 2,
+  "original_png_count": 1,
+  "owner_config_refs_inherited_unchanged": true,
+  "owner_or_key_contents_read": false,
+  "policy": {
+    "bytes": 2147483648,
+    "exception": 90,
+    "final_seal": 90,
+    "global_seconds": 900,
+    "handoff_seconds": 120,
+    "metal": {
+      "interaction": 300,
+      "max": 420,
+      "quit": 40,
+      "seal": 20,
+      "start": 60
+    },
+    "native": {
+      "max": 180,
+      "quit": 40,
+      "seal": 20,
+      "start": 60,
+      "tests": 60
+    }
+  },
+  "prepared_sha256": "046de6e32a21ee6f8818993791dcb8a2f1078724db30f33620bb1e86346f29a5",
+  "product_source": "5a6cca0c36b7dc89997d1a0bf35f154346f86e99",
+  "recorded_at": "2026-11-09T08:51:24.383985+00:00",
+  "remaining_declared_bytes": 560640903,
+  "reviewer": "/root/i19_review",
+  "root_bytes_before": 1586842745,
+  "root_traversal_errors": [],
+  "runtime_started": false,
+  "scope": "bounded capability only; not full matrix or G-B2",
+  "source_binary_pins_verified": true,
+  "status": "ready_go_fixed_scope",
+  "tool_source": "95bcb20fe1740d51f61329c16e1b67ea9acf9129"
+}

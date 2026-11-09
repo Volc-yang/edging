@@ -1,0 +1,81 @@
+{
+  "all_four_ddc_paths_absent": [
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-689b496e65b7ef95",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-8d73c9b6f0bfb78f",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-1b9d5affdffe672c",
+    "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/ddc-i17-f4127fdaec2fbf43"
+  ],
+  "attempt1": {
+    "abort_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/abort.json",
+      "sha256": "c2ff63c535a697292a3e603a7f0fe81d4e21b037821ac480b3a4e582395a8248"
+    },
+    "controller_phases": {},
+    "elapsed_seconds": 111.178584834,
+    "max_recorded_gap": 0.5745824579999983,
+    "native_dispatch_count": 0,
+    "normal": false,
+    "raw_process_samples_rehashed": 197,
+    "resource_original_error": "",
+    "resource_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/resource-review.json",
+      "sha256": "a9654fc21cf83780910f37d4c62a82440706749812bddb3c3e7224df31085a06"
+    },
+    "root_reported_cause": "launcher here-doc consumed stdin; Ctrl-C before start command",
+    "ue_dispatch_count": 0
+  },
+  "attempt2": {
+    "card_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/capability-card.json",
+      "sha256": "7b95b752b728d5e2ede505d0138006edab19f7b1e8e8d6088764e5f3e3ad68e8"
+    },
+    "controller_output_absent": true,
+    "driver_ref": {
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I19R/driver_attempt2.py",
+      "sha256": "4b0f1a3ec1628c1b579be34ceaf48e3bcd590e4c75f274ebd9af530fadb51ca5"
+    },
+    "inputs_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/execution-inputs.json",
+      "sha256": "fb7ab0ac58f3d7008ed50eb840e89de1a1faf472acabb614cd2d7cb8cd493abc"
+    },
+    "native_dispatch_count": 0,
+    "parent_deadline_utc": "2026-11-09T09:08:10.799685+00:00",
+    "prepared_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/prepared.json",
+      "sha256": "a338cb360ccc2dfbc51115c910d5348c4fdec97b01c3eb57cbd2b528da347e3c"
+    },
+    "ready_decision": "no_go_parent_reserve",
+    "remaining_seconds_at_independent_check": 419.89282,
+    "required_remaining_seconds": 510,
+    "tool_source": "471149cac6565d08365aa06b21f79968eef4b089",
+    "ue_dispatch_count": 0
+  },
+  "authority_files_unchanged": 61,
+  "campaign_observer_gate": "fail/inconclusive; inter-controller gap retained",
+  "external_changes": 0,
+  "g_b2_granted": false,
+  "key_or_owner_contents_read": false,
+  "native_formal_review_created": false,
+  "new_png_input_or_native_evidence": false,
+  "observed_at": "2026-11-09T09:05:27.422955+00:00",
+  "reviewer": "/root/i19_review",
+  "standard_pair": false,
+  "status": "partial_runtime_not_dispatched",
+  "tool_tasks_accepted": {
+    "C": {
+      "head": "453fa9c",
+      "independent_tests": 30,
+      "merge": "37a46ed"
+    },
+    "C2": {
+      "head": "7c37e3b",
+      "independent_tests": 40,
+      "merge": "ef3d44d"
+    },
+    "P": {
+      "head": "7b5349e",
+      "independent_tests": 33,
+      "merge": "8c3523d"
+    }
+  }
+}
