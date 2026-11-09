@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "scope": "synthetic stdin-only process, no UE/worker/solver/UI",
+  "invocation": "python3 -u -c SCRIPT (direct TTY; no heredoc)",
+  "unified_exec_session_id": 2115,
+  "actual_input": "i19-tty-ping\n",
+  "actual_stdout": [
+    "i19-stdin-health-ready",
+    "i19-stdin-health-result:i19-tty-ping"
+  ],
+  "actual_parent_wait_exit": 0,
+  "source": "observed tool transcript; not a UE execution receipt"
+}

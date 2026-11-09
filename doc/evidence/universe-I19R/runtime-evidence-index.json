@@ -1,0 +1,2089 @@
+{
+  "artifacts": [
+    {
+      "bytes": 265,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/abort.json",
+      "sha256": "c2ff63c535a697292a3e603a7f0fe81d4e21b037821ac480b3a4e582395a8248"
+    },
+    {
+      "bytes": 77,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/controller-inputs/0001-incomplete-receipts.json",
+      "sha256": "8466806f1843b0d423c34f816a013a9b389e5c67ea35383ed19988bca456fe88"
+    },
+    {
+      "bytes": 194,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/event-000001.json",
+      "sha256": "fcec90f0b621764938ecb1a63491b1d9bd13b3756d0ce93a18f5f312d784d5a4"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000000.ps",
+      "sha256": "4d757143713e1f006b9810739092b95766c685de9f4086714c9b252d65ab922e"
+    },
+    {
+      "bytes": 277568,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000001.json",
+      "sha256": "6e068701cedd2a2ddb2c388e529de3785a39eede326a44c075c256894363a6bc"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000001.ps",
+      "sha256": "8e40065aaeb8c1cd37b497d728ebed8c34d19d3a856ed1cc5819ecafadbb0fd8"
+    },
+    {
+      "bytes": 277568,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000002.json",
+      "sha256": "c04c6168a371e97f248b7deb96868b518ba9314659ceb2be36e60927e1381e1a"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000002.ps",
+      "sha256": "5f35eff460018c9c87709707fb3d84510575302b128be040f764edd01565f47e"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000003.json",
+      "sha256": "323e8f1860dcd86b1b317723bfce010e32dfdd76096ae25d83a22837d2ccb4da"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000003.ps",
+      "sha256": "d43ac850d7756a01b329a7ebbe5c31a747ce398a3f96177b531913208efeecac"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000004.json",
+      "sha256": "0be29531f8b2d51d4efc59efd9dbb49d82729b7b9afde14c339a5290a4436afe"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000004.ps",
+      "sha256": "f3b8f9f5dde1e782eff53d963947adc8653180bdb70413ce57d1bf5905de427c"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000005.json",
+      "sha256": "72f90101c71b5a2c24fa13264e4e5fb9cd0934d7429e51b927dd4059ea2401ad"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000005.ps",
+      "sha256": "c4b0e130b2679e98faa8b760bc9481ff531a4df37f96715fdbc0946396730e4a"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000006.json",
+      "sha256": "40cdcb5263e92a223dba96a3a5e64a86702798cac74c6d2965af893420fb334e"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000006.ps",
+      "sha256": "751b554df53157fac2e2684201c60eeb9515335dd61da254f0d98c488d7e79cf"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000007.json",
+      "sha256": "1c020e6dbc8bf6a1343521d1b863afec8168e9331ba655755d510828bbd05676"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000007.ps",
+      "sha256": "a54534847f7768c8eae90453b2e8a80af5067019d55f661cf87117bb621850fd"
+    },
+    {
+      "bytes": 278451,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000008.json",
+      "sha256": "93a913394622c54fa03a0048879d033bd6ee4ad1d28ddf28c591f589cf6f74d7"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000008.ps",
+      "sha256": "4aa74dbec0711d4d0c4e64fe0f0e5b0627b1a5918a343ceaa3f64eb84d02a3a8"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000009.json",
+      "sha256": "5fe11f168597d02959ca0473c50130f3cd2459e5d4f185c9ebf47f2334ebf90b"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000009.ps",
+      "sha256": "96556d371debe21e3f334196f5012b07d0d9082778de3ba384aa2858cc853bd2"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000010.json",
+      "sha256": "0116ccad488e76844b57bc3225474fc911b6fcdcb533608465fa28d002e719ae"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000010.ps",
+      "sha256": "8af74498085b66c5bc431af2f625b42f26213cfef5ddfba0a8fccfbed0b0c259"
+    },
+    {
+      "bytes": 278451,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000011.json",
+      "sha256": "2cf18a264d2004b009b872824c981aab53918bd7d355bdeb14223e1013c5c273"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000011.ps",
+      "sha256": "afebd953090479132cd4acbd688062f35c1768190269545826dcf1f135311348"
+    },
+    {
+      "bytes": 278453,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000012.json",
+      "sha256": "6fd5677c5508589d6225838fbedf05d5a1daf518773e5ec427ce2c70a89d9949"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000012.ps",
+      "sha256": "48226113093b3c12d214b1891e1f69b419e4ff6ddcab80cc2ef9ef41f63e60bd"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000013.json",
+      "sha256": "a800c400e0ffd9a059189bc62458fe7fd14181ef9254b1159beec055f85085fd"
+    },
+    {
+      "bytes": 214390,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000013.ps",
+      "sha256": "3adaa41597b9d00665cbab75acdbe205480ba80da532442dbb59f9c21303e54b"
+    },
+    {
+      "bytes": 278564,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000014.json",
+      "sha256": "63d32b3f70ffe3f205eb11076da49e032fb133009b00c463fe22a7fbbe8cb6de"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000014.ps",
+      "sha256": "ef1add2247867c70f1b027f284fd345e8821bdee0b479a4452962fe60ca073b8"
+    },
+    {
+      "bytes": 278454,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000015.json",
+      "sha256": "22c1035cb9a1c6e12763a0d50b7f9ce6892fb56a4d21b95e8c6c5edfa51ceae6"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000015.ps",
+      "sha256": "00c1c2c81f44b1ddf6a8230c8e3d39e0971f6f5e5f819503c8f7c7e03c6317d6"
+    },
+    {
+      "bytes": 278455,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000016.json",
+      "sha256": "637c385dadbb570909f66ed5ea2fed46f9321ae4dce050aabfd498428e30d21e"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000016.ps",
+      "sha256": "840c4d93992db08b6c9693eaa38b33abb6cc56b87d8d9f912ff1940fa572c6b2"
+    },
+    {
+      "bytes": 278455,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000017.json",
+      "sha256": "f28a58513601765ed292b6f50c9fc309a3641bb6697ee674375d04a26681e53d"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000017.ps",
+      "sha256": "f2057685a3ecc7fcd40b8a982c6e140cd487d4661c7013a08ebffcc56a58859b"
+    },
+    {
+      "bytes": 278456,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000018.json",
+      "sha256": "6f4a668cb079ba27f3064c6bd23bd64643dcad25164901f82bd928a20988717a"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000018.ps",
+      "sha256": "4a1e4a91e2990f099e004e1cf8369477baba9f82570d5fcdbffef3689dadb39d"
+    },
+    {
+      "bytes": 278456,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000019.json",
+      "sha256": "372a3b1616214542ac3d3745ee33e17b30aba2beb56fa167f1d789881c52e9e2"
+    },
+    {
+      "bytes": 214389,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000019.ps",
+      "sha256": "afbc88f62bf46d102565047bfa1b108cdefe4c1c6d0c2a04c78206d3674f13ad"
+    },
+    {
+      "bytes": 278572,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000020.json",
+      "sha256": "db0429eb0c1337c4b04ea8a0bd9594f05582f8a15a912a69bba59e3a91d641bd"
+    },
+    {
+      "bytes": 214343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000020.ps",
+      "sha256": "085613395cf6c20a5eab22d2036e586d18a9450668ea64a8ff7ae503f3322601"
+    },
+    {
+      "bytes": 278456,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000021.json",
+      "sha256": "3387bf72662afbf2b90485dcf765efe7b336826f070ea3639279e753dc4072f8"
+    },
+    {
+      "bytes": 215064,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000021.ps",
+      "sha256": "403966a2514a3563b65632e9a655f3646326a100ba7e1f0bb4deed08b5e390d1"
+    },
+    {
+      "bytes": 279307,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000022.json",
+      "sha256": "59f90c1fd6b35780255f348bc23e4cf324eba6a29c563f36ce85e4d9902e770d"
+    },
+    {
+      "bytes": 214114,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000022.ps",
+      "sha256": "a443f60c0a652a37b090ec69eacdb948a49f567684ffbb4a4423ac72849b3794"
+    },
+    {
+      "bytes": 278161,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000023.json",
+      "sha256": "16fbcd0e9fb08320d90166ea64d5e41a22a719818c8c27d28e8a764b653c5ed0"
+    },
+    {
+      "bytes": 214114,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000023.ps",
+      "sha256": "26b5b2ab8b8122c289fbb8600ed8278fbbe9e4d511b9b17636393887e3f419df"
+    },
+    {
+      "bytes": 278161,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000024.json",
+      "sha256": "d372d30e7f4d49471223263184be7ff1404bf529ef746053a26333708351412f"
+    },
+    {
+      "bytes": 214114,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000024.ps",
+      "sha256": "d17229f2ea82b4fa9af5964af9ef87563c5ff1548428479a1223f10b872619da"
+    },
+    {
+      "bytes": 278155,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000025.json",
+      "sha256": "a1d602676610b01f8494cb9da1bb07115bfb7d13a2e3b72adfb757ef8c4c9bfd"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000025.ps",
+      "sha256": "cb110e2ba31ba523749dd0d21dfa4347aae95685deceac57db58c394590eb73d"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000026.json",
+      "sha256": "197c752db8d0d9609a82259b67ae8d5a72c306725a1af63203b22607b63b8119"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000026.ps",
+      "sha256": "c025a20b4a7612b2e4c37840e5e8b8780e2958863a6806235b460fc04e4f7fc6"
+    },
+    {
+      "bytes": 277569,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000027.json",
+      "sha256": "9d5c84863d86b5742524e95b77acae815381f6bd354fbaf4acdc57d9aee553db"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000027.ps",
+      "sha256": "3dc1fb4b81180bd8764281e311498ae2df14d34e5a162d06e4dc56b443f1694d"
+    },
+    {
+      "bytes": 277570,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000028.json",
+      "sha256": "83f13be9b9a410b300da1997192804160aa6e6dca998caae5719841c90e38e5c"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000028.ps",
+      "sha256": "cb5166fe662741243f8f5581d2890388130c245f8a5684fa493105b014dca58b"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000029.json",
+      "sha256": "030d33706973f88e47f056cf870c2a1346803a07f47dc7c9804bfcfc21af0e9c"
+    },
+    {
+      "bytes": 214369,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000029.ps",
+      "sha256": "4c2e9c5db0868637d0bd9de57b95fa8a7b7a4574760b02b85bfa6e0a615bafe2"
+    },
+    {
+      "bytes": 278485,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000030.json",
+      "sha256": "5d781c798caaba2c8831763dd93d335ea88da9ded576f7e86a82378601313b19"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000030.ps",
+      "sha256": "b02a602a6e2ce32c4b7df011dea964f08300c4dbef0cc7e70727e806a4288ae5"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000031.json",
+      "sha256": "d854b60a07b785ca294d87812f6b97d60bcb2effe786cee55d26797e6c27f790"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000031.ps",
+      "sha256": "8ad6b640ef5c234818f9508b95d602223fd7d628bf4e1c96da719ec85a484bc3"
+    },
+    {
+      "bytes": 277861,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000032.json",
+      "sha256": "568bf1d66de620b0a09f46f79dfb3a610db983b0a3ec55759f7b46ec0c4d35a7"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000032.ps",
+      "sha256": "1b5462c26c6e9f281c31d506e1a5b34ccecac1e9f16dcb92bcfd8e7f0a69c49a"
+    },
+    {
+      "bytes": 277863,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000033.json",
+      "sha256": "21b1f244f152eb2b363877578030ce54874d36348f744252bc4e6fb04c1094ec"
+    },
+    {
+      "bytes": 213935,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000033.ps",
+      "sha256": "bf1f4d8bbf5acf322fc300852a7a48327a4735b7dda5e1125ea2aa0eac4029aa"
+    },
+    {
+      "bytes": 277986,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000034.json",
+      "sha256": "39d0d608a2c594e0542338eff14f249d2b29e1e1b06d8a280b6824e036682f50"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000034.ps",
+      "sha256": "f5e374ec9889f6d4d8414616164982a896a6d2f14cc19b3b6744fdaffba62d74"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000035.json",
+      "sha256": "423b9fe3fe27ec288e807605f4e07130c00738e78669ecdcce3c1dafc6b9fcdd"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000035.ps",
+      "sha256": "a7979ca1b6234ebecc6bfff9d8b258226bc168a6bcd5ea0318e19252506e7f4e"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000036.json",
+      "sha256": "66617a258c5d884ac769a0c44e000fd9b87609294b9324ff5d1bbf24533a92dd"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000036.ps",
+      "sha256": "6eb85f594994585ad88c1c65aa253287df73dce5dd9f27483eb560e0afdd1563"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000037.json",
+      "sha256": "d1f5814b86db178b0ad19bf4c2e40bc40daaf3543f940a24e23e0056f7c02ceb"
+    },
+    {
+      "bytes": 214802,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000037.ps",
+      "sha256": "8d344e276be6b5b5715267c7a56ec5cf252b9223f589471f483dc263174f11c7"
+    },
+    {
+      "bytes": 278923,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000038.json",
+      "sha256": "99c3d759c8c63feb6ea23adb7d1eb8c7a0e9abcc55fdf8dcd87e5119ecfb4e27"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000038.ps",
+      "sha256": "fbe9b0048aa5de0052526d2a3f76a382ddc75a257aa5f044fbbffdfc3f263152"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000039.json",
+      "sha256": "90b4e87a604389e755f5bdb49393b4cfbc2758a9629140c23b2701c9669d12b7"
+    },
+    {
+      "bytes": 213985,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000039.ps",
+      "sha256": "44fd9432b4be219252f3b66fa5e80710d52e7585e8a56329beed50848edeea5b"
+    },
+    {
+      "bytes": 278095,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000040.json",
+      "sha256": "a92aa126da9abb6f7eac4b4e47ddd4bc08e9d35d735394e03b16590934c58b3d"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000040.ps",
+      "sha256": "7d4bba3b7448ed9998ef6a76b23994052f897e6d0be0b823e5965608118e71fa"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000041.json",
+      "sha256": "67b64b62b4d4f58c5fdb35079cfc481b9cc165bd6535b5ed8263e1f1a8176c0b"
+    },
+    {
+      "bytes": 213885,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000041.ps",
+      "sha256": "9c2fb3cda5a4820f34741dbc855b63f3485fabbfd2ae277a510369ca90fe779a"
+    },
+    {
+      "bytes": 277866,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000042.json",
+      "sha256": "98e977a9147f6f7486024c1c7786df4150fce2ecd408268ff220b2c6a2c9ba84"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000042.ps",
+      "sha256": "b88967dc615dd224a44ce42ece8bec5b6f36854f9655b7e2a9689b96d84b07a0"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000043.json",
+      "sha256": "f49688c652e81cfc0cc25fadc2c93192a3306677fd0f7083e8278c7fde03bd3c"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000043.ps",
+      "sha256": "6c26d6435c563497ea78634a5e69bf14b20aa3cc5edeccf38000a960c6cdcc04"
+    },
+    {
+      "bytes": 276980,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000044.json",
+      "sha256": "bb6d0c431a722bf92d7c1eade617d079f29cd0ac4a8e58689bdbd18c932335c8"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000044.ps",
+      "sha256": "c764247edf509ecbdefa11e6e2bc0a4ec5f5d69da6e5599b101293a18db1ba3c"
+    },
+    {
+      "bytes": 276979,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000045.json",
+      "sha256": "75f8af5d10223cf07cb4ef7d2d285332821c5a117e311f862939ff9b52341f78"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000045.ps",
+      "sha256": "45a24c1443e4fd40523a232e36fda61986a4ff6ca5628e444f14c7e44363f3f1"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000046.json",
+      "sha256": "605a6b106c1b7b057029f40f61f74b04d8169f85ae330675f0a60ca143322546"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000046.ps",
+      "sha256": "103377be5af8a7b8a4706f5be030ae3a49fc9b7b3cb42eb7e935281e17662a74"
+    },
+    {
+      "bytes": 276980,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000047.json",
+      "sha256": "797cd9bef5d89054ecc570557aed45cc36ce1eb9035d4f45cb06fcba4266f79a"
+    },
+    {
+      "bytes": 213604,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000047.ps",
+      "sha256": "847c162ffd4e4cc3c5328f723f0ff20d40291c396185488c72dda15b061cd430"
+    },
+    {
+      "bytes": 277523,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000048.json",
+      "sha256": "0737c53146ec16767d044baa39c19678ccfe45d580475c799d14dcb611eda99a"
+    },
+    {
+      "bytes": 213277,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000048.ps",
+      "sha256": "b77ae07de4d0963d86faf91e2cbd5e0aba7ecd05bf5fbb37e024a76a79b0be61"
+    },
+    {
+      "bytes": 277130,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000049.json",
+      "sha256": "a71f335b907029db3538f5c30cf4bee5d489011435d199e893bad22498f35cd7"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000049.ps",
+      "sha256": "92b9ac9a90a59a62f33a848ea76e2771d90b5f7337d6fe67829fe44a9d1f2804"
+    },
+    {
+      "bytes": 276980,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000050.json",
+      "sha256": "034adf8b96de7122f15a15bfdf11aba296195cadc322c566b140625cb75d9c3a"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000050.ps",
+      "sha256": "97f7de25b8c92cc4ea02a5e84f810874334d08673c59396c75d2a0109a519432"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000051.json",
+      "sha256": "d850a436cb60f68b13cca7384c29dc455fed46ce4e85bff8576c3e0bb1100231"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000051.ps",
+      "sha256": "504e9bacaa3c076fd3d70b5b75a8f457f9b57ae35263ce3441bb395418f3b672"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000052.json",
+      "sha256": "39ba5b2753141c4718673e8605855d0adc434ca6059ffd26b85bec9973f43092"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000052.ps",
+      "sha256": "fdfd27b7739e49a07ed4725b7add0c86e6831f514d534da953b16262dfa73cbd"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000053.json",
+      "sha256": "dbf836c08d97a128233dbec8bab146dc64d19caec248973159cf3de1e7577b1e"
+    },
+    {
+      "bytes": 213258,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000053.ps",
+      "sha256": "c04348e59ba9329ca82c03525104374e96b572324891c258be89a9038c28cac9"
+    },
+    {
+      "bytes": 277111,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000054.json",
+      "sha256": "caa1b72331875113464665bf251920331be62b7ca352558b2cde3e7c6eb083bc"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000054.ps",
+      "sha256": "0b0a6c031a9ce8950ef8901a6da235306a26de6a1ae2dc33e9f202cd2768bd34"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000055.json",
+      "sha256": "a86798e36c1533089195f1458106af9cfa68f333c588cd4d2b16698cc1c7f33a"
+    },
+    {
+      "bytes": 213198,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000055.ps",
+      "sha256": "766893769266fc85c351380c651236cda6d7bae71144ffebeec7c88d89cabfe1"
+    },
+    {
+      "bytes": 276981,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000056.json",
+      "sha256": "359571843773d7e1e1892d25339ba10e18af7119b37d579e60180a4d2cb6fdd0"
+    },
+    {
+      "bytes": 212969,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000056.ps",
+      "sha256": "18f61269a638197dd360408fe4dcb7da0bf594a92d2a50f59a392fdda49ac0d8"
+    },
+    {
+      "bytes": 276686,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000057.json",
+      "sha256": "1aae338b075022526fe5f2dfd08fd5b88a5b789bc9846858126e00708c790828"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000057.ps",
+      "sha256": "5b64c1001b58f679da38a54d31716534f1927ad72bd1e4e8773fda1df914b53f"
+    },
+    {
+      "bytes": 277570,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000058.json",
+      "sha256": "e3d0055299270d28848fdfe054737fb3a91a8f98188392b13e2beeec90b8a1cb"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000058.ps",
+      "sha256": "34cfcbfe58bdcdb30ecc3faf4bcc9fe42420c25c1ec326b5281488af0118c520"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000059.json",
+      "sha256": "39c0d0915a48f341729e51dbca4f112f15206fd1ec774f9e249a2baa3cd603cc"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000059.ps",
+      "sha256": "f251e5ce9ff7e1b45517f762e76d147e4fa990bdbaa1fc8dd491ad16a342ca28"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000060.json",
+      "sha256": "b9350ccdfa62fec5a525fa425a3d36dca25e2aeeec6b4fbd9c72ce9d48299025"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000060.ps",
+      "sha256": "8f2a9074549bbf56bc78548301025f9a57cced2bc03016b13ffb44828b5d8a04"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000061.json",
+      "sha256": "d650e631915968bb8e835cda6a978c74dbabb9d7a0102446536d53695ed28617"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000061.ps",
+      "sha256": "37b39c2c7a0b302842be3e90cdc17ecd00941bf07319240b8487f5617f5a14a1"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000062.json",
+      "sha256": "ccc1386614a578ab45813b0bec2691e1e34b814e7ffdf90c0b60420f9553cd0d"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000062.ps",
+      "sha256": "9dfbd8c5f116249986799b7e27715e13a75e72da6febfb87a21f97a81f9bafde"
+    },
+    {
+      "bytes": 277569,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000063.json",
+      "sha256": "82fb7b1456f7a7de301fea6e681ca2a48ebe23e143d17ab44d81fe6f6696f160"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000063.ps",
+      "sha256": "c2fd8ffff7ffb2c6fcc370376d4ba62ca5706b6a17f739cf4b03abe37218e294"
+    },
+    {
+      "bytes": 277570,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000064.json",
+      "sha256": "62af533ea5cd2e579851b5ebdad7dab0cbcd05dea36fe5298761b699473375ba"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000064.ps",
+      "sha256": "2fb3c48c88a274cfc0519e4223ab4d33d7646c49439ef16291bc5220ef61185b"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000065.json",
+      "sha256": "c7ba4f321fd8cb4df98c7efa40109af34b50992bcc393062d947420739143a81"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000065.ps",
+      "sha256": "b9de2d1148d97484f2fe93e6c7a34859d343a24cb57a7d965f1c4c60cf425f50"
+    },
+    {
+      "bytes": 277571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000066.json",
+      "sha256": "c11ed1256475e5a8ba1f22bf1e2bdaadc5be11dd4b3eb681744d1941e77bb076"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000066.ps",
+      "sha256": "d4360d1fa049cca161bba0fe04cd1dd479bd42882fc50c6949ebc44bddf96c3a"
+    },
+    {
+      "bytes": 277697,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000067.json",
+      "sha256": "c62c6abab6301ea7df10dee356356c11ef5c37792bbe94a903da5eb6460bab52"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000067.ps",
+      "sha256": "d2d9669cccd141633d1a19ae9e961e5e83fe631a7b816f634281b4c46f1473e3"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000068.json",
+      "sha256": "1b34003d4c8c053f846778ef8b0c63674550f84ff91294ffc5ec959cd90d1975"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000068.ps",
+      "sha256": "bc7a8bad8bc2addfc9d758151e1b77f7924e65ab42c595333b6491f5bab80a4e"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000069.json",
+      "sha256": "606b2244b14ebf1cab14e73b124b35ed5d6bcbba61ed33575eedd72e4d311c54"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000069.ps",
+      "sha256": "34d84b68868a691c27058c12ca73ebd74db239af72900bfc4c9ee609a4b39662"
+    },
+    {
+      "bytes": 277697,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000070.json",
+      "sha256": "f8cb5a3bea63104e918a3e57fe704b1906ed25252ba59ff3cbd4cc3be6e51b50"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000070.ps",
+      "sha256": "1813c9b9f9ca3f8191e14fcaab2a20d1cd898a57cb066fa6b1dae5aded2d3596"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000071.json",
+      "sha256": "2abd66dc451c9dc68889edc09c3d0ef5863032f2ba0100be292a0c660ccc8b4f"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000071.ps",
+      "sha256": "6f81be1ce5c444e040ce1a57b7a9699f14638670289b2d89d249939dee463100"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000072.json",
+      "sha256": "947325b569a4f2fd72629dfaa62eb3ce9ab0af74411e832b4aa960698942857d"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000072.ps",
+      "sha256": "0d0bcbc22229786080241f29b28173b2684d4314d6b4e60a56c4a0a21ae54be7"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000073.json",
+      "sha256": "06b3d16731e58b6d73157967565ede0c1206f1db858ddddf7ac6638da89732c0"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000073.ps",
+      "sha256": "170c8ea113371697a25c260864c114abc9ed7811ff70bb9cc8cc099e07fdbeac"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000074.json",
+      "sha256": "937ba952d87625014b967c25edd5aad2b4d69c8bf1d5dbb439351e993502f918"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000074.ps",
+      "sha256": "5ce30c2c170ecbcec995baa31acbb717a2d93812e48f0c778ac88ebd2b1a4825"
+    },
+    {
+      "bytes": 277697,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000075.json",
+      "sha256": "f67a3075a131171eb28bc6a3416a3533684e7555a222d9071e87e457deee61b4"
+    },
+    {
+      "bytes": 213717,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000075.ps",
+      "sha256": "567c2aa24f6686a5f07ba53dc38a1823456436fd22ae77fa5f76f977ca580f0f"
+    },
+    {
+      "bytes": 277698,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000076.json",
+      "sha256": "d500a557549da15c756424d7d5a01c885db0c10da210f916f28e8796688d4a92"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000076.ps",
+      "sha256": "c895a87d1642aa0d0e68fbe9baf52109712548504122416d37dbbe2b489dc31d"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000077.json",
+      "sha256": "db9828ac16b611940d0f8c8ac469c73f2ab525d39fcaf0f69afb746dbf1f5fa7"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000077.ps",
+      "sha256": "83f606e400b45def4b496cd369a9c32e58499c4a824966482845a5b9bf50cca3"
+    },
+    {
+      "bytes": 276812,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000078.json",
+      "sha256": "64d56e12d31aa832d35accd54586569a62fdf1a7f282d41fdf91b6ac6137900e"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000078.ps",
+      "sha256": "253c2ca797ee890811e347e09c5ddbcba2dae67cc4d3102f11ebf8ccc48a39b4"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000079.json",
+      "sha256": "d63ca4f9adac6a433ef9f94356c345d968f339d3120e8669ef7575ce0bfdd0f6"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000079.ps",
+      "sha256": "372256244be9bb758fa27c2dea3cdca833244bea0bec0c3a48d412092f52ced4"
+    },
+    {
+      "bytes": 276811,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000080.json",
+      "sha256": "a50cbe2b2738f8e2e4e8106d0b93cc39ef433b5a7ee04c268f1a0606fecf1091"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000080.ps",
+      "sha256": "375203baed5b2bf790b07efcc2eaf4677e9bb6ef8f213e32d3c62483a4c668c5"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000081.json",
+      "sha256": "29940291d8234ff6139f24cfd84991b67f6c0b25867d39fe20254aabf9635894"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000081.ps",
+      "sha256": "19276c9778db4e4456403cc4da34016241c35efc203befe468fcf7d5efd3fd62"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000082.json",
+      "sha256": "5d86350265b01a9819480d4976cb2bc7f3a3f05b59c4faacd86b57cf5c0327a9"
+    },
+    {
+      "bytes": 213109,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000082.ps",
+      "sha256": "42ca813e0d7b59e0c8802c65acb346b046c384c6acabc01d7b31223ce33422d9"
+    },
+    {
+      "bytes": 276959,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000083.json",
+      "sha256": "061fb2a3a4b7c00362b9329efd3253a3e50300969e992ad0f6a08cb290c1c590"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000083.ps",
+      "sha256": "e61eb1e335d604d59d8539f9923b8d15a1281ad51b0b2e3b26c96e599beab705"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000084.json",
+      "sha256": "7b265d8fbb37fbbc8b09cfc2d2294afba5a762e3703ce22aa095eb2396548ed4"
+    },
+    {
+      "bytes": 213514,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000084.ps",
+      "sha256": "2ae36fcf6f333080dc91834a5e9ae9285d4d1ac087fe40b2f9d8d4efc27256f4"
+    },
+    {
+      "bytes": 277429,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000085.json",
+      "sha256": "d80e6e058c9cc067d93daa96d09de24d7219f2dce9909dbb87d4a04f6d62f906"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000085.ps",
+      "sha256": "cdc43268cc97546d396bb1abc6fecfdfd7369fc376a878c91bcdf3ea198ca093"
+    },
+    {
+      "bytes": 276810,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000086.json",
+      "sha256": "12813ae816e9901796a739fc75655e0167b328f80c1a859f18be2ee3accfef04"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000086.ps",
+      "sha256": "c1a77761e6305ab20166e7e02fd205dc0726fbb4d5a89a6a52fbd1314c15941c"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000087.json",
+      "sha256": "7faf4cb1caac4c976de5fd816935f4f6871e3b8bdcc04344e5565ec3ef84741d"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000087.ps",
+      "sha256": "9e08c9daf37fdceab91353931c002506970e05515dad3a2710ba07b48e78a426"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000088.json",
+      "sha256": "e68516dd14350a55d5aca58836bdce5009f0b371e2177720d77c13c88c169603"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000088.ps",
+      "sha256": "57aec55dd2f92f86faa3fed53943f6186abf16075f89338cf1adb57516d87f5e"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000089.json",
+      "sha256": "39c32691d2a495da16a421725ff0ec04c795658429ba2cabd708f323321bcb8b"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000089.ps",
+      "sha256": "b2dd06f6dca41be17958eb600128ddd6cfaf8098fbe8a2ce90532533e3a82bac"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000090.json",
+      "sha256": "6187d93daeeb0951525d631ff740adfbdb303cc25b4e0c8e3dc25fcdb788f359"
+    },
+    {
+      "bytes": 213078,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000090.ps",
+      "sha256": "1bca7c3eddb802df29dc78c8572775d7580df30e4fa98d9bd6e07bd206c77486"
+    },
+    {
+      "bytes": 276931,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000091.json",
+      "sha256": "471de32b5a7998eb2bd32e4b1483e4bd2085bfd2636c56917c883743d8500c90"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000091.ps",
+      "sha256": "98b6346e68c17f81fd70ac5aacb5fba861b268c1d33e5c3e0e72a0ec5aa5505b"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000092.json",
+      "sha256": "64a8a1467ea4ce9439078d023cae9d3d1416b7e289c741f30de3a86530dce67a"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000092.ps",
+      "sha256": "ac1c305ff94424e8b5ec128d491513884b731c17f763bc82aac020d9900c90dc"
+    },
+    {
+      "bytes": 276812,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000093.json",
+      "sha256": "b5587bb524d25de36bc43b1c543abd9ee4ce7b799757d50914d4b592de8308ce"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000093.ps",
+      "sha256": "4944afe86abcd2f89c0ae20caa77f9583b1683e624c1992598dca59e37f1854a"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000094.json",
+      "sha256": "2b6483cf2493d6276156f41fe50ed948f44bd5c152a454bebeff9189acf2a3b0"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000094.ps",
+      "sha256": "6711f39ec3e3d4c61905cb21ced0fb03f8ce5a1cbd7b9922e753239f83cd8b37"
+    },
+    {
+      "bytes": 276812,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000095.json",
+      "sha256": "b646297a03a8c40b6333f5161b9c5917755208fd681257dbd49ce5eb56d50e8f"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000095.ps",
+      "sha256": "38aa6cfa34d9c1c0a66d58f7a7c618a7889e7c0b1f2fa15a342e07a8a11cf053"
+    },
+    {
+      "bytes": 276812,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000096.json",
+      "sha256": "263b38df3c77e0cbec4ba625fe9b7d9091d660c7190b2a997ebd6ccb7a05a05e"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000096.ps",
+      "sha256": "6573c545137126be4022c100e49ffc396e5198ee9b2a227fd19e29c2a4d23786"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000097.json",
+      "sha256": "bc160cedb529d4661ec2126494dffc38e44a18b4fadc817d654231a42724c34f"
+    },
+    {
+      "bytes": 213109,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000097.ps",
+      "sha256": "faa6a59ebdaaa34e8566025edc1721564e3534916249e75d0be22940656e8279"
+    },
+    {
+      "bytes": 276960,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000098.json",
+      "sha256": "a9dd591f5a51a068a061292e93780bd7b240f3709f9f4a32808bcfc869246d7d"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000098.ps",
+      "sha256": "deb6a0abca5d63aa3808566a1d658c35cb601f5c4a1f0a26ec619f9e607b7bf2"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000099.json",
+      "sha256": "3de558dd6a737a97707af4cd6b4360117f3e653213923a8b6ba5a26f962550c7"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000099.ps",
+      "sha256": "0914dd12147854e7b10c3eaad79c0aca308fb51667ca97c5f155990061c35f8f"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000100.json",
+      "sha256": "96bc1f685dfe8625f678620fa01aa1796f30a2fbc568566a47dbbf6375e6186d"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000100.ps",
+      "sha256": "536a7033e1e90a7e8c7b3667a1e7c7c2165a9190cd5862521d350fecfffa960e"
+    },
+    {
+      "bytes": 276813,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000101.json",
+      "sha256": "cb5b104a0526e934b39928dab634a05bee9c3da7b62a91bfb4622d1d34156289"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000101.ps",
+      "sha256": "a9c77afcfd2bf4e992e3ece22282742638a93737f923dba4e2538bc3e9375608"
+    },
+    {
+      "bytes": 276812,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000102.json",
+      "sha256": "d2c25d8224441cb42785e1ccc946d08b66f5a50eb1e5d2a9f9a49360c3c26345"
+    },
+    {
+      "bytes": 213591,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000102.ps",
+      "sha256": "0d5c0e02564db4bb6bb953293226d66cd8c3951f3d1828ef8628cdd17141f809"
+    },
+    {
+      "bytes": 277575,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000103.json",
+      "sha256": "3d04374cf61064a87b7c3b816f085a190736431ae5f60ea63521f3bb2996d186"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000103.ps",
+      "sha256": "47198a63a56225ef626770fafd81f4c90d1917b4544ec389fa2cd522ba475e62"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000104.json",
+      "sha256": "1f73e14b1e0f35f364c5b631799cf089494f2cd816aea97c5a88bee33a2c5409"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000104.ps",
+      "sha256": "14f213ced45f2f044a47624882d43ac3b6af8fe7dee776372cca7ad125030a4c"
+    },
+    {
+      "bytes": 276516,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000105.json",
+      "sha256": "ba7be8eebb89a10ec6cc95dcdd22322de4fc595bc912866d8e62c643efdcf830"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000105.ps",
+      "sha256": "b525b9a12abc0ab64c20a045e8030de42759733e24d0c740eb383963d4733a11"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000106.json",
+      "sha256": "0f5b091332d500699af9326e5db7d0c7e148c10f9d2bfd829ccecba760ed4413"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000106.ps",
+      "sha256": "db4e97ba6db4be6a4e17cea6e87e11acdabb82d63811f61872765d067aa49cac"
+    },
+    {
+      "bytes": 276516,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000107.json",
+      "sha256": "2ebaea4abf6503f4fb980817bdcadcc0f3683b700078a54708f43964236eaa6f"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000107.ps",
+      "sha256": "20d67b155e15673fc520b376246aa55d815cb52c5e6b9cb633b56840c11971af"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000108.json",
+      "sha256": "3bf73ed9263feae9fc701233bda3fc01817dc9dea92d224d83927a7fcf2dbb1d"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000108.ps",
+      "sha256": "d72d3441e2a56f97620be01e20d4ff5a0259400f70f2e886b732bbd538370d59"
+    },
+    {
+      "bytes": 276517,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000109.json",
+      "sha256": "14d138428c0f60287e9b7f0e111d0cad3a5e5eb3c06e6bd1c9cab07d198eac80"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000109.ps",
+      "sha256": "783cb6f9e15b1092ca3ee10b5960c622bf296f5c101d085ed062c8a40a10c3fd"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000110.json",
+      "sha256": "e2f6a307765e3c52a5e9e944d47a267e4e6add3b4cd4793910282dd8cec6b924"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000110.ps",
+      "sha256": "44ccadb23fc7b0e9abba3d24a136f518c149283cac3ffdff1532da69a8cd2337"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000111.json",
+      "sha256": "06fd8f73b2b2826f139af17609b098d759130500943b01ddc2c26f1cdb9cd3c3"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000111.ps",
+      "sha256": "b7108b298bbd3bf048115e309a4d0e3083dfe736f8b04e6c4d05d44a8f097956"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000112.json",
+      "sha256": "e871c1c021634e1723b2ca11aa670bacec8c466ed73d4c1eb313f871b801c898"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000112.ps",
+      "sha256": "4633fca0097d31f080ea01afacfd19267e11a339555301b6d25f25d45c64f5fb"
+    },
+    {
+      "bytes": 276517,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000113.json",
+      "sha256": "c2062763ff7b0b798fce7c83aea7a5019106b4f5da6ea149153ddb05f35d1f9a"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000113.ps",
+      "sha256": "68ba761a2cbf0097584cbe612f54112d936848e563fc6a8e88705348aa127911"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000114.json",
+      "sha256": "fede1a405971c4b2439fec9ec07458f087e5dcf4403d6f9cf251d79b3df87070"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000114.ps",
+      "sha256": "51a18e4c7709757f29a3fe963a4282077ede059a471b3c7c93d7a7805480e7ee"
+    },
+    {
+      "bytes": 276515,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000115.json",
+      "sha256": "504720dcccf9415b8817a740978942b35108d6be3af0cfd36d84615f711e8c74"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000115.ps",
+      "sha256": "83c63f15a528ef6ac839f1271e6edaf5bb8bbb3f1722c20dfb5d14adc997e669"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000116.json",
+      "sha256": "cb128aff7633891af6460ace3f318f6a13215fe953766ff32db637e9e938dbc0"
+    },
+    {
+      "bytes": 212851,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000116.ps",
+      "sha256": "4b6cc9a036c273dc2bc125f39ef6c7fbe5bbce83b7dc588f54734a69d7b6597d"
+    },
+    {
+      "bytes": 276638,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000117.json",
+      "sha256": "b2e4a91473d8fe5a463f8f6392b39f7fe41b3be8494f92b739aaac6257be2edd"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000117.ps",
+      "sha256": "7840e0af0958c885528c653dd7fb5bd3bb3cb558e7563c68055f0db731a7ffe8"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000118.json",
+      "sha256": "3d17316d6f045169d5e1a130db614b5f22748847f8346929504b25f85ed027e4"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000118.ps",
+      "sha256": "246edeceef225540fef2c1b13537a9b66c281a47dd2fe9b0484ecfc270887b52"
+    },
+    {
+      "bytes": 276516,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000119.json",
+      "sha256": "299c05b555a01812d19f9d1fa8b40e72f976d727bbf1f1c67296da1154a9902a"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000119.ps",
+      "sha256": "1d0a3ed4bd377e5566b474dc8d78df2ff5f9babf6fd8ec809015c1aec86621c8"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000120.json",
+      "sha256": "9d7e82f2dd9418421fcb48566a8b40f4a43ed30d8256b5e89036e44a3ef1949d"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000120.ps",
+      "sha256": "c3e0d8bf5a1bbf9319df0be387c38fe0516fb46b7019cae4802a264ce6ea2c64"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000121.json",
+      "sha256": "a1231af93806d9062c8400663e7760b54963a5b53e6b669764f562cd3a0e1bf9"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000121.ps",
+      "sha256": "3457ba452b9333e4d5d9fad85c7a9023affeabd1e37da005535185de4241c524"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000122.json",
+      "sha256": "0d83ec77427e017dfab1b11d1e4cb3f2a1ff86703945b9ef753bc31de69d9cef"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000122.ps",
+      "sha256": "6b5fd6f65cdb62028220e8da2446dc013e0a9b7d053e7f7ced0f580b09283c68"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000123.json",
+      "sha256": "9529fed1bd7fd4d059acfd7396bb39a3ec90b7b62d478913ba8fcd57250ceab2"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000123.ps",
+      "sha256": "6ca04b995dd2f9ff95c421e302ecfb97218c8dc3a9cd5da2cd76bf20bf0682db"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000124.json",
+      "sha256": "074817ebd89312bc0366ea7c7992afdbebdc2166b39cea5ccb6449e60b104701"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000124.ps",
+      "sha256": "51fa3b20b33e7ec87612c466308929caf75eaa9a617c593070e829af86f38354"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000125.json",
+      "sha256": "c27d831576e79efd41a68231740c71b0b9bd2a4cf59f125c42383754be3c3137"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000125.ps",
+      "sha256": "51bfaa1b1a4ae5b4b45a7297ba25481f7b7d629b3937c5a2cf807f986095befd"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000126.json",
+      "sha256": "e53cf9cd6f29e04f643def6826fe9578879a261dd43aa762fb55e88743be9d20"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000126.ps",
+      "sha256": "a053a3266a66bdbeeb3a422b0e4c3479540ab9feb61c5095dcf7f00cf9dbd318"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000127.json",
+      "sha256": "c099f1cada35226dd8572d8c414ca70e0ef04ff1633d93f406dd68d4ca6a064f"
+    },
+    {
+      "bytes": 213113,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000127.ps",
+      "sha256": "314fd373ad5ab63a68f681797f1018db06d87c3eb2cb61681ba7aa6229568ac4"
+    },
+    {
+      "bytes": 276900,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000128.json",
+      "sha256": "693143a8de8c068e4ce9dacf432b5802ab32b6b4cbced7f435291a869a7045cb"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000128.ps",
+      "sha256": "84eed9f511f3ed8ab186d720e5287d89c4e7b947d5459852c1c95163b2f9b778"
+    },
+    {
+      "bytes": 276515,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000129.json",
+      "sha256": "251c791a08eb298da1401a9dc784c2b485a5ed8c19aa949deea9bcaf8ec48e38"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000129.ps",
+      "sha256": "6e62db27e4216390cf94f8972068d057e66da1ff44e4d8927e250996727eaa9c"
+    },
+    {
+      "bytes": 276515,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000130.json",
+      "sha256": "59cea02e3313863cd3c3812365b42a05c47ebbcb70d104c18c13b803b6151e24"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000130.ps",
+      "sha256": "1ef3638cda5fa62d934038db8bd7cbe23b7cdd0f7f95a1100e6ad2ae83975330"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000131.json",
+      "sha256": "fa94cfa3ef1ca82b3d61efd9b402349d0ca8975fd7eec6ac220dca5726d3788b"
+    },
+    {
+      "bytes": 212193,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000131.ps",
+      "sha256": "5452bd166b75a7aa5ba261229e859adc61feb1da3988eb8e20f891816bab367a"
+    },
+    {
+      "bytes": 275781,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000132.json",
+      "sha256": "1c2ca780cc479967e110e04606e871be420f2d478d022d5666fb71d29832a332"
+    },
+    {
+      "bytes": 212114,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000132.ps",
+      "sha256": "b86c5b23b920480a936aa9bcb621cfec088b4655b9122f18ee830f8dba65188a"
+    },
+    {
+      "bytes": 275633,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000133.json",
+      "sha256": "09f763a3154f795fb17f2c5d01457ebab5178459c97be9bd53851a7e72ca30af"
+    },
+    {
+      "bytes": 212114,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000133.ps",
+      "sha256": "bd3f11951bda6323819cd25fd1d507549350aed3bb1ff46de07789bc2296743a"
+    },
+    {
+      "bytes": 275631,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000134.json",
+      "sha256": "c90e105a1558b6201d686c576833d7c7596b6eff4ce36c2e38b741903c5d5872"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000134.ps",
+      "sha256": "70e3018e86d0001059bdffac176e2fa00b411d9169d662aa644c740c4ffafe8b"
+    },
+    {
+      "bytes": 275927,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000135.json",
+      "sha256": "5850b10aeb0bb9e59710c05b089a9158204142213004dbe94fcb268ba315c45c"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000135.ps",
+      "sha256": "da79ef4e8bb00d8f8fb4ece6d752770131f402b7eb73e171bff08627e2e44a22"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000136.json",
+      "sha256": "bdf3cf80fa3d419de3dc242fda97b7e4495be3242a2e921ee8e3213a96685109"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000136.ps",
+      "sha256": "02e9a4493b036222da1af02cef45b4ff1f75408482391049055ca39e48dcc5f1"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000137.json",
+      "sha256": "325d7ad9bbda103d1d5f34152a8ded93a7f7576ee6c1a89efe82e7832139a4ba"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000137.ps",
+      "sha256": "eba0b189399a3818c186b49dfccb09b7c695079433e22f2bef1d1eb3a2b0cb7c"
+    },
+    {
+      "bytes": 275927,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000138.json",
+      "sha256": "eee06cce53bc611f1ea62e71cc42277b81f1a2086e0af0402f7ab81cb5aec30a"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000138.ps",
+      "sha256": "771f051d214cdf0a33b3d9b288c14adfdb008bed06e57646a85c71c7c2d564cf"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000139.json",
+      "sha256": "d907af383d71f15338e03b7f05af9fd842f818f07d748bb536dbe23493e731e0"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000139.ps",
+      "sha256": "aa5a9f14f405bbb62915216fecb0077529b1f407123e0c054cb36a24eebfec50"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000140.json",
+      "sha256": "b2da1a739c56c2a69a67ea36a81b1b6f0ac98f6997d4134004aa745f269dc468"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000140.ps",
+      "sha256": "5dc5cfce0af58cefaa1e040d60c9621c896e5de9d3e40c6877c23745609f5272"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000141.json",
+      "sha256": "cc8960e3a3f472e6def920629ae2d3d861dbcce617a092f60d2316c40c17b4a2"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000141.ps",
+      "sha256": "d2f59e79652a2afb26ce243fe9addf47f2c604bf7efcb68bcd12498756242eff"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000142.json",
+      "sha256": "fc3ff64d4cba6768e7c3c9a79d26e51e4f3a4c44b71c116f841ddf3a98df6b05"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000142.ps",
+      "sha256": "2de5505ee79987f2de0b1a7805e9d3537207405b9bbad6daaea95f174dccd720"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000143.json",
+      "sha256": "b606364217a4934ac03caa1760189346e9ae8197d0e01b976011f7608dc64690"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000143.ps",
+      "sha256": "8739aec6c177f0c595ed5f6d784ec113e45ab76dc52e404dd127c87223d889af"
+    },
+    {
+      "bytes": 275926,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000144.json",
+      "sha256": "0ac4625b8b12f2169ca7260ebbbb663ca81624031b8e48cc4ad38e3433d7867a"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000144.ps",
+      "sha256": "a440928b84eff1362ea243701de985b5ada49de329fa810565c6116f23e21d76"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000145.json",
+      "sha256": "b5c05bcc88ee53dfad3219beb25e591b679364848a6e7f50556e4204773f32f7"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000145.ps",
+      "sha256": "05860424ad55e4db68719e769455bced46b4d599a21e13683370917d3e26ddbd"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000146.json",
+      "sha256": "b635382363632e84d7ac7b1cf9f2b90a1484436c875db81b64c1f1caa7a92151"
+    },
+    {
+      "bytes": 212422,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000146.ps",
+      "sha256": "1b7bf2eaa14e232affd7467a96ef32a6550d01679fe2e96424f792d51de189dc"
+    },
+    {
+      "bytes": 276077,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000147.json",
+      "sha256": "d5b71a9247976f60f5d9b7b36eb3c4b42100be5465cf918a2ebc8a76c135362f"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000147.ps",
+      "sha256": "aa5ff878f8673ed0fb90ab38c93195723bacc425883ea164a530536241b031f3"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000148.json",
+      "sha256": "52f3c6362f63be181391b4926fb348a18c6865f160e0f623fbbd08d89a5bf89a"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000148.ps",
+      "sha256": "a1f51e5858a7c161819b085fd137738290ba1b17a58e1a99eb81b2cd7cf73330"
+    },
+    {
+      "bytes": 275925,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000149.json",
+      "sha256": "779c6289aa305da3be17871b5f840096843ca42bcfa23be13063a9e25f11a62f"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000149.ps",
+      "sha256": "bf0ea204f834228fcd2017126075e61e963df6408e257b4d1cdb49c63ac9a151"
+    },
+    {
+      "bytes": 275925,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000150.json",
+      "sha256": "8ff1b1f8ca652355e084c95191da69a59b44c9243d120f8a0cbf0da3182a3acc"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000150.ps",
+      "sha256": "e7a9e1157dbb0a9a61c69792ed069221a5ec8ee5898ebc583411d58cf8937f57"
+    },
+    {
+      "bytes": 275927,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000151.json",
+      "sha256": "6fe8d21a2a0d3f0c1365256669220fb43a9dd3babe76071427cffe65ee8d42b0"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000151.ps",
+      "sha256": "6f8171058ad6a5f2ebc2cc343f49622e3dd239a82890c050a33cc852c53f0b0b"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000152.json",
+      "sha256": "9e94876111351840a931853802a3b39b481e1ee792c396075786a1063f7e4ec3"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000152.ps",
+      "sha256": "b77442b30cf9e9cd46f2d8d111f14bbb361415881381d019033cdd15004c12c8"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000153.json",
+      "sha256": "52a4b4c1bc0cfdea9704880886b0d7df894f942fcc92d35c1fec2f5d2db3b2db"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000153.ps",
+      "sha256": "06e2fd3bb3aa576b5fdc3e6de15dc3ef00c0fa6221eef29991f2b077bbdc6ffd"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000154.json",
+      "sha256": "c01f11712c86142f8d5adea1d2e2170993dc544f73286058d629d96fcafe22b4"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000154.ps",
+      "sha256": "22da646a7b3acaf0dbb89693315538c927c65f22393ebc19500458851915f830"
+    },
+    {
+      "bytes": 275927,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000155.json",
+      "sha256": "da638a373d6a40c1aa2afbdf59e1db7bdfa787a71e0adbaa10d3793740f080a5"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000155.ps",
+      "sha256": "c8d42725b1e06102ac14bc633d215aa3d11772e59b5bab9b41b3d7ba0c113d76"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000156.json",
+      "sha256": "af024f66d45f8b806e9cffaa6e07cbe60d0f7b2f644c6805e4442bc128358a93"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000156.ps",
+      "sha256": "831390a270c8cd618595e436468d8b6c99690f55190c32d023a79ab063d14d8e"
+    },
+    {
+      "bytes": 275926,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000157.json",
+      "sha256": "a3c64c8e99737c5ba25f739603c9fa87f11f6aacb8507b3b0460b7a40cf40b73"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000157.ps",
+      "sha256": "c5678fdfce753652d0e6b9c1a9223fd3bd6117aeb0a21fca4b6fc7a71193d58f"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000158.json",
+      "sha256": "89b06af0162fee9ea7cb7876bf2381f802e4b69b2c639f3b60a7047785fda31e"
+    },
+    {
+      "bytes": 212389,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000158.ps",
+      "sha256": "47fd05f03155be388516f70f5edeaea764641ad8a33ac3abf87ee9c5ee1e9807"
+    },
+    {
+      "bytes": 276044,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000159.json",
+      "sha256": "10856448b7da99e1194f86c80081ac9e3fed8d304036f93c4dc0814c7c375142"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000159.ps",
+      "sha256": "a3d33701d1637ebb3d4a7a64bd2062dd91da3cbd29373acc9343c81fa4fa5287"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000160.json",
+      "sha256": "898578c35af8de52640203c7ca389d7eeae1f9a94fbb90f8bb8915e2e9fd18c7"
+    },
+    {
+      "bytes": 212343,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000160.ps",
+      "sha256": "057fd75da78a21b49afe7d24150f985377c8b5ed533cd3d03d1ea38356233774"
+    },
+    {
+      "bytes": 275928,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000161.json",
+      "sha256": "e831d5380a0004b40cd7d79425654c4eb3018cdcd6cb086ebbf06d847aec25fe"
+    },
+    {
+      "bytes": 212391,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000161.ps",
+      "sha256": "44c8fb37bd1c1d1ce67f8e02b75fd6aa143f60731f87656c423419b5ecee9e95"
+    },
+    {
+      "bytes": 276046,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000162.json",
+      "sha256": "29ef16a04a835e4cb3a78ef3a9846cc26e95840f781e80212c9346e0d4ff51b4"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000162.ps",
+      "sha256": "0a5fa4ab37e29a75a9a2ecbd84b70bed3c49d29e1ede31f370a1613759d52d6c"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000163.json",
+      "sha256": "0771d7801c66e0cdb51d2971668eacda49fc4c69119b0dbe57f1c4c00a32df91"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000163.ps",
+      "sha256": "53dd1c1aa2b5b9092f3924f33e22d90ed854d70c287f2b37be6ffddb2d45d768"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000164.json",
+      "sha256": "398508837eaaa964662b2bf77ade96186e643a7e29dc831dea5db885d76b7c8a"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000164.ps",
+      "sha256": "df5d82d4b48c34a3bc187c7608401b2a79ce8eb1fa1b8c560028fd2495840436"
+    },
+    {
+      "bytes": 276514,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000165.json",
+      "sha256": "383c80e32c8b0e5fda372300a4899384f2cbfb934b7b6e42eb53e6e02a57c69a"
+    },
+    {
+      "bytes": 212851,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000165.ps",
+      "sha256": "33ad38f6a3000c3629c7a80e5d31e38d4ee18dd2f038c33026fe6f094ce6dbd8"
+    },
+    {
+      "bytes": 276638,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000166.json",
+      "sha256": "a8acc42eaa3d7a22598497f7645af9d5b9b1e3777f3c622b1eed8ff9cc24635a"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000166.ps",
+      "sha256": "1979bf272199ec951ecc6fe7b72e5b8339414bc3be6e3240dece483cb2e9dd90"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000167.json",
+      "sha256": "225e99be231da67673ba5193aca2a73ce5ca3e3a439fdedb3146c219f89f00d7"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000167.ps",
+      "sha256": "0dda6a3b1145881ed58e0717158165cfa91547052ea166e31136bdf76ddcfcd7"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000168.json",
+      "sha256": "c8701d061d63ba44c8d13bca81e7e0ba0c7c8e8edb993e2bba42bc4096f20b2a"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000168.ps",
+      "sha256": "9f30e7026eec75d3c4cd0d8eba79ca27266203b186bdced38db822a854939132"
+    },
+    {
+      "bytes": 276516,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000169.json",
+      "sha256": "bd319e426e4061dc7bdc00b4bf086475b6c522979669bc37b5d7527e0d1df9fd"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000169.ps",
+      "sha256": "65f334fc2e39ef675c5b70381eec63609a3f0ead14d2990eb7f8a7a164e7b797"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000170.json",
+      "sha256": "3078bb7c2438b6605c59d29d21e38170084456b9e3b9fbcb8f0c214fb470f26b"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000170.ps",
+      "sha256": "24891eab3b11fa470a6c06243ace5c7f7e52506fe64a851021ab21451f345668"
+    },
+    {
+      "bytes": 276515,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000171.json",
+      "sha256": "5f108d219a64159e797e8bf2dac894af905dbff2a2fbffb623e93070bb80c93e"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000171.ps",
+      "sha256": "d86ef8dc304c93c29acde3fbfa4d4fa4ff86f4d5f71ccb610d595ccecf114ab0"
+    },
+    {
+      "bytes": 276517,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000172.json",
+      "sha256": "d2f1738d4df862932a5fdd1833e7589fcb7743281c02af83fb5fb02c43e9bf0c"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000172.ps",
+      "sha256": "f6b65de7eaa992eb6f65d6aff2ca762441000e505abea063f1d28139cf516186"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000173.json",
+      "sha256": "a5677b72ef30ebf9459e1bbaec61ec66f2c4c12509084a670ae16f9bd8097739"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000173.ps",
+      "sha256": "ba831876d3807b9b0c5e296da9590ebc23b4003d67a1f341f436b83b24f080ca"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000174.json",
+      "sha256": "4a901c03898f765ec9823d1c32d83e6b6ee6800be5721d769bcf5dcb0f34c6aa"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000174.ps",
+      "sha256": "8393c67a4c8240b19ae0d30ae87d3f550d19f75f16533356ed5264d51c621887"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000175.json",
+      "sha256": "77dfd321bfd9249be2ac087c5619058ba6f2ea4b37ac18bd4e1ee4638a9db780"
+    },
+    {
+      "bytes": 213219,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000175.ps",
+      "sha256": "df379baf445ff41f069eed9e4dbcb45f516aa813c3964e686570bbcfc2e68b18"
+    },
+    {
+      "bytes": 277073,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000176.json",
+      "sha256": "068b5253c5554f36e6532e5681f53d1b6d6d0909e7a43ec210fac1ac0cecb3b5"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000176.ps",
+      "sha256": "619bf58509bfdafd1778a3c26802547875670f638dfcabca2e1c1ec720b2f4b0"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000177.json",
+      "sha256": "45558cc4cfea240eeb2254a5cae5d471a49c663e919e3fd174821d4410ad0d74"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000177.ps",
+      "sha256": "67cfdf6be0b4fad9611c8336609577f4ec908a6e8250a4bb8afa0bcaf4842d58"
+    },
+    {
+      "bytes": 276519,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000178.json",
+      "sha256": "3f468a48f9b8134967af8d865cc817f8e1bea08adf1f43290bd95b507938a216"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000178.ps",
+      "sha256": "dd6a818034a03afbbabe2f7d45f1578515b27aa0280cf29454ad82db7c883409"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000179.json",
+      "sha256": "ece3e979b6e198b36cada42045eaf0a9534e9c3bd9207f7b8810b020c44e1d3f"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000179.ps",
+      "sha256": "d309e4d1755a106f608290aacce2d38bc1bea018cffc813451961d2ab8bdbdc8"
+    },
+    {
+      "bytes": 276520,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000180.json",
+      "sha256": "ecee28c58689c29204b1f56762c01bf704914c2b59c05ac8c78c24e7672f6d5b"
+    },
+    {
+      "bytes": 212880,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000180.ps",
+      "sha256": "6adaca77803955533632129579496c0bf801c1275c20206895f6f3bda413309c"
+    },
+    {
+      "bytes": 276671,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000181.json",
+      "sha256": "827655bf38ae63bf5f394e4cea086e1e6ce5ecc576108ccbe11761638ea48eb8"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000181.ps",
+      "sha256": "0357370f8965c2812c1a93507a343d7a96fda366db8e541f4fa8e05f1d6a61c6"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000182.json",
+      "sha256": "841131d178afdfa9c5fdb94eec8d4bd21e8f629a0950caa3c5b079276b11140f"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000182.ps",
+      "sha256": "668dd3a232e14dc942c34409399bb68d778a69246af25eff4a969cbf3f4487e3"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000183.json",
+      "sha256": "d44c91809c379887f2f5c77beeb478e7811e032817105e37ce55e93fc0f6c94c"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000183.ps",
+      "sha256": "ffff3301cc2b4ba1115ccced6bb7651558e923e01da1a082aaee10d807416317"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000184.json",
+      "sha256": "5a7fc6790ebee59891b1ae11fca3165fafac109583c6c3b284ebdb0768936253"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000184.ps",
+      "sha256": "4b383290922eeece5d6ad20cc908140384772616c36f05bfd4ca8d60821b4a4c"
+    },
+    {
+      "bytes": 276518,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000185.json",
+      "sha256": "af8a88bd3cf9a4e39ba33348892500f1a3fc5408502141497e3012db6bc02b14"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000185.ps",
+      "sha256": "3020b012c2bb5f6e205e201702720edf13d52cc87a1b286c22fa1ad2d85a3213"
+    },
+    {
+      "bytes": 276520,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000186.json",
+      "sha256": "c29e2ad8206e2a0770cd4c02c7318624d237979043687a8fba52a4417a30a937"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000186.ps",
+      "sha256": "a61fc7f30d2029880d7d12dcfbdd979287485507ade90044645cf88ec2b8fe75"
+    },
+    {
+      "bytes": 276520,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000187.json",
+      "sha256": "641b058935d3c3976a8971c5b3b31316e99172bf7e74004a04c37a9b210f16dd"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000187.ps",
+      "sha256": "623f11cd2c4d27c26c90ec7829e14de29947c49285de83ae48cfe79e57e5fc06"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000188.json",
+      "sha256": "6e35c0e9de31d992a39a482090cea581e25069bb9660cd2b3edae113aeaac181"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000188.ps",
+      "sha256": "0d452bcf3cdaf543efbbca363627082471bd45445c6c1c980f78fb8e87c7976e"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000189.json",
+      "sha256": "fafaa801d4dacea6c2c8b03298bf4e9f3a683da0a30a0dc44b7f95856d7ffb97"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000189.ps",
+      "sha256": "1f7860b6880d50fbb7465e9773074171aac441e039737324b33cf0dfeaaccf5a"
+    },
+    {
+      "bytes": 276517,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000190.json",
+      "sha256": "8dba590c92e3258cfb7fa592c68388b670dad96abf27a369e2435fbb02c6bdb0"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000190.ps",
+      "sha256": "9d30152bd34119c9e6cb1aefaef234b338aaf710e8902f3bdd9e378b23a00cd2"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000191.json",
+      "sha256": "c7a80c637171506720514b2352df0234de5bffc3ed8a5a21e874675c9ed8b7b2"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000191.ps",
+      "sha256": "4cbf18c08f187558b14155b635c744435ad301f12ed60a45de07a233d8148540"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000192.json",
+      "sha256": "c268c5011fcaf11fce14f5614bbe1d38cff4f95e83360207318e87bba4dfb891"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000192.ps",
+      "sha256": "6827f713c089bac1546a341b4ef0289be57bf75ae1d6209c6a36920d4d6cbcd0"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000193.json",
+      "sha256": "3d8f3d4eb597ae2eb559821c29ed6f845009066c1481cc8284a21468511d2c6b"
+    },
+    {
+      "bytes": 213243,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000193.ps",
+      "sha256": "816d009a6db762f74165907a09e59bf2c792256c450006dfe9f82823b5c324a9"
+    },
+    {
+      "bytes": 277098,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000194.json",
+      "sha256": "8a88a964a134cfa4d99ee7354d90e5352180c6f4783af5edd19a1f16a907d4d1"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000194.ps",
+      "sha256": "de09eed2184b8164ab5b5e15085f3f8be40d06b6905f0db819a945d58051b0a9"
+    },
+    {
+      "bytes": 276519,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000195.json",
+      "sha256": "b102e98d32db81427eabec500540614c07d91331142c0b0326b12f7f3183680d"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000195.ps",
+      "sha256": "29ec340ec26ac581ddb6f28ab1f2025633f7bbf1bf8848a247b772f7ce9bdf39"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000196.json",
+      "sha256": "79466e59b641090f8fd69148a54e5689765138c3660b85c2e90c07f8730e84a2"
+    },
+    {
+      "bytes": 212801,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000196.ps",
+      "sha256": "a8071a71f4c2c7161f41884b568a20a039b906aea70c8c266dbbba57cc780008"
+    },
+    {
+      "bytes": 276521,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/capability/sample-000197.json",
+      "sha256": "5521a0b3f13998ac86801a3e094d4701b3df5d8db904e634f301ecddeb8e1ac1"
+    },
+    {
+      "bytes": 11968,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/authority-after.json",
+      "sha256": "df5d9ca91a74d364ba051c407d545f47b2b3c16784cf2994b8d67c5c271a1315"
+    },
+    {
+      "bytes": 11968,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/authority-before.json",
+      "sha256": "df5d9ca91a74d364ba051c407d545f47b2b3c16784cf2994b8d67c5c271a1315"
+    },
+    {
+      "bytes": 1571,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/capability-card.json",
+      "sha256": "783abdf237eff57670bd59183bce9c9af30b1c2f19acba70eb934050561a905f"
+    },
+    {
+      "bytes": 1720,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/execution-inputs.json",
+      "sha256": "6ae0c9decb0757218856e0662d69f7b8c0def14c336c379b494285e68de9eea0"
+    },
+    {
+      "bytes": 4381290,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/external-after.json",
+      "sha256": "ea2a8d0cfc0fa8186b2488191461321ec657821f6e3b5fff5a0da8feac5a4cc2"
+    },
+    {
+      "bytes": 4381288,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/external-before.json",
+      "sha256": "190043c5a5d92ab077a7b980cf4e346cfe7299efa443ba933681aa919c80c7e0"
+    },
+    {
+      "bytes": 552,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/external-diff.json",
+      "sha256": "e77647a691bc7911ff5161e7c35e68f2bf2f57a29779c2be952d357f35dacb2d"
+    },
+    {
+      "bytes": 213030,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/final-processes.ps",
+      "sha256": "a5532373a90419491a14b2f0d8681d8ced45a203f50a0ccc44c2d8cd61a4c0dd"
+    },
+    {
+      "bytes": 213656,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/pre-dispatch.ps",
+      "sha256": "7b7af93a8df43a7ac9a3492349ec3dc2f45516033d9e9d968081d0efeff201b3"
+    },
+    {
+      "bytes": 102149,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/prepared.json",
+      "sha256": "046de6e32a21ee6f8818993791dcb8a2f1078724db30f33620bb1e86346f29a5"
+    },
+    {
+      "bytes": 9045,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/probe-manifest.json",
+      "sha256": "00ed0f3ebdf10bd8f8ec7770060ab2b1c4d8d4dc82a31f71493bf9a7576487e0"
+    },
+    {
+      "bytes": 986,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/provenance.json",
+      "sha256": "2a09845668202b49abcd9c312f4e06e545756755575bab5b17a3cc20061fd043"
+    },
+    {
+      "bytes": 1352,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice/prep/resource-review.json",
+      "sha256": "a9654fc21cf83780910f37d4c62a82440706749812bddb3c3e7224df31085a06"
+    },
+    {
+      "bytes": 11968,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/authority-before.json",
+      "sha256": "df5d9ca91a74d364ba051c407d545f47b2b3c16784cf2994b8d67c5c271a1315"
+    },
+    {
+      "bytes": 1616,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/capability-card.json",
+      "sha256": "7b95b752b728d5e2ede505d0138006edab19f7b1e8e8d6088764e5f3e3ad68e8"
+    },
+    {
+      "bytes": 1765,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/execution-inputs.json",
+      "sha256": "fb7ab0ac58f3d7008ed50eb840e89de1a1faf472acabb614cd2d7cb8cd493abc"
+    },
+    {
+      "bytes": 102176,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/prepared.json",
+      "sha256": "a338cb360ccc2dfbc51115c910d5348c4fdec97b01c3eb57cbd2b528da347e3c"
+    },
+    {
+      "bytes": 9045,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/probe-manifest.json",
+      "sha256": "00ed0f3ebdf10bd8f8ec7770060ab2b1c4d8d4dc82a31f71493bf9a7576487e0"
+    },
+    {
+      "bytes": 1004,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I15-20261102-r4-readonly-probe/I19-20261109-metal-slice-attempt2/prep/provenance.json",
+      "sha256": "5ee79541f39db058b8c178c38ba6ccf78527ea07c10d93c2d9b39ebf7069f92b"
+    }
+  ],
+  "format": "universe-i19-public-evidence-index.v1",
+  "native_dispatched": false,
+  "scope": "both I19 run roots, no keys or owner contents copied",
+  "ue_dispatched": false,
+  "worker_dispatched": false
+}

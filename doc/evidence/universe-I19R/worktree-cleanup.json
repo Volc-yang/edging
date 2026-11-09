@@ -1,0 +1,63 @@
+{
+  "format": "universe-i19-worktree-cleanup.v1",
+  "tasks": [
+    {
+      "worktree": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i19-metal-controller",
+      "branch": "codex/i19-metal-controller",
+      "head_preserved": "453fa9c5629ff89e70d8f0f10581009646e5a2a5",
+      "pr": 125,
+      "integration_commit": "37a46edee536713f7a6f148ab2b03ab4bff57121",
+      "status": "removed_non_force",
+      "clean_before": true,
+      "branch_retained": true,
+      "runtime_dependency_on_removed_tree": false
+    },
+    {
+      "worktree": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i19-readonly-slice",
+      "branch": "codex/i19-readonly-slice",
+      "head_preserved": "7b5349e3f82bf03ee421a5ee589b0b7c64e161ab",
+      "pr": 126,
+      "integration_commit": "8c3523d27fb612bea820f7f823130565a9c63cf7",
+      "status": "removed_non_force",
+      "clean_before": true,
+      "branch_retained": true,
+      "runtime_dependency_on_removed_tree": false
+    },
+    {
+      "worktree": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i19-slice-admission",
+      "branch": "codex/i19-slice-admission",
+      "head_preserved": "7c37e3bb95dba500093e8556aa73bfc6777e74fe",
+      "pr": 127,
+      "integration_commit": "ef3d44d618c5d112bf5538f26d6f4bde3797e4cb",
+      "status": "removed_non_force",
+      "clean_before": true,
+      "branch_retained": true,
+      "runtime_dependency_on_removed_tree": false
+    },
+    {
+      "worktree": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i19-independent-review",
+      "branch": "codex/i19-independent-review",
+      "head_preserved": "0637eaaf9425954d5bcd6d43c3ea96dda467e0ff",
+      "pr": null,
+      "integration_commit": "aeead0ea80cfe63650dbff248c5dd4e8ee33ac7e",
+      "status": "removed_non_force",
+      "clean_before": true,
+      "branch_retained": true,
+      "runtime_dependency_on_removed_tree": false
+    }
+  ],
+  "checks": {
+    "implementation_commits_are_ancestors_of_integration": true,
+    "review3_artifacts_byte_identical": true,
+    "public_runtime_artifacts_rehashed": 416,
+    "public_runtime_text_dependency_files_checked": 217
+  },
+  "retained": [
+    "plan-consolidation (integration and stable execution artifacts)",
+    "i15-native-build (source/binary/runtime pins)",
+    "i12b-universe-live (recovery entry)",
+    "other historical trees not in I19 scope"
+  ],
+  "devssd_originals_retained": true,
+  "recorded_at": "2026-11-09T09:09:15.870457+00:00"
+}
