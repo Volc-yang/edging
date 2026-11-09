@@ -31,3 +31,11 @@
 ## 0独立审查裁决
 
 `/root/i19_review` 2026-11-09只读审查：接受C-only隔离实现，P/R/M仍no-go。C额外冻结trace目录清单/全部原件，Native前及最终seal再核Metal frozen；phase DDC不碰撞，Native旧schema/行为不改。root接受；写树从本方案提交固定，不等UI成本问题解决才修确定的Python缺口。P必须测物理操作和真实往返，不把48逻辑命令当48物理操作，不改旧计时起点。审查本身未运行UI/UE/worker/solver或读owner/key。
+
+## v2：小批次显式成本与范围（已审定，尚未运行）
+
+CUA预检工具wall为12.9134s而内部仅822ms；v1的2s不能满足。root与独立`/root/i19_review`接受新显式opt-in cardformat/scope及**精确固定subset manifest**，旧v1/48步/2或10秒全部不变，不是旧门通过。新20s步骤上限是dispatch前暂定成本，不回溯更改失败；全部物理console打开/输入/提交/关闭/AX及往返、map/receipt都计入，实际物理数另记。
+
+固定14逻辑步骤：probe4/90s（Arm、实际viewport/guard readback、1张原生PNG、Disarm）；history1/25s（ObserveExact 0 1 1）；history拒写5/110s（Arm、真实Space、真实R、released readback、Disarm）；final3/70s（Arm、restored readback、Disarm）；quit1/40s。交互295≤300，startup60、Metal420/Native180/global900/2GiB不变，不重试。只得3真实请求status/current/history和2新Observe，final selectedH1/trustedH2；没有H/latest。camera/visibility/FPS/pause/held明确deferred。5s交互余量很窄，未实测不称ready，运行时不再扩上限。
+
+P写任务排他`probe_actions.py`、新定向tests、`doc/evidence/universe-I19P/`，固定新manifest/receipt/evidence验证，旧入口不变；C2在C已集成后独占`capability.py`，仅严格新card/scope/精确manifest可20s，CLI形状不变；各自PR/CPU/独立审查/CI。C和P不同文件可并行，C2依赖C与P冻结接口。root拥有执行原件/driver，A在最终源冻结后审ready。完整矩阵及G-B2持续open。
