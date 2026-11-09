@@ -24,6 +24,9 @@ from . import capture, lifecycle as lc
 
 FORMAT = 'universe-i15-capability.v1'
 SCOPE = 'one-existing-metal-readonly-then-native-replay'
+FORMAT_V2 = 'universe-i19-capability.v2'
+SCOPE_V2 = 'one-existing-metal-readonly-history-input-slice-then-native-replay'
+PREPARED_FORMAT_V2 = 'universe-i19-prepared.v2'
 POLICY = {'global_seconds': 900, 'bytes': 2 * 1024**3,
           'metal': {'start':60,'interaction':300,'quit':40,'seal':20,'max':420},
           'native': {'start':60,'tests':60,'quit':40,'seal':20,'max':180},
@@ -159,6 +162,28 @@ class ValidatedCapability:
         self.token=token
 
 
+def _slice_version(card):
+    lc.require(type(card) is dict,'capability card object required')
+    pair=(card.get('format'),card.get('scope'))
+    lc.require(pair in ((FORMAT,SCOPE),(FORMAT_V2,SCOPE_V2)),
+               'explicit versioned capability format/scope required')
+    return pair==(FORMAT_V2,SCOPE_V2)
+
+
+def _probe_step_limit(card, prepared, manifest):
+    """Only the opt-in I19 card admits the exact reviewed fourteen-step slice."""
+    from . import probe_actions
+    version2=_slice_version(card)
+    lc.require(prepared['probe_manifest_ref']==card['probe_manifest_ref'], 'fixed P probe manifest pin')
+    if version2:
+        expected=probe_actions.probe_manifest_v2()
+        lc.require(prepared['format']==PREPARED_FORMAT_V2 and manifest==expected and encoded(manifest)==encoded(expected),
+                   'exact fixed I19 slice and prepared v2 required')
+        return probe_actions.STEP_LIMIT_V2
+    lc.require(manifest['format']==probe_actions.FORMAT,'fixed P probe manifest pin')
+    return 10
+
+
 def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sha256,
         expected_probe_manifest_sha256, expected_product_source, expected_tool_source,
         expected_native_source_sha, execute=False):
@@ -167,7 +192,8 @@ def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sh
     fields={'format','scope','run_id','issuer','approved','execute','issued_at','expires_at',
             'g_b2_granted','standard_pair','no_retry','prepared_ref','probe_manifest_ref',
             'controller_output','policy','legacy_sources','public_paths'}
-    lc.require(set(card)==fields and card['format']==FORMAT and card['scope']==SCOPE and
+    version2=_slice_version(card)
+    lc.require(set(card)==fields and
         card['issuer']=='root' and card['approved'] is True and card['execute'] is True and execute is True and
         card['g_b2_granted'] is False and card['standard_pair'] is False and card['no_retry'] is True,
         'explicit root capability-only scope/execute required')
@@ -179,7 +205,8 @@ def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sh
     prepared=lc.json_ref(card['prepared_ref'])
     prepared_fields={'format','run_id','product_source_sha','tool_source_sha','native_source_sha','tool_root','product_root','allowed_untracked','output_root','key_directory','authority_root','runtime_files','native_source_pins','source_pins','binary_pins','project','ue_root','python_executable','python_environment_pin','original_owner_ref','readonly_owner_ref','context','inputs','original_inputs','scratch_root','pins_ref','original_pins_ref','before_map_ref','head_ref','key_metadata','probe_manifest_ref','launcher_ref','preparation_ref','build_ref','created_at','helper_ref'}
     lc.require(set(prepared)==prepared_fields,'exact prepared v1 fields')
-    lc.require(prepared['format']=='universe-i15-prepared.v1' and prepared['run_id']==card['run_id'] and
+    prepared_format=PREPARED_FORMAT_V2 if version2 else 'universe-i15-prepared.v1'
+    lc.require(prepared['format']==prepared_format and prepared['run_id']==card['run_id'] and
         prepared['product_source_sha']==expected_product_source and prepared['tool_source_sha']==expected_tool_source and
         prepared['native_source_sha']==expected_native_source_sha,'prepared source/run binding')
     tool=lc.checked_path(prepared['tool_root']); common=_common(tool)
@@ -266,8 +293,7 @@ def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sh
                        device=st.st_dev,inode=st.st_ino,bytes=st.st_size,symlink=keys.is_symlink())
     lc.require(metadata==expected_meta,'key directory metadata changed; contents never inspected')
     manifest=json.loads(ref(card['probe_manifest_ref']))
-    lc.require(prepared['probe_manifest_ref']==card['probe_manifest_ref'] and
-               manifest['format']=='universe-i15-probe-actions.v1','fixed P probe manifest pin')
+    step_limit=_probe_step_limit(card,prepared,manifest)
     lc.require(type(manifest['items']) is list and manifest['items'],'probe command list missing')
     ids=set()
     for item in manifest['items']:
@@ -275,7 +301,7 @@ def validate_capability_card(path, *, expected_card_sha256, expected_prepared_sh
         ids.add(item['action_id'])
         for command in item['commands']:
             lc.require(type(command['step_id']) is str and type(command['text']) is str and
-                0<lc.number(command['max_seconds'],'step budget')<=10,'bounded fixed probe command')
+                0<lc.number(command['max_seconds'],'step budget')<=step_limit,'bounded fixed probe command')
     lc.require(len(card['legacy_sources'])<=3 and type(card['public_paths']) is list,'explicit bounded old source catalog')
     ref(prepared['launcher_ref']);ref(prepared['helper_ref']);ref(prepared['preparation_ref'])
     build=json.loads(ref(prepared['build_ref']))
@@ -291,6 +317,8 @@ class CapabilityController:
         self.started=clock()
         lc.require(type(validated) is ValidatedCapability and validated.token is _SEAL,'actual validated capability required')
         self.card,self.prepared,self.manifest=deepcopy(validated.card),deepcopy(validated.prepared),deepcopy(validated.manifest)
+        self.slice_v2=self.card.get('format')==FORMAT_V2 and self.card.get('scope')==SCOPE_V2
+        self.step_limit=_probe_step_limit(self.card,self.prepared,self.manifest) if self.slice_v2 else 10
         self.clock=clock; self.output=lc.checked_path(self.card['controller_output']); self.output.mkdir(mode=0o700)
         self.common=_common(self.prepared['tool_root'])
         self.clock_binding=dict(id='i15-%d-%d'%(os.getpid(),time.monotonic_ns()),anchor_monotonic=self.started,
@@ -527,7 +555,7 @@ class CapabilityController:
                    self.process.poll() is None and not self.active,'no current Metal action permit')
         item=next(x for x in self.manifest['items'] if x['action_id']==action_id)
         command=next(x for x in item['commands'] if x['step_id']==step_id)
-        lc.require((action_id,step_id) not in self.completed_steps and 0<lc.number(timeout,'tool timeout')<=min(10,command['max_seconds']),'one bounded execution per step')
+        lc.require((action_id,step_id) not in self.completed_steps and 0<lc.number(timeout,'tool timeout')<=min(self.step_limit,command['max_seconds']),'one bounded execution per step')
         now=self.clock();started=self.phases['metal']['started']
         lc.require(now+timeout<min(started+360,self.started+810),'normal quit reserve reached')
         lc.require(self.samples and 0<=now-self.samples[-1]['monotonic']<=2 and not self.observer_error,'fresh observer required')
@@ -544,7 +572,8 @@ class CapabilityController:
         lc.require(self.clock()-self.samples[-1]['monotonic']<=2 and not self.observer_error,'fresh consume sample')
         lc.require(not self.closing and self.pending.pop(token['seq'],None)==token and self.clock()<token['deadline_monotonic'] and
                    self.process.poll() is None,'stale/replayed/revoked permit')
-        self.active=dict(deepcopy(token),started_monotonic=self.clock());return self.active
+        started=token['issued_monotonic'] if self.slice_v2 else self.clock()
+        self.active=dict(deepcopy(token),started_monotonic=started);return self.active
 
     def begin_action(self,action_id,step_id,timeout):
         return self.consume(self.permit(action_id,step_id,timeout))
@@ -552,9 +581,17 @@ class CapabilityController:
     def end_action(self,seq,raw_tool_ref):
         lc.require(self.active is not None and self.active['seq']==seq,'no consumed matching action')
         self.read_public(raw_tool_ref)
-        value=dict(self.active,completed_monotonic=self.clock(),raw_tool_ref=raw_tool_ref,after=self.snapshot('after'))
+        if self.slice_v2:
+            after=self.snapshot('after')
+            self._trace()
+            # Include controller raw-ref validation, both map snapshots and
+            # trace checking in the v2 bracket, not just consumed UI time.
+            value=dict(self.active,completed_monotonic=self.clock(),raw_tool_ref=raw_tool_ref,after=after)
+        else:
+            value=dict(self.active,completed_monotonic=self.clock(),raw_tool_ref=raw_tool_ref,after=self.snapshot('after'))
         value['status']='recorded' if value['completed_monotonic']<=value['deadline_monotonic'] else 'timeout'
-        self._trace();self.completed_steps.add((value['action_id'],value['step_id']));self.active=None
+        if not self.slice_v2:self._trace()
+        self.completed_steps.add((value['action_id'],value['step_id']));self.active=None
         ref=self._write(self.output/('action-%06d.json'%seq),value);self.receipts[seq]=(ref,value)
         if value['status']=='timeout':self.request_quit('step exceeded bounded tool interval')
         return dict(receipt_ref=ref,**value)
