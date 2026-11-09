@@ -1,0 +1,18 @@
+{
+  "status": "actual_marked_schema_pass",
+  "raw_ref": {
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I19R/raw-cua-preflight.jsonl",
+    "sha256": "9de8cd6e013a3ba0428bdb2553a925530657b0821d76914ba8a416b2c8b50929"
+  },
+  "physical_operations": [
+    {
+      "operation": "getAXState",
+      "arguments": {
+        "emit": false
+      }
+    }
+  ],
+  "ue_dispatched": false,
+  "parser": "same Run.raw_cua; actual function_call namespace and list output verified",
+  "private_or_prior_conversation_copied": false
+}
