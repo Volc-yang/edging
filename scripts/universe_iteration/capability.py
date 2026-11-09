@@ -414,6 +414,10 @@ class CapabilityController:
     def start_metal(self):
         lc.require(not self.phases,'Metal must be first, once')
         self._private_preflight()
+        # Keep the established Native binding unchanged. The fixed Metal child
+        # path is a different binding, so sequential phases cannot share a cache.
+        ddc,ddc_argv=native_cache_arguments(self.prepared['output_root'],self.card['run_id'],self.output/'metal')
+        ddc.mkdir(mode=0o700)
         directory=self.output/'metal'
         trace=directory/'trace'  # created before UE starts; _spawn owns parent creation
         env={k:v for k,v in os.environ.items() if not k.startswith('EDGEWORLD_') and k not in ('PYTHONHOME','PYTHONPATH')}
@@ -428,11 +432,14 @@ class CapabilityController:
         argv=[self.prepared['binary_pins']['ue']['path'],self.prepared['project'],
             '/Engine/Maps/Entry?game=/Script/EdgeWorldHost.EdgeWorldUniverseGameMode','-game','-log','-windowed',
             '-ResX=960','-ResY=600','-EWDiagPreflushViewport','-NoSplash','-NoSound',
-            '-UserDir='+str(directory/'user'),'-abslog='+str(directory/'ue.log')]
+            '-notraceserver','-traceautostart=0',
+            '-UserDir='+str(directory/'user'),'-abslog='+str(directory/'ue.log')]+ddc_argv
         # Worker requires a preexisting private trace directory. Create parent
         # exclusively here and let _spawn reuse only this just-reserved phase dir.
         directory.mkdir(mode=0o700);trace.mkdir(mode=0o700);(directory/'user').mkdir(mode=0o700)
-        return self._spawn_reserved('metal',argv,env,directory)
+        value=self._spawn_reserved('metal',argv,env,directory)
+        self.phases['metal'].update(ddc_path=str(ddc),ddc_arguments=ddc_argv)
+        return value
 
     def _spawn_reserved(self,name,argv,env,directory):
         # Reserve marker permits exactly the parent created by this call path.
@@ -614,27 +621,106 @@ class CapabilityController:
         lc.require(self.phase=='metal' and self.closing and 0<=timeout<=40,'bounded closing Metal only')
         p=self.phases['metal'];p['thread'].join(timeout)
         lc.require(not p['thread'].is_alive(),'actual parent wait missing')
-        # Give the independent observer one new sample; do not query App bindings.
-        time.sleep(.6)
+        deadline=min(p['started']+418,self.started+810,self.clock()+20)
+        barrier=self._metal_writer_barrier(deadline)
+        p['writer_barrier_ref']=self._write(self.output/'metal-writer-barrier.json',barrier)
+        p['frozen_files']=barrier['files'] if barrier['complete'] else []
+        p['frozen_trace_directories']=barrier['trace_directories'] if barrier['complete'] else []
         errors=[]
+        if not barrier['complete']:errors.append('Metal writers did not become quiet and stable within phase budget')
+        refs=[];evidence_frozen=barrier['complete']
         try:
             self.snapshot('metal-final')
+            lc.require(p.get('identity') is not None,'actual observed Metal identity missing')
+            lc.require(evidence_frozen,'Metal evidence was not frozen after writer completion')
+            self._verify_metal_frozen_files()
+            frozen_log=next(row for row in p['frozen_files'] if row['path']==str(self.output/'metal/ue.log'))
+            log=lc.read_ref(dict(path=frozen_log['path'],sha256=frozen_log['sha256'])).decode('utf-8')
+            ddc_pattern=r'Isolated:\s+Using data cache path\s+'+re.escape(p['ddc_path'])+r'/?\s*:\s*Writable'
+            lc.require(re.search(ddc_pattern,log) is not None,'actual isolated writable filesystem DDC path not confirmed')
+            lc.require(re.search(r'LogZenServiceInstance[^\n]*Launching',log) is None,'unexpected Zen service launch in Metal run')
             from .actions import load_trace
-            refs=[self._ref(f) for f in sorted((self.output/'metal/trace').iterdir()) if f.is_file()]
+            refs=[dict(path=row['path'],sha256=row['sha256']) for row in p['frozen_files']
+                  if Path(row['path']).is_relative_to(self.output/'metal/trace')]
             load_trace(refs,expected_binding=self.binding)
         except (lc.Invalid,ValueError,KeyError,TypeError,OSError) as error:errors.append(str(error))
+        if evidence_frozen:
+            try:self._verify_metal_frozen_files()
+            except (lc.Invalid,OSError) as error:errors.append(str(error));evidence_frozen=False
         quiet=self._quiet('metal')
         if not quiet:errors.append('owned descendants or extra UE still alive')
         if self.clock()-p['started']>420:errors.append('Metal phase exceeded420s')
         normal=p['wait_exit']==0 and not p['forced_cleanup'] and not errors and quiet
-        p.update(normal=normal,errors=errors,sealed_monotonic=self.clock(),trace_refs=refs if 'refs' in locals() else [])
+        p.update(normal=normal,errors=errors,sealed_monotonic=self.clock(),trace_refs=refs if evidence_frozen else [],
+                 evidence_frozen=evidence_frozen)
         self.phase=None;self.closing=True
         return self._write(self.output/'metal-execution.json',self._phase_report('metal'))
+
+    def _metal_fingerprints(self):
+        """Freeze logs and the complete trace tree, including directory entries.
+
+        A later added/removed/replaced trace file must invalidate the snapshot,
+        even when all previously known files still have their original bytes.
+        """
+        directory=Path(self.phases['metal']['directory']);files=[];directories=[]
+        def signature(st):
+            return dict(device=st.st_dev,inode=st.st_ino,bytes=st.st_size,
+                        mtime_ns=st.st_mtime_ns,ctime_ns=st.st_ctime_ns)
+        def visit(path):
+            lc.checked_path(str(path));before=path.stat()
+            lc.require(stat.S_ISDIR(before.st_mode),'regular trace directory required')
+            with os.scandir(path) as scan:entries=sorted(scan,key=lambda entry:entry.name)
+            directories.append(dict(path=str(path),entries=[entry.name for entry in entries],**signature(before)))
+            for entry in entries:
+                child=path/entry.name;info=entry.stat(follow_symlinks=False)
+                if stat.S_ISDIR(info.st_mode):visit(child)
+                else:
+                    lc.require(stat.S_ISREG(info.st_mode),'regular trace file required')
+                    files.append(file_fingerprint(str(child)))
+            lc.require(signature(before)==signature(path.stat()),'trace directory changed during fingerprint')
+        for name in ('console.log','ue.log'):files.append(file_fingerprint(str(directory/name)))
+        visit(directory/'trace')
+        return dict(files=files,trace_directories=directories)
+
+    def _metal_writer_barrier(self, deadline):
+        """Three new post-wait quiet samples with stable logs and trace inventory."""
+        phase=self.phases['metal'];previous=None;quiet_since=None;consecutive=0;last_sample=None;observations=[]
+        while self.clock()<deadline:
+            lc.require(not self.observer_error and self.observer is not None and self.observer.is_alive(),
+                       'continuous observer required through Metal writer completion')
+            with self.lock:sample=deepcopy(self.samples[-1]) if self.samples else None
+            if sample and sample['monotonic']>=phase['wait_monotonic'] and sample['monotonic']!=last_sample:
+                last_sample=sample['monotonic'];quiet=self._quiet('metal')
+                try:fingerprints=self._metal_fingerprints()
+                except (OSError,lc.Invalid):fingerprints=None
+                observations.append(dict(sample_ref=sample['raw_ref'],monotonic=last_sample,
+                                         all_owned_quiet=quiet,fingerprints=fingerprints))
+                if quiet and fingerprints is not None:
+                    if fingerprints==previous:consecutive+=1
+                    else:quiet_since=last_sample;consecutive=1
+                    if consecutive>=3 and last_sample-quiet_since>=.75:
+                        return dict(format='universe-i19-metal-writer-barrier.v1',complete=True,
+                            confirmed_monotonic=self.clock(),stable_since_monotonic=quiet_since,
+                            observations=observations,**fingerprints)
+                    previous=fingerprints
+                else:previous=None;quiet_since=None;consecutive=0
+            time.sleep(.05)
+        return dict(format='universe-i19-metal-writer-barrier.v1',complete=False,
+                    confirmed_monotonic=self.clock(),observations=observations,files=[],trace_directories=[])
+
+    def _verify_metal_frozen_files(self):
+        phase=self.phases['metal']
+        lc.require(phase.get('frozen_files') and phase.get('frozen_trace_directories'),
+                   'Metal evidence was not frozen after writer completion')
+        lc.require(self._metal_fingerprints()==dict(files=phase['frozen_files'],
+                   trace_directories=phase['frozen_trace_directories']),
+                   'Metal evidence or trace inventory mutated after writer completion')
 
     def freeze_native_manifest(self, manifest_ref, expected_sha256):
         lc.require('metal' in self.phases and 'sealed_monotonic' in self.phases['metal'] and
                    self.phase is None and self.native_manifest is None,'finished/skipped Metal must precede one manifest freeze')
         lc.require(self.phases['metal'].get('skipped') or self._quiet('metal'),'previous phase not quiet')
+        if not self.phases['metal'].get('skipped'):self._verify_metal_frozen_files()
         lc.require(self.clock()-self.phases['metal']['sealed_monotonic']<=120,'raw handoff exceeds120s')
         lc.require(manifest_ref['sha256']==expected_sha256,'external Native manifest SHA required')
         from .native_replay import validate_native_manifest
@@ -657,6 +743,7 @@ class CapabilityController:
     def start_native(self):
         lc.require(self.native_manifest is not None and 'native' not in self.phases and self.phase is None,
                    'one frozen Native phase only')
+        if 'metal' in self.phases and not self.phases['metal'].get('skipped'):self._verify_metal_frozen_files()
         inventory=native_test_inventory(self.prepared['native_source_pins'],self.prepared['product_root'])
         inventory_ref=self._write(self.output/'native-test-inventory.json',inventory)
         ddc,ddc_argv=native_cache_arguments(self.prepared['output_root'],self.card['run_id'],self.output)
@@ -778,10 +865,12 @@ class CapabilityController:
         lc.require(not self.closed and self.phase is None and 'native' in self.phases and
                    'sealed_monotonic' in self.phases['native'],'completed phase wait required before seal')
         lc.require(self.clock()-self.phases['native']['sealed_monotonic']<=90,'final seal exceeded90s')
+        if 'metal' in self.phases and not self.phases['metal'].get('skipped'):self._verify_metal_frozen_files()
         if self.phases['native'].get('frozen_files'):self._verify_native_frozen_files()
         self.stop_event.set();self.observer.join(3)
         lc.require(not self.observer.is_alive(),'observer final sample not sealed')
         quiet=all(p.get('skipped') or self._quiet(n) for n,p in self.phases.items())
+        if 'metal' in self.phases and not self.phases['metal'].get('skipped'):self._verify_metal_frozen_files()
         if self.phases['native'].get('frozen_files'):self._verify_native_frozen_files()
         elapsed=self.clock()-self.started;size=self._storage_bytes()
         value=dict(format='universe-i15-capability-resource.v1',run_id=self.card['run_id'],clock=self.clock_binding,
