@@ -1,8 +1,10 @@
 # edgeWorld 4D 数字宇宙：集成开发总图
 
-状态：2026-11-01，v0.4。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。远端基线 `feature/edge-world` 的 PR #25 合并提交为 `383c72e`；后续有限 Seed→Tree × Genesis 纵切在集成分支 `codex/plan-consolidation`，未因此自动进入基线。
+状态：2026-11-10，v0.5（Dot写实需求接入；未宣称新实机验收）。当前计划入口；历史任务的原始裁决和证据仍以各任务登记及报告为准。远端基线 `feature/edge-world` 的 PR #25 合并提交为 `383c72e`；后续有限 Seed→Tree × Genesis 纵切在集成分支 `codex/plan-consolidation`，未因此自动进入基线。
 
-当前进展：抽象 Seed→Tree × Genesis 已有有限真实 Metal 集成证据；H6B 可步行实现经 PR #66 集成，H6C 独立访问、两模式推进、历史只读与恢复有限门经 PR #69 接受并集成（`0344827`）。显式 `--viewport-preflush` 开发入口有限接受；默认关闭路径可靠性、reporter 自身退出、正式视觉/性能门仍开放，V-HOME 未接受。准确提交和原始证据见[统筹清单](parallel_execution_backlog.md)。
+最新需求：用户在Dot明确要求真实世界写实渲染、不要卡通，优先参考3A画质模板；[接入记录与D0–D4任务树](design/edge-dot-realistic-rendering-intake-20261110.md)已纳入统筹。Dot的旧样区资产接入候选/592项CPU结果尚待定位和审查，未接新版Universe、未UE编译/实拍，不能算已集成或画质达标。新增工作为候选审查、授权资产/平台筛选及新版Universe只读资产映射；I19的技术正确性采证仍保留，但不替代写实视觉验收。Electric Dreams为待查证参考，不承诺Mac/Metal整包兼容。
+
+此前阶段记录（2026-11-01；最新实现/运行结算以[统筹清单](parallel_execution_backlog.md)为准）：抽象 Seed→Tree × Genesis 已有有限真实 Metal 集成证据；H6B 可步行实现经 PR #66 集成，H6C 独立访问、两模式推进、历史只读与恢复有限门经 PR #69 接受并集成（`0344827`）。显式 `--viewport-preflush` 开发入口有限接受；默认关闭路径可靠性、reporter 自身退出、正式视觉/性能门仍开放，V-HOME 未接受。准确提交和原始证据见[统筹清单](parallel_execution_backlog.md)。
 
 **下一阶段设计入口：[AI 4D 数字宇宙架构设计树](universe_architecture_design_plan.md)**。设计从世界身份/因果与丰富混沌初态两条路径开始，覆盖 Genesis、AI 提案、事务恢复、载具访问、UE 时间投影、写实与规模预算。它是设计计划，未将开放世界法则或数值阈值升级为批准决定。
 ## G：产品目标与架构边界

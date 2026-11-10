@@ -2,6 +2,12 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前需求接入：Dot 写实世界与3A视觉参考（2026-11-10）
+
+[需求接入与任务树](design/edge-dot-realistic-rendering-intake-20261110.md)：已同步用户在Dot中的“继续真实世界的渲染，不要卡通。最好引入3A画质的模版”。程序代理/BasicShapes与模板棋盘不能作为最终写实画质。Dot报告已有完整植物网格、地表/水面PBR与缺资产显式失败的独立分支候选、592项Python检查通过，但未合并、未接新版Universe、无UE编译/实拍；**该候选尚未定位，测试与实现均待审查**，不能当统筹已通过结果。Electric Dreams仅为来源建议，许可/依赖及Mac/Metal兼容待核实，不直接承诺整包可运行。
+
+下一步调整为：D0取得准确候选提交/差异/原件 → D1资产与平台审查 ∥ D2新版Universe只读投影接口 → D3审查集成 → D4有界实机视觉/只读/退出。I19正确性采证保留为技术子门，新增需求使“只做旧代理采证、不再实现”不再覆盖完整产品目标。本轮仅同步文档，没有启动实现、合并未知代码、导入素材或运行UE；I18有限接受与I19失败均保持。
+
 ## 当前结算：I19 工具接受，终端接线失败、实机未派发
 
 [I19登记](universe_i19_execution_register.md) / [统筹结算](evidence/universe-I19R/report.md)：C/P/C2独立审查、最终CI成功并合入PR125/126/127（37a46ed/8c3523d/ef3d44d），Metal NoTrace/独占DDC/稳定封存、固定14逻辑切片与显式20s许可就绪；完整48步门未改。root固定执行原件95bcb20通过ready，但here-doc启动包装占用stdin，driver6864未收到start，**无UE/worker/Native**；111.179s、exit2/normalfalse，原失败保留，权威61文件不变/六外域0/静默。A2新卡保留原900s/deadline，实测剩419.893<Metal启动余量510，NO-GO未派发；未开第三卡，父observer间隙不补回。
