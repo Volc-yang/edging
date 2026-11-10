@@ -1,0 +1,50 @@
+{
+  "format": "universe-i20-worktree-cleanup.v1",
+  "preconditions_sha256": "956dc9951d1a04f6cebf45c00a2f4908c9a68faca410ef1b2aa7dad024377460",
+  "tasks": [
+    {
+      "task": "i20-assets",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-assets",
+      "branch": "codex/i20-assets",
+      "source_commit": "30907e8dd645cb1b7c3580cf101f180b77b47865",
+      "clean_before": true,
+      "integration": "merged ancestor",
+      "actual_exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "removed": true
+    },
+    {
+      "task": "i20-profile",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-profile",
+      "branch": "codex/i20-profile",
+      "source_commit": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+      "clean_before": true,
+      "integration": "merged ancestor",
+      "actual_exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "removed": true
+    },
+    {
+      "task": "i20-review",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-review",
+      "branch": "codex/i20-review",
+      "source_commit": "3627af2df70bee1b05ab824640e535742f0e7ea9",
+      "clean_before": true,
+      "integration": "6996d714f3ec9d40dd7ef1ff09f9d69ce1cddc56; C cherry-pick exact bytes verified",
+      "actual_exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "removed": true
+    }
+  ],
+  "force_used": false,
+  "branches_deleted": false,
+  "retained_critical_trees": [
+    "i15-native-build",
+    "i12b-universe-live"
+  ],
+  "durable_asset_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets",
+  "remaining_worktrees": "worktree /Users/yangacan/edgeWorld/edge-world\nHEAD d6298e3a138b0b67f23e6523aae1e428eef54231\nbranch refs/heads/feature/edge-world\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/4d-algorithm\nHEAD e316898a072c2026b3754e32c1bd0af97fdd70fe\nbranch refs/heads/codex/4d-algorithm-prototype\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/4d-algorithm-plan\nHEAD 82d51ef6457fa20b2e54501baec0b1b1dd04face\nbranch refs/heads/codex/4d-algorithm-iteration\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/chaos-pdca-02\nHEAD 6697512b44ec895f5de67305976ce5829f725611\nbranch refs/heads/codex/chaos-pdca-02\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/chaos-realism-01\nHEAD abc990ace09b0c8bfa0fc3dd627f69c7a3cdbb01\nbranch refs/heads/codex/chaos-realism-01\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/chaos-universe-pdca-plan\nHEAD 7cb65d2f77b420bd3befe0d160d7666a25923534\nbranch refs/heads/codex/chaos-universe-pdca-plan\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/i12b-universe-live\nHEAD 5884ac9b235c03c33ccfd843d622d26de5948189\nbranch refs/heads/codex/i12b-universe-live\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/i15-native-build\nHEAD 5a6cca0c36b7dc89997d1a0bf35f154346f86e99\nbranch refs/heads/codex/i15-native-build\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/phase0-inventory\nHEAD 47851f84c5124bd3513680d2c30adc988c96baba\nbranch refs/heads/codex/edgeworld-dirty-tree-audit\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/phase0-ue-map\nHEAD 85a57a8da0e700b40fdeae12e4da66e237ce5214\nbranch refs/heads/codex/ue5-release-plugin-path\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/phase1-contract\nHEAD ce39e531c7ac4e85b9775b609465e0a3d6a60c75\nbranch refs/heads/codex/edgeworld-license-boundary\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation\nHEAD 6996d714f3ec9d40dd7ef1ff09f9d69ce1cddc56\nbranch refs/heads/codex/plan-consolidation\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-pie-integration\nHEAD a689296560dfb17703c9ca11f2e9b772ae58177b\nbranch refs/heads/codex/seed-tree-pie-2026-10\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-pie-vis\nHEAD 533dc5b0973eb5d41a8b448281e8872b6b7f4d98\nbranch refs/heads/codex/seed-tree-pie-vis\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-plan\nHEAD 26947afe808ada08bae4765ded2b11fa56fae615\nbranch refs/heads/codex/seed-tree-iteration\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-ue\nHEAD 38e097c461e7dc8c5c1043c2527c99f0d2302a9d\nbranch refs/heads/codex/seed-tree-ue\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/seed-tree-worker\nHEAD 845dfba8a88536bc2e02dfe5001c5114a366ac19\nbranch refs/heads/codex/seed-tree-worker\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/stage2-genesis-api\nHEAD 363d23b5f09bf1b7cb886719bae83af7ccfbc9bd\nbranch refs/heads/codex/stage2-genesis-api\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/stage2-integration\nHEAD 1d6444d8f393c17ba77aac47bd8f4c63171842bb\nbranch refs/heads/codex/stage2-integration\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/stage2-ue-plugin\nHEAD 326c1138333ad2f995de699bf25162912de3a7b9\nbranch refs/heads/codex/stage2-ue-plugin\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/stage2-worker\nHEAD e143c23e89c6ed97d25cdc9b88f658ac4a06ae85\nbranch refs/heads/codex/stage2-worker\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/universe-p0-contract\nHEAD 133f2438fcc6eca923b130427ef4ea6c068c8a1a\nbranch refs/heads/codex/universe-p0-contract\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/universe-p4-acceptance\nHEAD ee4f6e643977e8d391537aa600ae44eb6591f974\nbranch refs/heads/codex/universe-p4-acceptance\n\nworktree /Users/yangacan/edgeWorld/edge-world/.worktrees/universe-pdca-master\nHEAD b1595eb29bdd9adf99a7cf971c9f39faac871ad6\nbranch refs/heads/codex/universe-pdca-master\n\n"
+}

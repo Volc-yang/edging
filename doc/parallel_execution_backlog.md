@@ -2,9 +2,11 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
-## 当前执行：I20 写实需求首轮PDCA（2026-11-10）
+## 当前结算：I20 写实源输入与呈现契约接受（2026-11-10）
 
-[审定计划](design/universe-i20-realistic-pdca-plan.md) / [执行登记](universe_i20_execution_register.md)：先并行A取得有界CC0真实自然资产及文件/依赖/许可证据，B冻结独立只读presentation profile与原子ViewBinding/测试卡；C独立核对后发布D3代码/编译、D4实拍卡。256MiB/64files/20min源payload上限；本轮不启动UE/GPU。旧v0.2严格技术资产不能原地替换，缺资产的HUD/画面混切片风险须纳入后续适配。用户允许开源模板并授权询问Dot，但当前没有可寻址Dot入口，询问尚未发送；D0待交接不阻塞A/B。旧goal已清除，本轮用任务登记推进。
+[审定计划](design/universe-i20-realistic-pdca-plan.md) / [执行登记](universe_i20_execution_register.md) / [统筹结算](evidence/universe-I20R/report.md)：A PR128/30907e8→a3ca6a4，B PR129/d6fe60d→0dfde3e，最终CI分别42753910052/42754957084 success。实际20个CC0模型/纹理payload共41,949,796B，完整响应体42,116,535B/145.219s；34个持久文件及来源/依赖/许可/14图片解码通过。B冻结独立只读profile/ViewBinding、合成CPU合同；独立C发现1e999非有限数缺口，定点修复后15项+5项独立检查通过，原失败保留。C3627af2经root审读摘取6996d71；root稳定路径原件/hash复核和15项重跑exit0。**本轮ABC有界目标complete；UE导入、编译、HUD/画面原子性、Metal画质/性能均未运行。**三棵干净任务树已non-force移除，分支/DevSSD资产/原件及构建恢复树保留，未同步脏的主checkout。
+
+下轮第一步：按[已落盘D3/D4卡](design/universe-realistic-presentation-profile.md)审定新执行树/预算，真实导入蕨类/岩石/地表纹理并产Native metadata→profile/事务适配→准确UE编译→新卡Metal实拍。蕨叶独立alpha、GL源法线与显式DX覆盖、地表预览球禁作地形是必需约束；旧v0.2严格技术资产和authority不能原地替换。用户允许开源模板并授权询问Dot，但工具没有可寻址Dot入口，交接请求尚未发送，D0延期不阻塞独立实现准备。旧goal清除状态、I18 exact3和I19失败保持。
 
 ## 当前需求接入：Dot 写实世界与3A视觉参考（2026-11-10）
 

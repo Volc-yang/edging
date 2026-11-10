@@ -1,0 +1,50 @@
+{
+  "format": "universe-i20-cleanup-preconditions.v1",
+  "parent_check_sha256": "fbc1ce5bd5cd15e97d43f81ac60c5bb7acccd4c60442ab280bc0018b599d6be4",
+  "runtime_source_tree_reference_scan": {
+    "roots": [
+      "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/engine",
+      "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/engine_platforms",
+      "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/scripts",
+      "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/tools",
+      "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/models"
+    ],
+    "rg_exit": 1,
+    "matches": []
+  },
+  "inputs": "34 durable DevSSD files and all A/B/C repository bytes verified; B fixtures use repository-relative paths",
+  "historical_refs": "A original receipts retain old helper path; accepted phased-source-provenance.json resolves preserved source/Git blob. Reports retain historical worktree identity.",
+  "retained": [
+    "i15-native-build",
+    "i12b-universe-live",
+    "all unrelated worktrees",
+    "all branches",
+    "DevSSD assets"
+  ],
+  "tasks": [
+    {
+      "task": "i20-assets",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-assets",
+      "branch": "codex/i20-assets",
+      "source_commit": "30907e8dd645cb1b7c3580cf101f180b77b47865",
+      "clean_before": true,
+      "integration": "merged ancestor"
+    },
+    {
+      "task": "i20-profile",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-profile",
+      "branch": "codex/i20-profile",
+      "source_commit": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+      "clean_before": true,
+      "integration": "merged ancestor"
+    },
+    {
+      "task": "i20-review",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-review",
+      "branch": "codex/i20-review",
+      "source_commit": "3627af2df70bee1b05ab824640e535742f0e7ea9",
+      "clean_before": true,
+      "integration": "6996d714f3ec9d40dd7ef1ff09f9d69ce1cddc56; C cherry-pick exact bytes verified"
+    }
+  ]
+}

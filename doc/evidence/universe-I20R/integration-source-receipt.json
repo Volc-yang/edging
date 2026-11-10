@@ -1,0 +1,14 @@
+{
+  "scope": "root integrated A source verification, no UE/worker/solver",
+  "integration_commit": "a3ca6a423d15b99bd73f0c7d37f7ad502741021e",
+  "command": "python3 -B doc/evidence/universe-I20A/verify.py /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets",
+  "actual_parent_wait_exit": 0,
+  "source_result": "PASS",
+  "payload_files": 20,
+  "source_provenance_both_phases_verified": true,
+  "raw_output_sha256": "99854b1d72396ec497f6aa5be63c14d053d4f29caf304910c46c9991fa764d4a",
+  "tree_index_sha256": "8a197377b4770d9e0c608c9a24e7c0c27435f9efb1805b193f836d7a1edcc363",
+  "nofollow_traversal_errors": [],
+  "ue_native_import": "not_run",
+  "visual": "not_run"
+}

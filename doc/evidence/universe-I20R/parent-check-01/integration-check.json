@@ -1,0 +1,59 @@
+{
+  "actual_UE_import": false,
+  "build": false,
+  "checker_sha256": "96a59ee2a546966abbbf943f737648b2dec2225e0f64245062779d2c514866f3",
+  "checks": [
+    {
+      "check": "reviewed_delivery_bytes_equal",
+      "files_by_source": {
+        "30907e8dd645cb1b7c3580cf101f180b77b47865": 23,
+        "3627af2df70bee1b05ab824640e535742f0e7ea9": 14,
+        "d6fe60de9c3ad9fad837841f2bd3bfb027a90896": 13
+      },
+      "result": "pass"
+    },
+    {
+      "check": "integration_changes_documentation_only",
+      "result": "pass",
+      "tracked_paths": 54
+    },
+    {
+      "check": "frozen_reviewed_plan_bytes_unchanged",
+      "result": "pass"
+    },
+    {
+      "check": "independent_review_artifact_hashes",
+      "result": "pass"
+    },
+    {
+      "check": "durable_index_and_two_phase_git_provenance",
+      "result": "pass"
+    },
+    {
+      "check": "all_durable_source_files_still_equal_root_verified_index",
+      "files": 34,
+      "result": "pass"
+    },
+    {
+      "check": "B_final_owner_receipt_matches_integrated_bytes",
+      "result": "pass"
+    },
+    {
+      "actual_parent_wait_exit": 0,
+      "check": "B_integrated_synthetic_contract_15_tests",
+      "command": [
+        "/private/tmp/edgeworld-i20b-contract-env/bin/python",
+        "-B",
+        "doc/evidence/universe-I20B/check_contract.py"
+      ],
+      "raw_output_sha256": "5d576a2a8a0d838b0eb3ed4ef95f6047209a68e0bc04b763de6dda6ecd22ff86",
+      "result": "pass",
+      "wall_seconds": 0.5738554580602795
+    }
+  ],
+  "format": "universe-i20-parent-integration-check.v1",
+  "integration_commit": "6996d714f3ec9d40dd7ef1ff09f9d69ce1cddc56",
+  "result": "pass_bounded_source_and_synthetic_contract_only",
+  "runtime": false,
+  "visual_acceptance": false
+}

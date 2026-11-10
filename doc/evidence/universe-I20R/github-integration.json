@@ -1,0 +1,36 @@
+{
+  "format": "universe-i20-github-integration.v1",
+  "repository": "Volc-yang/edging",
+  "integration_branch": "codex/plan-consolidation",
+  "A": {
+    "pr": 128,
+    "final_head": "30907e8dd645cb1b7c3580cf101f180b77b47865",
+    "workflow_run": 42753910052,
+    "workflow_run_number": 174,
+    "status": "completed",
+    "conclusion": "success",
+    "merge_commit": "a3ca6a423d15b99bd73f0c7d37f7ad502741021e",
+    "merge_parents": ["6c533afb537a9c45bd471eb83887cdcd87b42052", "30907e8dd645cb1b7c3580cf101f180b77b47865"]
+  },
+  "B": {
+    "pr": 129,
+    "final_head": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+    "workflow_run": 42754957084,
+    "workflow_run_number": 176,
+    "status": "completed",
+    "conclusion": "success",
+    "merge_expected_head": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+    "merge_tool_result": {"sha": "0dfde3e248cd1e0f480b3d83a02351363b69db7b", "merged": true, "message": "Pull Request successfully merged"},
+    "merge_parents": ["a3ca6a423d15b99bd73f0c7d37f7ad502741021e", "d6fe60de9c3ad9fad837841f2bd3bfb027a90896"]
+  },
+  "C": {
+    "original_review_commit": "3627af2df70bee1b05ab824640e535742f0e7ea9",
+    "integration_commit": "6996d714f3ec9d40dd7ef1ff09f9d69ce1cddc56",
+    "review_gate": "root inspected independent report and source diff; cherry-pick -x with exact 14-file byte comparison",
+    "separate_implementation_pr": false,
+    "additional_docs_only_ci": "not_run; frozen C card requires parent review, not repeated full CI"
+  },
+  "evidence_source": "GitHub connector final-commit workflow queries and B expected-head merge result; local git show of merge parents; root byte check",
+  "baseline_checkout_merged_or_updated": false,
+  "UE_build_or_visual_acceptance": false
+}
