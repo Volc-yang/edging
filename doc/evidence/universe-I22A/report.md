@@ -2,7 +2,7 @@
 
 2026-11-10；实现基线 `cd3b26fde5655b77482daa051eb2eb00c2c55359`，复用原树/分支 `codex/i21-import` 与草稿 PR130。只读参照 root 的 `doc/design/universe-i22-import-correction-plan.md`（C0 SHA `0ebce94464c98becd8297833ab574b698dc9118363f5fedaafd9297761cb6f24`、context commit `d194b4b`）；未将 root 未合并上下文假定为本树源码。
 
-状态：实现和 owner CPU/preflight 完成，**真实 Native probe/import/reload 未执行，待 C1/root**。本 agent 不启动UE、不写DevSSD、不读owner/key；I21全部证据和失败原件不改。root已要求停止I22发布，本次仅本地commit，不push/更新PR/merge/cleanup。
+状态：**部分完成：p2真实Native能力probe通过；实际I20资产导入/保存、新进程reload及视觉未验收**。实际执行源码为 `877696e7ef61a2fbfbc50fb0cd88ba10ceacb644`。本 agent 不启动UE、不写DevSSD、不读owner/key；运行由root执行，I21和p1全部证据/失败原件不改。root/C2接受部分结算，不集成导入源；本次仅本地文档commit，不push/更新PR/merge/cleanup，工作树保留。
 
 ## 源实现
 
@@ -27,12 +27,20 @@ README列出所有命令。可在首clock前准备 `probe --attempt 1` 与 `impo
 - `prepare.py preflight` 实际只读通过：20源、25相关安装模块、2安装fixture文件、698安装Python文件及44启用plugin闭包，全部无用户startup/pip新增要求；Foundation真实Documents检查通过。最终 `preflight-counts-final.json` SHA `5deb02466dd54caae3db0dc29193d1f756ebb562b0bb5f6ea8ca36a723a3f08f`，snapshot_sources与源字节一致。
 - recipe SHA `f228bf56097d096fd85a20e8801ed7edbec29d84a4047ac577b8812351951270`。早期preflight原件保留为当时源身份，不授权最终版本。
 
-未验证：commandlet实际module激活、clone/所有反射调用、保存5/14/3包、Native负例与新进程reload。任何未知API/中性错误值明确失败并保留原件，不用常量、deprecated转发或扩大容差填门。Metal、法线外观、runtime profile/HUD、地形/世界/Genesis继续后置。
+以下CPU记录保留各自源身份，不替代后述p2实际结果。仍未验证：保存I20组合5/14/3包、实际导入资产的Native正/负例与新进程reload。能力fixture通过不授这些门。Metal、法线外观、runtime profile/HUD、地形/世界/Genesis继续后置。
 
 ## C1 窄修与当前源身份
 
 独立审查和owner自查共同确认 Python FName别名大小写不敏感：raw `Collision` 可能被解析为bool `bCollision` 的Python别名。因此枚举现在只用公开ScriptName的Python名 `fallback_collision_type`，bool继续精确 `bCollision`，不是轮询不同名字的fallback。
 
-probe外层在进入修改前登记三份texture clone初始实际flags/尺寸/身份；COLOR/MASKS/NORMAL配置保持到材质recompile、Alpha断开/恢复及pipeline调用结束，之后由finally恢复各clone初值并逐项读回。错误路径也恢复。原Engine Cube和Texture的完整实际getter/身份快照前后相等与包文件SHA分别验证；不会调用要求I20来源的texture_metadata去假验Engine fixture。import消费gate同样要求clone恢复与Engine原对象不变证据。
+probe外层在进入修改前登记三份texture clone初始实际flags/尺寸/身份；COLOR/MASKS/NORMAL配置保持到材质recompile、Alpha断开/恢复及pipeline调用结束，之后恢复各clone初值并逐项读回。错误路径也恢复；877696e按compression→SRGB→flip顺序并保留主异常及全部before/after/diff。原Engine Cube和Texture的完整实际getter/身份快照前后相等与包文件SHA分别验证；不会调用要求I20来源的texture_metadata去假验Engine fixture。import消费gate同样要求clone恢复与Engine原对象不变证据。
 
 受影响JSON绑定CPU检查通过，全部AST成功。最终只读 `preflight-c1-complete.json` SHA `c39bf1c78effa1622ed03d7f218911685cde2b5128db7ebc23d6a2d7833a0004` 为ready，snapshot源逐字节匹配。其余preflight保留各自当时身份，不授权新源。无UE/DevSSD/发布操作。
+
+## Root/C2 实际部分结算
+
+- p1恢复失败原件保留，不由p2覆盖。p2以源码877696e实际执行，PID86365、parent wait0、非强制、后代静默；Native result SHA `1a88df030a7619b34d68ca2210183c1502f336401505333d8bc1301822b38676`。三份texture均128×128，全部严格恢复、diff为空；原fixture实际getter及包不变。公开模块激活、完整能力调用与临时对象修改/恢复门通过。
+- import未派发：准确新卡准备完成时只余130.865s，低于所需120+30s，root判NO-GO，没有放宽预算或追加尝试。a2仅静态绑定成功p2，既无Native import result，也无Host Content文件；reload skipped。绑定存在或probe PASS不能称已保存I20资产。
+- 最终封存原件摘要前缀 `89c19c9c`（完整值见root封存索引）；post-fsync连续耗时1148.512s，新root逻辑文件27,805,158字节，I20全部34个持久文件不变、六个声明外域增量0，最终静默。root与C2接受上述有限能力门及部分结算，实际导入源不集成。
+
+Act：保留本工作树/分支、I21/I22全部原件与实际源码877696e；下一迭代从已通过能力与同源成功probe身份出发，重新审定独立新预算/导入及reload卡，实际保存并验收I20组合。公开发布仍停止，本次只提交该状态文档。
