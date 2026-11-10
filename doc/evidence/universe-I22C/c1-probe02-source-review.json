@@ -1,0 +1,59 @@
+{
+  "format": "universe-i22-C1-probe02-source-review.v1",
+  "reviewed_commit": "877696e7ef61a2fbfbc50fb0cd88ba10ceacb644",
+  "source": {
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/probe.py",
+    "sha256": "7040bfc704c4c3f504d912c0fe112369570e947f5aaa5bf381da7380026620a0"
+  },
+  "installed_source": {
+    "path": "/Users/Shared/Epic Games/UE_5.8/Engine/Source/Runtime/Engine/Private/Texture.cpp",
+    "sha256": "2eae7a9667ee8685ed939445f24624b571f054908ea0c05366175760365cae16",
+    "lines_772_778": [
+      "\tconst bool bPreventSRGB = CompressionSettings == TC_Alpha || CompressionSettings == TC_Normalmap || CompressionSettings == TC_Masks || ",
+      "\t\tUE::TextureDefines::IsHDR(CompressionSettings);",
+      "\tif (bPreventSRGB && SRGB == true)",
+      "\t{",
+      "\t\tSRGB = false;",
+      "\t\tbRequiresNotifyMaterials = true;",
+      "\t}"
+    ]
+  },
+  "decision": "accept_source_for_exact_second_probe_card_review",
+  "observed_probe01": {
+    "result_path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/p1/result.json",
+    "result_sha256": "6310bee6c44c2f38c6110c9dfa9da1e54d52ecb41d61e959f56a4e15a63e7c67",
+    "status": "FAIL",
+    "recorded_error": "transient texture flags/dimensions did not restore",
+    "actual_mismatched_fields": "not present in original diagnostic; no inference of absence of a masked primary exception"
+  },
+  "source_review": {
+    "compression_restored_before_srgb": true,
+    "all_identity_flags_dimensions_comparisons_strict": true,
+    "primary_exception_and_traceback_retained": true,
+    "all_clones_individually_restored_and_reported": true,
+    "original_fixture_getters_and_bytes_rechecked": true,
+    "no_tolerance_relaxation_or_unreflected_UE_calls": true
+  },
+  "checks": [
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_realism_import",
+        "-v"
+      ],
+      "actual_parent_wait_exit": 0,
+      "wall_seconds": 0.2185380000155419,
+      "raw_repository_path": "doc/evidence/universe-I22C/c1-probe02-cpu.txt",
+      "raw_sha256": "28f767c201ca0cfebfc01e10ba6da43f1ef58a01d5d96539ca6e0f2522f6a7ba"
+    },
+    {
+      "check": "AST of all realism_import Python",
+      "result": "pass"
+    }
+  ],
+  "reviewer_UE_or_DevSSD_write": false,
+  "not_granted": "Native second probe, import, reload, resource, exit or visual acceptance; exact p2 card pending"
+}

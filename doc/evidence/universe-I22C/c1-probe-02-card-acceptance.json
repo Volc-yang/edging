@@ -1,0 +1,26 @@
+{
+  "format": "universe-i22-C1-probe02-exact-card-review.v1",
+  "decision": "accept_exact_second_and_last_probe_dispatch_only",
+  "card_repository_path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I22R/probe-02-card.json",
+  "card_sha256": "edfab7084de3a1c74c51a6ae4884c3057c07f13ebd6d0b75496f149973d14f6b",
+  "owner_source_commit": "877696e7ef61a2fbfbc50fb0cd88ba10ceacb644",
+  "job_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/p2/job.json",
+    "sha256": "63a3e0b3f7bd3f398ba977698c01f093c2e9929e2169fd1b5811dd3e5eab5b61"
+  },
+  "actual_input_pins_rehashed": 818,
+  "argv_and_environment_equal_prepared_dispatch": true,
+  "persistent_source_snapshots_equal_accepted_source": true,
+  "project_Content_empty_before_dispatch": true,
+  "continuous_campaign_elapsed_seconds_at_review": 865.9010851250496,
+  "remaining_seconds_at_review": 334.0989148749504,
+  "source_review_ref": {
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i22-review/doc/evidence/universe-I22C/c1-probe02-source-review.json",
+    "sha256": "4bbf5ab3dc73259165e99657340bf63f9e7fe4f5d8c4c1bfc22d9e5f35b3a8de"
+  },
+  "driver_unchanged_from_prior_accepted_card": true,
+  "exact_second_probe_timeout_seconds": 90,
+  "attempt_limit": "second and last probe; no third attempt",
+  "reviewer_UE_or_DevSSD_write": false,
+  "not_granted": "Actual Native, import, reload, normal-exit, resource and visual gates require fresh R/C2 evidence; clock not reset"
+}

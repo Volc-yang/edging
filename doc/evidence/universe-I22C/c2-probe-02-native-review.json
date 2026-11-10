@@ -1,0 +1,50 @@
+{
+  "format": "universe-i22-C2-probe02-native-review.v1",
+  "decision": "accept_exact_probe02_as_import_prerequisite_only",
+  "result_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/p2/result.json",
+    "sha256": "1a88df030a7619b34d68ca2210183c1502f336401505333d8bc1301822b38676"
+  },
+  "execution_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/supervision-probe-02/execution.json",
+    "sha256": "4407546937cf3841bcb36850aa0e41989bf342d980b9a8790d14cb820ce4e4c4"
+  },
+  "postwrite_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/supervision-probe-02/phase-postwrite.json",
+    "sha256": "39487ea2dd71f149137215daa6594b4ded76ae9b688ea32ce78326f0dc551385"
+  },
+  "actual_parent_wait_exit": 0,
+  "pid": 86365,
+  "forced": false,
+  "normal": true,
+  "campaign_elapsed_at_postwrite": 934.9853317919187,
+  "actual_sizes_at_postwrite": {
+    "content_bytes": 0,
+    "ddc_bytes": 3977022,
+    "root_bytes": 23201409,
+    "temporary_ipc": []
+  },
+  "raw_process_samples_rehashed": 14,
+  "quiet_raw_ps_independently_parsed": [
+    {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/supervision-probe-02/quiet-0.ps",
+      "sha256": "412ecf44a051f733a7c87fe0087f1c727b95b8620cf3effde31bac36bba8b052"
+    },
+    {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/supervision-probe-02/quiet-1.ps",
+      "sha256": "02f7bdcbc07e3b3c1ab34dec56b958dbdd72c4c4a09b74d9421c154a7c9b26d3"
+    },
+    {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/supervision-probe-02/quiet-final.ps",
+      "sha256": "d16030f948385409758c1a44bd854b1935477464c4816bfc17bb4f3ea2795f76"
+    }
+  ],
+  "input_pins_rehashed": 818,
+  "true_subsystem_and_native_capability": true,
+  "all_clone_restore_equal": true,
+  "original_fixture_getters_and_bytes_unchanged": true,
+  "project_Content_empty_and_unchanged": true,
+  "Native_material_alpha_disconnect_restore": true,
+  "not_granted": "Saved I20 asset import, fresh reload, external-domain seal or visual/Metal gates",
+  "reviewer_UE_or_DevSSD_write": false
+}

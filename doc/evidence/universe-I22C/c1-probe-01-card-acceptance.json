@@ -1,0 +1,36 @@
+{
+  "format": "universe-i22-C1-probe01-exact-card-review.v1",
+  "decision": "accept_exact_first_probe_dispatch_only",
+  "card_repository_path": "doc/evidence/universe-I22R/probe-01-card.json",
+  "card_sha256": "973d60af9eed1818bd0104b2a15930c0c4a47b8ddf4783b09b9844266e00ddaa",
+  "job_sha256": "24a4df35617eb62eace915a7d43b3bbe316a8ac81c9df274ef32f7cfa61838ae",
+  "driver_sha256": "ab47e2b8435f2183b921239b1d0006b8b993249d223e8b2e61405b0a90af1a09",
+  "seal_sha256": "7ca7a2f4650bf2e12d5aab26e70dcb4be341312ae67856eac5878cf86627f1ea",
+  "owner_source_commit": "99ea747f3b703a7454e6629e1b9ea4b44bf81013",
+  "actual_input_pins_rehashed": 806,
+  "argv_and_environment_equal_prepared_dispatch": true,
+  "persistent_source_snapshots_equal_accepted_source": true,
+  "project_Content_empty_before_dispatch": true,
+  "campaign_clock_not_started": true,
+  "root_template_review": {
+    "result_execution_postwrite_prerequisite_chain": true,
+    "actual_wait_normal_report_identity_and_nonforced_quiet_budget_guard": true,
+    "result_pid_job_recipe_index_scripts_bound": true,
+    "probe_and_reload_independent_Content_before_after": true,
+    "only_project_host_Content_counts_toward512MiB": true,
+    "DDC_cache_bytes_separately_recorded": true,
+    "actual_encoded_execution_bytes_and_post_fsync_resource_observation": true,
+    "final_selected_probe_import_reload_chain_requires_C2": true
+  },
+  "limits": {
+    "campaign_seconds": 1200,
+    "root_bytes": 4294967296,
+    "project_host_Content_bytes": 536870912,
+    "probe_seconds": 90,
+    "max_probe": 2,
+    "max_import": 2,
+    "max_reload": 1
+  },
+  "not_granted": "Native probe/import/save/reload/resource/exit acceptance before actual R/C2; no SDK/build/runtime/Metal/visual grant. a1 may not dispatch before successful late-bound probe result and execution/postwrite review.",
+  "reviewer_UE_or_DevSSD_write": false
+}

@@ -1,0 +1,72 @@
+{
+  "format": "universe-i22-installed-api-precheck.v1",
+  "source_files": [
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyCore.cpp",
+      "bytes": 72867,
+      "sha256": "90fa8cf13bb5af63eeb9dcb33d506a1e3a4b66640828124b7e6f9093f2095784",
+      "independently_read_fact": "load_module ends Py_RETURN_NONE; actual module/subsystem/API postconditions are required"
+    },
+    {
+      "engine_relative_path": "Source/Editor/EditorSubsystem/Public/EditorSubsystem.h",
+      "bytes": 777,
+      "sha256": "57fb1ffa130fa2fb8245f1ab160561931eb76c27c895fcc182f18f40ec7b4b2d",
+      "independently_read_fact": "dynamic editor subsystem initializes after owning module StartupModule"
+    },
+    {
+      "engine_relative_path": "Source/Editor/StaticMeshEditor/Private/StaticMeshEditorModule.cpp",
+      "bytes": 3121,
+      "sha256": "a83ef85ccaf03194841354e22047d533f24fcb8fdc5e8fd431dc9af05873789e",
+      "independently_read_fact": "StartupModule loads AdvancedPreviewScene, registers editor mode/extenders; opening editor is a separate method"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/CoreUObject/Public/UObject/Object.h",
+      "bytes": 81890,
+      "sha256": "07b422c65239465eff7b3bf3aaf372d4211384d7bc9d900e9dee4b8df1929e28",
+      "independently_read_fact": "UObject base is UCLASS(Abstract); do not construct u.Object() just to obtain transient package"
+    },
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp",
+      "bytes": 89879,
+      "sha256": "aed5321ce34969c02c86c4ce619bbeea363841a29a69bd41a708759c85402e70",
+      "independently_read_fact": "Python object construction defaults outer to transient package and delegates creation to PyUtil::NewObject"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h",
+      "bytes": 147956,
+      "sha256": "408a211bb7b38932df3cc99c9f8ad9ec631e08effe36060c9489a6a401eddeea",
+      "independently_read_fact": "DuplicateObject is public BlueprintCallable with source/outer/optional name"
+    },
+    {
+      "engine_relative_path": "Source/Editor/StaticMeshEditor/Private/StaticMeshEditorSubsystem.cpp",
+      "bytes": 86680,
+      "sha256": "83dfd1671fe0f7d231b33408a7446673a12d2dcedd97eb8c53ef7ae56f1a2db1",
+      "independently_read_fact": "EnableSectionCollision returns void and mutates actual section info; IsSectionCollisionEnabled and GetLODMaterialSlot return observed state"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Pipelines/Public/InterchangeGenericMeshPipeline.h",
+      "bytes": 29137,
+      "sha256": "e60c3959b16d1105201e647616f54282397d0e8e658951a71228295feb8efcda",
+      "independently_read_fact": "BuildNanite defaults true and threshold0; explicit new recipe must set/read false"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Engine/Classes/Engine/StaticMesh.h",
+      "bytes": 90451,
+      "sha256": "0023736281ee502842c1e469be527aad13cbf73c9d4fad2623d6031303ba2ea9",
+      "independently_read_fact": "render and Nanite count getters are separate public BlueprintPure methods"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Engine/Private/StaticMesh.cpp",
+      "bytes": 370006,
+      "sha256": "c35cbcbb20510bf3471fddae2f0e8b92d6bf7a5f82ef4367cae4c0363b4e14fd",
+      "independently_read_fact": "GetNumTriangles reads render LODResources; GetNumNaniteTriangles reads NumInputTriangles when valid"
+    }
+  ],
+  "Native_execution": "not_run",
+  "avoid_before_first_probe": [
+    "abstract u.Object construction",
+    "boolean tests of void or load_module None returns",
+    "using installed Cube collision policy as imported-mesh policy"
+  ],
+  "reviewer_UE_or_DevSSD_write": false
+}

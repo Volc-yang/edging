@@ -1,0 +1,107 @@
+{
+  "format": "universe-i22-C1-independent-source-CPU-review.v1",
+  "reviewed_commit": "99ea747f3b703a7454e6629e1b9ea4b44bf81013",
+  "source_base": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_realism_import",
+        "-v"
+      ],
+      "actual_parent_wait_exit": 0,
+      "wall_seconds": 0.253116250038147,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "37225850b8626a5f85b6f3aab81756514c9694350bd3dbad74c9a0ee22415436",
+      "bytes_equal_owner_retained_raw": false,
+      "actual_output_repository_path": "doc/evidence/universe-I22C/c1-final-cpu.txt"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "scripts/realism_import/prepare.py",
+        "preflight"
+      ],
+      "actual_parent_wait_exit": 0,
+      "wall_seconds": 4.425467374967411,
+      "stdout_sha256": "c39bf1c78effa1622ed03d7f218911685cde2b5128db7ebc23d6a2d7833a0004",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes_equal_owner_retained_raw": true,
+      "actual_output_repository_path": "doc/evidence/universe-I22A/preflight-c1-complete.json",
+      "status": "ready_requires_C1_and_root_dispatch",
+      "source_payloads": 20,
+      "installed_modules": 25,
+      "fixture_files": 2,
+      "installed_Python_files": 698,
+      "enabled_plugins": 44
+    }
+  ],
+  "source_files": [
+    {
+      "repository_path": "scripts/realism_import/DefaultEngine.ini",
+      "bytes": 332,
+      "sha256": "b0aea16159b1dc545a5f5dc1776875b378b6eabc13ad003c067fe00ef6fc673b"
+    },
+    {
+      "repository_path": "scripts/realism_import/EdgeWorldAssetImport.uproject",
+      "bytes": 387,
+      "sha256": "97183b1bce2fd7ba075c95e3d72048595972e72c2b467ed8df456e550b1bf327"
+    },
+    {
+      "repository_path": "scripts/realism_import/README.md",
+      "bytes": 4897,
+      "sha256": "4293b085d09a642dff15ca894dc70e31f14b09cc1426ccdf1efd1469ea8aaf39"
+    },
+    {
+      "repository_path": "scripts/realism_import/__init__.py",
+      "bytes": 82,
+      "sha256": "19e0ddc9c4a402eba6bc92f7d564d9c7ac264f7b560aac4a5ce86c5d289aec3c"
+    },
+    {
+      "repository_path": "scripts/realism_import/common.py",
+      "bytes": 11461,
+      "sha256": "6c23c4d65aff7d336ee8ce092d95d7fa335bb86b4bc6da859623dc5ead615723"
+    },
+    {
+      "repository_path": "scripts/realism_import/prepare.py",
+      "bytes": 9627,
+      "sha256": "b00e2cc05aa07d794bfb7e23c6e266c557d772197c6a6094fb3790fc6a26ca0c"
+    },
+    {
+      "repository_path": "scripts/realism_import/probe.py",
+      "bytes": 11580,
+      "sha256": "d34e29849f5191381b6d9edd8e0d4f5647e029a8df5deb39a780c5cbd4fff402"
+    },
+    {
+      "repository_path": "scripts/realism_import/recipe.json",
+      "bytes": 9400,
+      "sha256": "f228bf56097d096fd85a20e8801ed7edbec29d84a4047ac577b8812351951270"
+    },
+    {
+      "repository_path": "scripts/realism_import/ue_entry.py",
+      "bytes": 27072,
+      "sha256": "ec469f5e982085a348a4fc4ca6cafc200ef67ce56960d0335c05477c97905374"
+    },
+    {
+      "repository_path": "tests/test_realism_import.py",
+      "bytes": 6466,
+      "sha256": "6ca39843a60dffd36ebb294529feabf97988515fae76efa7384f19d37f00df7f"
+    }
+  ],
+  "source_decision": "accept_exact_source_for_template_and_dispatch_review",
+  "resolved_pre_execution_findings": [
+    "no abstract UObject construction",
+    "load_module/void setter judged only by actual postconditions",
+    "fallback_collision_type uses public alias rather than FName Collision shadowing",
+    "texture clones restore after material checks in finally",
+    "original Engine fixture UObject getters and package bytes compared before/after",
+    "Nanite policy is actual set/get false with source/render/Nanite count separation"
+  ],
+  "publication": "I22 public push was rejected per parent; no reviewer publication attempted",
+  "reviewer_UE_GPU_worker_Genesis_UI_or_DevSSD_write": false,
+  "not_granted": "Native capability, import, saved package/reload, normal exit, resource or visual acceptance require actual R/C2 evidence"
+}

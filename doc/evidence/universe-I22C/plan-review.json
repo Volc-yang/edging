@@ -1,0 +1,52 @@
+{
+  "format": "universe-i22-C0-independent-plan-review.v1",
+  "reviewer": "/root/i20_review",
+  "decision": "accept_bounded_native_capability_then_import_reload_cycle",
+  "context_commit": "545117db10e20434f43a841863b1b09b2b0b3323",
+  "frozen_plan_commit": "d194b4ba5385a10c9e322d794cb58830e836763e",
+  "source_prerequisite_commit": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+  "source_prerequisite_status": "unmerged draft PR130; I21 Native import failed, source is an explicit prerequisite rather than accepted baseline implementation",
+  "plan": {
+    "repository_path": "doc/design/universe-i22-import-correction-plan.md",
+    "sha256": "0ebce94464c98becd8297833ab574b698dc9118363f5fedaafd9297761cb6f24"
+  },
+  "accepted_scope": [
+    "explicit installed StaticMeshEditor module activation, followed by actual subsystem and required API observations",
+    "read-only installed fixtures with transient clones for actual getters/mutators/restoration; no import or package save in capability probe",
+    "explicit build_nanite=false and separate source, render LOD0 and Nanite input counts without widening source thresholds",
+    "actual saved five meshes/fourteen textures/three materials, Native source/connection evidence and exact in-memory negative checks",
+    "fresh reload of successful saved Host/Content or a complete byte-verified copy, with independent session outputs",
+    "root exclusive UE execution after exact C1 source/card acceptance, independent C2 and parent integration review"
+  ],
+  "clarifications_present": [
+    "reload cannot open an empty unrelated host or reimport under a reload label",
+    "probe/import each at most two attempts; reload at most one",
+    "load_module return None is not a success/failure test; actual newly retrieved subsystem and API outcomes are required",
+    "every import/reload process performs its own module and capability prerequisites",
+    "project host/Content bytes are separate from DDC/Content cache bytes; both count toward total root"
+  ],
+  "limits": {
+    "continuous_first_probe_to_final_fsync_seconds": 1200,
+    "new_root_logical_file_bytes": 4294967296,
+    "all_project_host_Content_bytes": 536870912,
+    "maximum_probe_attempts": 2,
+    "per_probe_seconds": 90,
+    "maximum_import_attempts": 2,
+    "per_import_seconds": 240,
+    "maximum_reload": 1,
+    "reload_seconds": 180
+  },
+  "preserved_boundaries": [
+    "new I22 runroot; all I20/I21 originals and failures unchanged",
+    "no authority/worker/parser/I0A/GameMode/engine-source changes",
+    "Cmd/NullRHI/NoTrace/isolated DDC and explicit SDK-setup skip; no C++ build or SDK grant",
+    "no runtime presentation, Metal/visual, physics or player-experience acceptance from these checks"
+  ],
+  "C0_actions": {
+    "read_only_before_formal_assignment": true,
+    "UE_GPU_worker_Genesis_UI_started": false,
+    "DevSSD_written": false,
+    "owner_key_contents_read": false
+  },
+  "next_gate": "C1 exact source and all phase templates, then actual root dispatch card and late-bound successful input SHA"
+}
