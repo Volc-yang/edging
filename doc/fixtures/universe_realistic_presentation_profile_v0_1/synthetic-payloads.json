@@ -1,0 +1,6 @@
+{
+  "fern-source.fixture": "I20B synthetic fern source; not a glTF or UE asset\n",
+  "rock-source.fixture": "I20B synthetic rock source; not a glTF or UE asset\n",
+  "pbr-source.fixture": "I20B synthetic surface source; not a PBR texture\n",
+  "license.fixture": "I20B synthetic test payload; no actual third-party license evidence\n"
+}
