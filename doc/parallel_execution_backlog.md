@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I20 写实需求首轮PDCA（2026-11-10）
+
+[审定计划](design/universe-i20-realistic-pdca-plan.md) / [执行登记](universe_i20_execution_register.md)：先并行A取得有界CC0真实自然资产及文件/依赖/许可证据，B冻结独立只读presentation profile与原子ViewBinding/测试卡；C独立核对后发布D3代码/编译、D4实拍卡。256MiB/64files/20min源payload上限；本轮不启动UE/GPU。旧v0.2严格技术资产不能原地替换，缺资产的HUD/画面混切片风险须纳入后续适配。用户允许开源模板并授权询问Dot，但当前没有可寻址Dot入口，询问尚未发送；D0待交接不阻塞A/B。旧goal已清除，本轮用任务登记推进。
+
 ## 当前需求接入：Dot 写实世界与3A视觉参考（2026-11-10）
 
 [需求接入与任务树](design/edge-dot-realistic-rendering-intake-20261110.md)：已同步用户在Dot中的“继续真实世界的渲染，不要卡通。最好引入3A画质的模版”。程序代理/BasicShapes与模板棋盘不能作为最终写实画质。Dot报告已有完整植物网格、地表/水面PBR与缺资产显式失败的独立分支候选、592项Python检查通过，但未合并、未接新版Universe、无UE编译/实拍；**该候选尚未定位，测试与实现均待审查**，不能当统筹已通过结果。Electric Dreams仅为来源建议，许可/依赖及Mac/Metal兼容待核实，不直接承诺整包可运行。
