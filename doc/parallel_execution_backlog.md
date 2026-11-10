@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：PR130 本地审查与 I23 已通过，新修复公开待授权（2026-11-10）
+
+用户已要求新增PR审查会话并执行合并；[审查入口](pull_request_review_register.md) / [I23登记](universe_i23_execution_register.md) / [实际报告](evidence/universe-I23R/report.md)。独立会话发现file_map漏报非普通项，C0后A以df1863e窄修并通过9CPU/独立9CPU，三准确卡C1后root真实probe→import→reload全部wait0：5mesh/14texture/3material，22包39,910,827B，来源/几何/材质/真实Alpha和slot负例与恢复、新进程完整snapshot相等/Content字节不变。终fsync492.531s，root77,341,675B，904唯一pins/六外域/34I20/274I22原件不变；父级回放exit0，独立C2/D3-IMPORT及本地源码approved；最终headfcf6895相对测试源码df1863e仅更新报告，已独立核对。自动审批以“PR合并指令未明确覆盖原I22固定清单外新增payload”为由在进程创建前拒绝新head公开推送；无API替代，PR仍旧head768b1ac/draft/未合并。准备新精确清单及本地commit后请求新增公开许可，再push→准确headCI/ref→ready/merge，已过Native不重跑，不重复一般合并权限。未授Metal/Runtime/画质门；旧失败、用户改动和构建/恢复树保留。
+
 ## 当前结算：I22 能力检查通过，实际导入未运行（2026-11-10）
 
 [C0计划](design/universe-i22-import-correction-plan.md) / [登记](universe_i22_execution_register.md) / [R原件结算](evidence/universe-I22R/report.md)：A源码99ea747首probe实际wait255/texture恢复失败；安装Texture.cpp证实压缩类型约束sRGB，877696e修正恢复顺序并保存原异常/逐项差异，6CPU及独立C1通过。第二/最后probe真实wait0：subsystem/mesh/texture/material/pipeline调用与恢复成功，三临时纹理128×128全字段一致，原Engine getter/包不变；**仅API能力pass，实际5mesh/14texture/3material导入、Native负例/reload/视觉均未验**。a1/a2只静态准备；新import卡就绪时余130.865s<120+30封存余量，NO-GO未派发，不再缩限/重置clock/追加尝试。

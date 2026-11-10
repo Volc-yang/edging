@@ -1,0 +1,17 @@
+{
+  "format": "pr130-I23-C0-conditions.v1",
+  "plan_sha256": "06b3b2feae549e177b8c5f7347dbf595b04567def38a4df58d5e21f6a478b0b0",
+  "review_thread": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
+  "review_turn": "01a1c4ca-cce9-7413-bd5e-8b191676f6d8",
+  "decision": "C0 accepted with mandatory conditions; no UE dispatch or merge permission from C0 alone",
+  "conditions": [
+    "File-map traversal/lstat/read errors propagate; reject links, FIFO, sockets and all nonregular file entries; allow actual directories and regular files",
+    "Required Content root missing must fail; regression includes nested regular files, links, FIFO, traversal errors and missing root",
+    "I23 source/preparer/supervisor/cards/checkers/results all target the fresh approved I23 root; I22 remains immutable",
+    "Every phase launch requires full phase timeout plus at least 30 seconds reserved for final seal; retries, review and binding remain in the same continuous 1200-second clock",
+    "Exact source/snapshots/argv/env/input inventory and reload template independently C1 accepted before first clock; actual result and package hashes may only be late-bound per that template",
+    "C2 actual 5/14/3 save, source/Alpha/normal/ARM/Nanite/geometry/slot checks, real negative rejection/restoration, independent reload metadata equality/unchanged Content bytes, exits/process/input/external/resource checks",
+    "PR remains changes_requested until all required evidence passes; accurate final head CI/ref checked before serial merge"
+  ],
+  "source_of_acceptance": "Codex wait_threads completed final reply, cursor 0b80db0a-fc3a-4160-9b43-0c69c9236c34:6"
+}

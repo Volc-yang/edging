@@ -1,0 +1,76 @@
+{
+  "UE": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor-Cmd",
+  "argv_template": [
+    "{UE}",
+    "{host}/EdgeWorldAssetImport.uproject",
+    "-run=pythonscript",
+    "-script={session}/scripts/ue_entry.py",
+    "-NullRHI",
+    "-unattended",
+    "-NoSplash",
+    "-NoSound",
+    "-notraceserver",
+    "-traceautostart=0",
+    "-UserDir={session}/user",
+    "-abslog={session}/ue.log",
+    "-DDC=(Isolated=(Type=FileSystem,Path={session}/ddc,PromptIfMissing=false,Clean=false,DeleteUnused=false))",
+    "-DDC-NoDefaultGraph",
+    "-NoSourceControl",
+    "-NoP4",
+    "-NoLiveCoding",
+    "-NoAutoRecompileBlueprints"
+  ],
+  "clock_starts": "First probe dispatch; all subsequent diagnosis/review/binding counted through post-fsync seal; every launch requires timeout+30 reserve",
+  "continuous_budget_seconds": 1200,
+  "environment": "prepare.clean_environment whitelist; user HOME unchanged; PATH fixed; isolated TMPDIR; I22_IMPORT_JOB_SHA256 independent exact job hash; UE_SKIP_UBT_SDK_SETUP=1; import additionally I22_PROBE_RESULT_SHA256 from actual accepted result",
+  "format": "pr130-I23-reviewed-phase-templates.v1",
+  "late_bindings": [
+    "Actual independent job SHA in every launch; recipe/index/source_scripts unchanged against accepted cohort",
+    "import dispatch-bound from actual selected accepted probe; never overwrite static dispatch",
+    "reload job.import_result_sha256 + job selected import path; current full Content file map must equal actual saved import map",
+    "Exact prerequisite result/execution/postwrite refs and all late file hashes added to immutable phase card; C1 exact late-card acknowledgment before each launch"
+  ],
+  "max_project_content_bytes": 536870912,
+  "max_root_bytes": 4294967296,
+  "min_seal_reserve_seconds": 30,
+  "modes": {
+    "import": {
+      "host": "a{attempt}/host",
+      "max_attempts": 2,
+      "max_seconds": 240,
+      "prerequisite": "Exact passing selected p{probe_attempt} result + execution + postwrite; matching snapshot cohort; actual parentwait0/nonforced/quiet/budget",
+      "result": "a{attempt}/result.json",
+      "session": "a{attempt}"
+    },
+    "probe": {
+      "host": "p{attempt}/host",
+      "max_attempts": 2,
+      "max_seconds": 90,
+      "requires_empty_content": true,
+      "result": "p{attempt}/result.json",
+      "session": "p{attempt}"
+    },
+    "reload": {
+      "host": "selected successful a{attempt}/host",
+      "max_attempts": 1,
+      "max_seconds": 180,
+      "prerequisite": "Exact passing selected import result + execution + postwrite + saved full Content map; same Host/Content, new user/log/DDC/tmp/scripts",
+      "result": "reload/result.json",
+      "session": "reload"
+    }
+  },
+  "no_late_changes": [
+    "No argv flag, environment variable, binary, source/recipe/index, engine/module/plugin/Python/fixture pin or timeout increase",
+    "No empty reload Host or reimport",
+    "No old I22 writes or clock reset"
+  ],
+  "preparation_before_clock": [
+    "Exact source commit and affected CPU checks",
+    "Installed engine/module/plugin/Python/fixture/source SHA inventory",
+    "p1 and static a1 isolated snapshots/jobs/dispatch plus exact p1 card",
+    "Independent C1 of all static artifacts and this import/reload late-binding template"
+  ],
+  "producer": "scripts/realism_import/prepare.py",
+  "run_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I23-20261110-import",
+  "unchanged_protocol": "edgeworld.i22.native-import-result.v0.1"
+}

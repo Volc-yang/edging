@@ -1,0 +1,19 @@
+{
+  "format": "pr130-I23-publication-status.v1",
+  "status": "waiting_for_specific_new_payload_publication_approval; local_C2_approved; unmerged",
+  "rejected_action": "git push origin fcf689522598dcbb9cac367521ddeb053cb49e4c:refs/heads/codex/i21-import",
+  "destination": "public GitHub Volc-yang/edging",
+  "automatic_review_reason": "This publicly pushes a new commit not covered by the previously approved fixed publication commits; the request to merge PR130 does not clearly authorize exposing this additional payload to the public repository.",
+  "rejection_occurred_before_process_creation": true,
+  "remote_write_performed": false,
+  "alternate_route_used": false,
+  "all_I23_publication_stopped": true,
+  "last_verified_public_source": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+  "last_verified_public_target": "5f2bbe3973b4064a293b16695b81bd59cf7df338",
+  "proposed_source_head": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+  "actual_Native_source": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+  "latest_review_turn": "01a1c4e8-452b-7b81-b9a8-0cadf1970dbb",
+  "latest_review": "Local source approved; C2 and D3-IMPORT accepted; fcf6895 is status-report-only after actual tested source, so no new UE run needed. Publication approval and exact final head CI remain pending.",
+  "preserved_previous_fixed_authorization": "I22 exact source768b1ac and context5f2bbe3 already published; not interpreted as authorizing new I23 payload",
+  "next_action": "After explicit approval of the prepared new fixed manifest: publish exact source/context, verify final head CI and target ref, update draft to ready and merge PR130 using expected head SHA; record outcome. No further Native or general merge-permission round needed."
+}

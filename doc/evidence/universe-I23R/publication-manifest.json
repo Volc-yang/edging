@@ -1,0 +1,167 @@
+{
+  "CI": "Exact new head not yet published or run; old-head CI cannot substitute",
+  "Native_D3": "accepted locally by independent C2 and root; no repeat UE needed",
+  "PR": "https://github.com/Volc-yang/edging/pull/130",
+  "actual_UE_tested_source": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+  "destination": "public GitHub Volc-yang/edging",
+  "exact_source_tip": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+  "excluded": [
+    "raw UE/PS/external-domain logs",
+    "binary assets or uasset payloads",
+    "private owner/key/state contents",
+    "unrelated user edits"
+  ],
+  "format": "pr130-I23-fixed-publication-and-merge-manifest.v1",
+  "integration_branch": "codex/plan-consolidation",
+  "integration_commit_before_final_scope": "1a1d64a12a7efa40c01fcc41a24a18025069eabe",
+  "integration_files": [
+    {
+      "path": "doc/design/pr130-merge-validation-plan.md",
+      "sha256": "06b3b2feae549e177b8c5f7347dbf595b04567def38a4df58d5e21f6a478b0b0"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/publication-receipt.json",
+      "sha256": "a4fdb550d979288d23c4ed8b9f568eb3c7be9b7b9b5811fb43337a43860e43be"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/report.md",
+      "sha256": "dd23e46143b5e1f0f311a6b9d4a456958919d1b8fa8f5f808378c8bf58d8e0c6"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/C0-addendum.json",
+      "sha256": "336fc8ebbce935f6c4e718ef2571930eb75923ea67b435ab32a11ad98c5b39c7"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/C1-acceptance.json",
+      "sha256": "7e735295e135fe714fb8f3edb8c562904f409458d4c0d6413ff7cbdbc5d21e9a"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/C1-late-card-reviews.json",
+      "sha256": "7db28371aecd4c1dd3c97962e9c1894ff21533aba352f5162659260c640777db"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/C2-independent-review.json",
+      "sha256": "a59b9c8b1a7baed3f602fdf4604e814e8be37390eba1da080e9115b27ec62e22"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/check_parent.py",
+      "sha256": "22c1a35750bf7008cdf1199b41cb43979638d28d28250fd4f5c126579eb46b41"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/dispatch-templates.json",
+      "sha256": "f27600cc329cd9d0f605ed0e495d11f635083c473130e0eae8e64f98b25e0092"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/import-01-card.json",
+      "sha256": "ccc00f0a72694e23b49c8ff708ca5401d948117b6b3a696cbda7b6f82bd1503d"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/parent-replay.json",
+      "sha256": "2b932fa8c710517ef4b978c6aa6489ebb83dcfe7dc095a0a14f64fecd07add2e"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/post-seal-observation.json",
+      "sha256": "23ef1326ec8074f1a96e5c6a6e88a866bffbfad2f76de26ee77dd791e4b69e30"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/prepare_card.py",
+      "sha256": "c2fe435af370c18170fab950702f232b4aea21736e5e099f5fbce1005f4ae15d"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/probe-01-card.json",
+      "sha256": "6d636a34de6347096d307fddb8fa209850663536e97ab3e6b67f2ed9243e2e50"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/protected-I22-before.json",
+      "sha256": "1f15fe37a6afb757c528cac3fd0dd40461abda87287586a243c9fa09eff8adae"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/publication-status.json",
+      "sha256": "e249cdd62957e199ed83766fc532e3e1580da10a91dbe830d019633c8ae1799e"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/reload-card.json",
+      "sha256": "9e8dc46e37981eeb42fd55883ffc3e6ea3be41a21a01a6febc6a7d3899820e13"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/report.md",
+      "sha256": "eb5a3a6f70d243d70e4be63df002ae0f2fe6d335a24c045b17abbcaf7196e4f6"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/run_phase.py",
+      "sha256": "881af29a91f733da814284ec986e1b54876e6db97c6ef420d86d277fc31784b0"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/seal_campaign.py",
+      "sha256": "a4665eb5015d0d89447bed6ba2003efc8399655317be4e595c3db59d28f01eab"
+    },
+    {
+      "path": "doc/evidence/universe-I23R/worktree-settlement.json",
+      "sha256": "5d5b15f69863cec5d7f9863f622a853873e2434cbe05bde99479d4eddb7d947a"
+    },
+    {
+      "path": "doc/parallel_execution_backlog.md",
+      "sha256": "20286bb1a91bef5404e4a3073f6dd1d84d8a37c2cd8ad0160dc8b770aa1f6e92"
+    },
+    {
+      "path": "doc/pull_request_review_register.md",
+      "sha256": "984aca63409f0a43848de7006e0bcee84b0ebc8803f5b98dbc559bd5a7c64cde"
+    },
+    {
+      "path": "doc/universe_i22_execution_register.md",
+      "sha256": "c5cf43cfae58df4c4acd88633b8f8003e6059dd86a6b83b347d4d0efb03fd818"
+    },
+    {
+      "path": "doc/universe_i23_execution_register.md",
+      "sha256": "3411fbafa9731d16d65a68d4fdad097fe95df36f9a13826689848fdfaee9ffa9"
+    }
+  ],
+  "merge_state": "not_merged; do_not_force_or_bypass_checks",
+  "metadata_included": [
+    "local machine and DevSSD paths",
+    "UE version and installed file inventory paths/hashes",
+    "source, process, package and bounded execution metadata",
+    "independent review session ID and structured decisions",
+    "prior publication rejection and user authorization history"
+  ],
+  "no_alternate_publication_route": true,
+  "prior_automatic_review_rejection": "New I23 payload outside previously approved exact I22 commits; generic PR merge instruction was not considered specific public-payload authorization",
+  "remote_context_before": "5f2bbe3973b4064a293b16695b81bd59cf7df338",
+  "remote_source_before": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+  "requested_actions": [
+    "Non-force publish the exact source tip and final scoped context commit recorded by user confirmation",
+    "Update PR130 description to final source scope and actual C2/Native/CI facts; retain all historical failures",
+    "Verify accurate final source head CI success and actual target ref before merge",
+    "Mark draft ready and merge PR130 using expected_head_sha=fcf689522598dcbb9cac367521ddeb053cb49e4c, merge method, targeting only codex/plan-consolidation",
+    "Record and publish a minimal post-merge receipt/context update containing resulting commit IDs, CI/ref and disposition metadata only; no further source code changes"
+  ],
+  "source_branch": "codex/i21-import",
+  "source_files": [
+    {
+      "path": "doc/evidence/universe-I23A/cpu-check-final.txt",
+      "sha256": "534179defd9d6b12ff046167aaa555605857cda6fc68bcf3b2f21ebeab27c237"
+    },
+    {
+      "path": "doc/evidence/universe-I23A/cpu-check.txt",
+      "sha256": "9065ba30e343e0d993be99c7efc085e9edc3e273872229804c38b0cf42b9dbe0"
+    },
+    {
+      "path": "doc/evidence/universe-I23A/report.md",
+      "sha256": "0b2f5423b89f38754f8c203f7e50438a8b0be466cc9d250c79e1920c9915bf92"
+    },
+    {
+      "path": "scripts/realism_import/README.md",
+      "sha256": "da2fe5a81f902a2a37a10a6c48f06cd83fd4685a75dca8e4de596ec54add7d83"
+    },
+    {
+      "path": "scripts/realism_import/common.py",
+      "sha256": "9627f1305399ccc7abba43d503a7d7a2eb006ab2e228f911d0c9c52274788596"
+    },
+    {
+      "path": "tests/test_realism_import.py",
+      "sha256": "84302bc4c291b003898c007b6e0008effebd5bd6744e3e4e594fccaf3889944e"
+    }
+  ],
+  "status": "prepared_for_explicit_new_payload_publication_approval",
+  "this_manifest": "Control record is included in the final exact local context commit; its own hash is bound by that commit rather than embedded recursively"
+}

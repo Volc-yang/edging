@@ -1,0 +1,24 @@
+{
+  "format": "pr130-I23-late-card-acceptance.v1",
+  "review_thread": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
+  "import": {
+    "review_turn": "01a1c4dc-3a33-7d00-a8d9-2e7f38b2e0f2",
+    "decision": "accepted exact import-01 card after successful p1 result/execution/postwrite and quiet raw-process review",
+    "card_sha256": "ccc00f0a72694e23b49c8ff708ca5401d948117b6b3a696cbda7b6f82bd1503d",
+    "verified_pins": 857,
+    "probe_result_sha256": "971c6fb127c3ad4b6d69915855bcf906b62ebd70f32860e62145c9f9bbe5a312"
+  },
+  "reload": {
+    "review_turn": "01a1c4df-87df-7132-9a21-bae9db7e4d06",
+    "decision": "accepted sole exact reload card after successful import, real negatives and all saved package pins",
+    "card_sha256": "9e8dc46e37981eeb42fd55883ffc3e6ea3be41a21a01a6febc6a7d3899820e13",
+    "verified_pins": 878,
+    "import_result_sha256": "e2af513bd11eb912539bbd3746e7bf70e9e514541dbef141f092a68d97f69bbc",
+    "actual_saved_counts": {"StaticMesh": 5, "Texture2D": 14, "Material": 3},
+    "saved_package_files": 22,
+    "saved_package_bytes": 39910827
+  },
+  "source_commit": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+  "reviewer_UE_or_DevSSD_write": false,
+  "scope": "Exact stage dispatch only; complete merge acceptance requires final C2 and CI/ref verification"
+}

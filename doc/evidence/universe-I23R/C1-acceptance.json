@@ -1,0 +1,19 @@
+{
+  "format": "pr130-I23-C1-acceptance.v1",
+  "review_thread": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
+  "review_turn": "01a1c4d5-d355-7912-b2a8-532f064004df",
+  "source_commit": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+  "probe_card_sha256": "6d636a34de6347096d307fddb8fa209850663536e97ab3e6b67f2ed9243e2e50",
+  "probe_job_sha256": "698b03c55f22ca6f75a71979b74858b796b72b52940be7c87580335ab7cb0415",
+  "static_import_job_sha256": "642b2e94dc2ee3f700edd9c216e43808a64636c4c7cd9081b312d4eadad0c71e",
+  "decision": "accepted_exact_probe_card_and_static_import_reload_template; actual_late_cards_still_require_review",
+  "independent_checks": [
+    "Narrow source diff and 9 CPU tests passed; actual link/FIFO checks and documented socket/device lstat injection",
+    "853 current inventory/source/fixture/tool pins rehashed; immutable source snapshots and preparer match Git commit",
+    "Exact argv/env/job binding and static a1 template match; no results or clock existed at C1",
+    "All 274 I22 files unchanged; corrected inventory, reload package pins and external-root existence comparison present",
+    "Continuous 1200-second cap, per-phase timeouts, min30-second seal reserve preserved"
+  ],
+  "merge_status": "changes_requested; actual saved import, Native negatives, reload and C2 remain required",
+  "reviewer_UE_or_DevSSD_write": false
+}

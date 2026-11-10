@@ -1,0 +1,73 @@
+{
+  "I20_original_files_verified": 34,
+  "I22_protected_files_verified": 274,
+  "actual_sizes": {
+    "content_bytes": 39910827,
+    "ddc_bytes": 13293053,
+    "root_bytes": 77341675,
+    "temporary_ipc": []
+  },
+  "alpha_and_slot_negatives_both_processes": true,
+  "decision": "C2_accepted_D3_IMPORT_for_df1863e_pending_exact_remote_head_CI_before_merge",
+  "declared_external_domains_unchanged": 6,
+  "geometry_direct_gltf_check": [
+    {
+      "max_bounds_error_cm": 1.6689300537109375e-06,
+      "node": "fern_02_b",
+      "triangles": 2384
+    },
+    {
+      "max_bounds_error_cm": 9.5367431640625e-07,
+      "node": "fern_02_c",
+      "triangles": 2248
+    },
+    {
+      "max_bounds_error_cm": 5.960464477539062e-07,
+      "node": "fern_02_a",
+      "triangles": 784
+    },
+    {
+      "max_bounds_error_cm": 8.344650268554688e-07,
+      "node": "fern_02_d",
+      "triangles": 816
+    },
+    {
+      "max_bounds_error_cm": 1.6689300537109375e-06,
+      "node": "boulder_01",
+      "triangles": 66122
+    }
+  ],
+  "native_import_reload_equal": true,
+  "original_post_fsync_seconds": 492.53121654107235,
+  "phases": [
+    {
+      "actual_parent_wait_exit": 0,
+      "forced": false,
+      "phase": "probe-01",
+      "pid": 87036
+    },
+    {
+      "actual_parent_wait_exit": 0,
+      "forced": false,
+      "phase": "import-01",
+      "pid": 96593
+    },
+    {
+      "actual_parent_wait_exit": 0,
+      "forced": false,
+      "phase": "reload",
+      "pid": 11448
+    }
+  ],
+  "quiet_samples_reparsed": 9,
+  "raw_process_samples_rehashed": 38,
+  "reload_result_sha256": "fb7cd5fb53ce57d9d1a0cfa11d0c249a96d66c30b2b88ca73e42a22de9ab30b1",
+  "reviewer_UE_or_run_root_write": false,
+  "root_regular_files": 427,
+  "runtime_Metal_visual_acceptance": false,
+  "saved_package_bytes_unchanged": true,
+  "saved_packages": 22,
+  "seal_sha256": "cf2cf5e3725376ad64f1d7480d2139a92a94e6229ad717863a0f50fb99e51bb8",
+  "source": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+  "unique_input_pins_rehashed": 904
+}

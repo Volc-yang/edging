@@ -1,0 +1,36 @@
+{
+  "I20_originals_unchanged": 34,
+  "decision": "complete_chain_pass_requires_independent_C2",
+  "format": "pr130-I23-parent-replay.v1",
+  "observation": {
+    "actual_sizes": {
+      "content_bytes": 39910827,
+      "ddc_bytes": 13293053,
+      "root_bytes": 77341675,
+      "temporary_ipc": []
+    },
+    "capture": {
+      "actual_outer_exit": 0,
+      "completion_chunk_id": "29e0c0",
+      "method": "Copied from original seal stdout; no rerun and no run-root write after final fsync",
+      "tool_session_id": 74441
+    },
+    "continuous_elapsed_seconds": 492.53121654107235,
+    "format": "universe-i22-post-seal-observation.v1",
+    "native_runtime_build_visual_acceptance": false,
+    "observed_after_final_fsync": true,
+    "result": "pass_resource_and_package_persistence_requires_C2",
+    "seal_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I23-20261110-import/campaign-seal.json",
+      "sha256": "cf2cf5e3725376ad64f1d7480d2139a92a94e6229ad717863a0f50fb99e51bb8"
+    }
+  },
+  "phase_counts": [
+    1,
+    1,
+    1
+  ],
+  "protected_I22_unchanged": true,
+  "unique_input_pins": 904,
+  "visual_or_runtime_acceptance": false
+}
