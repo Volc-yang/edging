@@ -16,6 +16,6 @@
 
 **下一步：**新run-root/新明确预算，先在clock前完成全部静态准备和审查，保留877696e准确源码；审查未变engine/source/fixture pins是否可复用p2准确能力证据，直接进行5mesh/14texture/3material真实导入→Native负例→新进程reload。禁止在已封存I22目录续跑；不再重复扩展工具，不把CPU/能力pass说成真实导入/画质pass。
 
-**本地任务收尾：**A状态报告提交768b1ac（仅文档；实际执行源码仍877696e），未摘取任何导入源。C独立提交e78c1a8已由root审读并等效摘取为7e2846b；12份审查文件逐字节一致，C2 checker在统筹稳定路径再次执行通过（[回放](evidence/universe-I22R/integrated-C2-replay/c2-run-review.json)）。C树干净、历史引用已映射到同SHA稳定副本、无运行依赖后non-force移除；分支保留。A树因部分完成/未集成保留；其他树不动，见[结算](evidence/universe-I22R/worktree-settlement.json)。统筹分支仅包含计划、审查与上下文；主checkout仍d6298e3，原用户未提交修改保留。I22只做本地提交，公开范围见最终publication-manifest，待用户许可。
+**本地任务收尾：**A状态报告提交768b1ac（仅文档；实际执行源码仍877696e），未摘取任何导入源。C独立提交e78c1a8已由root审读并等效摘取为7e2846b；12份审查文件逐字节一致，C2 checker在统筹稳定路径再次执行通过（[回放](evidence/universe-I22R/integrated-C2-replay/c2-run-review.json)）。C树干净、历史引用已映射到同SHA稳定副本、无运行依赖后non-force移除；分支保留。A树因部分完成/未集成保留；其他树不动，见[结算](evidence/universe-I22R/worktree-settlement.json)。统筹分支仅包含计划、审查与上下文；主checkout仍d6298e3，原用户未提交修改保留。用户后续已明确许可按5f2bbe3固定publication-manifest发布；源码768b1ac与统筹5f2bbe3已原子非force推送并核验，草稿PR130已更新，CI178/179在准确head768b1ac均completed/success，仅Ubuntu检查，源码仍未合并。发布后的本地回执/上下文提交独立保留，不扩展此次两个固定公开提交。
 
-I21固定清单的公开授权与PR130已完成；自动审批本次拒绝推送新增I22计划d194b4b，认定旧授权未覆盖新增I22内容。已停止所有I22 push/API替代；先完成本地可审交付和真实测试，再请求具体公开范围确认，不影响本地A/C1/R/C2。Native未通过的代码不merge。主checkout用户改动、I15构建/I12B恢复及I20/I21全部原件保留。
+公开授权链：先前自动审批拒绝新增I22计划，因I21旧授权不覆盖新增内容；当时停止公开且没有改走API。完成本地交付后，用户明确回复“允许按本轮清单发布”，覆盖源码768b1ac、统筹5f2bbe3及本机路径/UE版本/hash，现两固定提交已发布并更新草稿PR130。[发布回执](evidence/universe-I22R/publication-receipt.json)保留旧拒绝与新授权/远端核验；旧publication-status.json为授权前原始记录，由回执补充。Native导入门未通过的代码不merge。主checkout用户改动、I15构建/I12B恢复及全部DevSSD原件保留。

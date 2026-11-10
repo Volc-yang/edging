@@ -6,7 +6,7 @@
 
 [C0计划](design/universe-i22-import-correction-plan.md) / [登记](universe_i22_execution_register.md) / [R原件结算](evidence/universe-I22R/report.md)：A源码99ea747首probe实际wait255/texture恢复失败；安装Texture.cpp证实压缩类型约束sRGB，877696e修正恢复顺序并保存原异常/逐项差异，6CPU及独立C1通过。第二/最后probe真实wait0：subsystem/mesh/texture/material/pipeline调用与恢复成功，三临时纹理128×128全字段一致，原Engine getter/包不变；**仅API能力pass，实际5mesh/14texture/3material导入、Native负例/reload/视觉均未验**。a1/a2只静态准备；新import卡就绪时余130.865s<120+30封存余量，NO-GO未派发，不再缩限/重置clock/追加尝试。
 
-终fsync1148.512317s<1200，root27,805,158B<4GiB、项目Content文件0B、DDC3,977,022B；两次非forced、自有后代静默、六声明外域0变化，818使用pins及34I20原件不变。C独立复查及root原件重放接受partial证据，D3-IMPORT不授；首probe/首parent checker失败原件保留。A源码未集成/PR130远端仍cd3b26f；I22发布被自动审批以“旧I21固定清单授权不覆盖新增内容”为由拒绝，当前只做本地提交，待具体范围公开许可；主checkout用户改动/I15构建/I12B恢复/全部原件保留。
+终fsync1148.512317s<1200，root27,805,158B<4GiB、项目Content文件0B、DDC3,977,022B；两次非forced、自有后代静默、六声明外域0变化，818使用pins及34I20原件不变。C独立复查及root原件重放接受partial证据，D3-IMPORT不授；首probe/首parent checker失败原件保留。A源码未集成；用户后续已明确授权I22固定清单，768b1ac源码与5f2bbe3统筹已原子非force公开推送并核对远端SHA，[草稿PR130](https://github.com/Volc-yang/edging/pull/130)已更新，[发布回执](evidence/universe-I22R/publication-receipt.json)记录远端SHA及CI178/179均success（仅Ubuntu检查）；先前拒绝记录保留且由本次具体授权解除；主checkout用户改动/I15构建/I12B恢复/全部原件保留。
 
 **下轮入口：**新run-root与明确预算，全部静态准备和审查放在clock前；复用准确877696e源，审查未变engine/source/fixture pins能否复用p2能力证据，真实导入→Native metadata/Alpha与slot负例→新进程reload。I22已封存不得续写；不再扩大工具功能、重开已通过CPU或宣称完整UE/写实画质通过。Nanite=false、严格source/render/Nanite三种计数及I20 Alpha/法线/地表预览球限制保持。
 

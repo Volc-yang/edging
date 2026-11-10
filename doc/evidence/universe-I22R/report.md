@@ -1,7 +1,10 @@
 # I22 root Native import correction
 
 Status: **partial**. The final capability probe passed; actual asset import and reload
-were not dispatched. Local execution and review only; I22 publication remains unapproved.
+were not dispatched. The exact source 768b1ac and context 5f2bbe3 were subsequently
+published after specific user approval; source remains unmerged. The immutable
+published manifest/status capture the earlier pre-approval state; the later local
+publication-receipt.json records approval, remote verification and PR disposition.
 
 Approved plan: `doc/design/universe-i22-import-correction-plan.md`, SHA256
 `0ebce94464c98becd8297833ab574b698dc9118363f5fedaafd9297761cb6f24`.

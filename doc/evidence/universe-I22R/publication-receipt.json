@@ -1,0 +1,82 @@
+{
+  "format": "universe-i22-publication-receipt.v1",
+  "status": "published_exact_approved_commits; draft_PR_updated; CI_success; source_unmerged",
+  "approval": {
+    "source": "User reply to request_user_input_async call_4753e08f280e4229bcbf55127252cd77 item 0",
+    "answer": "允许按本轮清单发布",
+    "approved_source_commit": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+    "approved_context_commit": "5f2bbe3973b4064a293b16695b81bd59cf7df338",
+    "scope": "I22 fixed manifest, including code/tests/review/context, local machine paths, UE version and hashes; update draft PR130; no source merge"
+  },
+  "manifest": {
+    "at_commit": "5f2bbe3973b4064a293b16695b81bd59cf7df338",
+    "path": "doc/evidence/universe-I22R/publication-manifest.json",
+    "sha256": "4cdb703eb1f5221a1666919ff29cdad8078cba776a28e9be38a0e00b95905bd3",
+    "verified_source_changed_files": 18,
+    "verified_context_changed_files_including_manifest": 32,
+    "exact_diff_set_and_sha_verification": "PASS before publication; compare against immutable commits for future replay"
+  },
+  "remote": {
+    "url": "ssh://git@ssh.github.com:443/Volc-yang/edging.git",
+    "push": "git push --atomic origin <exact source SHA>:refs/heads/codex/i21-import <exact context SHA>:refs/heads/codex/plan-consolidation",
+    "forced": false,
+    "push_exit": 0,
+    "tool_session": 27445,
+    "push_completion_chunk": "5735e8",
+    "before": {
+      "codex/i21-import": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+      "codex/plan-consolidation": "545117db10e20434f43a841863b1b09b2b0b3323"
+    },
+    "after_verified_with_ls_remote": {
+      "codex/i21-import": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+      "codex/plan-consolidation": "5f2bbe3973b4064a293b16695b81bd59cf7df338"
+    }
+  },
+  "pull_request": {
+    "url": "https://github.com/Volc-yang/edging/pull/130",
+    "number": 130,
+    "title": "WIP: verify UE import capability; saved asset import pending",
+    "base_branch": "codex/plan-consolidation",
+    "head_branch": "codex/i21-import",
+    "head_sha": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+    "draft": true,
+    "merged": false,
+    "body_matches_written_text": true
+  },
+  "CI": {
+    "head_commit": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+    "runs": [
+      {
+        "id": 42789318734,
+        "number": 179,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Volc-yang/edging/actions/runs/42789318734"
+      },
+      {
+        "id": 42789315200,
+        "number": 178,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Volc-yang/edging/actions/runs/42789315200"
+      }
+    ],
+    "coverage": "Existing Ubuntu Python test suite, 64D/384 structural validation and canonical corpus sync; no UE Native or visual grant"
+  },
+  "prior_rejection": {
+    "preserved_in": "publication-status.json at approved context commit 5f2bbe3",
+    "action": "git push origin codex/plan-consolidation",
+    "reason": "I21 fixed-list approval did not cover new I22 content",
+    "resolution": "New explicit user approval received after concrete local delivery; same normal git path, no alternate publication route"
+  },
+  "native_disposition": {
+    "capability_probe": "pass_limited_fixture_scope",
+    "actual_I20_import": "not_run_NO_GO",
+    "save_reload": "not_run",
+    "runtime_visual": "not_run",
+    "D3_IMPORT": "not_accepted",
+    "source_integrated": false
+  },
+  "local_receipt_commit": "Local bookkeeping only; not included in this fixed two-commit publication. Published historical manifest/status remain immutable.",
+  "UE_or_DevSSD_writes_during_publication": false
+}
