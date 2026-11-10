@@ -1,10 +1,13 @@
 """CPU input-boundary checks. No unreal mocks, UE execution or Native claims."""
 from pathlib import Path
 import json
+import os
 import shutil
+import stat
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from scripts.realism_import import common as c
 
@@ -34,7 +37,66 @@ class RealismImportInputTests(unittest.TestCase):
             c.check_probe_result({**probe,'capability':{**probe['capability'],'texture_restoration':[]}},job)
         recipe=json.loads((REPO/'scripts/realism_import/recipe.json').read_bytes())
         self.assertIs(recipe['import_policy']['build_nanite'],False)
-        self.assertEqual(c.OUTPUT.name,'I22-20261110-import')
+        self.assertEqual(c.OUTPUT.name,'I23-20261110-import')
+
+    def test_file_map_keeps_regular_nested_files_and_requires_root(self):
+        with tempfile.TemporaryDirectory(prefix='i23-map-',dir=Path(tempfile.gettempdir()).resolve()) as td:
+            root=Path(td);self.assertEqual(c.file_map(root),{})
+            (root/'nested').mkdir();(root/'first').write_bytes(b'abc');(root/'nested/second').write_bytes(b'defg')
+            self.assertEqual(c.file_map(root),{'first':{'bytes':3,'sha256':c.sha(b'abc')},
+                'nested/second':{'bytes':4,'sha256':c.sha(b'defg')}})
+            with self.assertRaises(FileNotFoundError):c.file_map(root/'absent')
+            with self.assertRaisesRegex(ValueError,'root must be a directory'):c.file_map(root/'first')
+
+    def test_file_map_rejects_links_and_special_files(self):
+        tmp_root=Path('/private/tmp') if Path('/private/tmp').is_dir() else Path(tempfile.gettempdir()).resolve()
+        with tempfile.TemporaryDirectory(prefix='i23-map-',dir=tmp_root) as td:
+            root=Path(td);(root/'regular').write_bytes(b'ok')
+            link=root/'link';link.symlink_to(root/'regular')
+            with self.assertRaisesRegex(ValueError,'non-regular'):c.file_map(root)
+            link.unlink()
+            if hasattr(os,'mkfifo'):
+                fifo=root/'fifo';os.mkfifo(fifo)
+                with self.assertRaisesRegex(ValueError,'non-regular'):c.file_map(root)
+                fifo.unlink()
+            # Actual AF_UNIX bind is forbidden in this sandbox. Inject only its lstat
+            # type bits, and device type bits, to cover rejection without network IPC.
+            actual_stat=os.lstat
+            for special in (stat.S_IFSOCK,stat.S_IFCHR,stat.S_IFBLK):
+                def special_stat(path,*args,**kwargs):
+                    result=actual_stat(path,*args,**kwargs)
+                    if Path(path)==root/'regular':
+                        values=list(result);values[0]=special|0o600;return os.stat_result(values)
+                    return result
+                with patch.object(c.os,'lstat',side_effect=special_stat):
+                    with self.assertRaisesRegex(ValueError,'non-regular'):c.file_map(root)
+
+    def test_file_map_propagates_enumeration_stat_and_open_errors(self):
+        with tempfile.TemporaryDirectory(prefix='i23-map-',dir=Path(tempfile.gettempdir()).resolve()) as td:
+            root=Path(td);nested=root/'nested';nested.mkdir();(root/'first').write_bytes(b'ok')
+            actual_scan=os.scandir
+            def deny_nested(path):
+                if Path(path)==nested:raise PermissionError('enumeration denied')
+                return actual_scan(path)
+            with patch.object(c.os,'scandir',side_effect=deny_nested):
+                with self.assertRaisesRegex(PermissionError,'enumeration denied'):c.file_map(root)
+            actual_stat=os.lstat
+            def deny_file(path,*args,**kwargs):
+                if Path(path)==root/'first':raise PermissionError('stat denied')
+                return actual_stat(path,*args,**kwargs)
+            with patch.object(c.os,'lstat',side_effect=deny_file):
+                with self.assertRaisesRegex(PermissionError,'stat denied'):c.file_map(root)
+            with patch.object(c.os,'open',side_effect=PermissionError('read open denied')):
+                with self.assertRaisesRegex(PermissionError,'read open denied'):c.file_map(root)
+            actual_fdopen=os.fdopen
+            class ReadFailure:
+                def __init__(self,fd,*args):self.stream=actual_fdopen(fd,*args)
+                def __enter__(self):self.stream.__enter__();return self
+                def __exit__(self,*args):return self.stream.__exit__(*args)
+                def fileno(self):return self.stream.fileno()
+                def read(self):raise OSError('stream read failed')
+            with patch.object(c.os,'fdopen',side_effect=ReadFailure):
+                with self.assertRaisesRegex(OSError,'stream read failed'):c.file_map(root)
 
     def test_real_pinned_source_files(self):
         if not c.SOURCE.is_dir():self.skipTest('I20 DevSSD source root unavailable on this host')

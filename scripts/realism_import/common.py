@@ -3,12 +3,13 @@ import hashlib
 import json
 import math
 import os
+import stat
 import sys
 from pathlib import Path, PurePosixPath
 
 ENGINE = Path('/Users/Shared/Epic Games/UE_5.8/Engine')
 SOURCE = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets')
-OUTPUT = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import')
+OUTPUT = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I23-20261110-import')
 INDEX_SHA = 'd9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7'
 CONTENT_PATH = '/Game/EdgeWorldRealism/I22'
 ACTIVATE_MODULES=('AssetTools','MaterialEditor','InterchangeEngine','InterchangeImport',
@@ -69,12 +70,25 @@ def write_new(path,value):
 
 
 def file_map(root):
+    """Required directory, exact regular files only; every filesystem error propagates."""
     root=checked(root);result={}
-    if not root.exists():return result
-    for path in sorted(root.rglob('*')):
-        checked(path)
-        if path.is_file():
-            raw=path.read_bytes();result[str(path.relative_to(root))]={'bytes':len(raw),'sha256':sha(raw)}
+    require(stat.S_ISDIR(os.lstat(root).st_mode),'file map root must be a directory: '+str(root))
+    def visit(directory):
+        with os.scandir(directory) as scan:entries=sorted(scan,key=lambda entry:entry.name)
+        for entry in entries:
+            path=directory/entry.name;info=os.lstat(path)
+            if stat.S_ISDIR(info.st_mode):visit(path)
+            else:
+                require(stat.S_ISREG(info.st_mode),'non-regular file map entry: '+str(path))
+                # Do not follow a link or block on a FIFO substituted after lstat.
+                fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+                with os.fdopen(fd,'rb') as stream:
+                    opened=os.fstat(stream.fileno())
+                    require(stat.S_ISREG(opened.st_mode) and (opened.st_dev,opened.st_ino)==(info.st_dev,info.st_ino),
+                        'file map entry changed while opening: '+str(path))
+                    raw=stream.read()
+                result[str(path.relative_to(root))]={'bytes':len(raw),'sha256':sha(raw)}
+    visit(root)
     return result
 
 

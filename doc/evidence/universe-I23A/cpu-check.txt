@@ -1,0 +1,23 @@
+test_enabled_plugin_requirements_rejected (tests.test_realism_import.RealismImportInputTests.test_enabled_plugin_requirements_rejected) ... ok
+test_file_map_keeps_regular_nested_files_and_requires_root (tests.test_realism_import.RealismImportInputTests.test_file_map_keeps_regular_nested_files_and_requires_root) ... ok
+test_file_map_propagates_enumeration_stat_and_open_errors (tests.test_realism_import.RealismImportInputTests.test_file_map_propagates_enumeration_stat_and_open_errors) ... ok
+test_file_map_rejects_links_and_special_files (tests.test_realism_import.RealismImportInputTests.test_file_map_rejects_links_and_special_files) ... ERROR
+test_i22_probe_binding_is_exact_and_incomplete_results_reject (tests.test_realism_import.RealismImportInputTests.test_i22_probe_binding_is_exact_and_incomplete_results_reject) ... ok
+test_missing_alpha_and_corruption_rejected (tests.test_realism_import.RealismImportInputTests.test_missing_alpha_and_corruption_rejected) ... ok
+test_paths_json_and_exclusive_evidence (tests.test_realism_import.RealismImportInputTests.test_paths_json_and_exclusive_evidence) ... ok
+test_real_pinned_source_files (tests.test_realism_import.RealismImportInputTests.test_real_pinned_source_files) ... ok
+test_startup_and_environment_refuse_user_injection (tests.test_realism_import.RealismImportInputTests.test_startup_and_environment_refuse_user_injection) ... ok
+
+======================================================================
+ERROR: test_file_map_rejects_links_and_special_files (tests.test_realism_import.RealismImportInputTests.test_file_map_rejects_links_and_special_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/tests/test_realism_import.py", line 64, in test_file_map_rejects_links_and_special_files
+    ipc.bind(str(root/'socket'))
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.638s
+
+FAILED (errors=1)
