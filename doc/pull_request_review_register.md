@@ -7,7 +7,7 @@
 
 | PR | 准确输入 | 当前审查与动作 |
 | --- | --- | --- |
-| [130](https://github.com/Volc-yang/edging/pull/130) | public head768b1ac；proposed headfcf6895/tested sourcedf1863e；target codex/plan-consolidation实际ref5f2bbe3，PR API base_sha9d24a9c不能当target tip | 本地源码approved、C2/D3-IMPORT已通过：file_map已修，真实5/14/3、22包、负例、独立reload/资源门均过。[C2](evidence/universe-I23R/C2-independent-review.json)。新head push被自动审批以固定公开清单不覆盖为由拒绝，保持draft/未合并，等待新精确payload公开许可后push→准确headCI/ref→合并；不再重复Native。 |
+| [130](https://github.com/Volc-yang/edging/pull/130) | approved headfcf6895/tested sourcedf1863e；target codex/plan-consolidation@0540802；merge90c3a53 | complete：严格file_map、真实5/14/3保存/负例/独立reload、C2与准确head CI180/181均通过；用户具体新公开授权后正常发布、转ready、expected-head merge，PR已closed/merged。[回执](evidence/universe-I23R/merge-receipt.json)。Metal/Runtime另验。 |
 
 合并必须核对准确源码、测试/CI、独立审查、必需原件、目标ref与最新head；
 出现缺口只重开受影响项，保留失败记录。不能用mergeable、CI或用户合并授权

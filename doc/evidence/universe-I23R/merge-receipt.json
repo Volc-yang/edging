@@ -1,0 +1,113 @@
+{
+  "format": "pr130-I23-publication-and-merge-receipt.v1",
+  "status": "published_and_merged; D3_IMPORT_accepted; post_merge_context_record",
+  "approval": {
+    "user_reply": "允许发布并合并",
+    "question_call": "call_41d723d5181b4e0290afb9387a7a54e1",
+    "approved_source_commit": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+    "approved_context_commit": "0540802a93e7fc91d0a5bf45f25ec1a3874b2643",
+    "scope": "Specific new fixed manifest, local paths/UE version/hashes; exact-head CI then merge PR130 to codex/plan-consolidation and publish a minimal merge receipt/context update"
+  },
+  "fixed_manifest": {
+    "path": "doc/evidence/universe-I23R/publication-manifest.json",
+    "at_commit": "0540802a93e7fc91d0a5bf45f25ec1a3874b2643",
+    "sha256": "12b07750ab8b16456e4a9e39da40439c3968f5e39b27692a81b404ab1f1d7cc9",
+    "source_changed_files": 6,
+    "context_changed_files_including_manifest": 26,
+    "exact_files_and_hashes_verified": true
+  },
+  "publication": {
+    "method": "normal git push --atomic; no force",
+    "push_exit": 0,
+    "tool_session_id": 64262,
+    "completion_chunk_id": "bf3f06",
+    "remote_before": {
+      "codex/i21-import": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+      "codex/plan-consolidation": "5f2bbe3973b4064a293b16695b81bd59cf7df338"
+    },
+    "remote_after_ls_remote_verified": {
+      "codex/i21-import": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+      "codex/plan-consolidation": "0540802a93e7fc91d0a5bf45f25ec1a3874b2643"
+    },
+    "new_publication_used_alternate_route": false,
+    "prior_rejections": "Preserved in I22/I23 publication-status records; new explicit fixed-scope approval resolved the I23 rejection"
+  },
+  "independent_review": {
+    "threadId": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
+    "title": "Pull Requests 审查与合并",
+    "C2_report_sha256": "a59b9c8b1a7baed3f602fdf4604e814e8be37390eba1da080e9115b27ec62e22",
+    "final_turn": "01a1c500-7e05-7202-beb0-655f522dcc96",
+    "final_decision": "approved exact head fcf6895, target0540802, CI180/181 success; no review blockers"
+  },
+  "CI": {
+    "exact_head": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+    "runs": [
+      {
+        "id": 42799317899,
+        "number": 180,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Volc-yang/edging/actions/runs/42799317899"
+      },
+      {
+        "id": 42799319185,
+        "number": 181,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Volc-yang/edging/actions/runs/42799319185"
+      }
+    ],
+    "coverage": "Existing Ubuntu Python suite, 64D/384 structure and canonical corpus; separate actual UE validation below"
+  },
+  "merge": {
+    "PR": "https://github.com/Volc-yang/edging/pull/130",
+    "number": 130,
+    "method": "merge",
+    "expected_head_sha": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+    "target": "codex/plan-consolidation",
+    "target_before": "0540802a93e7fc91d0a5bf45f25ec1a3874b2643",
+    "sha": "90c3a531b3712894523dc6a82ea63b1f9645a71f",
+    "merged": true,
+    "read_back_state": "closed",
+    "draft": false,
+    "merged_at_UTC": "2026-11-10T10:32:21Z",
+    "merged_at_Asia_Shanghai": "2026-11-10T18:32:21+08:00",
+    "actual_parents_verified": [
+      "0540802a93e7fc91d0a5bf45f25ec1a3874b2643",
+      "fcf689522598dcbb9cac367521ddeb053cb49e4c"
+    ]
+  },
+  "validation": {
+    "actual_UE_source": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+    "post_merge_production_and_test_bytes_equal_Native_source": true,
+    "CPU": 9,
+    "Native": "probe/import/fresh_process_reload actual wait0/nonforced/quiet",
+    "counts": {
+      "StaticMesh": 5,
+      "Texture2D": 14,
+      "Material": 3
+    },
+    "saved_packages": 22,
+    "Content_bytes": 39910827,
+    "real_Alpha_slot_negatives_both_processes": true,
+    "reload_full_snapshot_and_Content_bytes_equal": true,
+    "unique_input_pins": 904,
+    "protected_I20_files": 34,
+    "protected_I22_files": 274,
+    "external_domains_unchanged": 6,
+    "post_fsync_seconds": 492.53121654107235,
+    "run_root_bytes": 77341675,
+    "DDC_bytes": 13293053,
+    "D3_IMPORT": "accepted",
+    "runtime_Metal_visual_acceptance": false,
+    "UE_repeated_for_publication": false
+  },
+  "workspaces": {
+    "stable_integration_fast_forwarded_to_merge": true,
+    "main_checkout_preserved_at": "d6298e3a138b0b67f23e6523aae1e428eef54231",
+    "implementation_tree": "retained clean: frozen I23 prepare_card.py:53 still references i21-import for source verification; migrate in a newly versioned future preparer before removing",
+    "review_chat": "retained user-owned fixed review entry",
+    "other_worktrees_and_originals": "preserved"
+  },
+  "post_merge_receipt_scope": "Only this receipt and coordinator status/disposition metadata; no new source/engine/runtime changes; published under explicit approval of merge receipt."
+}

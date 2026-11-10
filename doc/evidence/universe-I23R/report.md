@@ -3,8 +3,10 @@
 目标是完成用户要求的 PR 审查与合并。独立审查会话
 `01a1c4c5-5809-79c2-ae72-2fa4b70ee845` 已完成 C0、准确源码/执行卡 C1；
 root 实际完成 probe → import → reload → seal，父级只读回放通过。
-**独立 C2 与 D3-IMPORT 已接受，源码本地 approved**；新增修复的公开推送被
-自动审批拦截，故准确最终head CI与合并仍待具体公开授权，未提前合并。
+**独立 C2 与 D3-IMPORT 已接受，PR130已合并到codex/plan-consolidation**。
+用户明确批准新增固定公开清单后，fcf6895/0540802原子非force发布，准确head的
+CI180/181均success，最终独立审查approved，以expected head合并为90c3a53。
+[合并回执](merge-receipt.json)保存授权、远端核验和实际双parent；旧审批拒绝原件保留。
 
 ## 源码与审查
 
@@ -67,9 +69,14 @@ A最终head `fcf689522598dcbb9cac367521ddeb053cb49e4c` 相对实际源码df1863e
 核验生产源码/测试字节未变，沿用Native接受，不需重跑UE。
 源码树干净但尚未合并，按工作流保留，见[worktree结算](worktree-settlement.json)。
 
-自动审批在进程创建前拒绝将fcf6895公开推送，认定用户的PR合并要求没有明确
-覆盖此前固定I22清单外的新payload，见[原拒绝状态](publication-status.json)。
-未改用API、未更新PR公开元数据、未推新源或强行merge。旧公开head仍768b1ac。
-准备新的精确发布清单及本地统筹提交后，只请求新增payload的公开许可；获准后
-执行publish→准确head CI/ref核验→转ready→expected-head merge→结果回执。
-这是发布授权缺口，独立代码/Native验收已通过；不重复一般合并确认。
+此前首次发布尝试曾在进程创建前被自动审批拒绝，认定PR合并要求未明确覆盖
+旧I22固定清单外的新payload，见[原拒绝状态](publication-status.json)。当时停止
+所有新公开动作，没有改走API或强行merge，远端仍768b1ac。随后完成精确清单与
+本地0540802提交，用户明确回复“允许发布并合并”；正常git原子发布后，准确
+head CI/ref与最终独立审查通过，执行转ready及expected-head merge。本次授权
+已解除该发布缺口；原拒绝记录作为历史保留，不表示当前仍待许可。
+
+实际合并及后续上下文仅包含已批准内容和结果元数据；统筹稳定树已快进，生产源码/测试
+与Native执行df1863e字节一致。源码工作树因冻结准备器的源验证引用暂留，见更新后的
+worktree-settlement.json；不因合并删除复现依赖。主checkout与其他原件不动。
+下一轮应进入已保存资产的只读运行时呈现/Metal验收，而非重复D3导入。

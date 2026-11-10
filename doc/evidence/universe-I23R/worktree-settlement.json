@@ -1,25 +1,28 @@
 {
   "format": "pr130-I23-worktree-disposition.v1",
-  "review_chat": {
-    "title": "Pull Requests 审查与合并",
-    "threadId": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
-    "hostId": "local",
-    "status": "retained_user_owned_review_entry; readonly_review_complete",
-    "repository_worktree_created_for_chat": false
-  },
   "implementation": {
-    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import",
-    "branch": "codex/i21-import",
-    "head": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+    "Native_input_pins_requiring_this_worktree": 0,
     "actual_tested_source": "df1863e900ad7b96c36dc05507ac221d6ab5ab25",
+    "branch": "codex/i21-import",
     "clean": true,
-    "status": "retained_complete_but_unintegrated_pending_specific_publication_approval_and_final_CI_merge",
-    "remove_allowed_now": false
+    "head": "fcf689522598dcbb9cac367521ddeb053cb49e4c",
+    "merge_commit": "90c3a531b3712894523dc6a82ea63b1f9645a71f",
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import",
+    "reason": "Frozen prepare_card.py:53 names sibling i21-import for git/source validation. Preserve original tool/card bytes. Before removing, version the next preparer to use stable integrated sources and verify the complete input closure.",
+    "remove_allowed_now": false,
+    "status": "merged_into_plan_consolidation; retained_clean_for_frozen_preparer_source_verification"
   },
   "integration": {
-    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation",
     "branch": "codex/plan-consolidation",
-    "status": "retained_stable_coordinator_and_runtime_evidence_dependency"
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation",
+    "status": "fast_forwarded_to_90c3a53; stable_coordinator_and_evidence_dependency"
   },
-  "other_worktrees_and_main": "Untouched. Preserve main d6298e3 and user changes, I15 build, I12B recovery, historical branches and every I20/I21/I22/I23 original. No worktree removed this task."
+  "other_worktrees_and_main": "Untouched. Preserve main d6298e3 and user changes, I15 build, I12B recovery, historical branches and every I20/I21/I22/I23 original. No worktree removed this task.",
+  "review_chat": {
+    "hostId": "local",
+    "repository_worktree_created_for_chat": false,
+    "status": "retained_user_owned_review_entry; final_review_approved_and_PR_merged",
+    "threadId": "01a1c4c5-5809-79c2-ae72-2fa4b70ee845",
+    "title": "Pull Requests \u5ba1\u67e5\u4e0e\u5408\u5e76"
+  }
 }
