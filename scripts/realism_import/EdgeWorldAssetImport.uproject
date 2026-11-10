@@ -1,7 +1,7 @@
 {
   "FileVersion": 3,
   "EngineAssociation": "5.8",
-  "Description": "I21 isolated content-only CC0 import host",
+  "Description": "I22 isolated capability and CC0 import host",
   "DisableEnginePluginsByDefault": true,
   "Plugins": [
     {"Name": "PythonScriptPlugin", "Enabled": true},

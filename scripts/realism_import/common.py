@@ -8,9 +8,12 @@ from pathlib import Path, PurePosixPath
 
 ENGINE = Path('/Users/Shared/Epic Games/UE_5.8/Engine')
 SOURCE = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets')
-OUTPUT = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import')
+OUTPUT = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import')
 INDEX_SHA = 'd9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7'
-CONTENT_PATH = '/Game/EdgeWorldRealism/I21'
+CONTENT_PATH = '/Game/EdgeWorldRealism/I22'
+ACTIVATE_MODULES=('AssetTools','MaterialEditor','InterchangeEngine','InterchangeImport',
+    'InterchangePipelines','EditorScriptingUtilities','StaticMeshEditor')
+PROBE_FIXTURES=('Content/BasicShapes/Cube.uasset','Content/EngineResources/DefaultTexture.uasset')
 
 
 def require(value, message):
@@ -189,3 +192,20 @@ def load_engine_descriptor(path):
         else:result.append(char)
     try:return finite(json.loads(''.join(result),object_pairs_hook=pairs))
     except ValueError as error:raise ValueError('installed descriptor parse failed '+str(path)+': '+str(error)) from error
+
+
+def check_probe_result(probe,job):
+    """Byte-pinned result consistency only; root separately accepts execution/quiet gates."""
+    require(probe.get('format')=='edgeworld.i22.native-import-result.v0.1' and probe.get('mode')=='probe' and probe.get('status')=='PASS','probe did not produce correct positive Native result')
+    require(probe.get('job_sha256')==job['probe_job_sha256'],'probe job identity mismatch')
+    require(probe.get('recipe_sha256')==job['recipe_sha256'] and probe.get('source_index_sha256')==INDEX_SHA,'probe recipe/source identity mismatch')
+    require(probe.get('source_scripts')==job['source_scripts'],'probe/import source snapshots differ')
+    capability=probe.get('capability',{})
+    require(capability.get('complete') is True,'probe capabilities incomplete')
+    for field in ('subsystem','mesh_before','mesh_restored','texture_calls','material_links'):
+        require(bool(capability.get(field)),'probe actual getter evidence missing: '+field)
+    require(capability['mesh_before']==capability['mesh_restored'],'probe mesh restoration mismatch')
+    require(capability.get('actual_alpha_disconnected') is True and capability.get('actual_alpha_restored') is True,'probe actual Alpha checks incomplete')
+    policy=capability.get('pipeline_observed',{})
+    require(policy.get('collision') is False and policy.get('build_nanite') is False,'probe live collision/Nanite policy mismatch')
+    return True

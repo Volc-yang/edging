@@ -1,28 +1,37 @@
-# I21 import producer
+# I22 capability → import → fresh reload
 
-Only the root supervisor runs UE or prepares DevSSD outputs. These scripts do not launch processes. `prepare.py preflight` is read-only; it verifies all 20 pinned I20 inputs, UE version/binary, reviewed script snapshots, user startup absence and installed Content/Python source inventory. Installed plugin inventory is a conservative superset of enabled mounts. It is an identity check of trusted installed code, not a claim that startup does not execute.
+Root alone prepares DevSSD outputs or runs UE. These scripts never launch processes. The read-only preflight pins the actual I20 index/20 files, UE5.8.3 CL58210709, installed modules including StaticMeshEditor/AdvancedPreviewScene/EditorSubsystem, installed fixture packages and all Content/Python startup sources. Actual Mac Documents comes from Foundation. Unknown user startup/path hooks and enabled plugin pip requirements reject. Installed source hashes identify trusted code; startup still executes.
 
-The Mac Documents location comes from the same Foundation directory query as UE, not HOME concatenation. Preflight resolves the explicitly enabled installed plugin dependency closure and refuses PythonRequirements even when automatic pip install is disabled. Original installed descriptor bytes are hashed; only their BOM/trailing-comma JSON syntax is tolerated. User/job/source JSON remains strict.
+Root can prepare both static jobs before the campaign clock:
 
 ```sh
 python3 -B scripts/realism_import/prepare.py preflight
-python3 -B scripts/realism_import/prepare.py import --attempt 1
+python3 -B scripts/realism_import/prepare.py probe --attempt 1
+python3 -B scripts/realism_import/prepare.py import --attempt 1 --probe-attempt 1
 ```
 
-The second command creates `/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/` exclusively. It snapshots the descriptor/config/recipe/producer and I20 index, then emits and saves `dispatch.json`. Root passes **the exact `argv` list and `env` mapping** to its reviewed supervisor with `shell=False`, `cwd=dispatch.cwd`, real parent wait/descendant checks and the approved global budget. Do not wrap `-script` in shell quotes or concatenate a shell command. `-script` contains only the whitespace-free snapshot script path; it reads the adjacent session `job.json`, bound by independent `I21_IMPORT_JOB_SHA256` in the exact root dispatch environment. This avoids relying on Mac/commandlet parsing of script arguments containing spaces. No inherited I21 environment value is used.
+These exclusively create I22-20261110-import/p1 and a1, each with Host/Content/UserDir/log/DDC/tmp and reviewed source snapshots. Exact argv lists and minimal env are saved in dispatch.json; root uses shell=False and its reviewed supervisor. The whitespace-free -script path has no inline Python arguments; adjacent job.json is bound by independent I22_IMPORT_JOB_SHA256. UE_SKIP_UBT_SDK_SETUP=1 skips automatic SDK/UBT startup without granting a build gate. No I21 path is reused.
 
-After a positive first import, root runs:
+Static import preparation is deliberately not runnable: requires_late_probe_binding=true and no I22_PROBE_RESULT_SHA256. Root first independently accepts actual probe wait0/normal/nonforced/quiet/budget, Native report identity and post-exit Content emptiness, then pins the exact report and execution/postwrite artifacts in the import card. After the accepted digest is known:
+
+```sh
+python3 -B scripts/realism_import/prepare.py bind-import --attempt 1 --probe-sha ACCEPTED_EXACT_64_HEX_SHA
+```
+
+This checks actual result bytes plus mode/job/recipe/source/shared snapshot consistency and required getter/restoration evidence. It exclusively creates dispatch-bound.json, preserving the static original, and adds I22_PROBE_RESULT_SHA256 to env. UE entry rechecks that independent digest before external imports and records consumed_probe_ref. Binding cannot grant root/C1 execution acceptance or prove normal/quiet/resource gates. Root runs only the reviewed bound dispatch.
+
+After actual import/save and root acceptance:
 
 ```sh
 python3 -B scripts/realism_import/prepare.py reload --attempt 1
 ```
 
-This exclusively creates the single `reload/` session, selecting the successful Host/Content, with independent UserDir/log/DDC and a new commandlet process. It reads existing packages, performs Native getters and real in-memory negative injections/restoration, and never calls a save path. Both phases verify source files again. Import negatives also run only after packages are saved; their edits are restored without saving.
+Reload late-pins the successful import result SHA and opens that same saved Host/Content with independent user/log/DDC/tmp and a new process. It reads actual Native getters/dependency/package maps, cannot import or save, and requires exact Content before/after maps and Native snapshot equality.
 
-If the first import fails, preserve it; root may authorize one narrow code fix and `import --attempt 2` under the same continuous clock, using a new Host/Content/Saved/DDC. Maximum two imports at 240s each, one reload at 180s, dispatch→seal total 900s, new root≤4GiB and all Content combined≤512MiB. The root supervisor—not a producer status string—enforces those aggregate limits, observes external write domains and records real exit/normal/quiet status. No third attempt is permitted.
+Standalone probe and import/reload local capability checks actually load the reviewed modules, then require a real subsystem. load_module succeeds by returning None, so return truthiness is never used. Installed Cube/DefaultTexture are cloned through SystemLibrary.duplicate_object to the existing find_package('/Engine/Transient'); abstract Object is not instantiated. Real mesh/section/slot/LOD/collision/bounds/Nanite and texture-size/flags are read, clone slot/collision are changed and restored, and a concrete transient Material graph is connected/read/disconnected/restored. Original fixtures are not modified or saved; their file hashes and project Content remain unchanged. Capability evidence does not establish I20 source provenance or visuals.
 
-`result.json` format `edgeworld.i21.native-import-result.v0.1` distinguishes actual UObject snapshots from source convention/recipe expectations. It includes source-linked Texture2D import data, real material property input/output channels, real mesh/section/slot/bounds/triangles, project dependencies, installed external content hashes and Content file maps. `status=PASS` requires all local checks; it does not grant parent process/resource gates, Metal/visual quality, normal-direction appearance or runtime authority/HUD gates. Failure raises in UE (commandlet returns nonzero) and exclusively preserves a `FAIL` result where possible.
+Pipeline native bool bCollision and distinct enum Collision/FallbackCollisionType are set/read explicitly to avoid Python attribute ambiguity. bBuildNanite=false, no combine/baking, scale1 and no automatic materials/textures are verified. Actual import records source expected, Native render LOD0 and Native Nanite input triangles separately, requires enabled=false/input0, and retains strict source geometry matching. Source GL and explicit DX override, Alpha/PBR and ground sphere restrictions are unchanged.
 
-The source GL normal remains a separately identified file/Texture2D with its GL→DX sampling flip. Materials explicitly select the separately imported DX source with `flip_green_channel=false`. No source glTF is rewritten. Fern uses separate Alpha R→OpacityMask, clip0.5/Masked/TwoSided. Ground imports only textures and its material; ground geometry is deferred.
+Every valid-job result includes actual pid, mode, independent job SHA, recipe/index SHA and source_scripts. status=PASS is only the local producer result. Root/C2 independently inspect execution, Native calls/restoration, saved uasset/sidecars, source/fixture identity, external domains, process quiet and full limits. Max2 probe×90s, max2 import×240s, one reload×180s, continuous first dispatch→seal≤1200s; all new root≤4GiB and true host/Content combined≤512MiB. DDC/Content is separate cache but remains in total bytes. Failures are immutable; no hidden retries or deprecated fallback.
 
-On CPU, `python3 -B -m unittest tests.test_realism_import -v` checks real source identity and temporary missing/corrupt Alpha, traversal/symlink/exclusive evidence/strict JSON, environment cleanup and untrusted startup rejection. It neither imports `unreal` nor uses a mock, and cannot prove Native APIs succeeded.
+CPU tests check real source/path/startup/plugin boundaries and explicit synthetic JSON binding rejections, never unreal mocks or Native success. Source/modules/recipe must be frozen and C1 accepted before dispatch. Metal, visual normal direction, runtime adapter/HUD, ground geometry and world/Genesis gates remain deferred.

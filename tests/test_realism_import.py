@@ -13,6 +13,25 @@ INDEX=REPO/'doc/evidence/universe-I20A/asset-index.json'
 
 
 class RealismImportInputTests(unittest.TestCase):
+    def test_i22_probe_binding_is_exact_and_incomplete_results_reject(self):
+        # Synthetic JSON consistency cases only: these never represent Native API success.
+        job={'probe_job_sha256':'a'*64,'recipe_sha256':'b'*64,'source_scripts':{'reviewed.py':'c'*64}}
+        probe={'format':'edgeworld.i22.native-import-result.v0.1','mode':'probe','status':'PASS',
+            'job_sha256':'a'*64,'recipe_sha256':'b'*64,'source_index_sha256':c.INDEX_SHA,
+            'source_scripts':job['source_scripts'],'capability':{'complete':True,
+                'subsystem':{'fixture':'synthetic-only'},'mesh_before':{'fixture':1},'mesh_restored':{'fixture':1},
+                'texture_calls':[{'fixture':'synthetic-only'}],'material_links':{'fixture':1},
+                'actual_alpha_disconnected':True,'actual_alpha_restored':True,
+                'pipeline_observed':{'collision':False,'build_nanite':False}}}
+        self.assertTrue(c.check_probe_result(probe,job))
+        for key,value in (('status','FAIL'),('mode','import'),('job_sha256','d'*64),('source_scripts',{'changed.py':'e'*64})):
+            with self.assertRaises(ValueError):c.check_probe_result({**probe,key:value},job)
+        with self.assertRaisesRegex(ValueError,'actual getter evidence missing'):
+            c.check_probe_result({**probe,'capability':{**probe['capability'],'texture_calls':[]}},job)
+        recipe=json.loads((REPO/'scripts/realism_import/recipe.json').read_bytes())
+        self.assertIs(recipe['import_policy']['build_nanite'],False)
+        self.assertEqual(c.OUTPUT.name,'I22-20261110-import')
+
     def test_real_pinned_source_files(self):
         if not c.SOURCE.is_dir():self.skipTest('I20 DevSSD source root unavailable on this host')
         self.assertEqual(len(c.validate_sources(INDEX)['files']),20)

@@ -10,12 +10,13 @@
     "StaticMesh": 5,
     "Texture2D": 14
   },
-  "format": "edgeworld.i21.import-recipe.v0.1",
+  "format": "edgeworld.i22.import-recipe.v0.1",
   "import_policy": {
     "automatic_materials": false,
     "automatic_textures": false,
     "bake_meshes": false,
     "bake_pivot_meshes": false,
+    "build_nanite": false,
     "collision": false,
     "combine": "DO_NOT_COMBINE",
     "import_offset_uniform_scale": 1.0
@@ -183,7 +184,8 @@
       1
     ],
     "metres_to_cm": 100,
-    "native_pivot_status": "asset-local-origin; bounds-centre measured separately"
+    "native_pivot_status": "asset-local-origin; bounds-centre measured separately",
+    "native_render_count_semantics": "UStaticMesh.GetNumTriangles(0): render LOD0; require no Nanite and exact pinned source match"
   },
   "textures": [
     {

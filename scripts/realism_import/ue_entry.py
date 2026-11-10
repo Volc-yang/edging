@@ -8,7 +8,7 @@ import time
 
 # The only additional Python directory is this reviewed, immutable script snapshot.
 sys.path.insert(0,str(Path(__file__).absolute().parent))
-from common import (CONTENT_PATH,ENGINE,OUTPUT,SOURCE,checked,child,file_map,load,
+from common import (ACTIVATE_MODULES,CONTENT_PATH,ENGINE,OUTPUT,SOURCE,checked,check_probe_result,child,file_map,load,
                     require,sha,startup_inventory,validate_sources,write_new)
 import unreal as u
 
@@ -17,7 +17,7 @@ JOB_PATH=Path(__file__).absolute().parent.parent/'job.json'
 
 
 def load_job():
-    expected=os.environ.get('I21_IMPORT_JOB_SHA256','')
+    expected=os.environ.get('I22_IMPORT_JOB_SHA256','')
     require(len(expected)==64 and all(c in '0123456789abcdef' for c in expected),'missing independent root job SHA')
     return load(JOB_PATH,expected)
 
@@ -32,8 +32,44 @@ def identity(obj):return {'path':objpath(obj),'class':obj.get_class().get_path_n
 def required_static_mesh_subsystem():
     subsystem=u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
     require(subsystem is not None,
-        'StaticMeshEditorSubsystem unavailable before asset mutations; owning module activation requires a new reviewed execution card')
+        'StaticMeshEditorSubsystem unavailable after reviewed module activation; refusing asset mutations')
     return subsystem
+
+
+def activate_modules():
+    # load_module succeeds by returning None. Only subsequent actual calls prove capability.
+    for name in ACTIVATE_MODULES:u.load_module(name)
+    subsystem=required_static_mesh_subsystem()
+    return {'subsystem':identity(subsystem),'explicit_modules':list(ACTIVATE_MODULES),
+        'static_mesh_script_package':objpath(u.find_package('/Script/StaticMeshEditor'))}
+
+
+def configure_pipeline():
+    pipeline=u.InterchangeGenericAssetsPipeline()
+    mesh=pipeline.get_editor_property('MeshPipeline')
+    # Native bCollision is the bool. Native Collision is the distinct fallback enum.
+    mesh.set_editor_property('bCollision',True)
+    require(mesh.get_editor_property('bCollision') is True,'native bCollision setter/getter not boolean')
+    mesh.set_editor_property('bCollision',False)
+    mesh.set_editor_property('bBuildNanite',False)
+    mesh.set_editor_property('CombineStaticMeshesBehavior',u.InterchangeCombineStaticMeshesBehavior.DO_NOT_COMBINE)
+    common=pipeline.get_editor_property('CommonMeshesProperties')
+    common.set_editor_property('bBakeMeshes',False);common.set_editor_property('bBakePivotMeshes',False)
+    pipeline.set_editor_property('ImportOffsetUniformScale',1.0)
+    pipeline.material_pipeline.import_materials=False;pipeline.material_pipeline.texture_pipeline.import_textures=False
+    fallback=mesh.get_editor_property('Collision')
+    require(not isinstance(fallback,bool) and 'InterchangeMeshCollision' in enum(fallback),'fallback Collision must be enum, not native bCollision')
+    observed={'collision':mesh.get_editor_property('bCollision'),'fallback_collision_type':enum(fallback),
+        'build_nanite':mesh.get_editor_property('bBuildNanite'),
+        'combine':enum(mesh.get_editor_property('CombineStaticMeshesBehavior')),
+        'bake_meshes':common.get_editor_property('bBakeMeshes'),'bake_pivot_meshes':common.get_editor_property('bBakePivotMeshes'),
+        'scale':pipeline.get_editor_property('ImportOffsetUniformScale'),
+        'automatic_materials':pipeline.material_pipeline.import_materials,
+        'automatic_textures':pipeline.material_pipeline.texture_pipeline.import_textures}
+    require(observed['collision'] is False and observed['build_nanite'] is False,'native pipeline collision/Nanite not disabled')
+    require('DO_NOT_COMBINE' in observed['combine'] and observed['scale']==1.0,'native pipeline combine/scale mismatch')
+    require(all(observed[k] is False for k in ('bake_meshes','bake_pivot_meshes','automatic_materials','automatic_textures')),'native pipeline flags mismatch')
+    return pipeline,observed
 
 
 def texture_source(texture,index):
@@ -82,8 +118,13 @@ def mesh_metadata(mesh,subsystem):
         'collision':subsystem.is_section_collision_enabled(mesh,0,i)} for i in range(mesh.get_num_sections(0))]
     return {**identity(mesh),'bounds_cm':{'min':vector(box.min),'max':vector(box.max)},
         'bounds_center_cm':vector(bounds.origin),'bounds_extent_cm':vector(bounds.box_extent),
-        'lod_count':subsystem.get_lod_count(mesh),'lod0_triangles':mesh.get_num_triangles(0),
-        'lod0_vertices':subsystem.get_number_verts(mesh,0),'uv_channels':subsystem.get_num_uv_channels(mesh,0),
+        'native_source_model_lod_count':subsystem.get_lod_count(mesh),
+        'native_render_lod_count':mesh.get_num_lods(),'render_lod0_triangles':mesh.get_num_triangles(0),
+        'nanite_input_triangles':mesh.get_num_nanite_triangles(),
+        'nanite_enabled':bool(prop(prop(mesh,'nanite_settings'),'enabled')),
+        'native_render_lod0_vertices':subsystem.get_number_verts(mesh,0),
+        'native_editor_lod0_uv_channels':subsystem.get_num_uv_channels(mesh,0),
+        'native_render_lod0_texcoords':mesh.get_num_tex_coords(0),
         'slots':slots,'sections':sections,'simple_collision_count':subsystem.get_simple_collision_count(mesh),
         'convex_collision_count':subsystem.get_convex_collision_count(mesh),
         'origin_semantics':'StaticMesh asset-local origin; no Actor/pivot transform was synthesized'}
@@ -179,11 +220,12 @@ def validate_native(snapshot,recipe):
         for source in model['meshes']:
             matches=[]
             for actual in remaining:
-                same=actual['lod0_triangles']==source['expected_triangles']
+                same=actual['render_lod0_triangles']==source['expected_triangles']
                 same=same and all(abs(actual['bounds_cm'][end][axis]-source['expected_bounds_cm'][end][axis])<=recipe['bounds_tolerance_cm'] for end in ('min','max') for axis in range(3))
                 if same:matches.append(actual)
             require(len(matches)==1,'Native mesh mapping/bounds is missing or ambiguous for '+source['source_node'])
             actual=matches[0];remaining.remove(actual)
+            require(actual['nanite_enabled'] is False and actual['nanite_input_triangles']==0,'Native Nanite disabled policy mismatch')
             require(len(actual['slots'])==1 and len(actual['sections'])==1,'expected one actual slot/section')
             require(actual['sections'][0]['slot_index']==0 and not actual['sections'][0]['collision'],'Native section policy mismatch')
             require(actual['slots'][0]['material']==material_paths[model['id']],'Native mesh slot material mismatch')
@@ -191,6 +233,9 @@ def validate_native(snapshot,recipe):
             mapping.append({'source_asset':model['id'],'source_node':source['source_node'],
                 'source_mesh':source['source_mesh'],'source_mesh_index':source['source_mesh_index'],
                 'native_object_path':actual['path'],'mapping_basis':'actual triangle count and local AABB against pinned source',
+                'source_expected_triangles':source['expected_triangles'],
+                'native_render_lod0_triangles':actual['render_lod0_triangles'],
+                'native_nanite_input_triangles':actual['nanite_input_triangles'],
                 'source_convention':recipe['source_convention']})
     return mapping
 
@@ -207,12 +252,7 @@ def import_task(filename,destination,options=None):
 
 def do_import(recipe):
     tools=u.AssetToolsHelpers.get_asset_tools();objects=[]
-    pipeline=u.InterchangeGenericAssetsPipeline()
-    pipeline.import_offset_uniform_scale=1.0
-    pipeline.common_meshes_properties.bake_meshes=False;pipeline.common_meshes_properties.bake_pivot_meshes=False
-    pipeline.mesh_pipeline.combine_static_meshes_behavior=u.InterchangeCombineStaticMeshesBehavior.DO_NOT_COMBINE
-    pipeline.mesh_pipeline.collision=False
-    pipeline.material_pipeline.import_materials=False;pipeline.material_pipeline.texture_pipeline.import_textures=False
+    pipeline,observed=configure_pipeline()
     stack=u.InterchangePipelineStackOverride();stack.add_pipeline(pipeline)
     for model in recipe['models']:
         imported=import_task(child(SOURCE,model['gltf']),CONTENT_PATH+'/Meshes/'+model['id'],stack)
@@ -251,7 +291,7 @@ def do_import(recipe):
         mesh.set_material(0,materials[model_id])
         for section in range(mesh.get_num_sections(0)):subsystem.enable_section_collision(mesh,False,0,section)
     require(u.EditorAssetLibrary.save_loaded_assets(objects,only_if_is_dirty=False),'saving Native assets failed')
-    return objects
+    return observed
 
 
 def native_negative_checks(index,recipe,positive):
@@ -301,25 +341,39 @@ def main():
     require(current==job['startup'],'startup inputs changed since preflight')
     index=validate_sources(job['source_index']);recipe=load(job['recipe'],job['recipe_sha256'])
     require('5.8.3-58210709' in u.SystemLibrary.get_engine_version(),'actual loaded UE version/CL mismatch')
-    # The import02 failure showed this optional subsystem can be absent in commandlets.
-    # Detect that before importing/creating/saving anything; no deprecated fallback.
-    required_static_mesh_subsystem()
+    activation=activate_modules()
     before=file_map(host/'Content');started=time.monotonic()
+    from probe import run_probe
+    capability=run_probe(job,mesh_metadata,configure_pipeline)
+    require(file_map(host/'Content')==before,'capability probe changed project Content')
+    common_result={'format':'edgeworld.i22.native-import-result.v0.1','mode':job['mode'],
+        'status':'PASS','pid':os.getpid(),'ue_version_actual':u.SystemLibrary.get_engine_version(),
+        'job_sha256':os.environ['I22_IMPORT_JOB_SHA256'],'recipe_sha256':job['recipe_sha256'],
+        'source_index_sha256':job['source_index_sha256'],'source_scripts':job['source_scripts'],
+        'activation':activation,'capability':capability}
+    if job['mode']=='probe':
+        require(not before,'standalone probe Content must remain empty')
+        validate_sources(job['source_index'])
+        return {**common_result,'content_files':file_map(host/'Content'),'elapsed_script_seconds':time.monotonic()-started}
+    consumed_probe=None
     if job['mode']=='import':
-        require(not before,'import Content must be empty');do_import(recipe)
+        expected_probe=os.environ.get('I22_PROBE_RESULT_SHA256','')
+        require(len(expected_probe)==64 and all(c in '0123456789abcdef' for c in expected_probe),'import requires independently pinned accepted probe SHA')
+        probe_result=load(job['probe_result'],expected_probe);check_probe_result(probe_result,job)
+        consumed_probe={'path':job['probe_result'],'sha256':expected_probe}
+        require(not before,'import Content must be empty');policy=do_import(recipe)
     else:require(job['mode']=='reload','unsupported mode')
     snapshot=native_snapshot(index);mapping=validate_native(snapshot,recipe)
     if job['mode']=='reload':
-        previous=load(job['import_result']);require(previous['status']=='PASS','selected import failed')
+        previous=load(job['import_result'],job['import_result_sha256']);require(previous['status']=='PASS','selected import failed')
         require(before==previous['content_files'],'reload input package bytes differ')
         require(snapshot==previous['native'],'fresh process Native objects differ from import')
     negatives=native_negative_checks(index,recipe,snapshot)
     after=file_map(host/'Content')
     if job['mode']=='reload':require(before==after,'read-only reload changed saved Content')
     validate_sources(job['source_index'])
-    return {'format':'edgeworld.i21.native-import-result.v0.1','status':'PASS','mode':job['mode'],
-        'pid':os.getpid(),'ue_version_actual':u.SystemLibrary.get_engine_version(),
-        'job_sha256':os.environ['I21_IMPORT_JOB_SHA256'],'recipe_sha256':job['recipe_sha256'],'source_index_sha256':job['source_index_sha256'],
+    return {**common_result,'consumed_probe_ref':consumed_probe,
+        'live_import_policy':policy if job['mode']=='import' else None,
         'elapsed_script_seconds':time.monotonic()-started,'native':snapshot,'source_mesh_mapping':mapping,
         'negative_checks':negatives,'content_files':after,'content_before':before,
         'limitations':['NullRHI object/import evidence only','Pivot is asset-local origin, not bounds center',
@@ -332,7 +386,11 @@ if __name__=='__main__':
         job=load_job();output=checked(job['output'])
         require(output.is_relative_to(OUTPUT),'result outside approved output root')
         result=main();write_new(output,result)
-        u.log('I21_NATIVE_RESULT_PASS '+str(output))
+        u.log('I22_NATIVE_RESULT_PASS '+str(output))
     except BaseException as error:
-        if output is not None and not output.exists():write_new(output,{'format':'edgeworld.i21.native-import-result.v0.1','status':'FAIL','pid':os.getpid(),'error':str(error)})
+        if output is not None and not output.exists():write_new(output,{
+            'format':'edgeworld.i22.native-import-result.v0.1','status':'FAIL','pid':os.getpid(),
+            'mode':job['mode'],'job_sha256':os.environ.get('I22_IMPORT_JOB_SHA256'),
+            'recipe_sha256':job['recipe_sha256'],'source_index_sha256':job['source_index_sha256'],
+            'source_scripts':job['source_scripts'],'error':str(error)})
         raise
