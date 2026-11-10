@@ -4,7 +4,7 @@ These are **synthetic contract-only inputs**, never UE assets or an authorized r
 
 - `profile.schema.json`: exact local presentation profile structure. Native import metadata is either unresolved/null, or a proposal carrying actual evidence references; a claimed observed status never authenticates itself.
 - `view-binding.schema.json`: authoritative source identity plus separate realistic presentation mode, profile SHA, independently pinned renderer build and view generation.
-- `positive-profile.json`: explicitly synthetic, unimported fern/rock/ground declaration; it cannot demonstrate correct UE geometry or PBR.
+- `positive-profile.json`: explicitly synthetic, unimported fern/rock/ground declaration; ground uses `geometry_source=verified-place-region` with `mesh_asset_id=null` to declare a derived rectangular plane role. It never assigns a material preview sphere to ground and cannot demonstrate generated/native UE geometry or PBR.
 - `expected-synthetic.json`: independent test expectations, including initial rectangular forest limits and observed source triple.
 - `synthetic-payloads.json`: literal temp-file bytes; the synthetic license note is not a real third-party grant.
 

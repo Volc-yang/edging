@@ -37,7 +37,7 @@ SHA绑定的是**实际文件字节**，不是把JSON重新序列化后的“等
 - vegetation/rock必须引用完整已声明StaticMesh；ground/water可以引用已声明mesh或由已验证区域按固定算法派生几何。水面不是Genesis流体模拟。
 - 首版`explicit-list.v0.1`明列派生实例，不用本地随机/FrameTime。位置为UE cm，旋转为mdeg、缩放为ppm，避免没有单位的浮点倍率；导入单位、pivot、bounds尚未知时不推测实际物体尺寸。
 - 原Genesis两体的sphere/support、单位反射与config尺寸保持；真实boulder或植被不替换其碰撞形状。写实装饰禁UE模拟、重叠/世界因果碰撞；后续本地导航另卡。
-- CPU初始fixture仅支持源矩形内region和已验证elevation；它不是一般GIS/非平面地形求解。后续斜坡或复杂footprint需明确版本化算法、法线和原始几何测试。
+- CPU初始fixture仅支持源矩形内region和已验证elevation；ground正例的`geometry_source=verified-place-region`、`mesh_asset_id=null`明确声明派生平面角色，不引用预览球。这只是矩形平面规划声明，没有实际生成或导入几何，也不证明Native地表通过；D3必须固定平面拓扑、尺寸、法线/切线、UV和高程后实测。它不是一般GIS/非平面地形求解；后续斜坡或复杂footprint需明确版本化算法和原始几何测试。
 
 ### 材质recipe与实际I20A输入
 
@@ -50,7 +50,7 @@ I20A[文件索引](../evidence/universe-I20A/asset-index.json)摘要`d9df98dbf92
 | fern_02四clump、6232 triangles；源material为MASK/doubleSided | BaseColor JPEG没有alpha，独立`fern_02_alpha_2k.png`必须明确连接OpacityMask、clip0.5、TwoSided。仅导入glTF默认材质不能算正确覆盖 |
 | boulder_01、66122 triangles | 先验证单位/pivot/Native bounds再决定visual实例尺度；不能改变Genesis sphere/support或产生新权威碰撞 |
 | forrest_ground_01、107390 triangles | glTF是预览球，不是世界地形。使用其PBR纹理到获准派生ground，不能把球作为地表 |
-| *_nor_dx_2k.jpg与ground ARM | Native核对DX法线方向/采样与颜色空间；ARM R/G/B分别AO/Roughness/Metallic。不得把数据纹理当sRGB或默认假定导入器已正确接线 |
+| glTF原始GL法线、额外`*_nor_dx_2k.jpg`与ground ARM | glTF保留原始GL法线依赖与摘要；额外DX图只能由版本化UE材质recipe显式指定override，记录原/选中source_file_id及转换/采样约定，不静默替换原始来源。Native核对DX法线方向与颜色空间；ARM R/G/B分别AO/Roughness/Metallic，数据纹理不得作sRGB |
 
 本任务没有创建实际CC0资源profile或伪造导入metadata。正例仅用临时synthetic `.fixture`字节，所有Native字段unresolved。真实UE object path、class、material-slot索引/名称、法线/pivot/尺寸、texture参数和最终许可review必须由后续导入原件填入并审查。
 
@@ -78,7 +78,7 @@ validate_view_binding(binding, *, profile_sha256, expected_observation,
 
 | Card / owner / 排他路径 | 固定输入与顺序 | 实际Check / 判定证据 |
 | --- | --- | --- |
-| D3-IMPORT / 资产导入owner；新`Content/EdgeWorldRealism`与版本化导入recipe、专用Native producer/test；不改authority | pin I20A实际index/SHA/许可；只导入fern/boulder和ground纹理；固定UE版本/单位/法线/材质recipe；导出所有真实.uasset/sidecar/纹理依赖SHA、class、mesh bounds/pivot及slot映射 | 在真实UE下读取源/import包及依赖闭包，收集Native evidence；负例缺.alpha/错slot/缺依赖/替换文件应失败。特别核fern Masked/0.5/TwoSided/OpacityMask、地表非预览球、DX normal与ARM通道。JSON检查不替代这些producer结果 |
+| D3-IMPORT / 资产导入owner；新`Content/EdgeWorldRealism`与版本化导入recipe、专用Native producer/test；不改authority | pin I20A实际index/SHA/许可；只导入fern/boulder和ground纹理；固定UE版本/单位/法线/材质recipe；导出所有真实.uasset/sidecar/纹理依赖SHA、class、mesh bounds/pivot及slot映射 | 在真实UE下读取源/import包及依赖闭包，收集Native evidence；负例缺.alpha/错slot/缺依赖/替换文件应失败。特别核fern独立alpha→OpacityMask/Masked/0.5/TwoSided；地表用固定PBR图与明确平面/地形profile，禁止预览球；保留glTF GL源法线，DX仅经显式UE override并核对方向/采样，ARM通道另验。JSON检查不替代这些producer结果 |
 | D3-ADAPTER / 单一呈现owner；新profile loader/realistic Actor、`EdgeWorldUniverseGameMode.{h,cpp}`事务接线及相关tests | 固定上述profile与Native导入证据SHA，独立启动opt-in，保留原parser/worker/I0A。先纯投影规划与校验，再隐藏装配、原子提交HUD/ViewBinding；保持Genesis配置尺寸和无UE模拟 | Native故障注入：缺asset/错class/错slot/旧generation晚到/错误world或历史切片。抓取真正呈现的Actor集合与HUD binding，而非只返回success；必须旧集合+旧HUD一致或新集合+新HUD一致，无混合/代理fallback。保存精确source/build及test结果 |
 | D3-BUILD / root唯一构建owner | 审查以上独立PR和集成差异；固定准确Host/plugin源和官方Build命令、DevSSD输出、预算 | 实际parent wait/完整Build日志、source/binary SHA与退出码；未编译、不完整或失败均不授平台门。旧5a6cca0 build不能替代新C++编译 |
 | D4-LOOKDEV / root唯一实机owner，独立reviewer | 运行前固定真实视觉参考、Mac/Metal、实际像素、观察点/光照/资产LOD、明确预算；先TTY/stdin握手再clock；新卡、新run、NoTrace、独占DDC、完整写域。当前→历史→当前，实际相机/隐藏/暂停动作按批准短卡 | 原生PNG及实际shader/material/instance身份与Native import/profile/renderer SHA绑定；每动作全authority map不变、无Genesis求解或提交。保存全actor/HUD来源、正常退出/quiet/frozen证据。视觉/正确性/平台/性能各门单列，缺证inconclusive；新Observe仅匹配原件的Native回放可解除其parser差距 |
