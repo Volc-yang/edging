@@ -1,0 +1,38 @@
+{
+  "format": "universe-i21-C1-source-acceptance.v1",
+  "reviewed_commit": "3b156d51cc9df110e5ef24e0be82618d54e2eb5b",
+  "base_commit": "6eae2795628dc10d94506b00f37084fe4ae4e488",
+  "decision": "accept_local_source_for_exact_dispatch_card_review",
+  "independent_cpu_evidence": "doc/evidence/universe-I21C/c1-final-cpu-review.json",
+  "independent_real_source_recipe_evidence": "doc/evidence/universe-I21C/c1-recipe-real-source-check.json",
+  "resolved_initial_findings": [
+    "Native /Script dependencies require already-loaded find_package and exact installed dylib SHA, with no loading of unknown modules",
+    "Native negative checks require the intended Alpha/slot mismatch and retain actual getter fault fields",
+    "Enabled installed plugin dependency closure contains no PythonRequirements; actual closure has 44 plugins",
+    "Documents lookup uses the same Foundation NSSearchPathForDirectoriesInDomains query as installed UE",
+    "BOM/trailing comma compatibility is limited to installed uplugin descriptors; job/recipe/index JSON remains strict"
+  ],
+  "actual_final_checks": {
+    "directed_CPU_test_count": 5,
+    "actual_parent_wait_exit": 0,
+    "preflight_stdout_sha256": "c72a0b213a6156585ba6aad26c100b1ec3e36fd978f18abd049cada36bfffe21",
+    "preflight_bytes_equal_owner_retained_raw": true,
+    "real_source_payloads": 20,
+    "installed_Content_Python_files": 698,
+    "related_installed_modules": 23,
+    "enabled_plugin_closure": 44,
+    "actual_Documents_Python_root": "/Users/yangacan/Documents/UnrealEngine/Python"
+  },
+  "not_yet_accepted": [
+    "exact prepared job/dispatch/root execution card until C1 card review",
+    "actual Native getter/API execution, saved packages, process exit or import acceptance before R/C2",
+    "Universe adapter, runtime profile, C++ build, Metal/visual/performance or authority gates"
+  ],
+  "publication": "parent reported automatic approval rejection of public upload; reviewer did not publish or attempt an alternative",
+  "reviewer_actions": {
+    "UE_GPU_worker_Genesis_UI_started": false,
+    "DevSSD_preparation_executed": false,
+    "owner_key_contents_read": false,
+    "GitHub_publish_merge_cleanup_attempted": false
+  }
+}

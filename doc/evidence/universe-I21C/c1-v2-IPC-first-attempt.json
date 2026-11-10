@@ -1,0 +1,7 @@
+{
+  "result": "test_fixture_path_rework",
+  "error": "OSError: AF_UNIX path too long",
+  "stage": "reviewer temporary socket bind, before sizes() call",
+  "cause": "macOS default long temporary directory exceeds AF_UNIX socket path limit",
+  "action": "new test attempt under short /private/tmp; no UE or DevSSD write"
+}

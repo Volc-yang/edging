@@ -1,0 +1,36 @@
+{
+  "format": "universe-i21-installed-source-check-followup.v1",
+  "source_checks": [
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyCore.cpp",
+      "bytes": 72867,
+      "sha256": "90fa8cf13bb5af63eeb9dcb33d506a1e3a4b66640828124b7e6f9093f2095784",
+      "independently_read_fact": "find_package(name) only finds already loaded packages"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Core/Private/Apple/ApplePlatformProcess.cpp",
+      "bytes": 2684,
+      "sha256": "bff19c7e73c170c34796cdcb23f9ab702fbb490a52b01943d79317038df062bb",
+      "independently_read_fact": "UserDir uses Foundation NSSearchPathForDirectoriesInDomains and is not the launch -UserDir value"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Core/Private/Misc/App.cpp",
+      "bytes": 14781,
+      "sha256": "27ac52f973c087c8cb2d0a314124cd22afe3c50a7c73426f5cecceeceb57e61c",
+      "independently_read_fact": "GetEpicProductIdentifier returns EPIC_PRODUCT_IDENTIFIER"
+    },
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PipInstall.cpp",
+      "bytes": 26550,
+      "sha256": "9580e8f01312582100cb58c440cb398d2d12d76921154318c97e6f75ab6aad34",
+      "independently_read_fact": "InitPipInstall probes PythonRequirements and only returns early when requirements are empty"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Import/Private/Gltf/InterchangeGltfMesh.cpp",
+      "bytes": 11066,
+      "sha256": "eaa4b7c77afb359c2522766ecebb819abaf733b5369392c4f0d190fd49b4959a",
+      "independently_read_fact": "Static mesh factory applies GltfUnitConversionMultiplier to real source geometry"
+    }
+  ],
+  "UE_or_application_executed": false
+}

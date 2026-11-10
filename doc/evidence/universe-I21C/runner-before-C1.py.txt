@@ -1,0 +1,180 @@
+"""Frozen I21 artifact: supervise one reviewed, headless import/reload phase.
+
+No stdin protocol, UI, worker or authority access. A failed attempt is retained.
+The accepted card pins exact argv and public files; a new card is needed for rework.
+"""
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import signal
+import stat
+import subprocess
+import sys
+import time
+
+REPO = Path(__file__).resolve().parents[3]
+ROOT = Path('/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import')
+UE = '/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor'
+spec = importlib.util.spec_from_file_location('i18_readonly_helpers', REPO/'doc/evidence/universe-I18R/driver.py')
+prior = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(prior)
+sys.path.insert(0, str(REPO/'scripts'))
+from universe_iteration import lifecycle as lc
+
+
+def verify(ref):
+    assert prior.ref(ref['path'])['sha256'] == ref['sha256'], ref['path']
+
+
+def sizes():
+    total = content = 0
+    for parent, dirs, files in os.walk(ROOT, followlinks=False):
+        assert all(not (Path(parent)/name).is_symlink() for name in dirs)
+        for name in files:
+            path = Path(parent)/name
+            s = path.lstat()
+            assert stat.S_ISREG(s.st_mode), str(path)
+            total += s.st_size
+            if 'Content' in path.relative_to(ROOT).parts:
+                content += s.st_size
+    return dict(root_bytes=total, content_bytes=content)
+
+
+def content_map(root):
+    result = {}
+    for parent, dirs, files in os.walk(root, followlinks=False):
+        assert all(not (Path(parent)/name).is_symlink() for name in dirs)
+        for name in files:
+            path = Path(parent)/name
+            assert path.is_file() and not path.is_symlink()
+            result[str(path.relative_to(root))] = dict(bytes=path.stat().st_size, sha256=prior.ref(path)['sha256'])
+    return result
+
+
+def main(card_path, expected_sha):
+    card_path = Path(card_path).resolve()
+    assert prior.ref(card_path)['sha256'] == expected_sha
+    card = json.loads(card_path.read_bytes())
+    assert card['format'] == 'universe-i21-phase-card.v1'
+    assert card['run_root'] == str(ROOT) and ROOT.is_dir() and not ROOT.is_symlink()
+    verify(card['driver_ref'])
+    assert card['driver_ref']['path'] == str(Path(__file__).resolve())
+    for ref in card['input_refs']:
+        verify(ref)
+    assert card['phase'] in ('import-01', 'import-02', 'reload')
+    phase = card['phase']
+    out = ROOT/('supervision-'+phase)
+    out.mkdir(exist_ok=False)
+    argv = card['argv']
+    assert argv[0] == UE and '-run=pythonscript' in argv and '-NullRHI' in argv
+    for flag in ('-unattended', '-NoSplash', '-NoSound', '-notraceserver', '-traceautostart=0', '-DDC-NoDefaultGraph'):
+        assert flag in argv, flag
+    assert 0 < card['phase_timeout_seconds'] <= (180 if phase == 'reload' else 240)
+    content = Path(card['content_root'])
+    content.relative_to(ROOT)
+    env = {k:v for k,v in os.environ.items() if not k.startswith('EDGEWORLD_') and k not in
+           ('PYTHONHOME', 'PYTHONPATH', 'UE_PYTHONPATH')}
+    assert all(k.startswith('I21_') for k in card['environment'])
+    env.update(card['environment'])
+    cwd = Path(card['cwd'])
+    cwd.relative_to(ROOT)
+    start_path = ROOT/'campaign-start.json'
+    if start_path.exists():
+        started = json.loads(start_path.read_bytes())['started_monotonic']
+    else:
+        assert phase == 'import-01'
+        prior.save(ROOT/'external-before.json', prior.external_snapshot())
+        started = time.monotonic()
+        prior.save(start_path, dict(started_monotonic=started, budget_seconds=900))
+    assert time.monotonic()-started + card['phase_timeout_seconds'] + 30 <= 900, 'insufficient continuous campaign budget'
+    before = content_map(content) if phase == 'reload' else None
+    if before is not None:
+        prior.save(out/'content-before.json', before)
+    pre = lc.observe_once(out/'pre.ps')
+    assert not lc.classify_processes(pre['processes'], [], UE), 'another UE process is active'
+    prior.save(out/'invocation.json', dict(card_ref=prior.ref(card_path), argv=argv, cwd=str(cwd),
+        environment=card['environment'], cleared=['EDGEWORLD_*', 'PYTHONHOME', 'PYTHONPATH', 'UE_PYTHONPATH']))
+    known, samples = {}, []
+    phase_start = time.monotonic()
+    forced = False
+    error = None
+    code = None
+    with (out/'console.log').open('xb') as console:
+        process = subprocess.Popen(argv, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+            stdout=console, stderr=subprocess.STDOUT, start_new_session=True)
+        print(json.dumps(dict(phase=phase, pid=process.pid, argv=argv)), flush=True)
+        try:
+            while True:
+                sample = lc.observe_once(out/('sample-%04d.ps' % len(samples)))
+                rows = sample['processes']
+                seed = next((r for r in rows if r['pid'] == process.pid), None)
+                if seed:
+                    known[lc.process_key(seed)] = seed
+                for row in lc.classify_processes(rows, list(known.values()), UE):
+                    if row['ownership'] == 'owned':
+                        identity = row['identity']
+                        known[lc.process_key(identity)] = identity
+                measured = sizes()
+                samples.append(dict(monotonic=time.monotonic(), ps_ref=sample['raw_ref'], **measured))
+                assert measured['root_bytes'] <= 4*1024**3 and measured['content_bytes'] <= 512*1024**2, 'storage budget'
+                assert time.monotonic()-started <= 900, 'continuous campaign budget'
+                assert time.monotonic()-phase_start <= card['phase_timeout_seconds'], 'phase budget'
+                code = process.poll()
+                if code is not None:
+                    code = process.wait()
+                    break
+                time.sleep(1)
+        except BaseException as exc:
+            error = type(exc).__name__ + ': ' + str(exc)
+            forced = True
+            if process.poll() is None:
+                os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    code = process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGKILL)
+                    code = process.wait(timeout=5)
+    # Preserve unexpected survivors, then clean only exact known identities.
+    # The intervention remains a failure; forced cleanup cannot grant normal exit.
+    cleanup_sample = lc.observe_once(out/'before-cleanup.ps')
+    survivors = lc.classify_processes(cleanup_sample['processes'], list(known.values()), UE)
+    cleanup = []
+    for row in survivors:
+        if row['ownership'] != 'owned':
+            continue
+        forced = True
+        identity = row['identity']
+        fresh = lc.observe_once(out/('cleanup-%d.ps' % len(cleanup)))
+        same = next((r for r in fresh['processes'] if lc.same_process(r, identity)), None)
+        if same:
+            try:
+                os.kill(same['pid'], signal.SIGTERM)
+                cleanup.append(dict(identity=same, signal='SIGTERM'))
+            except ProcessLookupError:
+                cleanup.append(dict(identity=same, signal='already_exited'))
+    # Two passive observations: never bind an app after process exit.
+    quiet_samples = []
+    for number in range(2):
+        sample = lc.observe_once(out/('quiet-%d.ps' % number))
+        quiet_samples.append(dict(raw_ref=sample['raw_ref'], remaining=lc.classify_processes(sample['processes'], list(known.values()), UE)))
+        time.sleep(0.25)
+    after = content_map(content)
+    prior.save(out/'content-after.json', after)
+    for ref in card['input_refs']:
+        verify(ref)
+    result = dict(format='universe-i21-phase-execution.v1', phase=phase, pid=process.pid, parent_pid=os.getpid(),
+        card_ref=prior.ref(card_path), started_monotonic=phase_start, ended_monotonic=time.monotonic(),
+        campaign_elapsed_seconds=time.monotonic()-started, actual_parent_wait_exit=code, forced=forced, error=error,
+        samples=samples, quiet_samples=quiet_samples, known_owned=list(known.values()), cleanup=cleanup,
+        content_unchanged_after_reload=(before == after) if before is not None else None,
+        input_refs_rechecked=True, actual_sizes=sizes(), report_exists=Path(card['result_path']).is_file())
+    result['normal'] = code == 0 and not forced and not any(s['remaining'] for s in quiet_samples)
+    prior.save(out/'execution.json', result)
+    print(json.dumps({k:v for k,v in result.items() if k not in ('samples', 'quiet_samples', 'known_owned')}, indent=2), flush=True)
+    return 0 if result['normal'] and result['report_exists'] and (before is None or before == after) else 2
+
+
+if __name__ == '__main__':
+    raise SystemExit(main(*sys.argv[1:]))

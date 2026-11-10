@@ -1,0 +1,122 @@
+{
+  "format": "universe-i21-C2-import01-failure-review.v1",
+  "decision": "retain_failed_attempt_no_Native_or_normal_exit_acceptance",
+  "raw_refs": [
+    {
+      "root_relative_path": "supervision-import-01/execution.json",
+      "bytes": 5938,
+      "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+    },
+    {
+      "root_relative_path": "supervision-import-01/phase-postwrite.json",
+      "bytes": 516,
+      "sha256": "12c1d74f4614324fc5ca84a332266423a55da1d8274e7f188663e226bb204971"
+    },
+    {
+      "root_relative_path": "supervision-import-01/console.log",
+      "bytes": 5079,
+      "sha256": "5aad2a813f45d6ef566ad6eaf5cada27ae4050fc8663491b492463af05afa8ce"
+    },
+    {
+      "root_relative_path": "a1/ue.log",
+      "bytes": 54052,
+      "sha256": "4be0ab9d4d2775eec2bd219b21773178261a2ce43d799562ca109558919ffd55"
+    },
+    {
+      "root_relative_path": "supervision-import-01/quiet-0.ps",
+      "bytes": 222255,
+      "sha256": "febcfe8dfe51d90a86dd2a489a2acfb946c0626d240940eccdf0c6f26fde8723"
+    },
+    {
+      "root_relative_path": "supervision-import-01/quiet-1.ps",
+      "bytes": 222255,
+      "sha256": "5695fe2c8a43f53bcae9823fa47c279f918804cb440534c725ea8131c014bbe3"
+    },
+    {
+      "root_relative_path": "supervision-import-01/quiet-final.ps",
+      "bytes": 222255,
+      "sha256": "5d34e9a442ddcd91dddc88c617b4dfa11c9c1bb571043500a6924e9342a15922"
+    },
+    {
+      "root_relative_path": "campaign-start.json",
+      "bytes": 70,
+      "sha256": "3a06bf379a1a147bd4bf4f564fe76460e184b0174a3cf8994e66e8700029690e"
+    }
+  ],
+  "actual_cmd_pid": 10196,
+  "actual_parent_wait_exit": 0,
+  "forced": true,
+  "normal": false,
+  "actual_campaign_elapsed_seconds": 9.403098999988288,
+  "three_post_exit_quiet_samples_empty": true,
+  "known_owned_command_lines": [
+    {
+      "argv": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor-Cmd /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -run=pythonscript -script=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/scripts/ue_entry.py -NullRHI -unattended -NoSplash -NoSound -notraceserver -traceautostart=0 -UserDir=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user -abslog=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/ue.log -DDC=(Isolated=(Type=FileSystem,Path=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/ddc,PromptIfMissing=false,Clean=false,DeleteUnused=false)) -DDC-NoDefaultGraph -NoSourceControl -NoP4 -NoLiveCoding -NoAutoRecompileBlueprints",
+      "pid": 10196,
+      "ppid": 10161,
+      "start": "Tue Nov 10 14:03:50 2026"
+    },
+    {
+      "argv": "/bin/sh /Users/Shared/Epic Games/UE_5.8/Engine/Build/BatchFiles/Mac/Build.sh -Mode=ValidatePlatforms -OutputSDKs -AllPlatforms -project=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -log=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user/Saved/Logs/AutoSDKInfo.txt -verbose -timestamps",
+      "pid": 10358,
+      "ppid": 10196,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll -Mode=ValidatePlatforms -OutputSDKs -AllPlatforms -project=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -log=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user/Saved/Logs/AutoSDKInfo.txt -verbose -timestamps",
+      "pid": 10371,
+      "ppid": 10358,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "uba-orphankill -c while kill -0 \"$1\" 2>/dev/null; do sleep 0.2; done; self=$$; pass=0; while [ $pass -lt 3 ]; do   killed=0;   for p in $(ps -E -ww -ax -o pid=,command= 2>/dev/null |              awk -v t=\"UBA_SESSION_PROCESS=$1\" -v me=\"$self\"                  '$0 ~ t && $1 != me { print $1 }'); do     kill -KILL \"$p\" 2>/dev/null && killed=1;   done;   [ $killed -eq 0 ] && break;   sleep 0.1; pass=$((pass+1)); done uba-orphankill 10371",
+      "pid": 10374,
+      "ppid": 10371,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "sleep 0.2",
+      "pid": 10375,
+      "ppid": 10374,
+      "start": "Tue Nov 10 14:03:55 2026"
+    }
+  ],
+  "failure_error": "AssertionError: /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/tmp/dotnet-diagnostic-10371-1794290635",
+  "rejected_nonregular_path_still_exists_at_independent_review": false,
+  "specific_original_lstat_mode": "not retained in original execution; dotnet-diagnostic path and process context consistent with Unix diagnostics socket",
+  "Native_result": "absent",
+  "Content_bytes": 0,
+  "log_analysis": {
+    "actual_UE_version": "5.8.3-58210709+++UE5+Release-5.8",
+    "Mac_SDK_validation": "VALID26.1.1",
+    "Win_Linux_missing_SDK": "AllPlatforms status, not a diagnosed importer failure",
+    "UBT_entry": "TargetPlatformManagerModule FileSystemReady launches ValidatePlatforms; no C++ build inferred",
+    "external_UBA_trace": "console explicitly records 328B Trace.uba; original declared-domain resource gate remains failed"
+  },
+  "preserve_campaign_clock": true,
+  "narrow_next_action": "new v2 card under same900s, count actual owned tmp socket/FIFO stat metadata without reading; Content remains regular-only; preserve original driver/seal/card paths and failure",
+  "reviewer_started_UE": false,
+  "independently_reparsed_post_exit_ps": [
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-0.ps",
+        "sha256": "febcfe8dfe51d90a86dd2a489a2acfb946c0626d240940eccdf0c6f26fde8723"
+      },
+      "independently_reparsed_relevant_processes": 0
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-1.ps",
+        "sha256": "5695fe2c8a43f53bcae9823fa47c279f918804cb440534c725ea8131c014bbe3"
+      },
+      "independently_reparsed_relevant_processes": 0
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-final.ps",
+        "sha256": "5d34e9a442ddcd91dddc88c617b4dfa11c9c1bb571043500a6924e9342a15922"
+      },
+      "independently_reparsed_relevant_processes": 0
+    }
+  ]
+}

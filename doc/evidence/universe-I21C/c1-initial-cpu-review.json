@@ -1,0 +1,86 @@
+{
+  "format": "universe-i21-C1-initial-independent-cpu.v1",
+  "reviewed_commit": "c71664b0b1e3504f244336103ee8b53e1c10d737",
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_realism_import",
+        "-v"
+      ],
+      "actual_parent_wait_exit": 0,
+      "wall_seconds": 0.6699373750016093,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "53aaed66ff0cdc251c283b2c306ac289f418309e59d14692fd687debe64b62bb",
+      "matches_owner_retained_raw": false,
+      "actual_output_repository_path": "doc/evidence/universe-I21C/c1-initial-cpu-checks.txt"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "scripts/realism_import/prepare.py",
+        "preflight"
+      ],
+      "actual_parent_wait_exit": 0,
+      "wall_seconds": 3.5014744577929378,
+      "stdout_sha256": "4f5e75c4fe4335a21931a41b61f776946a887fec9e51bd748cde7c56f50e3e00",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches_owner_retained_raw": true,
+      "actual_output_repository_path": "doc/evidence/universe-I21A/preflight-final.json",
+      "preflight_status": "ready_requires_C1_and_root_dispatch",
+      "source_files": 20,
+      "installed_python_files": 698,
+      "installed_modules": 23
+    }
+  ],
+  "reviewed_source": [
+    {
+      "repository_path": "scripts/realism_import/DefaultEngine.ini",
+      "bytes": 332,
+      "sha256": "b0aea16159b1dc545a5f5dc1776875b378b6eabc13ad003c067fe00ef6fc673b"
+    },
+    {
+      "repository_path": "scripts/realism_import/EdgeWorldAssetImport.uproject",
+      "bytes": 385,
+      "sha256": "4f5503400f40e16ebcf077fb126e867ab87932b42419d7620b5e5c79e194c471"
+    },
+    {
+      "repository_path": "scripts/realism_import/README.md",
+      "bytes": 3775,
+      "sha256": "655ac3a60042ae11ed2851c0c53137ec7aa614afe89d2d78a41a917382852a57"
+    },
+    {
+      "repository_path": "scripts/realism_import/__init__.py",
+      "bytes": 82,
+      "sha256": "19e0ddc9c4a402eba6bc92f7d564d9c7ac264f7b560aac4a5ce86c5d289aec3c"
+    },
+    {
+      "repository_path": "scripts/realism_import/common.py",
+      "bytes": 5334,
+      "sha256": "4c1c9b2a648f5eb313f221276887ee591fd84b2f68149913474e3aa3cf58dad4"
+    },
+    {
+      "repository_path": "scripts/realism_import/prepare.py",
+      "bytes": 7034,
+      "sha256": "f1910083a5d12a5639f9ced9c0704e34ccf6bafa4587bca4866a3c51de57ae2d"
+    },
+    {
+      "repository_path": "scripts/realism_import/recipe.json",
+      "bytes": 9240,
+      "sha256": "2cb665fea9fbe60b7e2e9fd4acd9233913593cf7d6bf497a5b75c84c037af489"
+    },
+    {
+      "repository_path": "scripts/realism_import/ue_entry.py",
+      "bytes": 20709,
+      "sha256": "ea5802f42e0d8605603b24d3cbcfc87eb25dc7861fe8eadffa35882fffab9d37"
+    }
+  ],
+  "UE_GPU_worker_Genesis_run": false,
+  "preparation_DevSSD_write_run": false,
+  "scope": "actual source input and installed file identity checks; not Native getter/API execution",
+  "decision": "CPU boundary checks pass; C1 source changes requested separately"
+}

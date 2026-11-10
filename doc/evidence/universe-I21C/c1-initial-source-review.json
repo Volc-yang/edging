@@ -1,0 +1,40 @@
+{
+  "format": "universe-i21-C1-source-review.v1",
+  "reviewed_commit": "c71664b0b1e3504f244336103ee8b53e1c10d737",
+  "decision": "changes_requested_before_UE_dispatch",
+  "accepted_implementation_structure": [
+    "exclusive content-only attempt; reviewed source/job SHA and exact argv/env; preparation does not launch UE",
+    "AssetImportTask async false with get_objects completion and explicit Interchange pipeline stack",
+    "actual texture importData/source SHA, UMaterial input getters and mesh bounds/triangles/section/slot getters",
+    "save positive packages before real in-memory negative faults; restore without save",
+    "fresh reload process reads all UObjects and compares actual metadata and Content file bytes",
+    "pinned source-derived five mesh AABBs/triangles and fourteen texture identities independently verified"
+  ],
+  "requested_narrow_corrections": [
+    {
+      "location": "scripts/realism_import/ue_entry.py native_snapshot /Script dependency handling",
+      "issue": "Any /Script prefix is classified as installed-native-module without loaded-package or installed module identity verification",
+      "required": "Reject unresolved native dependencies and record actual loaded package and installed module file identity"
+    },
+    {
+      "location": "scripts/realism_import/ue_entry.py native_negative_checks",
+      "issue": "Any ValueError is counted as a successful Alpha/slot rejection, including unrelated getter or source IO failures",
+      "required": "Match the intended invariant failure and retain relevant actual fault getter fields"
+    },
+    {
+      "location": "scripts/realism_import/prepare.py preflight and PythonScriptPlugin settings",
+      "issue": "Disabling automatic pip execution does not prevent installed InitPipInstall from probing plugin requirements",
+      "required": "Verify explicit enabled plugin dependency closure has no PythonRequirements before dispatch"
+    },
+    {
+      "location": "scripts/realism_import/common.py startup_inventory default documents path",
+      "issue": "HOME/Documents is assumed, while installed FApplePlatformProcess uses Foundation NSSearchPathForDirectoriesInDomains",
+      "required": "Obtain and retain the actual system Documents path through the matching read-only platform API"
+    }
+  ],
+  "actual_CPU_checks": "c1-initial-cpu-review.json",
+  "actual_source_geometry_check": "c1-recipe-real-source-check.json",
+  "UE_GPU_worker_Genesis_UI_executed_by_reviewer": false,
+  "DevSSD_preparation_executed_by_reviewer": false,
+  "publication_or_merge_attempted_by_reviewer": false
+}

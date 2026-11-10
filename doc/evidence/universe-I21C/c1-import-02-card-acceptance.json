@@ -1,0 +1,30 @@
+{
+  "format": "universe-i21-C1-exact-import02-card-review.v1",
+  "decision": "accept_second_and_last_import_dispatch_only",
+  "card_repository_path": "doc/evidence/universe-I21R/import-02-card.json",
+  "card_sha256": "11c3a5559cb7334d4a24722f2757046ddc5ca50ec985633a02b1d937af4e484f",
+  "job_sha256": "600f313eecacfdd760824521f9732c31f68abc93b4e19ce5c9c1c679d239f5b9",
+  "driver_v2_sha256": "dbc47f6a55db933a129cbf616aba4645e2754c17a8bccf7a522d3ed3608f41ae",
+  "seal_v2_sha256": "1aa5f9f88e9ea900bacd20c9ecfd185c5dbf14e5eefb898a4b55de64dd2ccf0a",
+  "actual_input_pins_rehashed": 803,
+  "argv_equals_prepared_dispatch": true,
+  "only_environment_overlay": {
+    "UE_SKIP_UBT_SDK_SETUP": "1"
+  },
+  "overlay_basis": "Installed TargetPlatformManagerModule.cpp54/223-227; suppress automatic UBT SDK setup only, not a SDK/build acceptance",
+  "TargetPlatformManager_source_sha256": "1ab0fb6d8141ee06d80e0190883a30962552ccb0d96e39ca71d8f95f3979efa2",
+  "original_driver_seal_and_first_card_unchanged": true,
+  "original_campaign_start_monotonic": 1735329.344053625,
+  "campaign_elapsed_at_review": 482.79496325016953,
+  "Content_empty_before_dispatch": true,
+  "socket_change_review": "allow only actual S_ISSOCK dotnet-diagnostic-* under exact a1/a2/reload tmp, record stat kind/mode/bytes without read; all other nonregular/Content entries rejected",
+  "first_attempt_resource_and_exit_failure": "preserved; no overall resource pass can be granted by retry success",
+  "not_granted": [
+    "Native/getter/import/package correctness before R/C2",
+    "normal exit or resource pass before actual evidence",
+    "third import",
+    "SDK or C++ build",
+    "runtime/Metal/visual acceptance"
+  ],
+  "reviewer_UE_GPU_worker_Genesis_UI_executed": false
+}
