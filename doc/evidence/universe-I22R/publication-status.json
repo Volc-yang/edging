@@ -1,0 +1,12 @@
+{
+  "format": "universe-i22-publication-status.v1",
+  "status": "not_published; finish_local_delivery_before_requesting_specific_public_confirmation",
+  "rejected_action": "git push origin codex/plan-consolidation",
+  "rejected_commit": "d194b4ba5385a10c9e322d794cb58830e836763e",
+  "destination": "public Volc-yang/edging",
+  "automatic_review_reason": "prior explicit approval covered I21's fixed list and did not explicitly approve new I22 plan/review content for public release",
+  "stopped_all_I22_publication": true,
+  "alternate_route_used": false,
+  "unaffected_work": "local implementation, independent review, bounded UE tests and scoped context commits continue",
+  "existing_I21_draft_PR": "https://github.com/Volc-yang/edging/pull/130"
+}

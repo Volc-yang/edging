@@ -1,0 +1,23 @@
+{
+  "format": "universe-i22-post-seal-observation.v1",
+  "seal_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/campaign-seal.json",
+    "sha256": "89c19c9c6b745f41eed7042064515cbd7d4b176f063408235c2dab5df5c9f144"
+  },
+  "observed_after_final_fsync": true,
+  "actual_sizes": {
+    "root_bytes": 27805158,
+    "content_bytes": 0,
+    "ddc_bytes": 3977022,
+    "temporary_ipc": []
+  },
+  "continuous_elapsed_seconds": 1148.5123171668965,
+  "result": "partial_or_fail",
+  "native_runtime_build_visual_acceptance": false,
+  "capture": {
+    "method": "Exact scalar observation transcribed from the completed original seal stdout; no rerun and no run-root writes after seal",
+    "tool_session_id": 45561,
+    "completion_chunk_id": "787626",
+    "actual_outer_exit": 2
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "format": "universe-i22-parent-check-correction.v1",
+  "status": "failed_parent_checker_assertion; original_stdout_is_empty_parent-replay.json",
+  "tool_chunk": "b91f6c",
+  "exit_code": 1,
+  "assertion": "list(Content.rglob('*')) == []",
+  "observed": {
+    "p1_and_p2_directories": ["Collections", "Developers", "Developers/yangacan", "Developers/yangacan/Collections"],
+    "all_four_Content_file_maps": {},
+    "a1_and_a2_entries": []
+  },
+  "correction": "Check absence of files and symlinks while allowing UE-created empty collection directories; preserve the original phase file-map equality criterion.",
+  "effect_on_native_verdict": "none; no UE rerun or run-root mutation"
+}

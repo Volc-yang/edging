@@ -1,0 +1,231 @@
+{
+  "actions": [
+    "Push the exact local I22 source branch tip and final scoped context commit, without force",
+    "Update existing draft PR130 with bounded capability pass and actual import/reload not run"
+  ],
+  "actual_UE_source_commit": "877696e7ef61a2fbfbc50fb0cd88ba10ceacb644",
+  "automatic_review_rejection": "I21 fixed-list authorization did not cover new I22 content; no alternate publication route used",
+  "destination": "public GitHub Volc-yang/edging",
+  "excluded": [
+    "raw DevSSD UE/process/system logs",
+    "binary assets",
+    "owner or key reads",
+    "unrelated main-checkout changes"
+  ],
+  "format": "universe-i22-publication-manifest.v1",
+  "integration_branch": "codex/plan-consolidation",
+  "integration_commit_before_final_context": "7e2846b2b75cb0ea87c11ba76d27ff1222d09030",
+  "integration_files": [
+    {
+      "path": "doc/design/universe-i22-import-correction-plan.md",
+      "sha256": "0ebce94464c98becd8297833ab574b698dc9118363f5fedaafd9297761cb6f24"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-final-cpu.txt",
+      "sha256": "37225850b8626a5f85b6f3aab81756514c9694350bd3dbad74c9a0ee22415436"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-probe-01-card-acceptance.json",
+      "sha256": "2d82fd017d2268cafd7b5d6f79327ea1b07b5a44a34468a128f1ad9ee123c1ae"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-probe-02-card-acceptance.json",
+      "sha256": "210bbc2880efe6b26a6c64a9814ca631fb7ef42788a8cdfa7a169c2906a5dbc8"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-probe02-cpu.txt",
+      "sha256": "28f767c201ca0cfebfc01e10ba6da43f1ef58a01d5d96539ca6e0f2522f6a7ba"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-probe02-source-review.json",
+      "sha256": "4bbf5ab3dc73259165e99657340bf63f9e7fe4f5d8c4c1bfc22d9e5f35b3a8de"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c1-source-CPU-review.json",
+      "sha256": "a176ca5d0e49f43bc64f0b47dc0117232f8a118042a485f39b7a7458731f150b"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c2-probe-02-native-review.json",
+      "sha256": "cb0c6f0cc5299d701798172f3c4f1883e511fc25a22da98d583f0c5da5de4231"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/c2-run-review.json",
+      "sha256": "b5068e7a37b1420673da9dd19053215669a29349219a9543ac5dbac485d8ac89"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/check_run_evidence.py",
+      "sha256": "23183d9177526fe384e183716eca371f8ae0814d0336289115ede1ffdb5350f0"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/installed-API-precheck.json",
+      "sha256": "1f7a072387b74f1cd7cb51acc88a394df6835baaa18aa0423ec67e25eaf99e21"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/plan-review.json",
+      "sha256": "86defdd8cef485772c2176edecbaf6ab20981a9845bd976377a6aaab6767b33b"
+    },
+    {
+      "path": "doc/evidence/universe-I22C/report.md",
+      "sha256": "6e6a461ee522efe1b47a610b32747585cef795e7dfb07d0802d0e58f9853412c"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/check_parent.py",
+      "sha256": "1de6a1a041db5bca84db233aed536e690237b3faceff3e46ae9872d02ffe1527"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/import-02-card.json",
+      "sha256": "f2eb47cf8a403e7784cf0456f1becb4248d5a4f73bc5ab32e99cc081202ef6a1"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/integrated-C2-replay/c2-run-review.json",
+      "sha256": "b5068e7a37b1420673da9dd19053215669a29349219a9543ac5dbac485d8ac89"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/parent-check-01-failure.json",
+      "sha256": "bf0073c8a59244a68568339e639e24d1265c4bc6092dca01a3a6376968fd8be4"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/parent-replay-02.json",
+      "sha256": "a579a5a855c1797c39a9058e9eb5aa28444498633e3398900ba7e0314fce828d"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/parent-replay.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/plan-review.json",
+      "sha256": "eb9cbc2e637f1b69c945dc6ab31c108aae0245b191abf63cf26e975ceb21f563"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/post-seal-observation.json",
+      "sha256": "5c8dd9e4423af611d06182a8c4368dfcbdafa52be7c8e65b33bee6c8b4066a9d"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/prepare_card.py",
+      "sha256": "45335897434ff9a1126c3f4fc8a4eda776c35c623b0c12a1b00b40ffb8369cb1"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/probe-01-card.json",
+      "sha256": "973d60af9eed1818bd0104b2a15930c0c4a47b8ddf4783b09b9844266e00ddaa"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/probe-02-card.json",
+      "sha256": "edfab7084de3a1c74c51a6ae4884c3057c07f13ebd6d0b75496f149973d14f6b"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/publication-status.json",
+      "sha256": "d2415a34ef0278c8ea536d5d0928559a9dac07c58c9be17d9c855474a529ba95"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/report.md",
+      "sha256": "f519057433034aa863bd88cd41c5e6cbc61b6995ce391477dc81e254d5182f47"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/run_phase.py",
+      "sha256": "ab47e2b8435f2183b921239b1d0006b8b993249d223e8b2e61405b0a90af1a09"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/seal_campaign.py",
+      "sha256": "7ca7a2f4650bf2e12d5aab26e70dcb4be341312ae67856eac5878cf86627f1ea"
+    },
+    {
+      "path": "doc/evidence/universe-I22R/worktree-settlement.json",
+      "sha256": "7b80cfe7eff835857e5d94674f94ad51b9719d0711ef3bbae929713925d61b3d"
+    },
+    {
+      "path": "doc/parallel_execution_backlog.md",
+      "sha256": "3269af7a4898b9b3dd9d59eba51367cc938bbeb874b7f5fd2fdb11fcf366dad6"
+    },
+    {
+      "path": "doc/universe_i22_execution_register.md",
+      "sha256": "092df4550168fc9a9f3545bd2d55bd6ab316537389d952d5ff711d27d2fc4475"
+    }
+  ],
+  "metadata_included": [
+    "local machine and DevSSD paths",
+    "UE version and installed file inventories",
+    "SHA256 and execution/process metadata references",
+    "bounded failure and independent review records"
+  ],
+  "no_source_merge": true,
+  "remote_context_before": "545117db10e20434f43a841863b1b09b2b0b3323",
+  "remote_source_before": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+  "source_branch": "codex/i21-import",
+  "source_files": [
+    {
+      "path": "doc/evidence/universe-I22A/cpu-check-c1-binding.txt",
+      "sha256": "faa2f87fb4964885908dc751ac1e885b61c4670d5e46f06ab0061b753211613e"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/cpu-check.txt",
+      "sha256": "6ed2a8e041d0df094f5a24e5494541c5e8f3f880581eb096d8832b88da1e6e5b"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight-c1-complete.json",
+      "sha256": "c39bf1c78effa1622ed03d7f218911685cde2b5128db7ebc23d6a2d7833a0004"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight-c1-final.json",
+      "sha256": "aa9e1ede3b92812de0d1ddce79941dfeb72109e75686c4876a2f0fc4556f352c"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight-counts-final.json",
+      "sha256": "5deb02466dd54caae3db0dc29193d1f756ebb562b0bb5f6ea8ca36a723a3f08f"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight-final.json",
+      "sha256": "7e9bababb07bb4f31a1b9663ac64c8f56c10e8afb77d37c7ecf2971428fb9ff1"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight-property-final.json",
+      "sha256": "db29cb80345446c4c3a0263e5a2e4d92b5466b74913c618f3630d12eb32fe382"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/preflight.json",
+      "sha256": "8623d43a3b2db0f7d81dbeef22e2ed429fb0f9ca9d3437cd030de86c5117f18e"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/probe01-restoration-fix.md",
+      "sha256": "4a7ee93d61013634bbb3243007f4477506049548c9f235f4ef817ab1c585acdf"
+    },
+    {
+      "path": "doc/evidence/universe-I22A/report.md",
+      "sha256": "2a70f7f1722b1e29e867dba5cda19815030d4d5b5ab14b31db148c98e5604ce4"
+    },
+    {
+      "path": "scripts/realism_import/EdgeWorldAssetImport.uproject",
+      "sha256": "97183b1bce2fd7ba075c95e3d72048595972e72c2b467ed8df456e550b1bf327"
+    },
+    {
+      "path": "scripts/realism_import/README.md",
+      "sha256": "4293b085d09a642dff15ca894dc70e31f14b09cc1426ccdf1efd1469ea8aaf39"
+    },
+    {
+      "path": "scripts/realism_import/common.py",
+      "sha256": "6c23c4d65aff7d336ee8ce092d95d7fa335bb86b4bc6da859623dc5ead615723"
+    },
+    {
+      "path": "scripts/realism_import/prepare.py",
+      "sha256": "b00e2cc05aa07d794bfb7e23c6e266c557d772197c6a6094fb3790fc6a26ca0c"
+    },
+    {
+      "path": "scripts/realism_import/probe.py",
+      "sha256": "7040bfc704c4c3f504d912c0fe112369570e947f5aaa5bf381da7380026620a0"
+    },
+    {
+      "path": "scripts/realism_import/recipe.json",
+      "sha256": "f228bf56097d096fd85a20e8801ed7edbec29d84a4047ac577b8812351951270"
+    },
+    {
+      "path": "scripts/realism_import/ue_entry.py",
+      "sha256": "ec469f5e982085a348a4fc4ca6cafc200ef67ce56960d0335c05477c97905374"
+    },
+    {
+      "path": "tests/test_realism_import.py",
+      "sha256": "6ca39843a60dffd36ebb294529feabf97988515fae76efa7384f19d37f00df7f"
+    }
+  ],
+  "source_tip": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b",
+  "status": "prepared_for_specific_user_approval; no_I22_publication",
+  "this_manifest": "Included as a control record in the final local context commit; self-hash is bound by that commit rather than embedded recursively"
+}

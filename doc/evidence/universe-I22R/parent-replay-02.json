@@ -1,0 +1,64 @@
+{
+  "I20_original_files_unchanged": 34,
+  "build_runtime_visual_acceptance": false,
+  "campaign_observation": {
+    "actual_sizes": {
+      "content_bytes": 0,
+      "ddc_bytes": 3977022,
+      "root_bytes": 27805158,
+      "temporary_ipc": []
+    },
+    "capture": {
+      "actual_outer_exit": 2,
+      "completion_chunk_id": "787626",
+      "method": "Exact scalar observation transcribed from the completed original seal stdout; no rerun and no run-root writes after seal",
+      "tool_session_id": 45561
+    },
+    "continuous_elapsed_seconds": 1148.5123171668965,
+    "format": "universe-i22-post-seal-observation.v1",
+    "native_runtime_build_visual_acceptance": false,
+    "observed_after_final_fsync": true,
+    "result": "partial_or_fail",
+    "seal_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/campaign-seal.json",
+      "sha256": "89c19c9c6b745f41eed7042064515cbd7d4b176f063408235c2dab5df5c9f144"
+    }
+  },
+  "format": "universe-i22-parent-replay.v1",
+  "native_import_acceptance": false,
+  "phases": [
+    {
+      "actual_wait": 255,
+      "card_ref": {
+        "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I22R/probe-01-card.json",
+        "sha256": "973d60af9eed1818bd0104b2a15930c0c4a47b8ddf4783b09b9844266e00ddaa"
+      },
+      "native_status": "FAIL",
+      "phase": "probe-01",
+      "pid": 57035,
+      "result_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/p1/result.json",
+        "sha256": "6310bee6c44c2f38c6110c9dfa9da1e54d52ecb41d61e959f56a4e15a63e7c67"
+      }
+    },
+    {
+      "actual_wait": 0,
+      "card_ref": {
+        "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I22R/probe-02-card.json",
+        "sha256": "edfab7084de3a1c74c51a6ae4884c3057c07f13ebd6d0b75496f149973d14f6b"
+      },
+      "native_status": "PASS",
+      "phase": "probe-02",
+      "pid": 86365,
+      "result_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I22-20261110-import/p2/result.json",
+        "sha256": "1a88df030a7619b34d68ca2210183c1502f336401505333d8bc1301822b38676"
+      }
+    }
+  ],
+  "sealed_file_count": 274,
+  "sealed_logical_bytes_unchanged": 27805158,
+  "source_integration": false,
+  "unique_verified_input_pins": 818,
+  "verdict": "partial; capability accepted; actual asset import and reload unexecuted"
+}

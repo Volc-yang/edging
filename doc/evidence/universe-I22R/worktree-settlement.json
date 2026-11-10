@@ -1,0 +1,28 @@
+{
+  "format": "universe-i22-worktree-settlement.v1",
+  "implementation": {
+    "actual_tested_source": "877696e7ef61a2fbfbc50fb0cd88ba10ceacb644",
+    "branch": "codex/i21-import",
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import",
+    "reason": "Actual import/reload not accepted; preserve source and fixed-card dependencies.",
+    "status": "retained_partial_unintegrated",
+    "status_only_commit": "768b1ac4a608bd4a3b6eed39001117e1b8f2692b"
+  },
+  "other_worktrees": "Untouched; retain I15 build, I12B recovery and unrelated historical trees. All branches and DevSSD evidence retained.",
+  "review": {
+    "actual_remove_exit": 0,
+    "all_review_files_represented_in_integration": true,
+    "branch": "codex/i22-review",
+    "clean_before_remove": true,
+    "historical_reference_relocation": {
+      "identical_sha256": "4bbf5ab3dc73259165e99657340bf63f9e7fe4f5d8c4c1bfc22d9e5f35b3a8de",
+      "original_path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i22-review/doc/evidence/universe-I22C/c1-probe02-source-review.json",
+      "stable_path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I22C/c1-probe02-source-review.json"
+    },
+    "integration_commit": "7e2846b2b75cb0ea87c11ba76d27ff1222d09030",
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i22-review",
+    "runtime_dependency_scan": "No runtime/script/config dependency on the review tree; one historical source-report ref relocated byte-for-byte. C2 checker reran successfully from stable integration tree.",
+    "source_commit": "e78c1a8d54f87e8653ba791edaac7dacb7ca81ad",
+    "status": "removed_nonforce; branch_preserved"
+  }
+}
