@@ -1,0 +1,14 @@
+{
+  "format": "universe-i22-root-recorded-C0.v1",
+  "reviewer": "/root/i20_review",
+  "decision": "accept_bounded_Native_import_correction",
+  "source": "independent agent final C0 feedback on 2026-11-10",
+  "context_commit": "545117db10e20434f43a841863b1b09b2b0b3323",
+  "implementation_prerequisite": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+  "plan_repository_path": "doc/design/universe-i22-import-correction-plan.md",
+  "plan_sha256": "0ebce94464c98becd8297833ab574b698dc9118363f5fedaafd9297761cb6f24",
+  "limits": {"continuous_seconds":1200,"root_bytes":4294967296,"project_Content_bytes":536870912,"probe_attempts":2,"import_attempts":2,"reload_attempts":1},
+  "requires_C1_exact_source_and_card_before_UE": true,
+  "reviewer_UE_or_implementation_executed": false,
+  "Native_build_visual_acceptance": false
+}

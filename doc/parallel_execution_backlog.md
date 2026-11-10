@@ -2,6 +2,10 @@
 
 > 当前总计划入口：[edgeWorld 4D 数字宇宙集成开发总图](edgeworld_integrated_development_plan.md)。本文以下各节保留逐轮任务与原始验收记录；其中“未合入 `feature/edge-world`”描述的是当时状态。PR #25 已于 2026-11-01 合入远端 `feature/edge-world`（`383c72e`）。本地主工作区仍未同步且有用户未提交改动，不以远端合并代替运行验收。
 
+## 当前执行：I22 Native导入纠正（2026-11-10）
+
+[C0已接受计划](design/universe-i22-import-correction-plan.md) / [登记](universe_i22_execution_register.md)：复用A的cd3b26f/草稿PR130，先显式模块激活并在Transient克隆上真正调用subsystem/mesh/texture/material API，probe通过后再真实导入/保存/Native负例与新进程reload。明确Nanite=false及source/render/Nanite三种计数；I20来源/Alpha/PBR限制不变。I22新root，首probe→fsync1200s/4GiB/项目Content512MiB，max2probe+2import+1reload，C1准确卡后仅root运行。I21两个失败和全部原件保留；未授Native/视觉门，未改主checkout或引擎源码。
+
 ## 当前结算：I21 partial，真实导入门未通过（2026-11-10）
 
 [审定计划](design/universe-i21-native-import-plan.md) / [登记](universe_i21_execution_register.md) / [实际结算](evidence/universe-I21R/report.md)：A执行源3b156d5的5CPU/真源preflight/C1通过，root实际2次UE导入；首次监督器拒绝dotnet诊断非regular项并主动中止，修正v2及显式跳过自动SDK后，第二次wait255/StaticMeshEditorSubsystem为None，保存前失败。**两Host Content均空，无.uasset；Native快照/负例/reload/画质均未通过。**终fsync742.467523s/root26,383,495B，自有进程静默/全部34个I20原件不变；首forced与UBT三项外域差异保持fail，未开第三卡。C独立复核两卡813唯一pins与原件后拒绝D3-IMPORT、接受partial结算。
