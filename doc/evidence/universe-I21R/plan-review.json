@@ -1,0 +1,19 @@
+{
+  "format": "universe-i21-root-recorded-plan-review.v1",
+  "decision": "accept_D3_IMPORT_only",
+  "reviewer": "/root/i20_review",
+  "source": "C0 independent agent final feedback on 2026-11-10; root records receipt before provisioning implementation trees",
+  "input_baseline": "d5ada8fcddf215f6fb4bcf9cabea65699ad8ae91",
+  "plan_repository_path": "doc/design/universe-i21-native-import-plan.md",
+  "plan_sha256": "12e964370403c52b36e65ebe4a96f4dae3ee554b40fe1e6239a5ed7224dd9f97",
+  "required_before_UE": "C1 review of exact code, API, argv, source pins and resource card",
+  "accepted_clarifications": [
+    "each import has exclusive host/Content/Saved/results/log/DDC; failures remain immutable",
+    "fresh process reload verifies package/sidecar maps unchanged",
+    "real UObject alpha and slot negatives restore in memory without saving",
+    "clear UE_PYTHONPATH; explicitly empty StartupScripts/AdditionalPaths and inspect actual Mac Documents and mounted plugin Python paths",
+    "900 seconds continuous total, 4 GiB total and 512 MiB Content; at most two import attempts and one reload"
+  ],
+  "implementation_or_UE_run_by_reviewer": false,
+  "runtime_adapter_build_Metal_visual_acceptance": false
+}
