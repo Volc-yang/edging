@@ -70,7 +70,7 @@ validate_view_binding(binding, *, profile_sha256, expected_observation,
                       expected_renderer_build_sha256)
 ```
 
-先用JSONSchema2020-12检查精确字段/类型/版本，再另做实际文件size/SHA、路径/链接安全、依赖图闭包/环、角色/PlaceKind/slot声明、实例边界及跨字段绑定检查。外部独立expected值不是从待验profile或binding提取。正例只返回`source_contract_consistent_requires_native_review`/`binding_consistent_requires_native_review`，明确`runtime_authenticity_verified=false`、许可真实性false、HUD原子性false、visual gate not_run。
+严格JSON解析拒绝`1e999`等指数溢出，程序传入的binding/独立expected字典也递归拒绝非有限float。先用JSONSchema2020-12检查精确字段/类型/版本，再另做实际文件size/SHA、路径/链接安全、依赖图闭包/环、角色/PlaceKind/slot声明、实例边界及跨字段绑定检查。外部独立expected值不是从待验profile或binding提取。正例只返回`source_contract_consistent_requires_native_review`/`binding_consistent_requires_native_review`，明确`runtime_authenticity_verified=false`、许可真实性false、HUD原子性false、visual gate not_run。
 
 这些检查不能证明资源真实授权、真正UMaterial/StaticMesh类型、材质节点、引擎依赖完整性、加载器实际fail-closed、HUD原子提交、画面或性能。它们只使下一owner能重现输入边界及错误拒绝；不能扩大I18 exact3，不能替代I19实际进程/只读/PNG门。
 

@@ -1,16 +1,16 @@
 {
   "format": "universe-i20b-cpu-result.v0.1",
   "command": "/private/tmp/edgeworld-i20b-contract-env/bin/python -B doc/evidence/universe-I20B/check_contract.py",
-  "test_count": 14,
-  "unittest_seconds": 0.471,
+  "test_count": 15,
+  "unittest_seconds": 0.492,
   "actual_parent_wait_exit": 0,
-  "stdout_stderr_sha256": "5b1beb56f9bcefb9b21e0a76caae1737e2a14a817762d0a1a3d507af1d3cf3c5",
+  "stdout_stderr_sha256": "f10999cb8e5de2a72e7a369ef87fc7f54aa8d4472ab47ab4b6c81d0035948204",
   "scope": "synthetic temporary files; JSONSchema structure plus separate semantic/source-byte checks",
   "artifacts": [
     {
       "path": "doc/evidence/universe-I20B/check_contract.py",
-      "bytes": 19504,
-      "sha256": "b3d7c8691ae8ea309bd68733c13c38d71771ac92f86a838e955d61ce9899aa2a"
+      "bytes": 23102,
+      "sha256": "4b6f5f8cb0d86f832234af6585eef602f5ba99d6896b4eac92d85b48b6ac8dab"
     },
     {
       "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/expected-synthetic.json",
@@ -42,5 +42,11 @@
   "worker_solver_ui_run": false,
   "actual_profile_created": false,
   "hud_atomicity_verified": false,
-  "visual_gate": "not_run"
+  "visual_gate": "not_run",
+  "prior_check_snapshot": {
+    "commit": "e25d82649da34aadb3009414bad8e002c291119c",
+    "test_count": 14,
+    "result_path": "doc/evidence/universe-I20B/cpu-result.json",
+    "output_path": "doc/evidence/universe-I20B/cpu-check.txt"
+  }
 }

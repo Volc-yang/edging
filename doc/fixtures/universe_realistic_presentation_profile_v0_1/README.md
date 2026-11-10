@@ -16,6 +16,6 @@ python3 -m venv /private/tmp/edgeworld-i20b-contract-env
 /private/tmp/edgeworld-i20b-contract-env/bin/python -B doc/evidence/universe-I20B/check_contract.py
 ```
 
-JSONSchema checks structure; the harness separately hashes actual temporary files, checks path/symlink safety, dependency closure/cycles, source roles, material recipe omissions, exact integer transforms and independent cross-time/world/profile/renderer bindings. Hashing a license reference proves bytes only. Matching declared slots does not prove native slots, sampler wiring, alpha coverage or HUD atomicity. All UE build, rendering, authority-preservation and UI-transaction gates remain unexecuted by this fixture.
+Strict JSON parsing rejects numeric exponent overflow, and semantic input dictionaries reject nonfinite floats. JSONSchema checks structure; the harness separately hashes actual temporary files, checks path/symlink safety, dependency closure/cycles, source roles, material recipe omissions, exact integer transforms and independent cross-time/world/profile/renderer bindings. Hashing a license reference proves bytes only. Matching declared slots does not prove native slots, sampler wiring, alpha coverage or HUD atomicity. All UE build, rendering, authority-preservation and UI-transaction gates remain unexecuted by this fixture.
 
 The source contract is intentionally not the authority's `basicshapes-proxy.v0.2` record schema. No fields or versions in the old verified observation are rewritten. See [design and D3/D4 cards](../../design/universe-realistic-presentation-profile.md).

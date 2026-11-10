@@ -7,6 +7,7 @@ Dependency: jsonschema==4.23.0 in an isolated test environment.
 from copy import deepcopy
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import stat
@@ -36,8 +37,24 @@ def unique(items):
     return result
 
 
+def finite_float(token):
+    value = float(token)
+    require(math.isfinite(value), 'nonfinite JSON number')
+    return value
+
+
+def require_finite_numbers(value):
+    """Also guard programmatic API dictionaries, which bypass JSON parsing."""
+    if isinstance(value, float):
+        require(math.isfinite(value), 'nonfinite contract number')
+    elif isinstance(value, dict):
+        for item in value.values():require_finite_numbers(item)
+    elif isinstance(value, (list, tuple)):
+        for item in value:require_finite_numbers(item)
+
+
 def load(raw):
-    return json.loads(raw, object_pairs_hook=unique,
+    return json.loads(raw, object_pairs_hook=unique, parse_float=finite_float,
                       parse_constant=lambda _: (_ for _ in ()).throw(ContractError('nonfinite JSON')))
 
 
@@ -46,6 +63,7 @@ def sha(raw):
 
 
 def schema_check(value, name):
+    require_finite_numbers(value)
     schema = load((FIXTURES/name).read_bytes())
     Draft202012Validator.check_schema(schema)
     errors = list(Draft202012Validator(schema).iter_errors(value))
@@ -78,6 +96,7 @@ def public_bytes(root, relative):
 
 def validate_profile(profile_path, *, file_root, expected_profile_sha256, expected_authority):
     """Exact external pin, structure, real file bytes and semantic relationships."""
+    require_finite_numbers(expected_authority)
     path = Path(profile_path)
     require(path.is_absolute() and path == path.resolve() and not path.is_symlink(), 'canonical profile path')
     raw = public_bytes(path.parent, path.name)
@@ -206,6 +225,7 @@ def validate_profile(profile_path, *, file_root, expected_profile_sha256, expect
 
 def validate_view_binding(binding, *, profile_sha256, expected_observation, expected_renderer_build_sha256):
     """Check a candidate presented binding, not an actual HUD/Actor transaction."""
+    require_finite_numbers(expected_observation)
     schema_check(binding, 'view-binding.schema.json')
     require(binding['profile_sha256']==profile_sha256, 'view/profile mismatch')
     require(binding['renderer_build_sha256']==expected_renderer_build_sha256, 'independent renderer identity mismatch')
@@ -298,6 +318,45 @@ class ContractChecks(unittest.TestCase):
             with self.assertRaises(ContractError):
                 validate_view_binding(b,profile_sha256=self.write(),expected_observation=self.expected['observation'],
                                       expected_renderer_build_sha256=self.expected['renderer_build_sha256'])
+    def test_numeric_overflow_and_programmatic_nonfinite_are_rejected(self):
+        # A fully consistent synthetic native proposal must still reject finite-
+        # JSON number syntax that overflows Python's float, in each dimension.
+        proposal=deepcopy(self.p);proposal['evidence_class']='native-observed-proposal'
+        evidence=b'synthetic native evidence; no real import performed\n'
+        (self.root/'native.fixture').write_bytes(evidence)
+        for asset in proposal['assets']:
+            mesh=asset['kind']=='static_mesh'
+            asset['native_import']=dict(status='native-observed',source_unit_cm=1.0 if mesh else None,
+                pivot_cm=[0,0,0] if mesh else None,bounds_cm=[-1,-1,-1,1,1,1] if mesh else None,
+                material_slots=['surface'] if mesh else [],
+                evidence_ref=dict(path='native.fixture',sha256=sha(evidence)))
+        self.assertFalse(self.check(proposal)['runtime_authenticity_verified'])
+        for field,index in [('source_unit_cm',None),('pivot_cm',2),('bounds_cm',3)]:
+            with self.subTest(field=field):
+                bad=deepcopy(proposal);native=bad['assets'][0]['native_import']
+                if index is None:native[field]='OVERFLOW'
+                else:native[field][index]='OVERFLOW'
+                raw=json.dumps(bad).encode().replace(b'"OVERFLOW"',b'1e999')
+                self.path.write_bytes(raw)
+                with self.assertRaisesRegex(ContractError,'nonfinite JSON number'):
+                    validate_profile(self.path,file_root=self.root,expected_profile_sha256=sha(raw),
+                                     expected_authority=self.expected['authority'])
+        for number in (float('inf'),float('-inf'),float('nan')):
+            with self.subTest(programmatic=repr(number)):
+                binding=self.binding();binding['tick']=number
+                with self.assertRaisesRegex(ContractError,'nonfinite contract number'):
+                    validate_view_binding(binding,profile_sha256=self.write(),
+                        expected_observation=self.expected['observation'],
+                        expected_renderer_build_sha256=self.expected['renderer_build_sha256'])
+                observation=deepcopy(self.expected['observation']);observation['tick']=number
+                with self.assertRaisesRegex(ContractError,'nonfinite contract number'):
+                    validate_view_binding(self.binding(),profile_sha256=self.write(),
+                        expected_observation=observation,
+                        expected_renderer_build_sha256=self.expected['renderer_build_sha256'])
+                authority=deepcopy(self.expected['authority'])
+                authority['places']['forest-1']['elevation_cm']=number
+                with self.assertRaisesRegex(ContractError,'nonfinite contract number'):
+                    self.check(authority=authority)
     def test_duplicate_json_keys_are_rejected(self):
         raw=self.path.read_bytes() if self.path.exists() else b'{}'
         self.path.write_bytes(b'{"format":"one","format":"two"}')

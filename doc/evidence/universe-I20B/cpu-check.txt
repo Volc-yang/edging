@@ -7,6 +7,7 @@ test_instance_identity_region_elevation_and_numeric_types (__main__.ContractChec
 test_license_ref_is_hashed_but_not_license_authorization (__main__.ContractChecks.test_license_ref_is_hashed_but_not_license_authorization) ... ok
 test_mask_coverage_texture_source_and_color_conventions (__main__.ContractChecks.test_mask_coverage_texture_source_and_color_conventions) ... ok
 test_missing_and_corrupt_source_files (__main__.ContractChecks.test_missing_and_corrupt_source_files) ... ok
+test_numeric_overflow_and_programmatic_nonfinite_are_rejected (__main__.ContractChecks.test_numeric_overflow_and_programmatic_nonfinite_are_rejected) ... ok
 test_path_escape_and_symlink_are_rejected (__main__.ContractChecks.test_path_escape_and_symlink_are_rejected) ... ok
 test_positive_real_temp_bytes_and_binding_are_only_consistency (__main__.ContractChecks.test_positive_real_temp_bytes_and_binding_are_only_consistency) ... ok
 test_role_material_slot_and_place_are_crosschecked (__main__.ContractChecks.test_role_material_slot_and_place_are_crosschecked) ... ok
@@ -14,6 +15,6 @@ test_unknown_import_metadata_is_not_minted_as_reviewed (__main__.ContractChecks.
 test_view_cross_time_world_transform_profile_and_generation (__main__.ContractChecks.test_view_cross_time_world_transform_profile_and_generation) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 0.471s
+Ran 15 tests in 0.492s
 
 OK
