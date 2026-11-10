@@ -1,5 +1,7 @@
 """Real commandlet capability calls on transient clones; no import or save."""
 from pathlib import Path
+import json
+import traceback
 import unreal as u
 from common import ENGINE,checked,require,sha
 
@@ -24,21 +26,39 @@ def run_probe(job,mesh_metadata,configure_pipeline):
     require(isinstance(original_cube,u.StaticMesh) and isinstance(original_texture,u.Texture2D),'original probe fixture type mismatch')
     original_before={'mesh':mesh_metadata(original_cube,subsystem),
         'texture':_serial_texture_state(_texture_state(original_texture))}
-    guards=[];restoration=[]
+    guards=[];restoration=[];failures=[];primary=None;primary_traceback=None
     try:result=_run_probe(job,mesh_metadata,configure_pipeline,guards)
-    finally:
-        for obj,before in guards:
-            obj.set_editor_property('srgb',before['srgb'])
+    except BaseException as error:
+        primary=error;primary_traceback=traceback.format_exc()
+    for obj,before in guards:
+        try:
+            # Texture.ValidateSettings forces sRGB=false for current MASKS/NORMAL compression.
+            # Restore the original compression before its original sRGB value.
             obj.set_editor_property('compression_settings',before['compression'])
+            obj.set_editor_property('srgb',before['srgb'])
             obj.set_editor_property('flip_green_channel',before['flip_green_channel'])
-            after=_texture_state(obj);require(after==before,'transient texture flags/dimensions did not restore')
-            restoration.append({'path':obj.get_path_name(),'before':_serial_texture_state(before),
-                'after':_serial_texture_state(after)})
+            after=_texture_state(obj)
+            row={'path':obj.get_path_name(),'before':_serial_texture_state(before),
+                'after':_serial_texture_state(after),'diff':{key:{'before':str(before[key]),'after':str(after[key])} for key in before if before[key]!=after[key]}}
+            restoration.append(row)
+            if after!=before:failures.append({'case':'texture_restore','actual':row})
+        except BaseException as error:
+            failures.append({'case':'texture_restore_getter_or_setter','path':obj.get_path_name(),
+                'before':_serial_texture_state(before),'error':str(error),'traceback':traceback.format_exc()})
+    try:
         original_after={'mesh':mesh_metadata(original_cube,subsystem),
             'texture':_serial_texture_state(_texture_state(original_texture))}
-        require(original_after==original_before,'probe mutated original Engine fixture UObject getters')
+        if original_after!=original_before:failures.append({'case':'original_fixture_getters_changed','before':original_before,'after':original_after})
         for path,row in job['preflight']['probe_fixtures'].items():
             require(sha(checked(path).read_bytes())==row['sha256'],'probe/restoration changed original fixture package bytes')
+    except BaseException as error:
+        failures.append({'case':'original_fixture_recheck','error':str(error),'traceback':traceback.format_exc()})
+    if primary is not None or failures:
+        diagnostic={'primary_error':None if primary is None else str(primary),
+            'primary_traceback':primary_traceback,'restoration':restoration,'failures':failures}
+        message=json.dumps(diagnostic,sort_keys=True,allow_nan=False)
+        u.log_error('I22_PROBE_FAILURE_DIAGNOSTICS '+message)
+        raise ValueError('I22 probe failed with preserved diagnostics: '+message) from primary
     return {**result,'texture_restoration':restoration,
         'original_fixture_getters_before':original_before,'original_fixture_getters_after':original_after}
 
