@@ -1,6 +1,6 @@
 # import02 实际失败与下卡输入
 
-本轮两次 import 额度已消耗；不启动第三次，不以 reload 重导。root 记录 import02 约26.4s、parent wait255、非强制、后代静默，source pins 不变。`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/result.json` 实际 FAIL 为 `NoneType.enable_section_collision`；`a2/ue.log:1197–1208` 确认 `do_import()` 的 StaticMeshEditorSubsystem 为 None。流程已进入真正 Interchange/Python，创建了资源，但尚未完成最终 save_loaded_assets、Native 正例/负例/新进程回读；Content非空不能称通过。
+本轮两次 import 额度已消耗；不启动第三次，不以 reload 重导。root 记录 import02 约26.4s、parent wait255、非强制、后代静默，source pins 不变。`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/result.json` 实际 FAIL 为 `NoneType.enable_section_collision`；`a2/ue.log:1197–1208` 确认 `do_import()` 的 StaticMeshEditorSubsystem 为 None。流程只在内存执行了真实导入与材质创建，尚未完成最终 save_loaded_assets、Native 正例/负例/新进程回读，未交付保存包。C2 实际枚举确认 a1/host/Content、a2/host/Content 均为空、没有 `.uasset`；R 的保守 content_bytes=2,679,781 来自 a2/ddc/Content 中两份 `.udd`，该计数包含 DDC 缓存，不能代替原生资产包或导入通过证据。
 
 ## 安装源码诊断
 
