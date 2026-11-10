@@ -21,7 +21,9 @@
 
 实际根：`/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/`。`assets/<asset>/` 保持 glTF 原始相对引用，`metadata/` 保存 API 与许可原始响应，根部保存不可覆盖的固定清单/账/收据。网站许可 HTML 原件不复制进 Git；其内容身份由 metadata receipt 固定。所有下载内容均作为数据处理，未运行脚本、安装插件或启动 UE/worker/Genesis。
 
-本目录的 `acquire-metadata-snapshot.py` 逐字节匹配 metadata receipt 记录的 helper SHA；`acquire.py` 逐字节匹配 binary attempt/receipt 的 helper SHA。后者增加 plan/download 子命令，保留前阶段身份。脚本专用于本轮独占 root；再次运行获取命令会因已存在文件/attempt 而拒绝，不能用重跑覆盖本轮证据。
+本目录的 `acquire-metadata-snapshot.py` 逐字节匹配 metadata receipt 记录的 helper SHA；`acquire.py` 逐字节匹配 binary attempt/receipt 的 helper SHA。后者增加 plan/download 子命令，保留前阶段身份。**原 metadata receipt 中的旧绝对 helper 路径现在指向已演化脚本，直接读取该路径不再匹配旧 SHA**；原 receipt 没有改写。须使用 [phased-source-provenance.json](phased-source-provenance.json) 将各阶段旧记录映射到保存的实际源字节、稳定仓库路径和不可变 Git blob；[provenance-check.json](provenance-check.json) 逐项核对旧 receipt SHA、保存字节与 `a979027` Git blob 相同。实际资产输入索引也固定到该提交的 blob 与 DevSSD root，不依赖待清理 worktree。
+
+脚本专用于本轮独占 root；再次运行获取命令会因已存在文件/attempt 而拒绝，不能用重跑覆盖本轮证据。后续使用稳定仓库路径或 Git blob 复查 helper，不应在 cleanup 后尝试恢复旧 worktree 路径；未来原生 UE profile/派生资产身份仍须在 D3 冻结。
 
 无需网络的实际复查命令（在本工作树）：
 

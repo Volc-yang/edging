@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "phases": [
+    {
+      "phase": "metadata",
+      "preserved_sha256": "a51fa23d3edd5adee90fd3616f9c720c2c09afff3a4a194d646cd4684db74087",
+      "matches_receipt": true,
+      "matches_immutable_git_blob": true
+    },
+    {
+      "phase": "binary",
+      "preserved_sha256": "4582ccc78994643aa41f3340a006640a7dc787ef2e99208c98f76a86b9fa822b",
+      "matches_receipt": true,
+      "matches_immutable_git_blob": true
+    }
+  ],
+  "receipts_unchanged": true,
+  "actual_asset_index_sha256": "d9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7"
+}
