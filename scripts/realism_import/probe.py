@@ -4,7 +4,46 @@ import unreal as u
 from common import ENGINE,checked,require,sha
 
 
+def _texture_state(obj):
+    return {'path':obj.get_path_name(),'class':obj.get_class().get_path_name(),
+        'srgb':obj.get_editor_property('srgb'),
+        'compression':obj.get_editor_property('compression_settings'),
+        'flip_green_channel':obj.get_editor_property('flip_green_channel'),
+        'width':obj.blueprint_get_size_x(),'height':obj.blueprint_get_size_y()}
+
+
+def _serial_texture_state(state):
+    return {**state,'compression':str(state['compression'])}
+
+
 def run_probe(job,mesh_metadata,configure_pipeline):
+    subsystem=u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
+    require(subsystem is not None,'probe subsystem missing')
+    original_cube=u.EditorAssetLibrary.load_asset('/Engine/BasicShapes/Cube.Cube')
+    original_texture=u.EditorAssetLibrary.load_asset('/Engine/EngineResources/DefaultTexture.DefaultTexture')
+    require(isinstance(original_cube,u.StaticMesh) and isinstance(original_texture,u.Texture2D),'original probe fixture type mismatch')
+    original_before={'mesh':mesh_metadata(original_cube,subsystem),
+        'texture':_serial_texture_state(_texture_state(original_texture))}
+    guards=[];restoration=[]
+    try:result=_run_probe(job,mesh_metadata,configure_pipeline,guards)
+    finally:
+        for obj,before in guards:
+            obj.set_editor_property('srgb',before['srgb'])
+            obj.set_editor_property('compression_settings',before['compression'])
+            obj.set_editor_property('flip_green_channel',before['flip_green_channel'])
+            after=_texture_state(obj);require(after==before,'transient texture flags/dimensions did not restore')
+            restoration.append({'path':obj.get_path_name(),'before':_serial_texture_state(before),
+                'after':_serial_texture_state(after)})
+        original_after={'mesh':mesh_metadata(original_cube,subsystem),
+            'texture':_serial_texture_state(_texture_state(original_texture))}
+        require(original_after==original_before,'probe mutated original Engine fixture UObject getters')
+        for path,row in job['preflight']['probe_fixtures'].items():
+            require(sha(checked(path).read_bytes())==row['sha256'],'probe/restoration changed original fixture package bytes')
+    return {**result,'texture_restoration':restoration,
+        'original_fixture_getters_before':original_before,'original_fixture_getters_after':original_after}
+
+
+def _run_probe(job,mesh_metadata,configure_pipeline,texture_guards):
     me=u.MaterialEditingLibrary
     fixture_before={path:sha(checked(path).read_bytes()) for path in job['preflight']['probe_fixtures']}
     require(all(fixture_before[p]==row['sha256'] for p,row in job['preflight']['probe_fixtures'].items()),'installed fixture changed before probe')
@@ -20,6 +59,7 @@ def run_probe(job,mesh_metadata,configure_pipeline):
     data=u.SystemLibrary.duplicate_object(texture,transient,'I22ProbeData')
     normal=u.SystemLibrary.duplicate_object(texture,transient,'I22ProbeNormal')
     for obj in (mesh,color,data,normal):require(obj is not None and obj.get_outermost()==transient,'probe clone is not transient')
+    for obj in (color,data,normal):texture_guards.append((obj,_texture_state(obj)))
     before=mesh_metadata(mesh,subsystem)
     require(all(before[key]>0 for key in ('native_source_model_lod_count','native_render_lod_count',
         'render_lod0_triangles','native_render_lod0_vertices','native_editor_lod0_uv_channels',

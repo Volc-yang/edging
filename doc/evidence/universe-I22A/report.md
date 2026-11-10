@@ -28,3 +28,11 @@ README列出所有命令。可在首clock前准备 `probe --attempt 1` 与 `impo
 - recipe SHA `f228bf56097d096fd85a20e8801ed7edbec29d84a4047ac577b8812351951270`。早期preflight原件保留为当时源身份，不授权最终版本。
 
 未验证：commandlet实际module激活、clone/所有反射调用、保存5/14/3包、Native负例与新进程reload。任何未知API/中性错误值明确失败并保留原件，不用常量、deprecated转发或扩大容差填门。Metal、法线外观、runtime profile/HUD、地形/世界/Genesis继续后置。
+
+## C1 窄修与当前源身份
+
+独立审查和owner自查共同确认 Python FName别名大小写不敏感：raw `Collision` 可能被解析为bool `bCollision` 的Python别名。因此枚举现在只用公开ScriptName的Python名 `fallback_collision_type`，bool继续精确 `bCollision`，不是轮询不同名字的fallback。
+
+probe外层在进入修改前登记三份texture clone初始实际flags/尺寸/身份；COLOR/MASKS/NORMAL配置保持到材质recompile、Alpha断开/恢复及pipeline调用结束，之后由finally恢复各clone初值并逐项读回。错误路径也恢复。原Engine Cube和Texture的完整实际getter/身份快照前后相等与包文件SHA分别验证；不会调用要求I20来源的texture_metadata去假验Engine fixture。import消费gate同样要求clone恢复与Engine原对象不变证据。
+
+受影响JSON绑定CPU检查通过，全部AST成功。最终只读 `preflight-c1-complete.json` SHA `c39bf1c78effa1622ed03d7f218911685cde2b5128db7ebc23d6a2d7833a0004` 为ready，snapshot源逐字节匹配。其余preflight保留各自当时身份，不授权新源。无UE/DevSSD/发布操作。

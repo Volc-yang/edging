@@ -205,6 +205,9 @@ def check_probe_result(probe,job):
     for field in ('subsystem','mesh_before','mesh_restored','texture_calls','material_links'):
         require(bool(capability.get(field)),'probe actual getter evidence missing: '+field)
     require(capability['mesh_before']==capability['mesh_restored'],'probe mesh restoration mismatch')
+    texture_restoration=capability.get('texture_restoration',[])
+    require(len(texture_restoration)==3 and all(row.get('before')==row.get('after') and bool(row.get('before')) for row in texture_restoration),'probe texture restoration evidence mismatch')
+    require(bool(capability.get('original_fixture_getters_before')) and capability['original_fixture_getters_before']==capability.get('original_fixture_getters_after'),'probe changed original Engine fixture getters')
     require(capability.get('actual_alpha_disconnected') is True and capability.get('actual_alpha_restored') is True,'probe actual Alpha checks incomplete')
     policy=capability.get('pipeline_observed',{})
     require(policy.get('collision') is False and policy.get('build_nanite') is False,'probe live collision/Nanite policy mismatch')

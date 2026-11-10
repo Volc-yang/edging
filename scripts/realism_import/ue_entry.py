@@ -57,7 +57,9 @@ def configure_pipeline():
     common.set_editor_property('bBakeMeshes',False);common.set_editor_property('bBakePivotMeshes',False)
     pipeline.set_editor_property('ImportOffsetUniformScale',1.0)
     pipeline.material_pipeline.import_materials=False;pipeline.material_pipeline.texture_pipeline.import_textures=False
-    fallback=mesh.get_editor_property('Collision')
+    # Raw FName "Collision" can resolve to the bool's Python alias "collision".
+    # The enum's explicit ScriptName is FallbackCollisionType, hence this Python name.
+    fallback=mesh.get_editor_property('fallback_collision_type')
     require(not isinstance(fallback,bool) and 'InterchangeMeshCollision' in enum(fallback),'fallback Collision must be enum, not native bCollision')
     observed={'collision':mesh.get_editor_property('bCollision'),'fallback_collision_type':enum(fallback),
         'build_nanite':mesh.get_editor_property('bBuildNanite'),

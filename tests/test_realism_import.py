@@ -22,12 +22,16 @@ class RealismImportInputTests(unittest.TestCase):
                 'subsystem':{'fixture':'synthetic-only'},'mesh_before':{'fixture':1},'mesh_restored':{'fixture':1},
                 'texture_calls':[{'fixture':'synthetic-only'}],'material_links':{'fixture':1},
                 'actual_alpha_disconnected':True,'actual_alpha_restored':True,
+                'texture_restoration':[{'before':{'fixture':1},'after':{'fixture':1}} for _ in range(3)],
+                'original_fixture_getters_before':{'fixture':1},'original_fixture_getters_after':{'fixture':1},
                 'pipeline_observed':{'collision':False,'build_nanite':False}}}
         self.assertTrue(c.check_probe_result(probe,job))
         for key,value in (('status','FAIL'),('mode','import'),('job_sha256','d'*64),('source_scripts',{'changed.py':'e'*64})):
             with self.assertRaises(ValueError):c.check_probe_result({**probe,key:value},job)
         with self.assertRaisesRegex(ValueError,'actual getter evidence missing'):
             c.check_probe_result({**probe,'capability':{**probe['capability'],'texture_calls':[]}},job)
+        with self.assertRaisesRegex(ValueError,'texture restoration'):
+            c.check_probe_result({**probe,'capability':{**probe['capability'],'texture_restoration':[]}},job)
         recipe=json.loads((REPO/'scripts/realism_import/recipe.json').read_bytes())
         self.assertIs(recipe['import_policy']['build_nanite'],False)
         self.assertEqual(c.OUTPUT.name,'I22-20261110-import')
