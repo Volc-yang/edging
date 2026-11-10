@@ -1,0 +1,522 @@
+{
+  "actual_received_bytes": 42116535,
+  "elapsed_seconds": 145.21885399986058,
+  "error": null,
+  "file_count": 32,
+  "file_limit": 64,
+  "format": "universe-i20-acquisition-ledger.v1",
+  "network_limit_bytes": 268435456,
+  "network_seconds_limit": 1200,
+  "no_retries": true,
+  "per_file_seconds_limit": 60,
+  "phase": "binary",
+  "recorded_at": "2026-11-10T03:59:14.812461+00:00",
+  "requests": [
+    {
+      "body_bytes": 1077,
+      "body_ref": {
+        "bytes": 1077,
+        "md5": "e0f9ddb826388814e8654c9f13ba8a9a",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/fern_02-info.json",
+        "sha256": "6b8a69cf9eb372be4cba66d163cbbd0faa7ed90fe89a69be7e38f16bd5dfb3ef"
+      },
+      "complete": true,
+      "content_length": "1077",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727709.535347125,
+      "redirects": [],
+      "started_monotonic": 1727708.6794625,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/fern_02-info.json",
+      "url": "https://api.polyhaven.com/info/fern_02"
+    },
+    {
+      "body_bytes": 29294,
+      "body_ref": {
+        "bytes": 29294,
+        "md5": "17673f3d185a2811b6d18ab6d18c8ba7",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/fern_02-files.json",
+        "sha256": "a3e43a1dad9a175defdc5816daed6ab1192d4dcd4c8f8a5becd44e63616ba0b3"
+      },
+      "complete": true,
+      "content_length": "29294",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727709.887521208,
+      "redirects": [],
+      "started_monotonic": 1727709.535795541,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/fern_02-files.json",
+      "url": "https://api.polyhaven.com/files/fern_02"
+    },
+    {
+      "body_bytes": 1105,
+      "body_ref": {
+        "bytes": 1105,
+        "md5": "09b0aaf4bbe24edfcefa43f0c4140686",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/boulder_01-info.json",
+        "sha256": "4169da25057519398aeed8a4d45a67f244a69fdafceae480d5f00916c4bc9fcd"
+      },
+      "complete": true,
+      "content_length": "1105",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727710.607188458,
+      "redirects": [],
+      "started_monotonic": 1727709.88803725,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/boulder_01-info.json",
+      "url": "https://api.polyhaven.com/info/boulder_01"
+    },
+    {
+      "body_bytes": 24428,
+      "body_ref": {
+        "bytes": 24428,
+        "md5": "f2b38d54b01a9c666e1849875371dd1e",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/boulder_01-files.json",
+        "sha256": "c2b21c87241cbe9a46c190c6cd231cd943c4ff5dbd28b634cf19613a21a75167"
+      },
+      "complete": true,
+      "content_length": "24428",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727710.956992833,
+      "redirects": [],
+      "started_monotonic": 1727710.607582041,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/boulder_01-files.json",
+      "url": "https://api.polyhaven.com/files/boulder_01"
+    },
+    {
+      "body_bytes": 988,
+      "body_ref": {
+        "bytes": 988,
+        "md5": "fe7d2aef13019b208a0fb65bcbcae07e",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/forrest_ground_01-info.json",
+        "sha256": "0f3aa42459960036051ca32e677ad17121220b352340bff351b5dc508f8530f1"
+      },
+      "complete": true,
+      "content_length": "988",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727711.499169125,
+      "redirects": [],
+      "started_monotonic": 1727710.958131583,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/forrest_ground_01-info.json",
+      "url": "https://api.polyhaven.com/info/forrest_ground_01"
+    },
+    {
+      "body_bytes": 29783,
+      "body_ref": {
+        "bytes": 29783,
+        "md5": "095556768f1d2439e9a0b50f708aeb3c",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/forrest_ground_01-files.json",
+        "sha256": "fb03acfb34c413580c5e32c53533e82d0f9a14f063cefcb19a0b28cf83acfcfb"
+      },
+      "complete": true,
+      "content_length": "29783",
+      "content_type": "application/json; charset=utf-8",
+      "ended_monotonic": 1727711.853453041,
+      "redirects": [],
+      "started_monotonic": 1727711.499645708,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/forrest_ground_01-files.json",
+      "url": "https://api.polyhaven.com/files/forrest_ground_01"
+    },
+    {
+      "body_bytes": 73016,
+      "body_ref": {
+        "bytes": 73016,
+        "md5": "33a0c1d0c8eb01d566bb5ce18fe992aa",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/polyhaven-license.html",
+        "sha256": "2904dda3b01b63b035b53dfc0f47eef48f4c1dc183397da0ffe719ee35a32902"
+      },
+      "complete": true,
+      "content_length": null,
+      "content_type": "text/html; charset=utf-8",
+      "ended_monotonic": 1727712.404816125,
+      "redirects": [],
+      "started_monotonic": 1727711.854828875,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/polyhaven-license.html",
+      "url": "https://polyhaven.com/license"
+    },
+    {
+      "body_bytes": 7048,
+      "body_ref": {
+        "bytes": 7048,
+        "md5": "65d3616852dbf7b1a6d4b53b00626032",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/CC0-1.0.txt",
+        "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+      },
+      "complete": true,
+      "content_length": null,
+      "content_type": "text/plain; charset=utf-8",
+      "ended_monotonic": 1727712.840527708,
+      "redirects": [],
+      "started_monotonic": 1727712.405639208,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/metadata/CC0-1.0.txt",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+    },
+    {
+      "body_bytes": 176176,
+      "body_ref": {
+        "bytes": 176176,
+        "md5": "c061e9255f7d36ae9ce0e92ef3e100b2",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/fern_02.bin",
+        "sha256": "fe1abb762bcbbc7ad9e86925c8080437a62add257d9280e9142fdc85c226e64c"
+      },
+      "complete": true,
+      "content_length": "176176",
+      "content_type": "application/octet-stream",
+      "ended_monotonic": 1727835.541232833,
+      "redirects": [],
+      "started_monotonic": 1727834.986261583,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/fern_02.bin",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/fern_02/fern_02.bin"
+    },
+    {
+      "body_bytes": 6899,
+      "body_ref": {
+        "bytes": 6899,
+        "md5": "904c73900125e017f5e76ac1cdd906fe",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/fern_02_2k.gltf",
+        "sha256": "50540d37531f93fd693d5340d5b3095c9d6d2834fa05c74bea797d54f290cb6a"
+      },
+      "complete": true,
+      "content_length": "6899",
+      "content_type": "application/octet-stream",
+      "ended_monotonic": 1727835.818193458,
+      "redirects": [],
+      "started_monotonic": 1727835.542229791,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/fern_02_2k.gltf",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/fern_02/fern_02_2k.gltf"
+    },
+    {
+      "body_bytes": 230089,
+      "body_ref": {
+        "bytes": 230089,
+        "md5": "ff18f7e8e869c58eac8f9c7d7c519f4a",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_alpha_2k.png",
+        "sha256": "f51eb9b8f9f4b25a882f8fe12d1ef53ba69448bac7e71396ec1f05b684e9ea75"
+      },
+      "complete": true,
+      "content_length": "230089",
+      "content_type": "image/png",
+      "ended_monotonic": 1727836.471255,
+      "redirects": [],
+      "started_monotonic": 1727835.81941825,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_alpha_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/fern_02/fern_02_alpha_2k.png"
+    },
+    {
+      "body_bytes": 850856,
+      "body_ref": {
+        "bytes": 850856,
+        "md5": "7f7b46e813a3cb4811405191de0ecdce",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_arm_2k.jpg",
+        "sha256": "1eaf9bd29e2d83a77ca5d89bdddebcd9216b8b4ba244644580fe5b89bbe713f1"
+      },
+      "complete": true,
+      "content_length": "850856",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727837.158008666,
+      "redirects": [],
+      "started_monotonic": 1727836.47242525,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_arm_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_arm_2k.jpg"
+    },
+    {
+      "body_bytes": 993703,
+      "body_ref": {
+        "bytes": 993703,
+        "md5": "ba8bbb9dc9ff55bdc081565cd926d776",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_diff_2k.jpg",
+        "sha256": "9ee18172170728050871772e2cd6d8d37b52f9138e61b49b04486623f9caf84b"
+      },
+      "complete": true,
+      "content_length": "993703",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727837.809669125,
+      "redirects": [],
+      "started_monotonic": 1727837.159040041,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_diff_2k.jpg"
+    },
+    {
+      "body_bytes": 1369183,
+      "body_ref": {
+        "bytes": 1369183,
+        "md5": "b56f5a028d42bc888f624db5c7204820",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_nor_dx_2k.jpg",
+        "sha256": "4c6531d4c3b8f7e149bcbaeb4b1ca28e8d50c6ad7bcd8eff228bcfb756aa57f3"
+      },
+      "complete": true,
+      "content_length": "1369183",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727839.333866833,
+      "redirects": [],
+      "started_monotonic": 1727837.810849291,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_nor_dx_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_nor_dx_2k.jpg"
+    },
+    {
+      "body_bytes": 1365615,
+      "body_ref": {
+        "bytes": 1365615,
+        "md5": "00936dff4661dc9fe1f2fbe6c000615a",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_nor_gl_2k.jpg",
+        "sha256": "dfe1ac4a428d21f7c134411500177d66b8dd800c8fec6f0040c50f44414a777b"
+      },
+      "complete": true,
+      "content_length": "1365615",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727840.27411975,
+      "redirects": [],
+      "started_monotonic": 1727839.3344725,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/fern_02/textures/fern_02_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_nor_gl_2k.jpg"
+    },
+    {
+      "body_bytes": 2938808,
+      "body_ref": {
+        "bytes": 2938808,
+        "md5": "27a19fa031d8b4c3a09261f19c444dc5",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/boulder_01.bin",
+        "sha256": "7f5b06503d62bd95bfe9c6b8a354a5cc8ff04a4d271a8cf87a3e3125db4232d7"
+      },
+      "complete": true,
+      "content_length": "2938808",
+      "content_type": "application/octet-stream",
+      "ended_monotonic": 1727841.068016916,
+      "redirects": [],
+      "started_monotonic": 1727840.275183541,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/boulder_01.bin",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/boulder_01/boulder_01.bin"
+    },
+    {
+      "body_bytes": 2773,
+      "body_ref": {
+        "bytes": 2773,
+        "md5": "3ef4b3c88c898e12b096eeb40f1edbb9",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/boulder_01_2k.gltf",
+        "sha256": "52d118b56748a18509e4ec0075d07b254d72a0401793f22363c0bb3a682e7361"
+      },
+      "complete": true,
+      "content_length": "2773",
+      "content_type": "model/gltf+json",
+      "ended_monotonic": 1727841.423517333,
+      "redirects": [],
+      "started_monotonic": 1727841.068661875,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/boulder_01_2k.gltf",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/boulder_01/boulder_01_2k.gltf"
+    },
+    {
+      "body_bytes": 2273068,
+      "body_ref": {
+        "bytes": 2273068,
+        "md5": "94c796dfd73f72b11e557cb2c05ff51e",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_arm_2k.jpg",
+        "sha256": "ab52859dde519b4822111aa60916b6d21f8a6966c67b6cec44d1cd0775b8a86a"
+      },
+      "complete": true,
+      "content_length": "2273068",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727842.327790625,
+      "redirects": [],
+      "started_monotonic": 1727841.425244833,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_arm_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/boulder_01/boulder_01_arm_2k.jpg"
+    },
+    {
+      "body_bytes": 3672483,
+      "body_ref": {
+        "bytes": 3672483,
+        "md5": "63571077317c9a2d1db95894e0268a07",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_diff_2k.jpg",
+        "sha256": "90bbaa17c1fe0254d2b0b6e5148264fa834953a72724d566f14af029eebe3ca3"
+      },
+      "complete": true,
+      "content_length": "3672483",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727843.108770291,
+      "redirects": [],
+      "started_monotonic": 1727842.32918275,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/boulder_01/boulder_01_diff_2k.jpg"
+    },
+    {
+      "body_bytes": 4674664,
+      "body_ref": {
+        "bytes": 4674664,
+        "md5": "0a4d4bd0c6290d6f5bacc80ff05ffc38",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_nor_dx_2k.jpg",
+        "sha256": "28ef2b9533ea62f1c1573f9299dca5b42e987a6eb4924bcf590e3e7fd9c659c8"
+      },
+      "complete": true,
+      "content_length": "4674664",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727844.108455083,
+      "redirects": [],
+      "started_monotonic": 1727843.109538875,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_nor_dx_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/boulder_01/boulder_01_nor_dx_2k.jpg"
+    },
+    {
+      "body_bytes": 4649207,
+      "body_ref": {
+        "bytes": 4649207,
+        "md5": "73ee1783fca7605fd454f0af3e5b85fa",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_nor_gl_2k.jpg",
+        "sha256": "5174b318712ac7725cbcb55d422607f9c66d7f8d035c5412ab897b5939e2db6b"
+      },
+      "complete": true,
+      "content_length": "4649207",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727845.180264041,
+      "redirects": [],
+      "started_monotonic": 1727844.109057416,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/boulder_01/textures/boulder_01_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/boulder_01/boulder_01_nor_gl_2k.jpg"
+    },
+    {
+      "body_bytes": 2369236,
+      "body_ref": {
+        "bytes": 2369236,
+        "md5": "c13539773df6a7607b496032e444251a",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/forrest_ground_01.bin",
+        "sha256": "0af862b36af89baf034e0121d2045e60c37d854171cc3ffefd784e83257198e6"
+      },
+      "complete": true,
+      "content_length": "2369236",
+      "content_type": "application/octet-stream",
+      "ended_monotonic": 1727846.712280791,
+      "redirects": [],
+      "started_monotonic": 1727845.180931416,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/forrest_ground_01.bin",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/forrest_ground_01/forrest_ground_01.bin"
+    },
+    {
+      "body_bytes": 2741,
+      "body_ref": {
+        "bytes": 2741,
+        "md5": "029c81c28336d814b3fabb9dee402ddc",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/forrest_ground_01_2k.gltf",
+        "sha256": "9ecbbb29ca8c0f41e25fc73e9a4d14f704a4519c3a6827e4edc8ddc33d426dd6"
+      },
+      "complete": true,
+      "content_length": "2741",
+      "content_type": "application/octet-stream",
+      "ended_monotonic": 1727847.449043708,
+      "redirects": [],
+      "started_monotonic": 1727846.713149583,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/forrest_ground_01_2k.gltf",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/2k/forrest_ground_01/forrest_ground_01_2k.gltf"
+    },
+    {
+      "body_bytes": 1160819,
+      "body_ref": {
+        "bytes": 1160819,
+        "md5": "bb5d791e2697b0b4b8703963c42a70d4",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_arm_2k.jpg",
+        "sha256": "abc91717bc60c831f2cd86ad06a5c575ac0e5bd11870b1e7b6dcefc122fc64db"
+      },
+      "complete": true,
+      "content_length": "1160819",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727848.176046291,
+      "redirects": [],
+      "started_monotonic": 1727847.450544916,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_arm_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forrest_ground_01/forrest_ground_01_arm_2k.jpg"
+    },
+    {
+      "body_bytes": 3077552,
+      "body_ref": {
+        "bytes": 3077552,
+        "md5": "18fa30c294be21805159ca6e73a5e5fa",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_diff_2k.jpg",
+        "sha256": "e4d557ff61a0b42712a58e8a2e91c6010738977d4e172b7af47abd7d406ae735"
+      },
+      "complete": true,
+      "content_length": "3077552",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727849.604294666,
+      "redirects": [],
+      "started_monotonic": 1727848.176829333,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forrest_ground_01/forrest_ground_01_diff_2k.jpg"
+    },
+    {
+      "body_bytes": 5664401,
+      "body_ref": {
+        "bytes": 5664401,
+        "md5": "e1b78b45dde854401d82cfc7d4dcf6e5",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_nor_dx_2k.jpg",
+        "sha256": "fcc8900b8f1d67d3ff242ad3111b91d2a72d8183c850f1d8ae21eaf9c67a5ba4"
+      },
+      "complete": true,
+      "content_length": "5664401",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727852.015345833,
+      "redirects": [],
+      "started_monotonic": 1727849.605203333,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_nor_dx_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forrest_ground_01/forrest_ground_01_nor_dx_2k.jpg"
+    },
+    {
+      "body_bytes": 5551101,
+      "body_ref": {
+        "bytes": 5551101,
+        "md5": "7bb5186bd63bef99f6d21316718896f2",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_nor_gl_2k.jpg",
+        "sha256": "aa23fa930c6303490f842f7c016c19d838263e8e4538d42508a9332e3fd76b69"
+      },
+      "complete": true,
+      "content_length": "5551101",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727853.066033708,
+      "redirects": [],
+      "started_monotonic": 1727852.016228416,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forrest_ground_01/forrest_ground_01_nor_gl_2k.jpg"
+    },
+    {
+      "body_bytes": 920422,
+      "body_ref": {
+        "bytes": 920422,
+        "md5": "a4c7ecc9cef47f5d097d4553e421ed6a",
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_rough_2k.jpg",
+        "sha256": "e09258c7f055156a7607f1b21dccf38c7efd847e7d030271d5ffcc4a722df37d"
+      },
+      "complete": true,
+      "content_length": "920422",
+      "content_type": "image/jpeg",
+      "ended_monotonic": 1727853.884912666,
+      "redirects": [],
+      "started_monotonic": 1727853.066892125,
+      "status": 200,
+      "target": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets/assets/forrest_ground_01/textures/forrest_ground_01_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forrest_ground_01/forrest_ground_01_rough_2k.jpg"
+    }
+  ],
+  "scope": "all response bodies including metadata/license/redirect/partial; no execution/import",
+  "started_monotonic": 1727708.666279958
+}

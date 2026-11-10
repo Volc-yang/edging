@@ -1,0 +1,20 @@
+{
+  "scope": "synthetic absence/corruption/path checks; actual asset files unchanged",
+  "checks": [
+    {
+      "case": "missing_required_file",
+      "result": "PASS_REJECTED",
+      "error": "missing file: /private/tmp/i20a-contract-negative-kap7ds28/assets/fern_02/fern_02.bin"
+    },
+    {
+      "case": "corrupt_required_buffer",
+      "result": "PASS_REJECTED",
+      "error": "source size/hash mismatch: assets/fern_02/fern_02.bin"
+    },
+    {
+      "case": "unsafe_parent_path",
+      "result": "PASS_REJECTED",
+      "error": "unsafe dependency path: ../escape"
+    }
+  ]
+}

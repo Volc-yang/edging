@@ -1,0 +1,51 @@
+{
+  "durable_asset_input": {
+    "asset_root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets",
+    "index_git_object_ref": "a979027d314db1a0316709d340cb0980cc2319d9:doc/evidence/universe-I20A/asset-index.json",
+    "index_repository_path": "doc/evidence/universe-I20A/asset-index.json",
+    "index_sha256": "d9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7",
+    "resolve_rule": "Source files live on DevSSD. Index paths are root-relative. No source file or runtime authority depends on this task worktree. Native UE import/profile remains planned."
+  },
+  "explicit_correction": "The metadata receipt old helper path now names the evolved binary downloader and no longer matches its original SHA; metadata bytes are preserved separately. No immutable receipt was rewritten.",
+  "format": "universe-i20-phased-source-provenance.v1",
+  "phases": [
+    {
+      "immutable_receipt": {
+        "repository_path": "doc/evidence/universe-I20A/metadata-receipt.json",
+        "sha256": "1cf354061e30cd9998c40a1f988f6597177c65b4347158ddc854a7d5edbaf6af"
+      },
+      "original_recorded_helper_ref": {
+        "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-assets/doc/evidence/universe-I20A/acquire.py",
+        "sha256": "a51fa23d3edd5adee90fd3616f9c720c2c09afff3a4a194d646cd4684db74087"
+      },
+      "phase": "metadata",
+      "preserved_source": {
+        "git_commit": "a979027d314db1a0316709d340cb0980cc2319d9",
+        "git_object_ref": "a979027d314db1a0316709d340cb0980cc2319d9:doc/evidence/universe-I20A/acquire-metadata-snapshot.py",
+        "immutable_url": "https://github.com/Volc-yang/edging/blob/a979027d314db1a0316709d340cb0980cc2319d9/doc/evidence/universe-I20A/acquire-metadata-snapshot.py",
+        "repository_path": "doc/evidence/universe-I20A/acquire-metadata-snapshot.py",
+        "sha256": "a51fa23d3edd5adee90fd3616f9c720c2c09afff3a4a194d646cd4684db74087"
+      },
+      "resolve_rule": "Verify preserved_source bytes/hash; original receipt remains unchanged. Resolve git_object_ref or repository_path after integration; do not resolve old worktree helper path."
+    },
+    {
+      "immutable_receipt": {
+        "repository_path": "doc/evidence/universe-I20A/acquisition-receipt.json",
+        "sha256": "9adfbad141c8ec2a9034ae02dfc88badbb0f3401fd039587104dbbccf28cdddc"
+      },
+      "original_recorded_helper_ref": {
+        "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i20-assets/doc/evidence/universe-I20A/acquire.py",
+        "sha256": "4582ccc78994643aa41f3340a006640a7dc787ef2e99208c98f76a86b9fa822b"
+      },
+      "phase": "binary",
+      "preserved_source": {
+        "git_commit": "a979027d314db1a0316709d340cb0980cc2319d9",
+        "git_object_ref": "a979027d314db1a0316709d340cb0980cc2319d9:doc/evidence/universe-I20A/acquire.py",
+        "immutable_url": "https://github.com/Volc-yang/edging/blob/a979027d314db1a0316709d340cb0980cc2319d9/doc/evidence/universe-I20A/acquire.py",
+        "repository_path": "doc/evidence/universe-I20A/acquire.py",
+        "sha256": "4582ccc78994643aa41f3340a006640a7dc787ef2e99208c98f76a86b9fa822b"
+      },
+      "resolve_rule": "Verify preserved_source bytes/hash; original receipt remains unchanged. Resolve git_object_ref or repository_path after integration; do not resolve old worktree helper path."
+    }
+  ]
+}
