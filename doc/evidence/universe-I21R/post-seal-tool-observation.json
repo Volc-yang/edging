@@ -1,0 +1,16 @@
+{
+  "format": "universe-i21-post-seal-observation.v1",
+  "seal_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/campaign-seal.json",
+    "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+  },
+  "observed_after_final_fsync": true,
+  "actual_sizes": {
+    "root_bytes": 26383495,
+    "content_bytes": 2679781,
+    "temporary_ipc": []
+  },
+  "continuous_elapsed_seconds": 742.4675231250003,
+  "result": "partial_or_fail",
+  "native_runtime_build_visual_acceptance": false
+}

@@ -1,0 +1,15 @@
+{
+  "actual_sizes": {
+    "content_bytes": 0,
+    "root_bytes": 8362104
+  },
+  "campaign_elapsed_seconds": 9.407152083003893,
+  "execution_json_bytes": 5938,
+  "execution_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/execution.json",
+    "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+  },
+  "format": "universe-i21-phase-postwrite.v1",
+  "observed_after_execution_fsync": true,
+  "within_budget_after_execution_saved": true
+}

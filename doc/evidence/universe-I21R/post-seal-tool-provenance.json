@@ -1,0 +1,12 @@
+{
+  "format": "universe-i21-terminal-capture-provenance.v1",
+  "artifact": "doc/evidence/universe-I21R/post-seal-tool-observation.json",
+  "source": "verbatim JSON stdout copied from the completed exec session result, not a rerun or reconstruction of worker output",
+  "tool": "exec_command / write_stdin",
+  "session_id": 17809,
+  "completion_chunk_id": "06f293",
+  "actual_exit_code": 2,
+  "command": "python3 -B doc/evidence/universe-I21R/seal_campaign_v2.py",
+  "scope": "printed passive observation after campaign-seal.json fsync; no subsequent run-root write",
+  "independent_review": "must cross-check seal SHA, current file map/bytes and phase originals; terminal capture alone does not grant Native acceptance"
+}

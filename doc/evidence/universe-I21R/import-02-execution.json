@@ -1,0 +1,317 @@
+{
+  "actual_parent_wait_exit": 255,
+  "actual_sizes": {
+    "content_bytes": 2679781,
+    "root_bytes": 21768162,
+    "temporary_ipc": []
+  },
+  "campaign_elapsed_seconds": 570.6876517080236,
+  "card_ref": {
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I21R/import-02-card.json",
+    "sha256": "11c3a5559cb7334d4a24722f2757046ddc5ca50ec985633a02b1d937af4e484f"
+  },
+  "cleanup": [],
+  "content_unchanged_after_reload": null,
+  "ended_monotonic": 1735900.031705125,
+  "error": null,
+  "final_budget_ok": true,
+  "final_errors": [],
+  "forced": false,
+  "format": "universe-i21-phase-execution.v1",
+  "input_refs_rechecked": true,
+  "known_owned": [
+    {
+      "argv": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor-Cmd /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/host/EdgeWorldAssetImport.uproject -run=pythonscript -script=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/scripts/ue_entry.py -NullRHI -unattended -NoSplash -NoSound -notraceserver -traceautostart=0 -UserDir=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/user -abslog=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/ue.log -DDC=(Isolated=(Type=FileSystem,Path=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/ddc,PromptIfMissing=false,Clean=false,DeleteUnused=false)) -DDC-NoDefaultGraph -NoSourceControl -NoP4 -NoLiveCoding -NoAutoRecompileBlueprints",
+      "pid": 26198,
+      "ppid": 26186,
+      "start": "Tue Nov 10 14:12:54 2026"
+    },
+    {
+      "argv": "<defunct>",
+      "pid": 26198,
+      "ppid": 26186,
+      "start": "Tue Nov 10 14:12:54 2026"
+    }
+  ],
+  "normal": false,
+  "parent_pid": 26186,
+  "phase": "import-02",
+  "pid": 26198,
+  "quiet_samples": [
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-0.ps",
+        "sha256": "5c2a99690d8ffdbe07460e569629e22edaf23525c1c25d35de39daf9b51db32a"
+      },
+      "remaining": []
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-1.ps",
+        "sha256": "0eea84de204de83b7d1c1fca566208eeecf10c9f7dbf3a65260624706a88edc6"
+      },
+      "remaining": []
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-final.ps",
+        "sha256": "6750b1b83083094c6e43dd25dfb611d4589af3abb8ad2cf9cc95ba6ebde0a673"
+      },
+      "remaining": []
+    }
+  ],
+  "report_exists": true,
+  "samples": [
+    {
+      "content_bytes": 0,
+      "monotonic": 1735873.668651541,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0000.ps",
+        "sha256": "97f848d12117de76cde9363290610fd7c4f4aecb27f14879fc31b29ac621850c"
+      },
+      "root_bytes": 9269759,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735874.722829666,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0001.ps",
+        "sha256": "44e2504c89b8c1d66d690d51e7d6f8f6069e1ca1b74ac3f8391057353667e419"
+      },
+      "root_bytes": 9490069,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735875.77608775,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0002.ps",
+        "sha256": "13d903dc6ea0ef923ea4203a97cbc78567f4f4bc81e949aa24b048636de5e267"
+      },
+      "root_bytes": 9723763,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735876.836988208,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0003.ps",
+        "sha256": "cdef65c6af5fd5060de4c7f09db065d57c99f5e8b4d51f11f36fb610e50bfff6"
+      },
+      "root_bytes": 10000880,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735877.891427333,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0004.ps",
+        "sha256": "850ca11500489da2ca6fd0fc15b9a023876210553c42319d4b75b24a9fbb1dc1"
+      },
+      "root_bytes": 11277436,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735878.948708458,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0005.ps",
+        "sha256": "644f325cce68bdeda85ced30f2968186faa91131881beea72ef8a864614add6d"
+      },
+      "root_bytes": 11552817,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735880.008866,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0006.ps",
+        "sha256": "f4b15c234c7fe2d0046f09298422ca1653adebdbffb5f54fb2ddd848a5a72b5d"
+      },
+      "root_bytes": 12847878,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735881.065545458,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0007.ps",
+        "sha256": "e1e584e171d2736b1ac47b0780c2dda37ae4883231006bd045836c29f11e10bb"
+      },
+      "root_bytes": 13127981,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735882.120957083,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0008.ps",
+        "sha256": "6afda37c39b44ccaae615b299e8395049a5e044235edccf5f7a5b9a9ead71bdb"
+      },
+      "root_bytes": 13426976,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735883.172027208,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0009.ps",
+        "sha256": "8c08b3eea5ea73d9c1cc98cf06aa398553f75888fffb30e13cf7c979b4891ea4"
+      },
+      "root_bytes": 13677113,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735884.240009166,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0010.ps",
+        "sha256": "4b24803052614ecee02dad2ddb6bb3259f19157ca9dc4c008ee67e3cee2e3006"
+      },
+      "root_bytes": 13994311,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735885.310556916,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0011.ps",
+        "sha256": "175eebbb5e176f125a0b3eb5397cd6f3a8462846abc0eb89fafece5e28365df8"
+      },
+      "root_bytes": 14284392,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735886.368552416,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0012.ps",
+        "sha256": "add014501e48c98e99b97b2e2cc5a58e4e0f82512cec0a77ecdbbbbeedf131c8"
+      },
+      "root_bytes": 14555264,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735887.429451208,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0013.ps",
+        "sha256": "a195ed1a7131d0b74956080e98c111aa84ee3b5ea28a965098c3a294026585f2"
+      },
+      "root_bytes": 14826136,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735888.485839625,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0014.ps",
+        "sha256": "282666ce26486e44ae12816030627b4361e529ca80e75e01a9a247da5b3a6557"
+      },
+      "root_bytes": 15096779,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735889.543332583,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0015.ps",
+        "sha256": "e52ef5e144cb2783524f811a79a2c48426c6ffd7c8ca20c800d6fba3889501cb"
+      },
+      "root_bytes": 15551744,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735890.603228666,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0016.ps",
+        "sha256": "c53acce6241f87b0692b70a85ff67aed0c2ea03a9b2f61b7962ac55d4f8de0fa"
+      },
+      "root_bytes": 15782065,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735891.663510875,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0017.ps",
+        "sha256": "2b59d2522c636a2c12086bfef5d78d2dd2a0ee247c557094bc1f97750e85d6b9"
+      },
+      "root_bytes": 16012469,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735892.7259065,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0018.ps",
+        "sha256": "4623a63f9a8f039e8c0e8d0c86bbfff8c4eda0aeb9e8484ba3665f830032d32a"
+      },
+      "root_bytes": 18924917,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735893.780405916,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0019.ps",
+        "sha256": "2e42cc3ccd09f4f9b7c85d61a39596ad3a8151dfd91a3efcef36e5cc64c830f7"
+      },
+      "root_bytes": 19155799,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735894.839015166,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0020.ps",
+        "sha256": "bfd32d0c56401b5de93cf10c2072ff77a68f63fe5445e4bfd2c084551c07e924"
+      },
+      "root_bytes": 19386681,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735895.897362583,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0021.ps",
+        "sha256": "8ae99bbd6e3f681d86f0c9ad4157c951066c61a5a00f1f82b182c66d42a520ac"
+      },
+      "root_bytes": 20128011,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735896.957822291,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0022.ps",
+        "sha256": "6001cf81e6501d5eb9614000bc7de3393ab095310dee899b5511b467ed336098"
+      },
+      "root_bytes": 20358691,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735898.016215375,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0023.ps",
+        "sha256": "b2505c203741e7b46ea9a9c2c330e031f73ff34196d2c05169faf6d574629679"
+      },
+      "root_bytes": 20621903,
+      "temporary_ipc": []
+    },
+    {
+      "content_bytes": 2679781,
+      "monotonic": 1735899.090468708,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/sample-0024.ps",
+        "sha256": "8ae33e33114eb5f2d8972fc6d169676e397b09a4f18aff0a07c02d17cdd4fef1"
+      },
+      "root_bytes": 20852225,
+      "temporary_ipc": []
+    }
+  ],
+  "started_monotonic": 1735873.624499166
+}

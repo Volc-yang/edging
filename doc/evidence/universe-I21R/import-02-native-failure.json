@@ -1,0 +1,6 @@
+{
+  "error": "'NoneType' object has no attribute 'enable_section_collision'",
+  "format": "edgeworld.i21.native-import-result.v0.1",
+  "pid": 26198,
+  "status": "FAIL"
+}

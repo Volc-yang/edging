@@ -1,0 +1,47 @@
+{
+  "changes": [
+    {
+      "after": null,
+      "before": {
+        "bytes": 358,
+        "inode": 85929428,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794101926724789891
+      },
+      "relative": "Trace-backup-2026.11.08-01.38.46.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    },
+    {
+      "after": {
+        "bytes": 323,
+        "inode": 85941948,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794120373230212929
+      },
+      "before": null,
+      "relative": "Trace-backup-2026.11.08-06.46.13.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    },
+    {
+      "after": {
+        "bytes": 328,
+        "inode": 86276194,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794290635861176770
+      },
+      "before": {
+        "bytes": 323,
+        "inode": 85941948,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794120373230212929
+      },
+      "relative": "Trace.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    }
+  ],
+  "limitation": "metadata comparison of six declared domains; changed actors are not inferred"
+}

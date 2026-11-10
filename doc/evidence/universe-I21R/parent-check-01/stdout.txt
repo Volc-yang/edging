@@ -1,0 +1,22 @@
+{
+  "decision": "reject_complete_D3_IMPORT_accept_preserved_partial_cycle_evidence",
+  "unique_input_pins_rehashed": 813,
+  "original_I20_files_unchanged": 34,
+  "actual_root_file_count": 217,
+  "actual_root_bytes": 26383495,
+  "actual_saved_uasset_packages": 0,
+  "actual_completed_Interchange_import_logs": 16,
+  "repository_runtime_copies_byte_equal": 7,
+  "gates": {
+    "C0_plan": "accepted",
+    "C1_source_CPU_and_cards": "accepted",
+    "positive_saved_package_import": "fail",
+    "fresh_process_reload": "not_run",
+    "Native_metadata_material_negative_checks": "not_run",
+    "continuous_wall_and_file_byte_caps": "pass_bounded_only",
+    "normal_successful_exit": "fail",
+    "declared_external_write_boundary": "fail",
+    "D3_IMPORT": "not_accepted",
+    "D3_ADAPTER_BUILD_D4": "not_run"
+  }
+}

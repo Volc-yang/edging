@@ -1,0 +1,129 @@
+{
+  "actual_parent_wait_exit": 0,
+  "actual_sizes": {
+    "content_bytes": 0,
+    "root_bytes": 8356166
+  },
+  "campaign_elapsed_seconds": 9.403098999988288,
+  "card_ref": {
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I21R/import-01-card.json",
+    "sha256": "f5b9acfecafdf00624fb78051ab0eb9db5aeacb3428a31cc9403c5dd7aeb0731"
+  },
+  "cleanup": [],
+  "content_unchanged_after_reload": null,
+  "ended_monotonic": 1735338.747152416,
+  "error": "AssertionError: /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/tmp/dotnet-diagnostic-10371-1794290635",
+  "final_budget_ok": true,
+  "final_errors": [],
+  "forced": true,
+  "format": "universe-i21-phase-execution.v1",
+  "input_refs_rechecked": true,
+  "known_owned": [
+    {
+      "argv": "/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor-Cmd /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -run=pythonscript -script=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/scripts/ue_entry.py -NullRHI -unattended -NoSplash -NoSound -notraceserver -traceautostart=0 -UserDir=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user -abslog=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/ue.log -DDC=(Isolated=(Type=FileSystem,Path=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/ddc,PromptIfMissing=false,Clean=false,DeleteUnused=false)) -DDC-NoDefaultGraph -NoSourceControl -NoP4 -NoLiveCoding -NoAutoRecompileBlueprints",
+      "pid": 10196,
+      "ppid": 10161,
+      "start": "Tue Nov 10 14:03:50 2026"
+    },
+    {
+      "argv": "/bin/sh /Users/Shared/Epic Games/UE_5.8/Engine/Build/BatchFiles/Mac/Build.sh -Mode=ValidatePlatforms -OutputSDKs -AllPlatforms -project=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -log=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user/Saved/Logs/AutoSDKInfo.txt -verbose -timestamps",
+      "pid": 10358,
+      "ppid": 10196,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll -Mode=ValidatePlatforms -OutputSDKs -AllPlatforms -project=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/host/EdgeWorldAssetImport.uproject -log=/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/user/Saved/Logs/AutoSDKInfo.txt -verbose -timestamps",
+      "pid": 10371,
+      "ppid": 10358,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "uba-orphankill -c while kill -0 \"$1\" 2>/dev/null; do sleep 0.2; done; self=$$; pass=0; while [ $pass -lt 3 ]; do   killed=0;   for p in $(ps -E -ww -ax -o pid=,command= 2>/dev/null |              awk -v t=\"UBA_SESSION_PROCESS=$1\" -v me=\"$self\"                  '$0 ~ t && $1 != me { print $1 }'); do     kill -KILL \"$p\" 2>/dev/null && killed=1;   done;   [ $killed -eq 0 ] && break;   sleep 0.1; pass=$((pass+1)); done uba-orphankill 10371",
+      "pid": 10374,
+      "ppid": 10371,
+      "start": "Tue Nov 10 14:03:55 2026"
+    },
+    {
+      "argv": "sleep 0.2",
+      "pid": 10375,
+      "ppid": 10374,
+      "start": "Tue Nov 10 14:03:55 2026"
+    }
+  ],
+  "normal": false,
+  "parent_pid": 10161,
+  "phase": "import-01",
+  "pid": 10196,
+  "quiet_samples": [
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-0.ps",
+        "sha256": "febcfe8dfe51d90a86dd2a489a2acfb946c0626d240940eccdf0c6f26fde8723"
+      },
+      "remaining": []
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-1.ps",
+        "sha256": "5695fe2c8a43f53bcae9823fa47c279f918804cb440534c725ea8131c014bbe3"
+      },
+      "remaining": []
+    },
+    {
+      "raw_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-final.ps",
+        "sha256": "5d34e9a442ddcd91dddc88c617b4dfa11c9c1bb571043500a6924e9342a15922"
+      },
+      "remaining": []
+    }
+  ],
+  "report_exists": false,
+  "samples": [
+    {
+      "content_bytes": 0,
+      "monotonic": 1735329.431970083,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/sample-0000.ps",
+        "sha256": "0e14b523aa0ed354a27ffba83c1718f2c9fe4746c581c13dbd6525b3e32055c4"
+      },
+      "root_bytes": 5288888
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735330.482410625,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/sample-0001.ps",
+        "sha256": "30e2865074b2520b478c7710fb731e3d8df209f267a927412428a78be6a31f6c"
+      },
+      "root_bytes": 5509422
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735331.536184916,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/sample-0002.ps",
+        "sha256": "9f8f299e12ba478b66e32cadff3a57b8a3103e80ee2341191baa8588d3d8fb8a"
+      },
+      "root_bytes": 5731330
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735332.588949416,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/sample-0003.ps",
+        "sha256": "83fc77808cf9e988beb2261f30851ff6874bdd55cf3922152c9ed7ef44eb72ab"
+      },
+      "root_bytes": 5953238
+    },
+    {
+      "content_bytes": 0,
+      "monotonic": 1735333.640396208,
+      "ps_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/sample-0004.ps",
+        "sha256": "ce2ed9492bc41f57164e6de31ae6b4b4ec2d83dc5a6edfdda074ae4a3cfa14d3"
+      },
+      "root_bytes": 6175707
+    }
+  ],
+  "started_monotonic": 1735329.388655625
+}

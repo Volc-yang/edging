@@ -1,0 +1,37 @@
+{
+  "format": "universe-i21-publication-status.v1",
+  "status": "awaiting_explicit_user_confirmation_for_public_payload",
+  "remote_repository": "Volc-yang/edging",
+  "remote_url": "ssh://git@ssh.github.com:443/Volc-yang/edging.git",
+  "visibility": "public",
+  "fresh_connector_identity_verification": {
+    "authenticated_login": "Volc-yang",
+    "authenticated_id": 56686828,
+    "repository_id": 1291093087,
+    "owner_id": 56686828,
+    "admin": true,
+    "push": true,
+    "profile_email_excluded": true
+  },
+  "rejected_action": "git push origin codex/i21-import",
+  "rejection_count": 2,
+  "rejection_source": "implementation agent reported automatic approval-review results; no root retry or alternate publication route",
+  "stated_reason": "Fresh ownership was acknowledged but explicit user approval for this specific code, local paths, UE metadata and hash payload to the public destination was required",
+  "local_implementation_head": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+  "implementation_branch": "codex/i21-import",
+  "draft_PR_created": false,
+  "implementation_merged": false,
+  "automatic_checks_run_in_GitHub": false,
+  "publication_scope_for_review": [
+    "I21 importer, recipe, content-only descriptor/config and tests",
+    "I21 scoped review and runtime evidence metadata, absolute machine paths, UE version and SHA identifiers",
+    "I21 coordinator context and guarded execution artifacts"
+  ],
+  "excluded": [
+    "binary source assets and generated UE/DDC files",
+    "complete raw UE logs with machine/login metadata",
+    "complete raw system PS captures",
+    "owner/key/private credentials and unrelated user changes"
+  ],
+  "after_confirmation": "publish listed scoped branches/context and open a draft PR only; failed Native implementation must not be merged"
+}

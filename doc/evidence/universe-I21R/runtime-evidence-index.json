@@ -1,0 +1,48 @@
+{
+  "format": "universe-i21-copied-runtime-originals.v1",
+  "files": [
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/execution.json",
+      "repository_path": "doc/evidence/universe-I21R/import-01-execution.json",
+      "bytes": 5938,
+      "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/execution.json",
+      "repository_path": "doc/evidence/universe-I21R/import-02-execution.json",
+      "bytes": 11794,
+      "sha256": "31c0a5ebcca080d3dcf79e7cbd62565b3bee5c2b3f16f6903e728476a2d6ca70"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/phase-postwrite.json",
+      "repository_path": "doc/evidence/universe-I21R/import-01-postwrite.json",
+      "bytes": 516,
+      "sha256": "12c1d74f4614324fc5ca84a332266423a55da1d8274e7f188663e226bb204971"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/phase-postwrite.json",
+      "repository_path": "doc/evidence/universe-I21R/import-02-postwrite.json",
+      "bytes": 549,
+      "sha256": "6380c948fb6b6b9a9874a661f004a8abc96d800461df5e848bfb54a1307ab61b"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/result.json",
+      "repository_path": "doc/evidence/universe-I21R/import-02-native-failure.json",
+      "bytes": 170,
+      "sha256": "a09296a106d1ad7bf9bfd5e55db753cc9acc88b3473d6a3118056849343b6c6e"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/campaign-seal.json",
+      "repository_path": "doc/evidence/universe-I21R/campaign-seal.json",
+      "bytes": 2207,
+      "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+    },
+    {
+      "source": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/external-diff.json",
+      "repository_path": "doc/evidence/universe-I21R/external-diff.json",
+      "bytes": 1232,
+      "sha256": "f2054ff2d3f66b31470b7580f53ee6f2b65a2c3c14c4cca954f7d651b5be4c27"
+    }
+  ],
+  "raw_UE_logs_and_ps": "retained only under durable DevSSD run root; hashes/refs do not publish full raw logs"
+}

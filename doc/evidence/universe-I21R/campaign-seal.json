@@ -1,0 +1,55 @@
+{
+  "actual_sizes_before_seal": {
+    "content_bytes": 2679781,
+    "root_bytes": 26381288,
+    "temporary_ipc": []
+  },
+  "campaign_elapsed_before_seal": 742.4577757501975,
+  "external_diff_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/external-diff.json",
+    "sha256": "f2054ff2d3f66b31470b7580f53ee6f2b65a2c3c14c4cca954f7d651b5be4c27"
+  },
+  "external_errors": [],
+  "final_ps_ref": {
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/final-processes.ps",
+    "sha256": "74459713751b3681f0e5960c5aaa8bc4f12c83a4afc7db3eec61b381f359069f"
+  },
+  "format": "universe-i21-campaign-seal.v1",
+  "input_errors": [],
+  "native_acceptance": "requires_independent_C2; no runtime, build or visual grant",
+  "phase_records": [
+    {
+      "actual_parent_wait_exit": 0,
+      "execution_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/execution.json",
+        "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+      },
+      "forced": true,
+      "normal": false,
+      "phase": "import-01",
+      "postwrite_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/phase-postwrite.json",
+        "sha256": "12c1d74f4614324fc5ca84a332266423a55da1d8274e7f188663e226bb204971"
+      },
+      "within_budget_after_execution_saved": true
+    },
+    {
+      "actual_parent_wait_exit": 255,
+      "execution_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/execution.json",
+        "sha256": "31c0a5ebcca080d3dcf79e7cbd62565b3bee5c2b3f16f6903e728476a2d6ca70"
+      },
+      "forced": false,
+      "normal": false,
+      "phase": "import-02",
+      "postwrite_ref": {
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/phase-postwrite.json",
+        "sha256": "6380c948fb6b6b9a9874a661f004a8abc96d800461df5e848bfb54a1307ab61b"
+      },
+      "within_budget_after_execution_saved": true
+    }
+  ],
+  "process_and_declared_domain_check": false,
+  "reload_content_and_local_report_pass": false,
+  "remaining": []
+}

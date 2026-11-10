@@ -1,0 +1,20 @@
+{
+  "format": "universe-i21-parent-integration-recheck.v1",
+  "integration_commit": "763f9639ff2b490faefe152671fc1aac7a37d1d8",
+  "command": [
+    "python3",
+    "-B",
+    "doc/evidence/universe-I21C/check_run_evidence.py",
+    "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation",
+    "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I21R/parent-check-01"
+  ],
+  "actual_parent_wait_exit": 0,
+  "wall_seconds": 1.1930592500139028,
+  "stdout_sha256": "8be04d9f7a2af9d13163778e9aed63cec4328f852543c0f3646f055b26146f60",
+  "C_original_commit": "2f434cb0945df483daeb3eb51dbf3ab29cd5f98c",
+  "C_21_files_and_index_equal": true,
+  "parent_result_equals_C2": true,
+  "Native_gate": "not_accepted",
+  "source_A_integrated": false,
+  "new_UE_or_GPU_started": false
+}

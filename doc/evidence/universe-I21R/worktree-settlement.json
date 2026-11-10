@@ -1,0 +1,36 @@
+{
+  "format": "universe-i21-worktree-settlement.v1",
+  "removed": {
+    "task": "C",
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-review",
+    "branch": "codex/i21-review",
+    "source_commit": "2f434cb0945df483daeb3eb51dbf3ab29cd5f98c",
+    "integration_commit": "763f9639ff2b490faefe152671fc1aac7a37d1d8",
+    "clean_before": true,
+    "runtime_card_dependency_matches": 0,
+    "C_21_original_bytes_preserved_and_parent_checked": true,
+    "actual_remove_exit": 0,
+    "force": false,
+    "branch_retained": true
+  },
+  "retained": [
+    {
+      "task": "A",
+      "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import",
+      "branch": "codex/i21-import",
+      "head": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+      "clean": true,
+      "reason": "Native task partial/unmerged; actual correction and draft publication pending"
+    },
+    {
+      "task": "I15",
+      "reason": "retained build/source/deployment inputs"
+    },
+    {
+      "task": "I12B",
+      "reason": "retained recovery originals"
+    }
+  ],
+  "main_checkout_head": "d6298e3a138b0b67f23e6523aae1e428eef54231",
+  "unrelated_worktrees_preserved": true
+}

@@ -1,0 +1,497 @@
+{
+  "format": "universe-i21-public-payload-manifest.v1",
+  "destination": "https://github.com/Volc-yang/edging",
+  "visibility": "public",
+  "approval": "pending; automatic review rejected publication twice, do not transmit until user confirms",
+  "source_branches": [
+    {
+      "branch": "codex/i21-import",
+      "commit": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+      "scope": "partial implementation; draft PR only, no merge",
+      "files": [
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-attempt1.txt",
+          "bytes": 4459,
+          "sha256": "082da279eb4676bb0feb46012c31e795337fb828fc8ceed97a3a12c049e02c8a"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-attempt2.txt",
+          "bytes": 660,
+          "sha256": "14ae4ee52077e7d76bdea881fc73f1525d52b4d4bf0fe3a4671b4b125a4b5c13"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-c1-affected.txt",
+          "bytes": 402,
+          "sha256": "92337cb0d64a1491025408b92ae968ab4d68ee4d2ee4e97ed67542e28622758e"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-c1-documents.txt",
+          "bytes": 803,
+          "sha256": "92c0c21c638629e6b9b7ccd34a15e7bb8cf22c7f0b73be00a374f4708749c664"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-c1-final.txt",
+          "bytes": 803,
+          "sha256": "5755d1e0eead7c102b5caeffe720fbde48714e7d6e0d548d1b6081fa1a8a6099"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-c1.txt",
+          "bytes": 803,
+          "sha256": "739681c92b528ae6fbbed785b4d579ef86d521ae99a521b5ca07a9d660070beb"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/cpu-check-final.txt",
+          "bytes": 660,
+          "sha256": "ffb9922c25ec2c3757c3125f09df3d8ee511e9b3cf5dea80e486a506b28d4251"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/import02-diagnosis.md",
+          "bytes": 3648,
+          "sha256": "9b5c88eb69b4408ea7efa5119995e4003d0d82fecdac09532793a8b17db08523"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight-c1-complete.json",
+          "bytes": 210947,
+          "sha256": "c72a0b213a6156585ba6aad26c100b1ec3e36fd978f18abd049cada36bfffe21"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight-c1-documents.json",
+          "bytes": 255,
+          "sha256": "717a18dbddaa0ef653a76c01f94fb8517c7db9b37f5c6eaa7ad493acf017eb47"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight-c1-final.json",
+          "bytes": 255,
+          "sha256": "717a18dbddaa0ef653a76c01f94fb8517c7db9b37f5c6eaa7ad493acf017eb47"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight-c1.json",
+          "bytes": 103,
+          "sha256": "a656700655d141c99328ef92c41d17c9a8da35aaa2127083053860665f2afc0d"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight-final.json",
+          "bytes": 199230,
+          "sha256": "4f5e75c4fe4335a21931a41b61f776946a887fec9e51bd748cde7c56f50e3e00"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/preflight.json",
+          "bytes": 193911,
+          "sha256": "4895d601b8f8a0d1da1ac989dca94c72e30fde6818348dbd30d57e8ffd915668"
+        },
+        {
+          "path": "doc/evidence/universe-I21A/report.md",
+          "bytes": 6245,
+          "sha256": "8b22948f4fbaf71712a29ecf51a4d09cf13ec71cd16614d654eecf8a1bcd2fb7"
+        },
+        {
+          "path": "scripts/realism_import/DefaultEngine.ini",
+          "bytes": 332,
+          "sha256": "b0aea16159b1dc545a5f5dc1776875b378b6eabc13ad003c067fe00ef6fc673b"
+        },
+        {
+          "path": "scripts/realism_import/EdgeWorldAssetImport.uproject",
+          "bytes": 385,
+          "sha256": "4f5503400f40e16ebcf077fb126e867ab87932b42419d7620b5e5c79e194c471"
+        },
+        {
+          "path": "scripts/realism_import/README.md",
+          "bytes": 4176,
+          "sha256": "bd48950eab048b6797ac176249aad369af47353b821ac3a1f3fe499e5ce59dc7"
+        },
+        {
+          "path": "scripts/realism_import/__init__.py",
+          "bytes": 82,
+          "sha256": "19e0ddc9c4a402eba6bc92f7d564d9c7ac264f7b560aac4a5ce86c5d289aec3c"
+        },
+        {
+          "path": "scripts/realism_import/common.py",
+          "bytes": 9291,
+          "sha256": "1ce120a4a34f33242cbdcb2e5b1b661a65109b1c08948c3f2d9a0dac770d53c1"
+        },
+        {
+          "path": "scripts/realism_import/prepare.py",
+          "bytes": 7166,
+          "sha256": "d4486c81ea61a6cafa3ec9e199bd244054bfd91084876319dcf044c187b32ab5"
+        },
+        {
+          "path": "scripts/realism_import/recipe.json",
+          "bytes": 9240,
+          "sha256": "2cb665fea9fbe60b7e2e9fd4acd9233913593cf7d6bf497a5b75c84c037af489"
+        },
+        {
+          "path": "scripts/realism_import/ue_entry.py",
+          "bytes": 22774,
+          "sha256": "2eef142a62de166848b6e117fb30156393bbe61135458065a0da767359660003"
+        },
+        {
+          "path": "tests/test_realism_import.py",
+          "bytes": 4478,
+          "sha256": "0c35ed1d22d57e28187633e4c739d1d9ea8540a08260a89dc68a03d481b7fc8c"
+        }
+      ]
+    },
+    {
+      "branch": "codex/i21-review",
+      "commit": "2f434cb0945df483daeb3eb51dbf3ab29cd5f98c",
+      "scope": "independent report source; equivalent parent review already local",
+      "files": [
+        {
+          "path": "doc/evidence/universe-I21C/c1-final-cpu-review.json",
+          "bytes": 3516,
+          "sha256": "7a908bd005d19a3f73299fa9aad6b79c6f5f8af04b775dac7fa255082db8600a"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-final-cpu.txt",
+          "bytes": 803,
+          "sha256": "1f568f55797eb85909c83e2e0f14d1fad91e08ae2a5d20843f207b93d581546a"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-import-01-card-acceptance.json",
+          "bytes": 2292,
+          "sha256": "0ffc4d14e3622cb610fbbe49abfdcc2c6ddf325d8ea27c5ae5f7058d19d5f364"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-import-02-card-acceptance.json",
+          "bytes": 1744,
+          "sha256": "d1530559b13268b20a342127053ee8a964932a589903e1893998b458b8400e2f"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-initial-cpu-checks.txt",
+          "bytes": 660,
+          "sha256": "53aaed66ff0cdc251c283b2c306ac289f418309e59d14692fd687debe64b62bb"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-initial-cpu-review.json",
+          "bytes": 3210,
+          "sha256": "f5de9c15abf6199cd64d729275fa44343a34ef9746821d9caa940ed444636a7f"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-initial-source-review.json",
+          "bytes": 2591,
+          "sha256": "402210bf82a7932305557965eecae0c85a6070c58634df5b66c7cd127922791c"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-recipe-real-source-check.json",
+          "bytes": 2600,
+          "sha256": "cd169cf8afd74fe97911c73432e8bf94172428674c4ecbcff9ea094fd5b09f41"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-source-acceptance.json",
+          "bytes": 2198,
+          "sha256": "9a0ca98fcabe28732b72708b28d0e4111f66a5d274e3b67079d5295eeceafc61"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-v2-IPC-first-attempt.json",
+          "bytes": 321,
+          "sha256": "81aac94b8865b21d2b9398a62c52a2fde374c9f329069463b1fc2b5cacae1e0b"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c1-v2-IPC-sandbox-block.json",
+          "bytes": 587,
+          "sha256": "c6afb0b65aeb1d4315a4dc407ff434077fa9694abdb4b57c5dde659dc0b3432f"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c2-import-01-failure-review.json",
+          "bytes": 6388,
+          "sha256": "59d761d39cad54ef6f3818864516a3672b7e21eff3ee9a61f1800561983dd595"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/c2-run-review.json",
+          "bytes": 10640,
+          "sha256": "de2e90c48206693671ce859e8264f94a3a106b1c2c7f361ffe08162518222773"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/check_run_evidence.py",
+          "bytes": 9953,
+          "sha256": "f527ae510022f87f6cb2a562ce8ee64ea22893af7f682a70ce8ebcdefead0edc"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/evidence-index.json",
+          "bytes": 4212,
+          "sha256": "aacf10da8b4166e4c6167bd18490e55a306136f3d342e349a1ef5a1c134592a5"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/installed-source-check.json",
+          "bytes": 4635,
+          "sha256": "3ea2be578e2b540ab9c79e6139097d5ea72c8a3f8dc37f8591c6ebe4ba9c78a5"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/installed-source-followup.json",
+          "bytes": 1798,
+          "sha256": "1ce9130a2b1dbd1791bd33e325f6e5576010032865bc63e66c3208d549dcafae"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/plan-review.json",
+          "bytes": 2536,
+          "sha256": "242928ed832663fdd894f02622ca042c2eb56d46786e7435c79ad64fe4074446"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/report.md",
+          "bytes": 7271,
+          "sha256": "a07e89eff43a73d4226000cca8f4b52a529d158dcd449a11b3f4474036568038"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/runner-before-C1-review.json",
+          "bytes": 779,
+          "sha256": "22953e5cfb556fc13e9cd86d3cf5ad4f501dab7e22dffd9ff77fb7b234efe3da"
+        },
+        {
+          "path": "doc/evidence/universe-I21C/runner-before-C1.py.txt",
+          "bytes": 8849,
+          "sha256": "1e1d98575a3e45241104ace36ccdb976fdb38d67cf8e904e9a0b9b79daca142c"
+        }
+      ]
+    }
+  ],
+  "coordinator_branch": "codex/plan-consolidation",
+  "coordinator_prior_head": "763f9639ff2b490faefe152671fc1aac7a37d1d8",
+  "coordinator_commit": "the local commit containing this manifest; exact SHA supplied to user after commit",
+  "coordinator_files": [
+    {
+      "path": "doc/edgeworld_integrated_development_plan.md",
+      "bytes": 9425,
+      "sha256": "495b7294472546376f3ba1ecdcca143324c1c43136f840fab782cf82d3afc376"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-final-cpu-review.json",
+      "bytes": 3516,
+      "sha256": "7a908bd005d19a3f73299fa9aad6b79c6f5f8af04b775dac7fa255082db8600a"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-final-cpu.txt",
+      "bytes": 803,
+      "sha256": "1f568f55797eb85909c83e2e0f14d1fad91e08ae2a5d20843f207b93d581546a"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-import-01-card-acceptance.json",
+      "bytes": 2292,
+      "sha256": "0ffc4d14e3622cb610fbbe49abfdcc2c6ddf325d8ea27c5ae5f7058d19d5f364"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-import-02-card-acceptance.json",
+      "bytes": 1744,
+      "sha256": "d1530559b13268b20a342127053ee8a964932a589903e1893998b458b8400e2f"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-initial-cpu-checks.txt",
+      "bytes": 660,
+      "sha256": "53aaed66ff0cdc251c283b2c306ac289f418309e59d14692fd687debe64b62bb"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-initial-cpu-review.json",
+      "bytes": 3210,
+      "sha256": "f5de9c15abf6199cd64d729275fa44343a34ef9746821d9caa940ed444636a7f"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-initial-source-review.json",
+      "bytes": 2591,
+      "sha256": "402210bf82a7932305557965eecae0c85a6070c58634df5b66c7cd127922791c"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-recipe-real-source-check.json",
+      "bytes": 2600,
+      "sha256": "cd169cf8afd74fe97911c73432e8bf94172428674c4ecbcff9ea094fd5b09f41"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-source-acceptance.json",
+      "bytes": 2198,
+      "sha256": "9a0ca98fcabe28732b72708b28d0e4111f66a5d274e3b67079d5295eeceafc61"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-v2-IPC-first-attempt.json",
+      "bytes": 321,
+      "sha256": "81aac94b8865b21d2b9398a62c52a2fde374c9f329069463b1fc2b5cacae1e0b"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c1-v2-IPC-sandbox-block.json",
+      "bytes": 587,
+      "sha256": "c6afb0b65aeb1d4315a4dc407ff434077fa9694abdb4b57c5dde659dc0b3432f"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c2-import-01-failure-review.json",
+      "bytes": 6388,
+      "sha256": "59d761d39cad54ef6f3818864516a3672b7e21eff3ee9a61f1800561983dd595"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/c2-run-review.json",
+      "bytes": 10640,
+      "sha256": "de2e90c48206693671ce859e8264f94a3a106b1c2c7f361ffe08162518222773"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/check_run_evidence.py",
+      "bytes": 9953,
+      "sha256": "f527ae510022f87f6cb2a562ce8ee64ea22893af7f682a70ce8ebcdefead0edc"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/evidence-index.json",
+      "bytes": 4212,
+      "sha256": "aacf10da8b4166e4c6167bd18490e55a306136f3d342e349a1ef5a1c134592a5"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/installed-source-check.json",
+      "bytes": 4635,
+      "sha256": "3ea2be578e2b540ab9c79e6139097d5ea72c8a3f8dc37f8591c6ebe4ba9c78a5"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/installed-source-followup.json",
+      "bytes": 1798,
+      "sha256": "1ce9130a2b1dbd1791bd33e325f6e5576010032865bc63e66c3208d549dcafae"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/plan-review.json",
+      "bytes": 2536,
+      "sha256": "242928ed832663fdd894f02622ca042c2eb56d46786e7435c79ad64fe4074446"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/report.md",
+      "bytes": 7271,
+      "sha256": "a07e89eff43a73d4226000cca8f4b52a529d158dcd449a11b3f4474036568038"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/runner-before-C1-review.json",
+      "bytes": 779,
+      "sha256": "22953e5cfb556fc13e9cd86d3cf5ad4f501dab7e22dffd9ff77fb7b234efe3da"
+    },
+    {
+      "path": "doc/evidence/universe-I21C/runner-before-C1.py.txt",
+      "bytes": 8849,
+      "sha256": "1e1d98575a3e45241104ace36ccdb976fdb38d67cf8e904e9a0b9b79daca142c"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/campaign-seal.json",
+      "bytes": 2207,
+      "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/external-diff.json",
+      "bytes": 1232,
+      "sha256": "f2054ff2d3f66b31470b7580f53ee6f2b65a2c3c14c4cca954f7d651b5be4c27"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-01-card.json",
+      "bytes": 194897,
+      "sha256": "f5b9acfecafdf00624fb78051ab0eb9db5aeacb3428a31cc9403c5dd7aeb0731"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-01-execution.json",
+      "bytes": 5938,
+      "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-01-postwrite.json",
+      "bytes": 516,
+      "sha256": "12c1d74f4614324fc5ca84a332266423a55da1d8274e7f188663e226bb204971"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-02-card.json",
+      "bytes": 195956,
+      "sha256": "11c3a5559cb7334d4a24722f2757046ddc5ca50ec985633a02b1d937af4e484f"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-02-execution.json",
+      "bytes": 11794,
+      "sha256": "31c0a5ebcca080d3dcf79e7cbd62565b3bee5c2b3f16f6903e728476a2d6ca70"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-02-native-failure.json",
+      "bytes": 170,
+      "sha256": "a09296a106d1ad7bf9bfd5e55db753cc9acc88b3473d6a3118056849343b6c6e"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/import-02-postwrite.json",
+      "bytes": 549,
+      "sha256": "6380c948fb6b6b9a9874a661f004a8abc96d800461df5e848bfb54a1307ab61b"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/parent-check-01/c2-run-review.json",
+      "bytes": 10640,
+      "sha256": "de2e90c48206693671ce859e8264f94a3a106b1c2c7f361ffe08162518222773"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/parent-check-01/receipt.json",
+      "bytes": 816,
+      "sha256": "6c9653f557df9df204b673df3ce779b948819ca67ff6144e5504e6c6bd2e9aba"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/parent-check-01/stdout.txt",
+      "bytes": 809,
+      "sha256": "8be04d9f7a2af9d13163778e9aed63cec4328f852543c0f3646f055b26146f60"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/post-seal-tool-observation.json",
+      "bytes": 532,
+      "sha256": "eb5e02af58ac35a9b05d180e6de05d30831ed7b245217b7b1ccb16a780d584eb"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/post-seal-tool-provenance.json",
+      "bytes": 722,
+      "sha256": "bf2fe626614dedf0c7a428c60fad78f728f9d4623d52b3f27914897271a882f1"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/publication-status.json",
+      "bytes": 1805,
+      "sha256": "93740104cfb95aacf2e3f0b02a4433db3eb64035a15240a277db7f6214f31766"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/report.md",
+      "bytes": 7670,
+      "sha256": "a8188705d53883cf4f157b5c1528cf03c470e7369cdd9557e3affa96054c00f5"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/run_phase.py",
+      "bytes": 12518,
+      "sha256": "1054f93a69fba600d0592e61a0456d79394354ee44a430ae392b115c24d6ebc7"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/run_phase_v2.py",
+      "bytes": 13304,
+      "sha256": "dbc47f6a55db933a129cbf616aba4645e2754c17a8bccf7a522d3ed3608f41ae"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/runtime-evidence-index.json",
+      "bytes": 2339,
+      "sha256": "68715fd599c6748abfa8449fb168fc1316692ea4a3524dca047f3c2adbb5a0cc"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/seal_campaign.py",
+      "bytes": 4700,
+      "sha256": "7161cad01843f8594763e90698951621c9d34716edece4b3c6ee05636ee23f85"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/seal_campaign_v2.py",
+      "bytes": 4703,
+      "sha256": "1aa5f9f88e9ea900bacd20c9ecfd185c5dbf14e5eefb898a4b55de64dd2ccf0a"
+    },
+    {
+      "path": "doc/evidence/universe-I21R/worktree-settlement.json",
+      "bytes": 1162,
+      "sha256": "727ea378fc111ec584703f86cf3e1073b4b542e9b9318245a402ddbe6dfad023"
+    },
+    {
+      "path": "doc/parallel_execution_backlog.md",
+      "bytes": 54844,
+      "sha256": "68096bc4bb43cb4f72bb5041af301da5eb66da594e85db6de5a2998b6aa9b5de"
+    },
+    {
+      "path": "doc/universe_i21_execution_register.md",
+      "bytes": 3436,
+      "sha256": "ece01d9b64f20a6ebbb9cf478a724386aa332d86f47a89f4bcbb9c395f6c4e4d"
+    }
+  ],
+  "manifest_self_reference_excluded": true,
+  "context_only_changes_after_manifest_freeze": "none before the local commit",
+  "includes": [
+    "project implementation and tests",
+    "absolute machine paths",
+    "UE version/module/source hash metadata",
+    "bounded failure and review records"
+  ],
+  "excludes": [
+    "full raw UE and PS logs",
+    "source/generated asset binaries and DDC",
+    "owner/key/credentials",
+    "unrelated main-checkout user changes"
+  ],
+  "Native_gate": "failed; publication if approved is draft/review only, not merge or deployment"
+}
