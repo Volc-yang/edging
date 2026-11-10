@@ -29,6 +29,13 @@ def vector(value):return [float(value.x),float(value.y),float(value.z)]
 def identity(obj):return {'path':objpath(obj),'class':obj.get_class().get_path_name()}
 
 
+def required_static_mesh_subsystem():
+    subsystem=u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
+    require(subsystem is not None,
+        'StaticMeshEditorSubsystem unavailable before asset mutations; owning module activation requires a new reviewed execution card')
+    return subsystem
+
+
 def texture_source(texture,index):
     data=prop(texture,'asset_import_data');require(data is not None,'missing Native texture import data')
     paths=data.extract_filenames();require(len(paths)==1,'texture source is ambiguous')
@@ -91,7 +98,7 @@ def all_assets():
 
 
 def native_snapshot(index):
-    subsystem=u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
+    subsystem=required_static_mesh_subsystem()
     assets=all_assets();groups={'StaticMesh':[],'Texture2D':[],'Material':[]}
     for obj in assets:
         name=obj.get_class().get_name();require(name in groups,'unexpected project asset class '+name)
@@ -237,7 +244,7 @@ def do_import(recipe):
             for output,mp in connections:require(ME.connect_material_property(node,output,mp),'failed connecting Native material property')
         errors=ME.recompile_material(material);require(not errors,'material compilation reported errors: '+str(errors))
         materials[m['asset_id']]=material;objects.append(material)
-    subsystem=u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
+    subsystem=required_static_mesh_subsystem()
     for mesh in [x for x in objects if isinstance(x,u.StaticMesh)]:
         model_id='fern_02' if '/fern_02/' in objpath(mesh) else 'boulder_01'
         require(len(prop(mesh,'static_materials'))==1,'imported mesh slots not uniquely identified')
@@ -272,7 +279,7 @@ def native_negative_checks(index,recipe,positive):
         except ValueError as error:
             require(str(error)=='Native mesh slot material mismatch','unexpected error during slot negative: '+str(error))
             checks.append({'case':'actual_mesh_slot_material_replaced','rejected':True,'error':str(error),
-                'actual_fault_getter':mesh_metadata(mesh,u.get_editor_subsystem(u.StaticMeshEditorSubsystem))['slots']})
+                'actual_fault_getter':mesh_metadata(mesh,required_static_mesh_subsystem())['slots']})
         else:raise ValueError('Native wrong slot negative unexpectedly passed')
     finally:mesh.set_material(0,original)
     restored=native_snapshot(index);validate_native(restored,recipe)
@@ -294,6 +301,9 @@ def main():
     require(current==job['startup'],'startup inputs changed since preflight')
     index=validate_sources(job['source_index']);recipe=load(job['recipe'],job['recipe_sha256'])
     require('5.8.3-58210709' in u.SystemLibrary.get_engine_version(),'actual loaded UE version/CL mismatch')
+    # The import02 failure showed this optional subsystem can be absent in commandlets.
+    # Detect that before importing/creating/saving anything; no deprecated fallback.
+    required_static_mesh_subsystem()
     before=file_map(host/'Content');started=time.monotonic()
     if job['mode']=='import':
         require(not before,'import Content must be empty');do_import(recipe)
