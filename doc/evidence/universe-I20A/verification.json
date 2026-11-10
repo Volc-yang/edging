@@ -1,0 +1,380 @@
+{
+  "acquisition_receipt_sha256": "9adfbad141c8ec2a9034ae02dfc88badbb0f3401fd039587104dbbccf28cdddc",
+  "actual_file_count_at_check": 34,
+  "binary_bytes": 41949796,
+  "format": "universe-i20-asset-verification.v1",
+  "image_headers": {
+    "assets/boulder_01/textures/boulder_01_arm_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/boulder_01/textures/boulder_01_diff_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/boulder_01/textures/boulder_01_nor_dx_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/boulder_01/textures/boulder_01_nor_gl_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/fern_02/textures/fern_02_alpha_2k.png": {
+      "bit_depth": 16,
+      "color_type": 0,
+      "format": "PNG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/fern_02/textures/fern_02_arm_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/fern_02/textures/fern_02_diff_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/fern_02/textures/fern_02_nor_dx_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/fern_02/textures/fern_02_nor_gl_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/forrest_ground_01/textures/forrest_ground_01_arm_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/forrest_ground_01/textures/forrest_ground_01_diff_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/forrest_ground_01/textures/forrest_ground_01_nor_dx_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/forrest_ground_01/textures/forrest_ground_01_nor_gl_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 3,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    },
+    "assets/forrest_ground_01/textures/forrest_ground_01_rough_2k.jpg": {
+      "bit_depth": 8,
+      "channels": 1,
+      "format": "JPEG",
+      "height": 2048,
+      "width": 2048
+    }
+  },
+  "limitations": [
+    "Not a full glTF conformance check or image decode",
+    "No UE import/build/Metal/render run",
+    "Ground glTF sphere is preview geometry; use textures on approved ground",
+    "Fern JPEG has no alpha; bind the separately acquired Alpha PNG explicitly"
+  ],
+  "models": [
+    {
+      "dependency_closure": [
+        "assets/fern_02/fern_02.bin",
+        "assets/fern_02/textures/fern_02_arm_2k.jpg",
+        "assets/fern_02/textures/fern_02_diff_2k.jpg",
+        "assets/fern_02/textures/fern_02_nor_gl_2k.jpg"
+      ],
+      "gltf_sha256": "50540d37531f93fd693d5340d5b3095c9d6d2834fa05c74bea797d54f290cb6a",
+      "id": "fern_02",
+      "materials": [
+        {
+          "alphaCutoff": 0.5,
+          "alphaMode": "MASK",
+          "doubleSided": true,
+          "name": "fern_02",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicFactor": 0,
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "meshes": [
+        {
+          "name": "Plane.024",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.4616048336029053,
+                0.39718443155288696,
+                0.4718152582645416
+              ],
+              "position_min": [
+                -0.5281425714492798,
+                -0.030510280281305313,
+                -0.421874463558197
+              ],
+              "triangles": 2384,
+              "vertices": 1660
+            }
+          ]
+        },
+        {
+          "name": "Plane.044",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.44438624382019043,
+                0.32024669647216797,
+                0.34794387221336365
+              ],
+              "position_min": [
+                -0.4299395680427551,
+                -0.028773672878742218,
+                -0.4172818064689636
+              ],
+              "triangles": 2248,
+              "vertices": 1568
+            }
+          ]
+        },
+        {
+          "name": "Plane.006",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.25428348779678345,
+                0.2580300271511078,
+                0.3021530210971832
+              ],
+              "position_min": [
+                -0.2976571321487427,
+                -0.028773518279194832,
+                -0.31126806139945984
+              ],
+              "triangles": 784,
+              "vertices": 544
+            }
+          ]
+        },
+        {
+          "name": "Plane.059",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.28200197219848633,
+                0.19950860738754272,
+                0.2411416471004486
+              ],
+              "position_min": [
+                -0.2907802164554596,
+                -0.013578944839537144,
+                -0.35213664174079895
+              ],
+              "triangles": 816,
+              "vertices": 565
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "mesh": 0,
+          "name": "fern_02_b"
+        },
+        {
+          "mesh": 1,
+          "name": "fern_02_c",
+          "translation": [
+            1.0000009536743164,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": 2,
+          "name": "fern_02_a",
+          "translation": [
+            0,
+            0,
+            1.0000001192092896
+          ]
+        },
+        {
+          "mesh": 3,
+          "name": "fern_02_d",
+          "translation": [
+            1,
+            0,
+            0.9999995827674866
+          ]
+        }
+      ],
+      "triangle_count": 6232
+    },
+    {
+      "dependency_closure": [
+        "assets/boulder_01/boulder_01.bin",
+        "assets/boulder_01/textures/boulder_01_arm_2k.jpg",
+        "assets/boulder_01/textures/boulder_01_diff_2k.jpg",
+        "assets/boulder_01/textures/boulder_01_nor_gl_2k.jpg"
+      ],
+      "gltf_sha256": "52d118b56748a18509e4ec0075d07b254d72a0401793f22363c0bb3a682e7361",
+      "id": "boulder_01",
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "boulder_01",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicFactor": 0,
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "meshes": [
+        {
+          "name": "rock_PROXY_5m.002",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.5239759087562561,
+                0.9301872253417969,
+                0.8818937540054321
+              ],
+              "position_min": [
+                -0.7481597065925598,
+                -0.07364296913146973,
+                -0.9484404921531677
+              ],
+              "triangles": 66122,
+              "vertices": 67042
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "mesh": 0,
+          "name": "boulder_01"
+        }
+      ],
+      "triangle_count": 66122
+    },
+    {
+      "dependency_closure": [
+        "assets/forrest_ground_01/forrest_ground_01.bin",
+        "assets/forrest_ground_01/textures/forrest_ground_01_diff_2k.jpg",
+        "assets/forrest_ground_01/textures/forrest_ground_01_nor_gl_2k.jpg",
+        "assets/forrest_ground_01/textures/forrest_ground_01_rough_2k.jpg"
+      ],
+      "gltf_sha256": "9ecbbb29ca8c0f41e25fc73e9a4d14f704a4519c3a6827e4edc8ddc33d426dd6",
+      "id": "forrest_ground_01",
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "forrest_ground_01",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicFactor": 0,
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "meshes": [
+        {
+          "name": "Sphere.001",
+          "primitives": [
+            {
+              "material_index": 0,
+              "position_max": [
+                0.9983099102973938,
+                1.0054845809936523,
+                0.9994760155677795
+              ],
+              "position_min": [
+                -0.9983590245246887,
+                -1.0049073696136475,
+                -0.9994903802871704
+              ],
+              "triangles": 107390,
+              "vertices": 53903
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "mesh": 0,
+          "name": "sphere_gltf"
+        }
+      ],
+      "triangle_count": 107390
+    }
+  ],
+  "network_elapsed_seconds": 145.21885399986058,
+  "plan_sha256": "eaa2ee7fe45baf7b54222e5ad5d5df7962633f0b69dedee34b9ef98c1b7903d9",
+  "response_body_bytes": 42116535,
+  "result": "PASS",
+  "root": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I20-20261110-realistic-assets",
+  "verified_asset_files": 20
+}
