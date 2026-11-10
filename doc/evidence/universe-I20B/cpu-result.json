@@ -1,0 +1,46 @@
+{
+  "format": "universe-i20b-cpu-result.v0.1",
+  "command": "/private/tmp/edgeworld-i20b-contract-env/bin/python -B doc/evidence/universe-I20B/check_contract.py",
+  "test_count": 14,
+  "unittest_seconds": 0.471,
+  "actual_parent_wait_exit": 0,
+  "stdout_stderr_sha256": "5b1beb56f9bcefb9b21e0a76caae1737e2a14a817762d0a1a3d507af1d3cf3c5",
+  "scope": "synthetic temporary files; JSONSchema structure plus separate semantic/source-byte checks",
+  "artifacts": [
+    {
+      "path": "doc/evidence/universe-I20B/check_contract.py",
+      "bytes": 19504,
+      "sha256": "b3d7c8691ae8ea309bd68733c13c38d71771ac92f86a838e955d61ce9899aa2a"
+    },
+    {
+      "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/expected-synthetic.json",
+      "bytes": 1325,
+      "sha256": "5eb8d41f1029eca5f585bb3448604ad16e60cb9c5f0556f09acf658547d7d13e"
+    },
+    {
+      "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/positive-profile.json",
+      "bytes": 6267,
+      "sha256": "a3dd544806565e24495f5d8b5b2ebd69b2cb16c9fcc263d8d065018eac429083"
+    },
+    {
+      "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/profile.schema.json",
+      "bytes": 16248,
+      "sha256": "c1fa3ec5db86b27ce306e387b4db41cb54256e9486fd7b97f4f5ed54fe9b723b"
+    },
+    {
+      "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/synthetic-payloads.json",
+      "bytes": 337,
+      "sha256": "dc2c35fb64aa9a3bdb00778c10014811ac545f290d125a2d5b50607e1ed8f80c"
+    },
+    {
+      "path": "doc/fixtures/universe_realistic_presentation_profile_v0_1/view-binding.schema.json",
+      "bytes": 1672,
+      "sha256": "521f8cb1d41e0db346549da3f35f767bcd804cb8d2911b621d0ad9ff9005934c"
+    }
+  ],
+  "ue_build_run": false,
+  "worker_solver_ui_run": false,
+  "actual_profile_created": false,
+  "hud_atomicity_verified": false,
+  "visual_gate": "not_run"
+}
