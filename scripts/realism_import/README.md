@@ -2,6 +2,8 @@
 
 Only the root supervisor runs UE or prepares DevSSD outputs. These scripts do not launch processes. `prepare.py preflight` is read-only; it verifies all 20 pinned I20 inputs, UE version/binary, reviewed script snapshots, user startup absence and installed Content/Python source inventory. Installed plugin inventory is a conservative superset of enabled mounts. It is an identity check of trusted installed code, not a claim that startup does not execute.
 
+The Mac Documents location comes from the same Foundation directory query as UE, not HOME concatenation. Preflight resolves the explicitly enabled installed plugin dependency closure and refuses PythonRequirements even when automatic pip install is disabled. Original installed descriptor bytes are hashed; only their BOM/trailing-comma JSON syntax is tolerated. User/job/source JSON remains strict.
+
 ```sh
 python3 -B scripts/realism_import/prepare.py preflight
 python3 -B scripts/realism_import/prepare.py import --attempt 1

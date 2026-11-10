@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import os
+import re
 import sys
 import time
 
@@ -111,7 +112,18 @@ def native_snapshot(index):
         deps=sorted(str(x) for x in registry.get_dependencies(package,options));dependencies[package]=deps
         for dep in deps:
             if dep.startswith(CONTENT_PATH+'/'):pending.append(dep)
-            elif dep.startswith('/Script/'):external[dep]={'kind':'installed-native-module'}
+            elif dep.startswith('/Script/'):
+                module=dep.removeprefix('/Script/')
+                require(re.fullmatch('[A-Za-z_][A-Za-z0-9_]*',module) is not None,'invalid script module dependency')
+                package_object=u.find_package(dep)
+                require(package_object is not None,'script dependency package is not already loaded: '+dep)
+                filename='libUnrealEditor-'+module+'.dylib'
+                main=ENGINE/'Binaries/Mac'/filename
+                candidates=[main] if main.is_file() else list((ENGINE/'Plugins').rglob(filename))
+                require(len(candidates)==1,'missing/ambiguous installed script module binary: '+dep)
+                binary=checked(candidates[0]);require(binary.is_relative_to(ENGINE),'module binary outside installed engine')
+                external[dep]={'kind':'installed-native-module','loaded_package':objpath(package_object),
+                    'binary_path':str(binary),'binary_sha256':sha(binary.read_bytes())}
             else:
                 require(not dep.startswith('/Game/'),'unexpected external project dependency '+dep)
                 obj=u.EditorAssetLibrary.load_asset(dep);require(obj is not None,'missing external dependency '+dep)
@@ -244,7 +256,10 @@ def native_negative_checks(index,recipe,positive):
     try:
         require(ME.disconnect_material_property(fern,u.MaterialProperty.MP_OPACITY_MASK),'Native Alpha disconnection failed')
         try:validate_native(native_snapshot(index),recipe)
-        except ValueError as error:checks.append({'case':'actual_Alpha_disconnected','rejected':True,'error':str(error)})
+        except ValueError as error:
+            require(str(error)=='Native material source mismatch opacity_mask','unexpected error during Alpha negative: '+str(error))
+            checks.append({'case':'actual_Alpha_disconnected','rejected':True,'error':str(error),
+                'actual_fault_getter':material_metadata(fern,index)['links']['opacity_mask']})
         else:raise ValueError('Native missing Alpha negative unexpectedly passed')
     finally:require(ME.connect_material_property(node,output,u.MaterialProperty.MP_OPACITY_MASK),'restore Alpha failed')
     fern_mesh=next(x for x in positive['objects']['StaticMesh'] if '/fern_02/' in x['path'])
@@ -254,7 +269,10 @@ def native_negative_checks(index,recipe,positive):
         mesh.set_material(0,wrong)
         require(mesh.get_material(0)==wrong,'actual slot fault injection did not take effect')
         try:validate_native(native_snapshot(index),recipe)
-        except ValueError as error:checks.append({'case':'actual_mesh_slot_material_replaced','rejected':True,'error':str(error)})
+        except ValueError as error:
+            require(str(error)=='Native mesh slot material mismatch','unexpected error during slot negative: '+str(error))
+            checks.append({'case':'actual_mesh_slot_material_replaced','rejected':True,'error':str(error),
+                'actual_fault_getter':mesh_metadata(mesh,u.get_editor_subsystem(u.StaticMeshEditorSubsystem))['slots']})
         else:raise ValueError('Native wrong slot negative unexpectedly passed')
     finally:mesh.set_material(0,original)
     restored=native_snapshot(index);validate_native(restored,recipe)
@@ -270,6 +288,8 @@ def main():
     for name,expected in job['source_scripts'].items():require(sha((Path(__file__).parent/name).read_bytes())==expected,'reviewed snapshot changed')
     for module in [job['preflight']['binary'],*job['preflight']['installed_modules']]:
         require(sha(checked(module['path']).read_bytes())==module['sha256'],'installed binary/module changed since preflight')
+    for plugin in job['preflight']['enabled_plugin_closure'].values():
+        require(sha(checked(plugin['path']).read_bytes())==plugin['sha256'],'installed enabled plugin descriptor changed')
     current=startup_inventory(extra_roots=job['startup']['untrusted_roots_checked'][1:])
     require(current==job['startup'],'startup inputs changed since preflight')
     index=validate_sources(job['source_index']);recipe=load(job['recipe'],job['recipe_sha256'])

@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 import sys
 from common import (ENGINE,SOURCE,OUTPUT,INDEX_SHA,checked,clean_environment,file_map,
-                    load,require,sha,startup_inventory,validate_sources,write_new)
+                    load,plugin_inventory,require,sha,startup_inventory,validate_sources,write_new)
 
 HERE=Path(__file__).resolve().parent
 REPO=HERE.parents[1]
@@ -32,6 +32,7 @@ def preflight(index_path=INDEX):
             if any(part in path.name for part in ('Interchange','PythonScriptPlugin','GLTFCore','EditorScriptingUtilities','MaterialEditor','StaticMeshEditor','AssetTools')):
                 path=checked(path);modules.append({'path':str(path),'sha256':sha(path.read_bytes())})
     startup=startup_inventory(extra_roots=(OUTPUT/'host/Content/Python',OUTPUT/'user/Python'))
+    plugins=plugin_inventory(load(HERE/'EdgeWorldAssetImport.uproject'))
     # Conservatively reject any installed config that adds startup code/extra paths.
     config_evidence=[]
     for directory in (ENGINE/'Config',ENGINE/'Plugins'):
@@ -43,6 +44,7 @@ def preflight(index_path=INDEX):
     return {'format':'edgeworld.i21.preflight.v0.1','status':'ready_requires_C1_and_root_dispatch',
         'version':version,'binary':{'path':str(binary),'sha256':sha(binary.read_bytes())},
         'installed_modules':modules,
+        'enabled_plugin_closure':plugins,
         'source_index_sha256':INDEX_SHA,'source_files':len(index['files']),
         'snapshot_sources':{name:sha((HERE/name).read_bytes()) for name in SNAPSHOTS},
         'startup':startup,'config_additions':config_evidence,

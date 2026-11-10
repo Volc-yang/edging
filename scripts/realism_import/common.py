@@ -3,6 +3,7 @@ import hashlib
 import json
 import math
 import os
+import sys
 from pathlib import Path, PurePosixPath
 
 ENGINE = Path('/Users/Shared/Epic Games/UE_5.8/Engine')
@@ -92,7 +93,8 @@ def validate_sources(index_path,source_root=SOURCE):
 def startup_inventory(engine=ENGINE,documents=None,extra_roots=()):
     """Conservative allowlist: installed Content/Python only; user startup is refused."""
     engine=checked(engine)
-    documents=checked(documents or Path.home()/'Documents')
+    lookup='explicit-fixture-parameter' if documents is not None else 'Foundation.NSSearchPathForDirectoriesInDomains(NSDocumentDirectory=9,NSUserDomainMask=1,expandTilde=True)'
+    documents=checked(documents if documents is not None else mac_documents_directory())
     untrusted=[documents/'UnrealEngine/Python',*map(Path,extra_roots)]
     for directory in untrusted:
         checked(directory)
@@ -112,6 +114,7 @@ def startup_inventory(engine=ENGINE,documents=None,extra_roots=()):
     # All installed plugins are included, a conservative superset of mounted enabled Content.
     return {'format':'i21-installed-python-inventory.v1','policy':'installed Engine/Plugins Content/Python only',
         'user_documents_path':str(documents/'UnrealEngine/Python'),'scripts':scripts,
+        'documents_lookup':lookup,
         'untrusted_roots_checked':[str(p) for p in untrusted]}
 
 
@@ -121,3 +124,68 @@ def clean_environment(source=None):
     result['PATH']='/usr/bin:/bin:/usr/sbin:/sbin'
     # No inherited UE_PYTHONPATH, PYTHON*, EDGEWORLD*, loader injection, or remote/service variables.
     return result
+
+
+def mac_documents_directory():
+    """Same Foundation Documents query as installed ApplePlatformProcess.cpp."""
+    require(sys.platform=='darwin','actual Documents lookup requires Mac Foundation')
+    import ctypes as ct
+    foundation=ct.CDLL('/System/Library/Frameworks/Foundation.framework/Foundation')
+    objc=ct.CDLL('/usr/lib/libobjc.A.dylib')
+    objc.sel_registerName.argtypes=[ct.c_char_p];objc.sel_registerName.restype=ct.c_void_p
+    objc.objc_getClass.argtypes=[ct.c_char_p];objc.objc_getClass.restype=ct.c_void_p
+    def sender(restype,*args):return ct.CFUNCTYPE(restype,ct.c_void_p,ct.c_void_p,*args)(('objc_msgSend',objc))
+    send_obj=sender(ct.c_void_p);selector=objc.sel_registerName
+    pool=send_obj(objc.objc_getClass(b'NSAutoreleasePool'),selector(b'alloc'))
+    pool=send_obj(pool,selector(b'init'))
+    try:
+        search=foundation.NSSearchPathForDirectoriesInDomains
+        search.argtypes=[ct.c_ulong,ct.c_ulong,ct.c_bool];search.restype=ct.c_void_p
+        array=search(9,1,True)
+        count=sender(ct.c_ulong)(array,selector(b'count'));require(count>0,'Foundation Documents query returned no path')
+        string=sender(ct.c_void_p,ct.c_ulong)(array,selector(b'objectAtIndex:'),0)
+        raw=sender(ct.c_char_p)(string,selector(b'UTF8String'));require(raw is not None,'Foundation Documents path has no UTF8 representation')
+        return Path(os.fsdecode(raw))
+    finally:sender(None)(pool,selector(b'drain'))
+
+
+def plugin_inventory(descriptor,engine=ENGINE):
+    """Resolve explicit enabled plugin dependency closure; reject pip requirements."""
+    require(descriptor.get('DisableEnginePluginsByDefault') is True,'engine default plugins must be disabled')
+    catalog={}
+    for path in (checked(engine)/'Plugins').rglob('*.uplugin'):catalog.setdefault(path.stem,[]).append(path)
+    pending=[entry['Name'] for entry in descriptor['Plugins'] if entry.get('Enabled')]
+    result={}
+    while pending:
+        name=pending.pop()
+        if name in result:continue
+        matches=catalog.get(name,[]);require(len(matches)==1,'missing/ambiguous installed plugin '+name)
+        path=checked(matches[0]);data=load_engine_descriptor(path)
+        require(not data.get('PythonRequirements'),'enabled plugin has pip requirements: '+name)
+        result[name]={'path':str(path),'sha256':sha(path.read_bytes()),'PythonRequirements':[]}
+        for entry in data.get('Plugins',[]):
+            if not entry.get('Enabled'):continue
+            if entry.get('TargetAllowList') and 'Editor' not in entry['TargetAllowList']:continue
+            if entry.get('PlatformAllowList') and 'Mac' not in entry['PlatformAllowList']:continue
+            if 'Editor' in entry.get('TargetDenyList',[]) or 'Mac' in entry.get('PlatformDenyList',[]):continue
+            pending.append(entry['Name'])
+    return result
+
+
+def load_engine_descriptor(path):
+    """Installed .uplugin JSON permits trailing commas; keep quoted bytes intact.
+
+    This does not relax JSON parsing for source indexes, jobs, recipes or evidence.
+    """
+    text=checked(path).read_text(encoding='utf-8-sig');result=[];quoted=False;escaped=False
+    for i,char in enumerate(text):
+        if quoted:
+            result.append(char)
+            if escaped:escaped=False
+            elif char=='\\':escaped=True
+            elif char=='"':quoted=False
+        elif char=='"':quoted=True;result.append(char)
+        elif char==',' and text[i+1:].lstrip().startswith(('}',']')):continue
+        else:result.append(char)
+    try:return finite(json.loads(''.join(result),object_pairs_hook=pairs))
+    except ValueError as error:raise ValueError('installed descriptor parse failed '+str(path)+': '+str(error)) from error

@@ -58,5 +58,15 @@ class RealismImportInputTests(unittest.TestCase):
             (user/'init_unreal.py').write_text('raise RuntimeError("must never execute")\n')
             with self.assertRaisesRegex(ValueError,'unreviewed user/project startup'):c.startup_inventory(engine,doc)
 
+    def test_enabled_plugin_requirements_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='i21-plugin-negative-',dir=Path(tempfile.gettempdir()).resolve()) as td:
+            engine=Path(td)/'Engine';plugins=engine/'Plugins';plugins.mkdir(parents=True)
+            (plugins/'A.uplugin').write_text(json.dumps({'Plugins':[{'Name':'B','Enabled':True}]}))
+            path=plugins/'B.uplugin';path.write_text('\ufeff{"Description":"literal , } stays", "Modules":[],}')
+            descriptor={'DisableEnginePluginsByDefault':True,'Plugins':[{'Name':'A','Enabled':True}]}
+            self.assertEqual(set(c.plugin_inventory(descriptor,engine)),{'A','B'})
+            path.write_text(json.dumps({'PythonRequirements':[{'Requirements':['unexpected-package']}]}))
+            with self.assertRaisesRegex(ValueError,'pip requirements: B'):c.plugin_inventory(descriptor,engine)
+
 
 if __name__=='__main__':unittest.main()

@@ -30,3 +30,11 @@ Native producer 从真实 UObject getter 读取 class、LOD0 triangle/vertex、b
 root 监管职责：最多 2×240s import + 1×180s reload，首 dispatch→seal 总900s，全部 root≤4GiB / 所有 Content≤512MiB，实际 parent wait 和后代静默、外域 before/after map、源前后身份及最终包封存。producer PASS 不能代替这些门，更不能授 Metal/视觉/法线外观、world/Genesis、HUD 原子性。
 
 工作树在独立 PR 审核/实际测试/集成之前保留；资产源及全部失败原件不清理。
+
+## C1 窄修与最终本地交付
+
+根据独立 C1：`/Script` 依赖现在只用 `unreal.find_package(name)` 查询已加载包，精确核对安装 module dylib 与实际 SHA，不为未知依赖加载模块；两个 Native 负例只接受精确 Alpha/slot mismatch 错因，并保存故障时实际 getter 片段。启用插件描述符的依赖闭包实际共44项，均无 PythonRequirements；发现要求即停止。仅对可信安装 descriptor 允许 UE 常见 UTF8 BOM/字符串外 trailing comma，源 index/job/recipe/证据仍严格 JSON；早先拒绝原件保留。
+
+Mac Documents 通过 stdlib ctypes 调 Foundation `NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)`，与安装版 ApplePlatformProcess 相同查询；实际结果为 `/Users/yangacan/Documents`，不再把 HOME 拼接称为真实查询。`preflight-c1-complete.json` 最终 ready，SHA `c72a0b213a6156585ba6aad26c100b1ec3e36fd978f18abd049cada36bfffe21`，全部 snapshot pin 与源匹配。新增 plugin pip/UTF8 BOM/quoted comma 负例与受影响 startup 检查通过，见 `cpu-check-c1-affected.txt`；先前完整5项通过输出亦保留。
+
+Public push 两次被自动审批拒绝：已核 GitHub authenticated user/仓库 owner 相同且admin/push，但审查要求用户明确确认此次15文件及本地路径/引擎元数据/hash的公开发布。遵统筹决定停止所有publication尝试，无 PR；继续本地审查和实际验证。此状态不影响已保存 scoped commits，也不以其他API/remote绕过。实际UE仍由root唯一执行。

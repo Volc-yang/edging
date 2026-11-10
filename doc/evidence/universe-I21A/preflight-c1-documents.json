@@ -1,0 +1,1 @@
+{"status": "FAIL", "error": "installed descriptor parse failed /Users/Shared/Epic Games/UE_5.8/Engine/Plugins/Animation/SkeletalMeshModelingTools/SkeletalMeshModelingTools.uplugin: Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"}
