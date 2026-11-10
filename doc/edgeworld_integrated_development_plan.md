@@ -6,7 +6,7 @@
 
 最新已接受交付：[I20结算](universe_i20_execution_register.md)。PR128/129分别合入开放许可真实资产源输入和独立只读呈现合同；实际源文件/依赖/许可与15项CPU合同、独立复核及父级稳定路径检查通过。只完成本轮A/B/C，UE导入/适配/新编译和Metal画质未执行；下一入口为[具体D3/D4卡](design/universe-realistic-presentation-profile.md)。写实呈现使用独立profile和ViewBinding，不静默改写旧BasicShapes authority。
 
-最新实际尝试：[I21结算](universe_i21_execution_register.md)。两次真实headless导入均未过：首监督器计量中止，第二次缺StaticMeshEditorSubsystem而保存前失败；无可交付UE包。下一卡先明确模块激活/真实能力与Nanite计数语义，再导入和独立reload；不以CPU或内存创建代替持久包/画质。源码与证据当前仅本地，公开发布等待明确payload确认；A失败代码不合并。
+最新实际尝试：[I21结算](universe_i21_execution_register.md)。两次真实headless导入均未过：首监督器计量中止，第二次缺StaticMeshEditorSubsystem而保存前失败；无可交付UE包。下一卡先明确模块激活/真实能力与Nanite计数语义，再导入和独立reload；不以CPU或内存创建代替持久包/画质。用户已明确授权固定清单公开发布，源码及证据已推送并创建[草稿PR130](https://github.com/Volc-yang/edging/pull/130)，A失败代码未合并。
 
 此前阶段记录（2026-11-01；最新实现/运行结算以[统筹清单](parallel_execution_backlog.md)为准）：抽象 Seed→Tree × Genesis 已有有限真实 Metal 集成证据；H6B 可步行实现经 PR #66 集成，H6C 独立访问、两模式推进、历史只读与恢复有限门经 PR #69 接受并集成（`0344827`）。显式 `--viewport-preflush` 开发入口有限接受；默认关闭路径可靠性、reporter 自身退出、正式视觉/性能门仍开放，V-HOME 未接受。准确提交和原始证据见[统筹清单](parallel_execution_backlog.md)。
 

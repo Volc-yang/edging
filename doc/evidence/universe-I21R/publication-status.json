@@ -1,6 +1,6 @@
 {
   "format": "universe-i21-publication-status.v1",
-  "status": "awaiting_explicit_user_confirmation_for_public_payload",
+  "status": "published_draft_PR",
   "remote_repository": "Volc-yang/edging",
   "remote_url": "ssh://git@ssh.github.com:443/Volc-yang/edging.git",
   "visibility": "public",
@@ -19,9 +19,9 @@
   "stated_reason": "Fresh ownership was acknowledged but explicit user approval for this specific code, local paths, UE metadata and hash payload to the public destination was required",
   "local_implementation_head": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
   "implementation_branch": "codex/i21-import",
-  "draft_PR_created": false,
+  "draft_PR_created": true,
   "implementation_merged": false,
-  "automatic_checks_run_in_GitHub": false,
+  "automatic_checks_run_in_GitHub": true,
   "publication_scope_for_review": [
     "I21 importer, recipe, content-only descriptor/config and tests",
     "I21 scoped review and runtime evidence metadata, absolute machine paths, UE version and SHA identifiers",
@@ -33,5 +33,22 @@
     "complete raw system PS captures",
     "owner/key/private credentials and unrelated user changes"
   ],
-  "after_confirmation": "publish listed scoped branches/context and open a draft PR only; failed Native implementation must not be merged"
+  "after_confirmation": "completed atomic branch push and created draft PR130; failed Native implementation remains unmerged",
+  "user_confirmation": {
+    "answer": "允许发布并建草稿 PR",
+    "date": "2026-11-10",
+    "scope": "fixed I21 code/tests/context/evidence list, including machine paths and UE metadata/hash, to public Volc-yang/edging; draft only, no failed-code merge",
+    "approved_context_commit": "9d24a9ca8741e555f33103a2c5157ebc1e41e6c0",
+    "approved_implementation_commit": "cd3b26fde5655b77482daa051eb2eb00c2c55359"
+  },
+  "draft_PR_url": "https://github.com/Volc-yang/edging/pull/130",
+  "draft_PR_number": 130,
+  "CI": {
+    "run_id": 42772541288,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+    "scope": "Ubuntu automated checks only; no Native/visual grant"
+  },
+  "publication_receipt": "doc/evidence/universe-I21R/publication-receipt.json"
 }

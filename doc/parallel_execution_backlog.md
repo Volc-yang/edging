@@ -6,7 +6,7 @@
 
 [审定计划](design/universe-i21-native-import-plan.md) / [登记](universe_i21_execution_register.md) / [实际结算](evidence/universe-I21R/report.md)：A执行源3b156d5的5CPU/真源preflight/C1通过，root实际2次UE导入；首次监督器拒绝dotnet诊断非regular项并主动中止，修正v2及显式跳过自动SDK后，第二次wait255/StaticMeshEditorSubsystem为None，保存前失败。**两Host Content均空，无.uasset；Native快照/负例/reload/画质均未通过。**终fsync742.467523s/root26,383,495B，自有进程静默/全部34个I20原件不变；首forced与UBT三项外域差异保持fail，未开第三卡。C独立复核两卡813唯一pins与原件后拒绝D3-IMPORT、接受partial结算。
 
-下一步先纠正发布版模块激活和能力先检，再明确Nanite source/render/fallback计数语义，新卡/新预算真实导入与reload。A本地tip cd3b26f仅加guard并更正失败事实，未UE验证、未集成；不复用旧preflight授权新源。C2f434cb已审读摘取763f963，root稳定路径813pins/原件重放与C2一致；C干净树已non-force移除，A失败任务树及所有分支/DevSSD原件/I15/I12B/用户脏checkout保留。两次public push因自动审批要求明确确认本批代码/本机路径/UE元数据/hash公开范围而拒绝，已停止，PR pending；先保存本地精确提交和清单，再请求最后发布确认，仅可草稿PR，失败A不能merge。无Universe/worker/Genesis/网站DNSAPI变更。
+下一步先纠正发布版模块激活和能力先检，再明确Nanite source/render/fallback计数语义，新卡/新预算真实导入与reload。A tip cd3b26f仅加guard并更正失败事实，未UE验证、未集成；不复用旧preflight授权新源。C2f434cb已审读摘取763f963，root稳定路径813pins/原件重放与C2一致；C干净树已non-force移除，A失败任务树及所有分支/DevSSD原件/I15/I12B/用户脏checkout保留。用户已明确允许按固定清单公开代码/本机路径/UE元数据/hash，三分支已推送、[草稿PR130](https://github.com/Volc-yang/edging/pull/130)已创建；CI42772541288 completed/success（仅Ubuntu自动检查），失败A不能merge。[发布回执](evidence/universe-I21R/publication-receipt.json)保留先前两次拒绝与后续授权，不需重复该发布确认。无新Universe/worker/Genesis/网站DNSAPI变更。
 
 ## 当前结算：I20 写实源输入与呈现契约接受（2026-11-10）
 

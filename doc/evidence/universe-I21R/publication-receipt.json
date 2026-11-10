@@ -1,0 +1,45 @@
+{
+  "format": "universe-i21-publication-receipt.v1",
+  "user_approval": {
+    "answer": "允许发布并建草稿 PR",
+    "scope": "本轮固定清单内导入源码、测试、统筹/验证记录，包含本机路径、UE版本及哈希；公开仓库Volc-yang/edging；只创建草稿PR、失败代码不合并",
+    "approved_context_commit": "9d24a9ca8741e555f33103a2c5157ebc1e41e6c0",
+    "approved_implementation_commit": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+    "manifest_sha256": "2d2ecd65ab3160f13319720e52ba4c46aff56d922a120554f9d16435522a924b"
+  },
+  "push": {
+    "actual_exit": 0,
+    "atomic": true,
+    "remote": "ssh://git@ssh.github.com:443/Volc-yang/edging.git",
+    "branches": {
+      "codex/plan-consolidation": "9d24a9ca8741e555f33103a2c5157ebc1e41e6c0",
+      "codex/i21-import": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+      "codex/i21-review": "2f434cb0945df483daeb3eb51dbf3ab29cd5f98c"
+    }
+  },
+  "PR": {
+    "url": "https://github.com/Volc-yang/edging/pull/130",
+    "number": 130,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "codex/i21-import",
+    "head_sha": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+    "base": "codex/plan-consolidation",
+    "base_sha_at_creation": "9d24a9ca8741e555f33103a2c5157ebc1e41e6c0",
+    "changed_files": 24
+  },
+  "CI": {
+    "run_id": 42772541288,
+    "run_number": 177,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "cd3b26fde5655b77482daa051eb2eb00c2c55359",
+    "url": "https://github.com/Volc-yang/edging/actions/runs/42772541288",
+    "scope": "automated Ubuntu checks; does not grant UE Native or visual acceptance"
+  },
+  "native_import_gate": "not_accepted",
+  "implementation_merged": false,
+  "authorization_history": "two earlier automatic-review denials retained; explicit user confirmation now satisfies the stated publication scope",
+  "followup_context": "only publication/PR/check status metadata updated after approved snapshot; original manifest and Native failures unchanged"
+}

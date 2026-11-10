@@ -1,6 +1,6 @@
 # I21 统筹结算：真实导入门未通过
 
-2026-11-10；统筹root，固定计划6eae279/原输入d5ada8f。**本轮有界运行已结束，D3-IMPORT未通过；没有保存的UE资产包，没有Native快照/负例或新进程reload通过。**发布/PR等待明确公开授权，整轮保持partial，不能称集成或画质完成。
+2026-11-10；统筹root，固定计划6eae279/原输入d5ada8f。**本轮有界运行已结束，D3-IMPORT未通过；没有保存的UE资产包，没有Native快照/负例或新进程reload通过。**用户明确授权后已公开推送并创建草稿PR130，整轮保持partial，不能称集成或画质完成。
 
 ## Plan / Do
 
@@ -9,7 +9,7 @@
 | 节点 | 准确身份 | 结论 |
 | --- | --- | --- |
 | P0/C0 | 6eae279；[计划接受](plan-review.json) | complete，仅准许按C1准确卡执行 |
-| A 代码/CPU | 初版c71664b→受审执行源3b156d51cc9df110e5ef24e0be82618d54e2eb5b | 5项CPU与真源preflight独立复核通过；实际Native导入失败，未集成、无PR |
+| A 代码/CPU | 初版c71664b→受审执行源3b156d51cc9df110e5ef24e0be82618d54e2eb5b | 5项CPU与真源preflight独立复核通过；实际Native导入失败；已建草稿PR130，未集成 |
 | A Act | guard-only a0ebfbf→文档更正后本地tip cd3b26fde5655b77482daa051eb2eb00c2c55359 | 在任何资源修改前明确拒绝缺subsystem；AST通过，尚未UE验证，不使用旧preflight授权新源 |
 | R import01 | [卡](import-01-card.json) f5b9acfe…0731；原driver1054f93a，PID10196 | 监督器拒绝诊断非regular项并主动终止；parentwait0但forced=true、normal=false；不是正常导入成功 |
 | R import02 | [卡](import-02-card.json) 11c3a555…484f；v2 driverdbc47f6a，PID26198 | 实际执行Interchange/Python；parentwait255、非强制、后代静默；None.enable_section_collision，保存前失败 |
@@ -39,6 +39,6 @@ A实际执行源与最新guard不是同一版本。所有运行脚本在DevSSD�
 
 ## Git / 发布与保留
 
-公开目标经fresh GitHub connector核实为同账户Volc-yang/id56686828的公开仓库Volc-yang/edging/id1291093087、admin/push=true。但A推送两次被自动审批拒绝，第二次仍要求用户明确确认本批代码、本机路径、引擎元数据和哈希可公开发布。没有改用API、其他remote或root推送绕过。先保存本地可审交付和准确清单，再请求最终发布确认；失败代码若获发布也只能先作为草稿PR，不能合并未通过Native的A。
+公开目标经fresh GitHub connector核实为同账户Volc-yang/id56686828的公开仓库Volc-yang/edging/id1291093087、admin/push=true。A此前推送两次被自动审批拒绝，要求用户明确确认本批代码、本机路径、引擎元数据和哈希可公开发布；未换渠道绕过。完成本地交付、实测、审查与固定清单后，用户明确回复“允许发布并建草稿 PR”。按此授权原子推送统筹9d24a9c、A cd3b26f及C 2f434cb三个分支，创建[草稿PR130](https://github.com/Volc-yang/edging/pull/130)，head/base身份核对一致；未合并。CI42772541288 completed/success；仅Ubuntu自动检查通过，不授Native/画质门。[授权/推送/PR回执](publication-receipt.json)保留完整边界。原[清单](public-payload-manifest.json)仍绑定9d24a9c快照，当前仅追加发布状态元数据，不改旧运行原件。
 
-远端统筹分支仍为已发布计划6eae279；A本地branch `codex/i21-import`保留cd3b26f，未合入统筹分支。root只保存本轮执行/审查/上下文，不带入主checkout改动。A未通过任务树保留用于纠正和发布交接；C的21文件已等效审查/摘取并完成父级复核、无运行卡依赖，干净树non-force移除，原分支/源commit仍在。[准确worktree结算](worktree-settlement.json)。所有DevSSD原件、I15构建树、I12B恢复树保留；没有reset/clean/stash/强制删除。主checkout仍d6298e3。I18 exact3、I19/I20裁决和未知Dot候选状态不变，未联系Dot、未改网站/DNS/API。
+远端已保存统筹结算9d24a9c及A/C源分支；A `codex/i21-import`保留cd3b26f/草稿PR130，未合入统筹分支。root只保存本轮执行/审查/上下文及发布状态，不带入主checkout改动。A未通过任务树保留用于纠正；C的21文件已等效审查/摘取并完成父级复核、无运行卡依赖，干净树non-force移除，原分支/源commit已推送。[准确worktree结算](worktree-settlement.json)。所有DevSSD原件、I15构建树、I12B恢复树保留；没有reset/clean/stash/强制删除。主checkout仍d6298e3。I18 exact3、I19/I20裁决和未知Dot候选状态不变，未联系Dot、未改网站/DNS/API。
