@@ -1,0 +1,8 @@
+{
+  "result": "inconclusive_actual_socket_fixture_blocked",
+  "error": "PermissionError: [Errno1] Operation not permitted",
+  "stage": "AF_UNIX bind under short /private/tmp, before reviewed sizes() call",
+  "context": "initial long-temp-path test retained separately; short-path AF_UNIX bind returned EPERM before sizes() execution; exact underlying permission mechanism not separately proven",
+  "actual_special_file_tests_passed": false,
+  "fallback": "narrow source review only; no actual UE/DevSSD or alternative endpoint; no permission request needed for unaffected card review"
+}

@@ -1,0 +1,43 @@
+{
+  "format": "universe-i21-C1-exact-import-card-review.v1",
+  "decision": "accept_exact_import_01_dispatch_only",
+  "card_repository_path": "doc/evidence/universe-I21R/import-01-card.json",
+  "card_sha256": "f5b9acfecafdf00624fb78051ab0eb9db5aeacb3428a31cc9403c5dd7aeb0731",
+  "owner_source_commit": "3b156d51cc9df110e5ef24e0be82618d54e2eb5b",
+  "job_sha256": "ca789f3a79c53fcdcd9a3aaa47c9f8e8655bfa8b67398636273f1c919649dd3e",
+  "dispatch_sha256": "c77500a0af7b5318ead86a8854379aa1de8d406f69ea3cf90f1e01e938aa1450",
+  "driver_sha256": "1054f93a69fba600d0592e61a0456d79394354ee44a430ae392b115c24d6ebc7",
+  "seal_sha256": "7161cad01843f8594763e90698951621c9d34716edece4b3c6ee05636ee23f85",
+  "actual_pinned_files_verified": 800,
+  "actual_input_bytes_rehashed": 328010330,
+  "rehash_seconds": 0.747687416151166,
+  "argv_equals_prepared_dispatch": true,
+  "environment_equals_prepared_dispatch": true,
+  "persisted_snapshot_bytes_equal_accepted_owner_source": true,
+  "Content_empty_before_dispatch": true,
+  "campaign_clock_not_yet_started": true,
+  "explicit_Cmd_NullRHI_NoTrace_FileSystem_DDC": true,
+  "source_startup_plugin_inventory_verified": true,
+  "source_review": "c1-source-acceptance.json",
+  "runner_corrections_verified": [
+    "explicit exact env whitelist",
+    "fail on traversal/stat errors",
+    "exact Cmd parent with Cmd/app passive process guard and owned descendants",
+    "actual parent wait and failure-preserving precise cleanup",
+    "final input/file/budget errors retained",
+    "execution JSON actual byte count, fsync and postwrite resource observation",
+    "separate final campaign seal uses external declared-domain diff, selected Content equality and post-fsync passive budget observation"
+  ],
+  "limits": {
+    "campaign_seconds": 900,
+    "root_bytes": 4294967296,
+    "all_Content_bytes": 536870912,
+    "import_attempts": 2,
+    "each_import_seconds": 240,
+    "reload_processes": 1,
+    "reload_seconds": 180
+  },
+  "acceptance_limit": "root may launch this exact import card; Native/material/package/normal-exit/resource gates require actual R/C2 evidence. Reload/retry exact card requires separate review. No runtime/build/Metal/visual grant.",
+  "reviewer_started_UE_GPU_worker_Genesis_UI": false,
+  "reviewer_prepared_or_modified_DevSSD": false
+}

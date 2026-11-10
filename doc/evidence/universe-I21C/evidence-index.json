@@ -1,0 +1,107 @@
+{
+  "format": "universe-i21C-evidence-index.v1",
+  "scope": "C0/C1/C2 review files, original failed attempts retained through stable R refs and durable runroot; no self reference",
+  "decision": "partial_cycle_D3_IMPORT_not_accepted",
+  "files": [
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-final-cpu-review.json",
+      "bytes": 3516,
+      "sha256": "7a908bd005d19a3f73299fa9aad6b79c6f5f8af04b775dac7fa255082db8600a"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-final-cpu.txt",
+      "bytes": 803,
+      "sha256": "1f568f55797eb85909c83e2e0f14d1fad91e08ae2a5d20843f207b93d581546a"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-import-01-card-acceptance.json",
+      "bytes": 2292,
+      "sha256": "0ffc4d14e3622cb610fbbe49abfdcc2c6ddf325d8ea27c5ae5f7058d19d5f364"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-import-02-card-acceptance.json",
+      "bytes": 1744,
+      "sha256": "d1530559b13268b20a342127053ee8a964932a589903e1893998b458b8400e2f"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-initial-cpu-checks.txt",
+      "bytes": 660,
+      "sha256": "53aaed66ff0cdc251c283b2c306ac289f418309e59d14692fd687debe64b62bb"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-initial-cpu-review.json",
+      "bytes": 3210,
+      "sha256": "f5de9c15abf6199cd64d729275fa44343a34ef9746821d9caa940ed444636a7f"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-initial-source-review.json",
+      "bytes": 2591,
+      "sha256": "402210bf82a7932305557965eecae0c85a6070c58634df5b66c7cd127922791c"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-recipe-real-source-check.json",
+      "bytes": 2600,
+      "sha256": "cd169cf8afd74fe97911c73432e8bf94172428674c4ecbcff9ea094fd5b09f41"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-source-acceptance.json",
+      "bytes": 2198,
+      "sha256": "9a0ca98fcabe28732b72708b28d0e4111f66a5d274e3b67079d5295eeceafc61"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-v2-IPC-first-attempt.json",
+      "bytes": 321,
+      "sha256": "81aac94b8865b21d2b9398a62c52a2fde374c9f329069463b1fc2b5cacae1e0b"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c1-v2-IPC-sandbox-block.json",
+      "bytes": 587,
+      "sha256": "c6afb0b65aeb1d4315a4dc407ff434077fa9694abdb4b57c5dde659dc0b3432f"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c2-import-01-failure-review.json",
+      "bytes": 6388,
+      "sha256": "59d761d39cad54ef6f3818864516a3672b7e21eff3ee9a61f1800561983dd595"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/c2-run-review.json",
+      "bytes": 10640,
+      "sha256": "de2e90c48206693671ce859e8264f94a3a106b1c2c7f361ffe08162518222773"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/check_run_evidence.py",
+      "bytes": 9953,
+      "sha256": "f527ae510022f87f6cb2a562ce8ee64ea22893af7f682a70ce8ebcdefead0edc"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/installed-source-check.json",
+      "bytes": 4635,
+      "sha256": "3ea2be578e2b540ab9c79e6139097d5ea72c8a3f8dc37f8591c6ebe4ba9c78a5"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/installed-source-followup.json",
+      "bytes": 1798,
+      "sha256": "1ce9130a2b1dbd1791bd33e325f6e5576010032865bc63e66c3208d549dcafae"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/plan-review.json",
+      "bytes": 2536,
+      "sha256": "242928ed832663fdd894f02622ca042c2eb56d46786e7435c79ad64fe4074446"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/report.md",
+      "bytes": 7271,
+      "sha256": "a07e89eff43a73d4226000cca8f4b52a529d158dcd449a11b3f4474036568038"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/runner-before-C1-review.json",
+      "bytes": 779,
+      "sha256": "22953e5cfb556fc13e9cd86d3cf5ad4f501dab7e22dffd9ff77fb7b234efe3da"
+    },
+    {
+      "repository_path": "doc/evidence/universe-I21C/runner-before-C1.py.txt",
+      "bytes": 8849,
+      "sha256": "1e1d98575a3e45241104ace36ccdb976fdb38d67cf8e904e9a0b9b79daca142c"
+    }
+  ]
+}

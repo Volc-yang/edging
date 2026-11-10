@@ -1,0 +1,48 @@
+{
+  "format": "universe-i21-independent-plan-review.v1",
+  "reviewer": "/root/i20_review",
+  "decision": "accept_D3_IMPORT_only_plan",
+  "reviewed_base_commit": "d5ada8fcddf215f6fb4bcf9cabea65699ad8ae91",
+  "frozen_plan_commit": "6eae2795628dc10d94506b00f37084fe4ae4e488",
+  "plan": {
+    "repository_path": "doc/design/universe-i21-native-import-plan.md",
+    "sha256": "12e964370403c52b36e65ebe4a96f4dae3ee554b40fe1e6239a5ed7224dd9f97"
+  },
+  "accepted_scope": [
+    "A versioned import recipe, content-only host, source preflight and bounded CPU checks",
+    "C1 independent exact source and execution-card review before dispatch",
+    "root exclusive actual UE import and fresh-process saved-package readback",
+    "C2 independent raw-object/material/mapping/package/process evidence assessment"
+  ],
+  "required_clarifications_present": [
+    "each import attempt has exclusive host/Content/Saved/result/log/DDC; failed packages are not overwritten",
+    "reload opens only selected successful attempt, with fresh logs/UserDir, and cannot change Content or sidecar file map",
+    "actual native in-memory Alpha/slot faults are restored without save; JSON mutation alone is not fault evidence",
+    "clear UE_PYTHONPATH and explicitly empty StartupScripts/AdditionalPaths",
+    "PythonScriptCommandlet startup execution and real Mac Documents Python search are audited rather than claimed disabled by interpreter isolation or -UserDir",
+    "unreviewed startup origin causes stop, without deleting user scripts or changing HOME"
+  ],
+  "resource_limits": {
+    "continuous_dispatch_to_seal_seconds": 900,
+    "run_root_bytes": 4294967296,
+    "all_Content_bytes": 536870912,
+    "maximum_import_attempts": 2,
+    "per_import_seconds": 240,
+    "maximum_reload_processes": 1,
+    "reload_seconds": 180,
+    "NoTrace_and_explicit_isolated_FileSystem_DDC_required": true,
+    "forced_cleanup_is_not_normal_exit": true
+  },
+  "not_granted": [
+    "actual import or UObject/metadata correctness before C1/R/C2 evidence",
+    "runtime presentation profile, authority changes or GameMode/HUD transaction acceptance",
+    "C++ compilation, Metal appearance, player experience or performance acceptance"
+  ],
+  "review_action": {
+    "read_only_before_assignment": true,
+    "UE_GPU_worker_Genesis_UI_started": false,
+    "owner_or_key_contents_read": false,
+    "implementation_worktree_created_by_reviewer": false
+  },
+  "next_gate": "review exact A commit and root execution card; actual UE dispatch requires independent C1 acceptance"
+}

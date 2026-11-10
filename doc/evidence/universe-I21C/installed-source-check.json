@@ -1,0 +1,90 @@
+{
+  "format": "universe-i21-installed-source-check.v1",
+  "engine_root": "/Users/Shared/Epic Games/UE_5.8/Engine",
+  "source_checks": [
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptCommandlet.cpp",
+      "bytes": 2423,
+      "sha256": "e95628a90fd63fedf06377365c3f8f1a0c18a4ad7bdeac3ebe3a91d74e999044",
+      "independently_read_fact": "Main calls RunStartupScripts before requested script"
+    },
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp",
+      "bytes": 72661,
+      "sha256": "96e3eece5f106bdb8a9d89bd6b5ed4897c346131961905277f648d97636a0cf1",
+      "independently_read_fact": "UserDir, mounted Content, AdditionalPaths and UE_PYTHONPATH are searched; init_unreal and configured StartupScripts execute"
+    },
+    {
+      "engine_relative_path": "Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPluginSettings.h",
+      "bytes": 9058,
+      "sha256": "cd1e85c34198a2695ad064b9b13bcc14fea7cca556d1a57180ae8480953a1c82",
+      "independently_read_fact": "UE_PYTHONPATH is honored even when interpreter isolation is enabled"
+    },
+    {
+      "engine_relative_path": "Source/Editor/UnrealEd/Public/AssetImportTask.h",
+      "bytes": 3360,
+      "sha256": "c16361224bad216883a7896aa216fb42ed03cbe0b60625c9a05a1fb84cd1a93d",
+      "independently_read_fact": "get_objects blocks until async results ready"
+    },
+    {
+      "engine_relative_path": "Source/Developer/AssetTools/Private/AssetTools.cpp",
+      "bytes": 268839,
+      "sha256": "e7c2f65d108bbd91112e90ce574bacd5bb151ef54e0dd4e12cc49b8b03a636dc",
+      "independently_read_fact": "AssetImportTask options recognizes InterchangePipelineStackOverride"
+    },
+    {
+      "engine_relative_path": "Source/Runtime/Interchange/Engine/Public/InterchangeManager.h",
+      "bytes": 48406,
+      "sha256": "d677ee9ac912c7b1d0e0f98b062d1f0cdef3086d589852f3be04ec0bbc9a7b30",
+      "independently_read_fact": "PipelineStackOverride add_pipeline is BlueprintCallable"
+    },
+    {
+      "engine_relative_path": "Source/Editor/MaterialEditor/Public/MaterialEditingLibrary.h",
+      "bytes": 34248,
+      "sha256": "27974fc97ccdac0216573d4623bcded186fdac9e26924629fc81a4507c3c873c",
+      "independently_read_fact": "Actual material input-node/output-name/disconnect getters are BlueprintCallable"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Pipelines/Public/InterchangeGenericMeshPipeline.h",
+      "bytes": 29137,
+      "sha256": "e60c3959b16d1105201e647616f54282397d0e8e658951a71228295feb8efcda",
+      "independently_read_fact": "bCombineStaticMeshes is deprecated; CombineStaticMeshesBehavior DoNotCombine is supported"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Pipelines/Public/InterchangeGenericAssetsPipelineSharedSettings.h",
+      "bytes": 13244,
+      "sha256": "13d7e931c0946696cb56956a32a34aed75e4fd5269635311f0e0e702515a435e",
+      "independently_read_fact": "bBakeMeshes and bBakePivotMeshes are separate properties"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Import/Private/Gltf/InterchangeGltfPrivate.h",
+      "bytes": 1871,
+      "sha256": "3aef77b3d1448766d0a7680802ed624742ed5b4d28d76ee764ccc825700c9b52",
+      "independently_read_fact": "GltfUnitConversionMultiplier=100.f"
+    },
+    {
+      "engine_relative_path": "Plugins/Interchange/Runtime/Source/Import/Private/Gltf/InterchangeGltfTranslator.cpp",
+      "bytes": 63924,
+      "sha256": "f811f85f601e697485ec584043ceab6a9faf4d49bd5be84233001f18009a1504",
+      "independently_read_fact": "GL normal texture importer sets FlipGreenChannel=true"
+    }
+  ],
+  "executables_read_only": [
+    {
+      "engine_relative_path": "Binaries/Mac/UnrealEditor-Cmd",
+      "bytes": 1491240,
+      "sha256": "b48f009087c1ddabe2c3568c9587d4af3da03895d73715f1cb11a665264f3a5d",
+      "is_symlink": false,
+      "magic_hex": "cafebabe"
+    },
+    {
+      "engine_relative_path": "Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor",
+      "bytes": 1538304,
+      "sha256": "92a29c07430a88ee50ca6d343a81d83e92ec433619dff99ac12995dac26c2612",
+      "is_symlink": false,
+      "magic_hex": "cafebabe"
+    }
+  ],
+  "binary_fact": "file reports both as universal arm64/x86_64 Mach-O; otool links Cmd against UE Core/Engine/UnrealEd libraries; no binary executed",
+  "not_proven": "source/binary inspection cannot prove actual child process tree, no UI creation or normal exit; these require R/C2 evidence"
+}

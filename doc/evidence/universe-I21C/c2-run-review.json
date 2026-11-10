@@ -1,0 +1,270 @@
+{
+  "actual_completed_Interchange_import_logs": 16,
+  "actual_post_fsync_observation": {
+    "actual_sizes": {
+      "content_bytes": 2679781,
+      "root_bytes": 26383495,
+      "temporary_ipc": []
+    },
+    "continuous_elapsed_seconds": 742.4675231250003,
+    "format": "universe-i21-post-seal-observation.v1",
+    "native_runtime_build_visual_acceptance": false,
+    "observed_after_final_fsync": true,
+    "result": "partial_or_fail",
+    "seal_ref": {
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/campaign-seal.json",
+      "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+    }
+  },
+  "actual_root_bytes": 26383495,
+  "actual_root_file_count": 217,
+  "actual_saved_project_Content": {
+    "a1": {},
+    "a2": {}
+  },
+  "actual_saved_uasset_packages": 0,
+  "conservative_named_Content_bytes": 2679781,
+  "decision": "reject_complete_D3_IMPORT_accept_preserved_partial_cycle_evidence",
+  "external_metadata_changes": [
+    {
+      "after": null,
+      "before": {
+        "bytes": 358,
+        "inode": 85929428,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794101926724789891
+      },
+      "relative": "Trace-backup-2026.11.08-01.38.46.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    },
+    {
+      "after": {
+        "bytes": 323,
+        "inode": 85941948,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794120373230212929
+      },
+      "before": null,
+      "relative": "Trace-backup-2026.11.08-06.46.13.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    },
+    {
+      "after": {
+        "bytes": 328,
+        "inode": 86276194,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794290635861176770
+      },
+      "before": {
+        "bytes": 323,
+        "inode": 85941948,
+        "kind": "file",
+        "mode": 420,
+        "mtime_ns": 1794120373230212929
+      },
+      "relative": "Trace.uba",
+      "root": "/Users/yangacan/Library/Application Support/Epic/UnrealBuildTool"
+    }
+  ],
+  "external_scope": "six declared metadata domains only; no full-system no-write claim",
+  "failure": {
+    "error": "'NoneType' object has no attribute 'enable_section_collision'",
+    "format": "edgeworld.i21.native-import-result.v0.1",
+    "pid": 26198,
+    "status": "FAIL"
+  },
+  "final_ps_reparsed_relevant": 0,
+  "final_seal_ref": {
+    "bytes": 2207,
+    "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/campaign-seal.json",
+    "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+  },
+  "format": "universe-i21-C2-independent-failed-run-review.v1",
+  "gates": {
+    "C0_plan": "accepted",
+    "C1_source_CPU_and_cards": "accepted",
+    "D3_ADAPTER_BUILD_D4": "not_run",
+    "D3_IMPORT": "not_accepted",
+    "Native_metadata_material_negative_checks": "not_run",
+    "continuous_wall_and_file_byte_caps": "pass_bounded_only",
+    "declared_external_write_boundary": "fail",
+    "fresh_process_reload": "not_run",
+    "normal_successful_exit": "fail",
+    "positive_saved_package_import": "fail"
+  },
+  "material_and_mesh_gate": "not accepted; error before explicit save and Native validation",
+  "named_Content_files": {
+    "a2/ddc/Content/5c/de/33102837531b37d982d9ede74c1bb5383a9b.udd": 2002514,
+    "a2/ddc/Content/5e/5f/556329f31307c55a6dcf08584ab0c561001f.udd": 677267
+  },
+  "next_entry": "new reviewed cycle: activate owning StaticMeshEditor module if appropriate, verify actual subsystem/getter capability before mutation; freeze Nanite source-vs-render-fallback policy and retest saved import plus fresh reload",
+  "original_I20_files_unchanged": 34,
+  "phases": [
+    {
+      "actual_parent_wait_exit": 0,
+      "error": "AssertionError: /Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/tmp/dotnet-diagnostic-10371-1794290635",
+      "execution_ref": {
+        "bytes": 5938,
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/execution.json",
+        "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+      },
+      "forced": true,
+      "input_pins": 800,
+      "normal": false,
+      "phase": "import-01",
+      "quiet": [
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 222255,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-0.ps",
+            "sha256": "febcfe8dfe51d90a86dd2a489a2acfb946c0626d240940eccdf0c6f26fde8723"
+          }
+        },
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 222255,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-1.ps",
+            "sha256": "5695fe2c8a43f53bcae9823fa47c279f918804cb440534c725ea8131c014bbe3"
+          }
+        },
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 222255,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/quiet-final.ps",
+            "sha256": "5d34e9a442ddcd91dddc88c617b4dfa11c9c1bb571043500a6924e9342a15922"
+          }
+        }
+      ],
+      "runtime_seconds": 9.358496790984645
+    },
+    {
+      "actual_parent_wait_exit": 255,
+      "error": null,
+      "execution_ref": {
+        "bytes": 11794,
+        "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/execution.json",
+        "sha256": "31c0a5ebcca080d3dcf79e7cbd62565b3bee5c2b3f16f6903e728476a2d6ca70"
+      },
+      "forced": false,
+      "input_pins": 803,
+      "normal": false,
+      "phase": "import-02",
+      "quiet": [
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 229177,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-0.ps",
+            "sha256": "5c2a99690d8ffdbe07460e569629e22edaf23525c1c25d35de39daf9b51db32a"
+          }
+        },
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 229125,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-1.ps",
+            "sha256": "0eea84de204de83b7d1c1fca566208eeecf10c9f7dbf3a65260624706a88edc6"
+          }
+        },
+        {
+          "independently_parsed_relevant": 0,
+          "raw_ref": {
+            "bytes": 228455,
+            "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/quiet-final.ps",
+            "sha256": "6750b1b83083094c6e43dd25dfb611d4589af3abb8ad2cf9cc95ba6ebde0a673"
+          }
+        }
+      ],
+      "runtime_seconds": 26.407205959083512
+    }
+  ],
+  "post_fsync_capture_provenance_ref": {
+    "bytes": 722,
+    "path": "/Users/yangacan/edgeWorld/edge-world/.worktrees/plan-consolidation/doc/evidence/universe-I21R/post-seal-tool-provenance.json",
+    "sha256": "bf2fe626614dedf0c7a428c60fad78f728f9d4623d52b3f27914897271a882f1"
+  },
+  "post_run_guard_native_executed": false,
+  "post_run_guard_only_commit": "a0ebfbf3c4830b622b63164a3bfee56afbb338d7",
+  "raw_refs": [
+    {
+      "bytes": 5938,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/execution.json",
+      "sha256": "d77c3dd8e3ab3c6186a83ec18bd9779347b46c260f619df3031effd9081d942d"
+    },
+    {
+      "bytes": 516,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/phase-postwrite.json",
+      "sha256": "12c1d74f4614324fc5ca84a332266423a55da1d8274e7f188663e226bb204971"
+    },
+    {
+      "bytes": 5079,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-01/console.log",
+      "sha256": "5aad2a813f45d6ef566ad6eaf5cada27ae4050fc8663491b492463af05afa8ce"
+    },
+    {
+      "bytes": 11794,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/execution.json",
+      "sha256": "31c0a5ebcca080d3dcf79e7cbd62565b3bee5c2b3f16f6903e728476a2d6ca70"
+    },
+    {
+      "bytes": 549,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/phase-postwrite.json",
+      "sha256": "6380c948fb6b6b9a9874a661f004a8abc96d800461df5e848bfb54a1307ab61b"
+    },
+    {
+      "bytes": 30349,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/supervision-import-02/console.log",
+      "sha256": "9129d54a3658ed9eb3df1755a1e9dfcdfbec3c8fbc62e3b16210dcf1ed6b1460"
+    },
+    {
+      "bytes": 54052,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a1/ue.log",
+      "sha256": "4be0ab9d4d2775eec2bd219b21773178261a2ce43d799562ca109558919ffd55"
+    },
+    {
+      "bytes": 162688,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/ue.log",
+      "sha256": "32afce092742291753244308525a2285cee77b0654252e59f1995a3ce9495bfe"
+    },
+    {
+      "bytes": 170,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/a2/result.json",
+      "sha256": "a09296a106d1ad7bf9bfd5e55db753cc9acc88b3473d6a3118056849343b6c6e"
+    },
+    {
+      "bytes": 2207,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/campaign-seal.json",
+      "sha256": "b4d27d42afad4dedf11a477c0a7429a7ce393d67f65617cbe05bd895e048745e"
+    },
+    {
+      "bytes": 4381294,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/external-before.json",
+      "sha256": "6d7dee481c401d0fdca9f1a2400b293b02592824451745e575b960c8f7546ff4"
+    },
+    {
+      "bytes": 4381294,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/external-after.json",
+      "sha256": "f725cd12b2750a75dac4e096e8bb6cf880f62de2a5c84df2564042a396371ca5"
+    },
+    {
+      "bytes": 1232,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/external-diff.json",
+      "sha256": "f2054ff2d3f66b31470b7580f53ee6f2b65a2c3c14c4cca954f7d651b5be4c27"
+    },
+    {
+      "bytes": 218257,
+      "path": "/Volumes/DevSSD/Unreal/Projects/EdgeWorld/I21-20261110-import/final-processes.ps",
+      "sha256": "74459713751b3681f0e5960c5aaa8bc4f12c83a4afc7db3eec61b381f359069f"
+    }
+  ],
+  "repository_runtime_copies_byte_equal": 7,
+  "reviewer_UE_GPU_worker_Genesis_UI_executed": false,
+  "runtime_owner_source_commit": "3b156d51cc9df110e5ef24e0be82618d54e2eb5b",
+  "unique_input_pins_rehashed": 813
+}

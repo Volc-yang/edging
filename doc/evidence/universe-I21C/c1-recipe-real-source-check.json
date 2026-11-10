@@ -1,0 +1,102 @@
+{
+  "format": "universe-i21-independent-recipe-source-check.v1",
+  "recipe_sha256": "2cb665fea9fbe60b7e2e9fd4acd9233913593cf7d6bf497a5b75c84c037af489",
+  "I20_readonly_verifier_sha256": "8eeb14ed1a34c0e0649fcb2618e6a711b97942c30ffed3c67ed02248797236c9",
+  "verified_real_source_files": 20,
+  "models": [
+    {
+      "asset": "fern_02",
+      "source_mesh": "Plane.024",
+      "triangles": 2384,
+      "actual_source_bounds_converted_cm": {
+        "min": [
+          -52.81425714492798,
+          -42.1874463558197,
+          -3.0510280281305313
+        ],
+        "max": [
+          46.16048336029053,
+          47.18152582645416,
+          39.718443155288696
+        ]
+      },
+      "matches_frozen_recipe": true
+    },
+    {
+      "asset": "fern_02",
+      "source_mesh": "Plane.044",
+      "triangles": 2248,
+      "actual_source_bounds_converted_cm": {
+        "min": [
+          -42.99395680427551,
+          -41.72818064689636,
+          -2.877367287874222
+        ],
+        "max": [
+          44.43862438201904,
+          34.794387221336365,
+          32.0246696472168
+        ]
+      },
+      "matches_frozen_recipe": true
+    },
+    {
+      "asset": "fern_02",
+      "source_mesh": "Plane.006",
+      "triangles": 784,
+      "actual_source_bounds_converted_cm": {
+        "min": [
+          -29.765713214874268,
+          -31.126806139945984,
+          -2.877351827919483
+        ],
+        "max": [
+          25.428348779678345,
+          30.215302109718323,
+          25.80300271511078
+        ]
+      },
+      "matches_frozen_recipe": true
+    },
+    {
+      "asset": "fern_02",
+      "source_mesh": "Plane.059",
+      "triangles": 816,
+      "actual_source_bounds_converted_cm": {
+        "min": [
+          -29.07802164554596,
+          -35.213664174079895,
+          -1.3578944839537144
+        ],
+        "max": [
+          28.200197219848633,
+          24.11416471004486,
+          19.950860738754272
+        ]
+      },
+      "matches_frozen_recipe": true
+    },
+    {
+      "asset": "boulder_01",
+      "source_mesh": "rock_PROXY_5m.002",
+      "triangles": 66122,
+      "actual_source_bounds_converted_cm": {
+        "min": [
+          -74.81597065925598,
+          -94.84404921531677,
+          -7.364296913146973
+        ],
+        "max": [
+          52.39759087562561,
+          88.18937540054321,
+          93.01872253417969
+        ]
+      },
+      "matches_frozen_recipe": true
+    }
+  ],
+  "texture_file_coverage": 14,
+  "ground_preview_mesh_not_selected": true,
+  "unit_axis_recipe_matches_actual_source": true,
+  "actual_UE_bounds_import_or_metadata_verified": false
+}
