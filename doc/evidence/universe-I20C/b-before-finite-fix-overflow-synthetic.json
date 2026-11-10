@@ -1,0 +1,282 @@
+{
+  "format": "edgeworld.universe.realistic-presentation-profile.v0.1",
+  "evidence_class": "native-observed-proposal",
+  "profile_id": "i20b-synthetic-lookdev",
+  "target": {
+    "ue_version": "5.8.3",
+    "platform": "Mac",
+    "rhi": "Metal"
+  },
+  "authority": {
+    "world_id": "i20b-synthetic-world",
+    "expected_build": "1111111111111111111111111111111111111111111111111111111111111111",
+    "expected_options": "2222222222222222222222222222222222222222222222222222222222222222",
+    "authority_assets": "3333333333333333333333333333333333333333333333333333333333333333",
+    "unit_transform": "4444444444444444444444444444444444444444444444444444444444444444",
+    "projection_version": "basicshapes-proxy.v0.2"
+  },
+  "region": {
+    "place_id": "forest-1",
+    "bounds_xy_cm": [
+      30000,
+      30000,
+      32000,
+      32000
+    ]
+  },
+  "files": [
+    {
+      "file_id": "fern-source",
+      "path": "fern-source.fixture",
+      "byte_count": 51,
+      "sha256": "b5ebc9368de257e6ff25a36c90e62ba415bc976e60befcc808d4b6787551087e",
+      "source_uri": "urn:synthetic:fern-source.fixture",
+      "license_ref": {
+        "path": "license.fixture",
+        "sha256": "6422fe335f51f0b9cf216b990000b407a8263bf7b13475c375d1eaeda9d065ce"
+      }
+    },
+    {
+      "file_id": "rock-source",
+      "path": "rock-source.fixture",
+      "byte_count": 51,
+      "sha256": "fcd953491edcdadcda2ef70522ad77d2055a6c1d17fd25d554e9d4ac4567d569",
+      "source_uri": "urn:synthetic:rock-source.fixture",
+      "license_ref": {
+        "path": "license.fixture",
+        "sha256": "6422fe335f51f0b9cf216b990000b407a8263bf7b13475c375d1eaeda9d065ce"
+      }
+    },
+    {
+      "file_id": "pbr-source",
+      "path": "pbr-source.fixture",
+      "byte_count": 49,
+      "sha256": "8422894adfe76084630fba8ed3747a14f1d5688bf93dec79d0c499ad6317b7a7",
+      "source_uri": "urn:synthetic:pbr-source.fixture",
+      "license_ref": {
+        "path": "license.fixture",
+        "sha256": "6422fe335f51f0b9cf216b990000b407a8263bf7b13475c375d1eaeda9d065ce"
+      }
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "fern-mesh",
+      "kind": "static_mesh",
+      "object_path": "/Game/EdgeWorldRealism/Fixture/SM_Fern.SM_Fern",
+      "source_file_ids": [
+        "fern-source"
+      ],
+      "dependencies": [
+        "surface-material"
+      ],
+      "native_import": {
+        "status": "native-observed",
+        "source_unit_cm": 1e999,
+        "pivot_cm": [
+          0,
+          0,
+          1e999
+        ],
+        "bounds_cm": [
+          0,
+          0,
+          0,
+          1e999,
+          1,
+          1
+        ],
+        "material_slots": [
+          "surface"
+        ],
+        "evidence_ref": {
+          "path": "native.fixture",
+          "sha256": "8ded8812bd821a6bda9efcf0613d331aebbbc5028670a5f89a79c41b18d0475e"
+        }
+      }
+    },
+    {
+      "asset_id": "rock-mesh",
+      "kind": "static_mesh",
+      "object_path": "/Game/EdgeWorldRealism/Fixture/SM_Rock.SM_Rock",
+      "source_file_ids": [
+        "rock-source"
+      ],
+      "dependencies": [
+        "surface-material"
+      ],
+      "native_import": {
+        "status": "native-observed",
+        "source_unit_cm": 1e999,
+        "pivot_cm": [
+          0,
+          0,
+          1e999
+        ],
+        "bounds_cm": [
+          0,
+          0,
+          0,
+          1e999,
+          1,
+          1
+        ],
+        "material_slots": [
+          "surface"
+        ],
+        "evidence_ref": {
+          "path": "native.fixture",
+          "sha256": "8ded8812bd821a6bda9efcf0613d331aebbbc5028670a5f89a79c41b18d0475e"
+        }
+      }
+    },
+    {
+      "asset_id": "surface-material",
+      "kind": "material",
+      "object_path": "/Game/EdgeWorldRealism/Fixture/M_Surface.M_Surface",
+      "source_file_ids": [
+        "pbr-source"
+      ],
+      "dependencies": [],
+      "native_import": {
+        "status": "native-observed",
+        "source_unit_cm": null,
+        "pivot_cm": null,
+        "bounds_cm": null,
+        "material_slots": [],
+        "evidence_ref": {
+          "path": "native.fixture",
+          "sha256": "8ded8812bd821a6bda9efcf0613d331aebbbc5028670a5f89a79c41b18d0475e"
+        }
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "binding_id": "forest-fern",
+      "place_id": "forest-1",
+      "place_kind": "forest",
+      "role": "vegetation",
+      "geometry_source": "declared-mesh",
+      "mesh_asset_id": "fern-mesh",
+      "material_bindings": [
+        {
+          "slot_name": "surface",
+          "material_asset_id": "surface-material"
+        }
+      ]
+    },
+    {
+      "binding_id": "forest-rock",
+      "place_id": "forest-1",
+      "place_kind": "forest",
+      "role": "rock",
+      "geometry_source": "declared-mesh",
+      "mesh_asset_id": "rock-mesh",
+      "material_bindings": [
+        {
+          "slot_name": "surface",
+          "material_asset_id": "surface-material"
+        }
+      ]
+    },
+    {
+      "binding_id": "forest-ground",
+      "place_id": "forest-1",
+      "place_kind": "forest",
+      "role": "ground",
+      "geometry_source": "verified-place-region",
+      "mesh_asset_id": null,
+      "material_bindings": [
+        {
+          "slot_name": "surface",
+          "material_asset_id": "surface-material"
+        }
+      ]
+    }
+  ],
+  "derived_recipe": {
+    "algorithm": "explicit-list.v0.1",
+    "instances": [
+      {
+        "instance_id": "forest-fern-0001",
+        "binding_id": "forest-fern",
+        "position_cm": [
+          31000,
+          31000,
+          350
+        ],
+        "rotation_mdeg": [
+          0,
+          0,
+          0
+        ],
+        "scale_ppm": [
+          1000000,
+          1000000,
+          1000000
+        ]
+      },
+      {
+        "instance_id": "forest-rock-0001",
+        "binding_id": "forest-rock",
+        "position_cm": [
+          31000,
+          31000,
+          350
+        ],
+        "rotation_mdeg": [
+          0,
+          0,
+          0
+        ],
+        "scale_ppm": [
+          1000000,
+          1000000,
+          1000000
+        ]
+      },
+      {
+        "instance_id": "forest-ground-0001",
+        "binding_id": "forest-ground",
+        "position_cm": [
+          31000,
+          31000,
+          350
+        ],
+        "rotation_mdeg": [
+          0,
+          0,
+          0
+        ],
+        "scale_ppm": [
+          1000000,
+          1000000,
+          1000000
+        ]
+      }
+    ]
+  },
+  "missing_asset_policy": "reject-preserve-last-complete-view",
+  "fallback": "forbidden",
+  "collision": "none",
+  "presentation_clock": "local-only",
+  "presentation_mode": "realistic-readonly-sidecar.v0.1",
+  "material_recipes": [
+    {
+      "material_asset_id": "surface-material",
+      "blend_mode": "Opaque",
+      "mask_cutoff": null,
+      "two_sided": false,
+      "textures": [
+        {
+          "role": "BaseColor",
+          "source_file_id": "pbr-source",
+          "channels": "RGB",
+          "srgb": true,
+          "normal_basis": null
+        }
+      ]
+    }
+  ]
+}

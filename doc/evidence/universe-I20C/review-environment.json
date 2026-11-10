@@ -1,0 +1,10 @@
+{
+  "asset_review_python": "/Users/yangacan/edgeWorld/edge-world/.venv/bin/python",
+  "asset_review_python_version": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+  "asset_decoder": "Pillow",
+  "asset_decoder_version": "11.3.0",
+  "contract_review_python": "/private/tmp/edgeworld-i20b-contract-env/bin/python",
+  "contract_dependency": "jsonschema4.23.0; owner pinned isolated evidence environment",
+  "downloaded_by_reviewer": false,
+  "UE_or_GPU_started_by_reviewer": false
+}

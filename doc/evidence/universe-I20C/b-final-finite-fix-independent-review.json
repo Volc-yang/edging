@@ -1,0 +1,58 @@
+{
+  "attempt": "b-final-finite-fix",
+  "directed_independent_checks": [
+    {
+      "case": "mismatched_state",
+      "reason": "view/source mismatch: state",
+      "result": "pass_rejected"
+    },
+    {
+      "case": "mismatched_event",
+      "reason": "view/source mismatch: event",
+      "result": "pass_rejected"
+    },
+    {
+      "case": "native_shaped_proposal_is_not_native_authentication",
+      "observed": {
+        "assets": 3,
+        "authority_written": false,
+        "checked_bytes": 279,
+        "checked_files": 5,
+        "instances": 3,
+        "license_authenticity_verified": false,
+        "native_import_status": "native-observed",
+        "profile_sha256": "c78ecf908bfe7da4a29536417fd4ad8702a83c86e30c27016ce818deedbc4522",
+        "runtime_authenticity_verified": false,
+        "status": "source_contract_consistent_requires_native_review",
+        "visual_gate": "not_run"
+      },
+      "result": "pass"
+    },
+    {
+      "case": "native_declared_slot_mismatch",
+      "reason": "declared/native slot coverage mismatch",
+      "result": "pass_rejected"
+    },
+    {
+      "case": "json_exponent_overflow_native_metadata",
+      "reason": "nonfinite JSON number",
+      "result": "pass_rejected"
+    }
+  ],
+  "elapsed_seconds": 0.6743530000094324,
+  "format": "universe-i20-independent-contract-review.v1",
+  "native_runtime_ue_import_appearance_atomicity_verified": false,
+  "owner_command_exit": 0,
+  "owner_output_sha256": "797c2c478449493a9e2efbdfe39680f5681cb1d8120a882ad03dd5b7bde54fec",
+  "python": "/private/tmp/edgeworld-i20b-contract-env/bin/python",
+  "result": "pass_design_cpu_only",
+  "reviewed_commit": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+  "source_sha256": {
+    "doc/evidence/universe-I20B/check_contract.py": "4b6f5f8cb0d86f832234af6585eef602f5ba99d6896b4eac92d85b48b6ac8dab",
+    "doc/fixtures/universe_realistic_presentation_profile_v0_1/expected-synthetic.json": "5eb8d41f1029eca5f585bb3448604ad16e60cb9c5f0556f09acf658547d7d13e",
+    "doc/fixtures/universe_realistic_presentation_profile_v0_1/positive-profile.json": "a3dd544806565e24495f5d8b5b2ebd69b2cb16c9fcc263d8d065018eac429083",
+    "doc/fixtures/universe_realistic_presentation_profile_v0_1/profile.schema.json": "c1fa3ec5db86b27ce306e387b4db41cb54256e9486fd7b97f4f5ed54fe9b723b",
+    "doc/fixtures/universe_realistic_presentation_profile_v0_1/synthetic-payloads.json": "dc2c35fb64aa9a3bdb00778c10014811ac545f290d125a2d5b50607e1ed8f80c",
+    "doc/fixtures/universe_realistic_presentation_profile_v0_1/view-binding.schema.json": "521f8cb1d41e0db346549da3f35f767bcd804cb8d2911b621d0ad9ff9005934c"
+  }
+}

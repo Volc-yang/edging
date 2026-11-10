@@ -1,0 +1,95 @@
+{
+  "A": {
+    "commit": "30907e8dd645cb1b7c3580cf101f180b77b47865",
+    "decision": "accept_source_license_file_closure_only",
+    "evidence": {
+      "bytes": 12993,
+      "repository_path": "doc/evidence/universe-I20C/a-independent-review.json",
+      "sha256": "032940fac3f9d7cf759e2e09bbb0371e742a671e77b99d458cb90408ca5275ce"
+    }
+  },
+  "B": {
+    "commit": "d6fe60de9c3ad9fad837841f2bd3bfb027a90896",
+    "decision": "accept_design_synthetic_cpu_contract_only",
+    "evidence": {
+      "bytes": 2619,
+      "repository_path": "doc/evidence/universe-I20C/b-final-finite-fix-independent-review.json",
+      "sha256": "81c0b5150d0955e235ed1f2de1024ae845838e06f4c6fbff799682b720f76ac0"
+    },
+    "independent_extra_check_count": 5,
+    "owner_test_count": 15,
+    "pre_fix_failure": {
+      "bytes": 2576,
+      "repository_path": "doc/evidence/universe-I20C/b-before-finite-fix-independent-review.json",
+      "sha256": "ccb0aa4279e1dc2f06fde0831508e4fd4275f67e91d8cdec8f44ee3b46c491a8"
+    }
+  },
+  "cross_checks": {
+    "B_ground_geometry_source_is_only_declared_derived_plane": true,
+    "B_schema_and_CPU_result_cannot_authenticate_import_or_runtime": true,
+    "DX_normal_requires_explicit_versioned_UE_override": true,
+    "ViewBinding_full_source_profile_renderer_generation_required": true,
+    "actual_GameMode_HUD_Actor_transaction_fix_owned_by_D3_unexecuted": true,
+    "authority_projection_and_presentation_mode_independently_recorded": true,
+    "fern_RGB_JPEG_no_alpha_requires_separate_grayscale_Alpha_to_OpacityMask": true,
+    "ground_preview_sphere_excluded_as_world_terrain": true,
+    "no_legacy_authority_parser_worker_I0A_changes": true,
+    "same_fixed_A_asset_index_sha256": "d9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7",
+    "six_legacy_cube_place_markers_are_not_tree_species": true,
+    "source_gltf_original_GL_dependencies_preserved": true,
+    "stable_place_binding_instance_identity_required": true
+  },
+  "deferred_gates": {
+    "D3_import_adapter_compile": "planned_not_run",
+    "D4_Metal_input_PNG_readonly_normal_exit": "planned_not_run",
+    "Dot_candidate": "unlocated_not_reviewed_no_contact_claimed",
+    "visual_quality_performance": "planned_not_run"
+  },
+  "disposition": "accept_bounded_I20_ABC_preparation; release_D3_cards_only_after_parent_integration_check",
+  "evidence": [
+    {
+      "bytes": 1644,
+      "repository_path": "doc/evidence/universe-I20C/plan-review.json",
+      "sha256": "572591f0712b0298854aa8210cfda2b8abb1d7a1411a479fa605dedb5e4028c3"
+    },
+    {
+      "bytes": 10077,
+      "repository_path": "doc/evidence/universe-I20C/a-owner-verifier-rerun.json",
+      "sha256": "99854b1d72396ec497f6aa5be63c14d053d4f29caf304910c46c9991fa764d4a"
+    },
+    {
+      "bytes": 7001,
+      "repository_path": "doc/evidence/universe-I20C/b-before-finite-fix-overflow-synthetic.json",
+      "sha256": "8baf09f936f5b8ef6139c39e24f7781080dc66248fae84b0212a94aec5a565b3"
+    },
+    {
+      "bytes": 1983,
+      "repository_path": "doc/evidence/universe-I20C/b-before-finite-fix-owner-checks.txt",
+      "sha256": "2043aea5e84e947ac5cb0f8ad78b5561c6a296a5590c0753da48f26c66c79dc2"
+    },
+    {
+      "bytes": 7001,
+      "repository_path": "doc/evidence/universe-I20C/b-final-finite-fix-overflow-synthetic.json",
+      "sha256": "8baf09f936f5b8ef6139c39e24f7781080dc66248fae84b0212a94aec5a565b3"
+    },
+    {
+      "bytes": 2140,
+      "repository_path": "doc/evidence/universe-I20C/b-final-finite-fix-owner-checks.txt",
+      "sha256": "797c2c478449493a9e2efbdfe39680f5681cb1d8120a882ad03dd5b7bde54fec"
+    },
+    {
+      "bytes": 511,
+      "repository_path": "doc/evidence/universe-I20C/review-environment.json",
+      "sha256": "d2e0d60031a6e70fb17301f35d22eda2c60f6af3e66ec24563737e948b5625f7"
+    }
+  ],
+  "format": "universe-i20-cross-input-review.v1",
+  "parent_integration_review": "required_after_individual_task_review_and_merge; parent owns final integrated replay/CI/cleanup",
+  "preserved_limits": {
+    "I18_exact3": "unchanged",
+    "I19_failed_terminal_handoff": "unchanged",
+    "new_UE_Genesis_gpu_ui_run": false
+  },
+  "reviewed_plan_commit": "6c533afb537a9c45bd471eb83887cdcd87b42052",
+  "reviewer": "/root/i20_review"
+}
