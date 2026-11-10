@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Description": "I22 isolated capability and CC0 import host",
+  "DisableEnginePluginsByDefault": true,
+  "Plugins": [
+    {"Name": "PythonScriptPlugin", "Enabled": true},
+    {"Name": "EditorScriptingUtilities", "Enabled": true},
+    {"Name": "Interchange", "Enabled": true},
+    {"Name": "InterchangeEditor", "Enabled": true}
+  ]
+}

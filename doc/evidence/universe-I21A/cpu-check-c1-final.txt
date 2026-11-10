@@ -1,0 +1,10 @@
+test_enabled_plugin_requirements_rejected (tests.test_realism_import.RealismImportInputTests.test_enabled_plugin_requirements_rejected) ... ok
+test_missing_alpha_and_corruption_rejected (tests.test_realism_import.RealismImportInputTests.test_missing_alpha_and_corruption_rejected) ... ok
+test_paths_json_and_exclusive_evidence (tests.test_realism_import.RealismImportInputTests.test_paths_json_and_exclusive_evidence) ... ok
+test_real_pinned_source_files (tests.test_realism_import.RealismImportInputTests.test_real_pinned_source_files) ... ok
+test_startup_and_environment_refuse_user_injection (tests.test_realism_import.RealismImportInputTests.test_startup_and_environment_refuse_user_injection) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.173s
+
+OK

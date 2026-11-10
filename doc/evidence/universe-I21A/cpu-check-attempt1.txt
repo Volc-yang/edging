@@ -1,0 +1,58 @@
+test_missing_alpha_and_corruption_rejected (tests.test_realism_import.RealismImportInputTests.test_missing_alpha_and_corruption_rejected) ... ERROR
+test_paths_json_and_exclusive_evidence (tests.test_realism_import.RealismImportInputTests.test_paths_json_and_exclusive_evidence) ... ERROR
+test_real_pinned_source_files (tests.test_realism_import.RealismImportInputTests.test_real_pinned_source_files) ... ok
+test_startup_and_environment_refuse_user_injection (tests.test_realism_import.RealismImportInputTests.test_startup_and_environment_refuse_user_injection) ... ERROR
+
+======================================================================
+ERROR: test_missing_alpha_and_corruption_rejected (tests.test_realism_import.RealismImportInputTests.test_missing_alpha_and_corruption_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/tests/test_realism_import.py", line 26, in test_missing_alpha_and_corruption_rejected
+    dest=c.child(root,entry['path']);dest.parent.mkdir(parents=True,exist_ok=True)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 54, in child
+    result=checked(Path(root).joinpath(*p.parts))
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 47, in checked
+    for p in (path,*path.parents):require(not p.is_symlink(),'symlink: '+str(p))
+                                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 16, in require
+    if not value:raise ValueError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: symlink: /var
+
+======================================================================
+ERROR: test_paths_json_and_exclusive_evidence (tests.test_realism_import.RealismImportInputTests.test_paths_json_and_exclusive_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/tests/test_realism_import.py", line 41, in test_paths_json_and_exclusive_evidence
+    path=root/'result.json';c.write_new(path,{'status':'first'})
+                            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 61, in write_new
+    path=checked(path);path.parent.mkdir(parents=True,exist_ok=True)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 47, in checked
+    for p in (path,*path.parents):require(not p.is_symlink(),'symlink: '+str(p))
+                                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 16, in require
+    if not value:raise ValueError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: symlink: /var
+
+======================================================================
+ERROR: test_startup_and_environment_refuse_user_injection (tests.test_realism_import.RealismImportInputTests.test_startup_and_environment_refuse_user_injection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/tests/test_realism_import.py", line 56, in test_startup_and_environment_refuse_user_injection
+    inventory=c.startup_inventory(engine,doc)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 94, in startup_inventory
+    engine=checked(engine)
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 47, in checked
+    for p in (path,*path.parents):require(not p.is_symlink(),'symlink: '+str(p))
+                                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yangacan/edgeWorld/edge-world/.worktrees/i21-import/scripts/realism_import/common.py", line 16, in require
+    if not value:raise ValueError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: symlink: /var
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.597s
+
+FAILED (errors=3)

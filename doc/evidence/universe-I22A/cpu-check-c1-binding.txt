@@ -1,0 +1,6 @@
+test_i22_probe_binding_is_exact_and_incomplete_results_reject (tests.test_realism_import.RealismImportInputTests.test_i22_probe_binding_is_exact_and_incomplete_results_reject) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

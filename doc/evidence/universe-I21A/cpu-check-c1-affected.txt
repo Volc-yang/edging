@@ -1,0 +1,7 @@
+test_enabled_plugin_requirements_rejected (tests.test_realism_import.RealismImportInputTests.test_enabled_plugin_requirements_rejected) ... ok
+test_startup_and_environment_refuse_user_injection (tests.test_realism_import.RealismImportInputTests.test_startup_and_environment_refuse_user_injection) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+OK

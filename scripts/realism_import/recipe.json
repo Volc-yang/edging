@@ -1,0 +1,332 @@
+{
+  "bounds_tolerance_cm": 0.02,
+  "deferred": [
+    "ground plane",
+    "runtime adapter",
+    "Metal shader/normal direction/visual quality"
+  ],
+  "expected_class_counts": {
+    "Material": 3,
+    "StaticMesh": 5,
+    "Texture2D": 14
+  },
+  "format": "edgeworld.i22.import-recipe.v0.1",
+  "import_policy": {
+    "automatic_materials": false,
+    "automatic_textures": false,
+    "bake_meshes": false,
+    "bake_pivot_meshes": false,
+    "build_nanite": false,
+    "collision": false,
+    "combine": "DO_NOT_COMBINE",
+    "import_offset_uniform_scale": 1.0
+  },
+  "index_sha256": "d9df98dbf9260ad8e94e5c274563725355ebdddab7e1c1f6676dc02f970447b7",
+  "materials": [
+    {
+      "asset_id": "fern_02",
+      "blend_mode": "BLEND_MASKED",
+      "name": "M_fern_02",
+      "opacity_mask_clip_value": 0.5,
+      "shading_model": "MSM_DEFAULT_LIT",
+      "two_sided": true
+    },
+    {
+      "asset_id": "boulder_01",
+      "blend_mode": "BLEND_OPAQUE",
+      "name": "M_boulder_01",
+      "opacity_mask_clip_value": 0.3333,
+      "shading_model": "MSM_DEFAULT_LIT",
+      "two_sided": false
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "blend_mode": "BLEND_OPAQUE",
+      "name": "M_forrest_ground_01",
+      "opacity_mask_clip_value": 0.3333,
+      "shading_model": "MSM_DEFAULT_LIT",
+      "two_sided": false
+    }
+  ],
+  "models": [
+    {
+      "gltf": "assets/fern_02/fern_02_2k.gltf",
+      "id": "fern_02",
+      "meshes": [
+        {
+          "expected_bounds_cm": {
+            "max": [
+              46.16048336029053,
+              47.18152582645416,
+              39.718443155288696
+            ],
+            "min": [
+              -52.81425714492798,
+              -42.1874463558197,
+              -3.0510280281305313
+            ]
+          },
+          "expected_triangles": 2384,
+          "source_mesh": "Plane.024",
+          "source_mesh_index": 0,
+          "source_node": "fern_02_b",
+          "source_node_translation_m": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "expected_bounds_cm": {
+            "max": [
+              44.43862438201904,
+              34.794387221336365,
+              32.0246696472168
+            ],
+            "min": [
+              -42.99395680427551,
+              -41.72818064689636,
+              -2.877367287874222
+            ]
+          },
+          "expected_triangles": 2248,
+          "source_mesh": "Plane.044",
+          "source_mesh_index": 1,
+          "source_node": "fern_02_c",
+          "source_node_translation_m": [
+            1.0000009536743164,
+            0,
+            0
+          ]
+        },
+        {
+          "expected_bounds_cm": {
+            "max": [
+              25.428348779678345,
+              30.215302109718323,
+              25.80300271511078
+            ],
+            "min": [
+              -29.765713214874268,
+              -31.126806139945984,
+              -2.877351827919483
+            ]
+          },
+          "expected_triangles": 784,
+          "source_mesh": "Plane.006",
+          "source_mesh_index": 2,
+          "source_node": "fern_02_a",
+          "source_node_translation_m": [
+            0,
+            0,
+            1.0000001192092896
+          ]
+        },
+        {
+          "expected_bounds_cm": {
+            "max": [
+              28.200197219848633,
+              24.11416471004486,
+              19.950860738754272
+            ],
+            "min": [
+              -29.07802164554596,
+              -35.213664174079895,
+              -1.3578944839537144
+            ]
+          },
+          "expected_triangles": 816,
+          "source_mesh": "Plane.059",
+          "source_mesh_index": 3,
+          "source_node": "fern_02_d",
+          "source_node_translation_m": [
+            1,
+            0,
+            0.9999995827674866
+          ]
+        }
+      ]
+    },
+    {
+      "gltf": "assets/boulder_01/boulder_01_2k.gltf",
+      "id": "boulder_01",
+      "meshes": [
+        {
+          "expected_bounds_cm": {
+            "max": [
+              52.39759087562561,
+              88.18937540054321,
+              93.01872253417969
+            ],
+            "min": [
+              -74.81597065925598,
+              -94.84404921531677,
+              -7.364296913146973
+            ]
+          },
+          "expected_triangles": 66122,
+          "source_mesh": "rock_PROXY_5m.002",
+          "source_mesh_index": 0,
+          "source_node": "boulder_01",
+          "source_node_translation_m": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "source_convention": {
+    "axis_order": [
+      0,
+      2,
+      1
+    ],
+    "metres_to_cm": 100,
+    "native_pivot_status": "asset-local-origin; bounds-centre measured separately",
+    "native_render_count_semantics": "UStaticMesh.GetNumTriangles(0): render LOD0; require no Nanite and exact pinned source match"
+  },
+  "textures": [
+    {
+      "asset_id": "fern_02",
+      "compression": "TC_MASKS",
+      "flip_green_channel": false,
+      "name": "T_fern_02_alpha_2k",
+      "role": "alpha",
+      "sampler": "SAMPLERTYPE_MASKS",
+      "source_file_id": "assets/fern_02/textures/fern_02_alpha_2k.png",
+      "srgb": false
+    },
+    {
+      "asset_id": "fern_02",
+      "compression": "TC_MASKS",
+      "flip_green_channel": false,
+      "name": "T_fern_02_arm_2k",
+      "role": "arm",
+      "sampler": "SAMPLERTYPE_MASKS",
+      "source_file_id": "assets/fern_02/textures/fern_02_arm_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "fern_02",
+      "compression": "TC_DEFAULT",
+      "flip_green_channel": false,
+      "name": "T_fern_02_diff_2k",
+      "role": "base_color",
+      "sampler": "SAMPLERTYPE_COLOR",
+      "source_file_id": "assets/fern_02/textures/fern_02_diff_2k.jpg",
+      "srgb": true
+    },
+    {
+      "asset_id": "fern_02",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": false,
+      "name": "T_fern_02_nor_dx_2k",
+      "role": "normal_dx",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/fern_02/textures/fern_02_nor_dx_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "fern_02",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": true,
+      "name": "T_fern_02_nor_gl_2k",
+      "role": "normal_gl",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/fern_02/textures/fern_02_nor_gl_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "boulder_01",
+      "compression": "TC_MASKS",
+      "flip_green_channel": false,
+      "name": "T_boulder_01_arm_2k",
+      "role": "arm",
+      "sampler": "SAMPLERTYPE_MASKS",
+      "source_file_id": "assets/boulder_01/textures/boulder_01_arm_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "boulder_01",
+      "compression": "TC_DEFAULT",
+      "flip_green_channel": false,
+      "name": "T_boulder_01_diff_2k",
+      "role": "base_color",
+      "sampler": "SAMPLERTYPE_COLOR",
+      "source_file_id": "assets/boulder_01/textures/boulder_01_diff_2k.jpg",
+      "srgb": true
+    },
+    {
+      "asset_id": "boulder_01",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": false,
+      "name": "T_boulder_01_nor_dx_2k",
+      "role": "normal_dx",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/boulder_01/textures/boulder_01_nor_dx_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "boulder_01",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": true,
+      "name": "T_boulder_01_nor_gl_2k",
+      "role": "normal_gl",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/boulder_01/textures/boulder_01_nor_gl_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "compression": "TC_MASKS",
+      "flip_green_channel": false,
+      "name": "T_forrest_ground_01_arm_2k",
+      "role": "arm",
+      "sampler": "SAMPLERTYPE_MASKS",
+      "source_file_id": "assets/forrest_ground_01/textures/forrest_ground_01_arm_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "compression": "TC_DEFAULT",
+      "flip_green_channel": false,
+      "name": "T_forrest_ground_01_diff_2k",
+      "role": "base_color",
+      "sampler": "SAMPLERTYPE_COLOR",
+      "source_file_id": "assets/forrest_ground_01/textures/forrest_ground_01_diff_2k.jpg",
+      "srgb": true
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": false,
+      "name": "T_forrest_ground_01_nor_dx_2k",
+      "role": "normal_dx",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/forrest_ground_01/textures/forrest_ground_01_nor_dx_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "compression": "TC_NORMALMAP",
+      "flip_green_channel": true,
+      "name": "T_forrest_ground_01_nor_gl_2k",
+      "role": "normal_gl",
+      "sampler": "SAMPLERTYPE_NORMAL",
+      "source_file_id": "assets/forrest_ground_01/textures/forrest_ground_01_nor_gl_2k.jpg",
+      "srgb": false
+    },
+    {
+      "asset_id": "forrest_ground_01",
+      "compression": "TC_MASKS",
+      "flip_green_channel": false,
+      "name": "T_forrest_ground_01_rough_2k",
+      "role": "roughness",
+      "sampler": "SAMPLERTYPE_MASKS",
+      "source_file_id": "assets/forrest_ground_01/textures/forrest_ground_01_rough_2k.jpg",
+      "srgb": false
+    }
+  ]
+}
